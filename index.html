@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.ad-video-area{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;position:relative;margin-bottom:15px}.ad-video-content{width:100%;height:100%;position:relative;overflow:hidden}.ad-bg-anim{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#0f3460,#16213e,#1a1a2e);background-size:400% 400%;animation:adBgMove 4s ease infinite}.ad-product-showcase{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2}.ad-product-icon{font-size:80px;animation:adFloat 2s ease-in-out infinite}.ad-product-text{font-size:24px;font-weight:bold;color:#fff;margin-top:15px;text-shadow:0 2px 10px rgba(0,0,0,0.5)}.ad-product-sub{font-size:14px;color:#aaa;margin-top:8px}.ad-stars{margin-top:15px;font-size:20px;letter-spacing:5px}.ad-cta-fake{margin-top:20px;padding:12px 40px;background:linear-gradient(45deg,#ff6b6b,#ee5a24);border-radius:30px;color:#fff;font-weight:bold;font-size:16px;display:inline-block;animation:adPulse 1.5s ease infinite}.ad-countdown-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));display:flex;align-items:center;justify-content:space-between;z-index:10}.ad-progress-bar{flex:1;height:4px;background:#333;border-radius:2px;margin-right:15px;overflow:hidden}.ad-progress-fill{height:100%;background:linear-gradient(90deg,#00ffcc,#00ccff);border-radius:2px;transition:width 1s linear}.ad-timer-text{font-size:13px;color:#fff;font-weight:bold;min-width:30px}.ad-skip-btn{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer;border:none;transition:all 0.3s}.ad-skip-btn.disabled{background:#333;color:#666;cursor:not-allowed}.ad-skip-btn.enabled{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;cursor:pointer}.ad-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);color:#fff;font-size:11px;padding:4px 10px;border-radius:4px;z-index:10}.real-ad-container{width:100%;aspect-ratio:16/9;display:none;position:relative;border-radius:10px;overflow:hidden;margin-bottom:15px}.real-ad-container video{width:100%;height:100%;display:block}.real-ad-skip-bar{position:absolute;bottom:0;left:0;right:0;padding:10px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.85));display:flex;align-items:center;justify-content:flex-end;z-index:20;gap:10px}.real-ad-skip-bar span{font-size:13px;color:#ccc}@keyframes adBgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes adFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}@keyframes adPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:0.9}}</style>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.ad-video-wrap{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;position:relative;margin-bottom:15px}.ad-video-wrap video{width:100%;height:100%;display:block}.ad-skip-bar{position:absolute;bottom:0;left:0;right:0;padding:12px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));display:flex;align-items:center;justify-content:space-between;z-index:20}.ad-progress-bar{flex:1;height:4px;background:#333;border-radius:2px;margin-right:15px;overflow:hidden}.ad-progress-fill{height:100%;background:linear-gradient(90deg,#00ffcc,#00ccff);border-radius:2px;transition:width 1s linear;width:0%}.ad-timer-text{font-size:13px;color:#fff;font-weight:bold;min-width:30px}.ad-skip-btn{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer;border:none}.ad-skip-btn.disabled{background:#333;color:#666;cursor:not-allowed}.ad-skip-btn.enabled{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;cursor:pointer}</style>
 </head>
 <body>
 <div class="container">
@@ -21,33 +21,14 @@
 </div>
 <div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
 
-<!-- REWARD AD OVERLAY: Real video + Fake fallback -->
+<!-- REAL VIDEO AD ONLY - NO FAKE -->
 <div id="rewardedOverlay" class="reward-overlay">
   <div class="reward-box">
     <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Watch to Double Your Coins!</h2>
-    <!-- REAL VIDEO AD (hidden until ad loads) -->
-    <div class="real-ad-container" id="realAdContainer">
+    <div class="ad-video-wrap">
       <video id="rewardVideo" style="width:100%;height:100%;background:#000;" playsinline></video>
-      <div class="real-ad-skip-bar" id="realAdSkipBar" style="display:none;">
-        <span id="realAdTimer">15s</span>
-        <button class="ad-skip-btn disabled" id="realSkipBtn">Skip</button>
-      </div>
-    </div>
-    <!-- FAKE AD (shown as fallback) -->
-    <div class="ad-video-area" id="fakeAdContainer">
-      <div class="ad-video-content">
-        <div class="ad-bg-anim"></div>
-        <div class="ad-badge">Ad</div>
-        <div class="ad-product-showcase">
-          <div class="ad-product-icon">🎮</div>
-          <div class="ad-product-text">Epic Games Pro</div>
-          <div class="ad-product-sub">Play. Win. Earn Real Rewards!</div>
-          <div class="ad-stars">⭐⭐⭐⭐⭐</div>
-          <div class="ad-cta-fake">Download Now</div>
-        </div>
-      </div>
-      <div class="ad-countdown-overlay">
-        <div class="ad-progress-bar"><div class="ad-progress-fill" id="adProgressFill" style="width:0%"></div></div>
+      <div class="ad-skip-bar" id="adSkipBar" style="display:none;">
+        <div class="ad-progress-bar"><div class="ad-progress-fill" id="adProgressFill"></div></div>
         <span class="ad-timer-text" id="adTimerText">15s</span>
         <button class="ad-skip-btn disabled" id="adSkipBtn">Skip</button>
       </div>
@@ -87,17 +68,15 @@ function login() {
     }
   } catch(e) { alert("Error: " + e.message); }
 }
-
 (function() { var btn = document.getElementById("loginBtn"); if (btn) { btn.onclick = function(e) { if (e) e.preventDefault(); login(); }; } })();
 
-// ========== REWARD AD SYSTEM ==========
+// ========== REAL VIDEO REWARD AD ONLY ==========
 var lastBaseReward = 0;
 var lastGameReplay = null;
 var adCountdownInterval = null;
 var adTimeLeft = 15;
 var rewardPlayer = null;
-var realAdActive = false;
-var HILLTOPADS_VAST_TAG = "https://bubbly-sound.com/dvmPFnz.dCGjN/vjZlGpUJ/yeRmN9/upZrUZlekePPTFYs5DObTYgK0/MoTdMDteNqjNkD5uOSDSQhx/Nkw-";
+var HILLTOPADS_VAST = "https://bubbly-sound.com/d.mgFqzsd_GNN/v/ZwGkUy/feYmO9TuUZ/UIlmkrP/TcYt5/OfT/gx0bMxTNMQtqNRjokc5WOsDeQ/xMN/wa";
 
 function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   addCoins(baseCoins);
@@ -112,99 +91,60 @@ function showRewardedAd() {
   document.getElementById('rewardedOverlay').style.display = 'flex';
   var dbl = document.getElementById('doubleBtn'); if (dbl) dbl.disabled = true;
   document.getElementById('adStatusText').textContent = 'Loading ad...';
-  realAdActive = false;
+  document.getElementById('adSkipBar').style.display = 'none';
 
-  // Show fake ad immediately, hide real
-  document.getElementById('fakeAdContainer').style.display = 'block';
-  document.getElementById('realAdContainer').style.display = 'none';
+  // Reset video element
+  var videoEl = document.getElementById('rewardVideo');
+  var clone = videoEl.cloneNode(true);
+  videoEl.parentNode.replaceChild(clone, videoEl);
 
-  // Start fake countdown as safety net
-  startFakeCountdown();
-
-  // Try real HilltopAds video ad
-  tryRealAd();
-}
-
-function startFakeCountdown() {
-  adTimeLeft = 15;
-  var skipBtn = document.getElementById('adSkipBtn');
-  var timerText = document.getElementById('adTimerText');
-  var progressFill = document.getElementById('adProgressFill');
-  skipBtn.className = 'ad-skip-btn disabled';
-  skipBtn.textContent = 'Skip';
-  timerText.textContent = '15s';
-  progressFill.style.width = '0%';
-  if (adCountdownInterval) clearInterval(adCountdownInterval);
-  adCountdownInterval = setInterval(function() {
-    adTimeLeft--;
-    progressFill.style.width = ((15 - adTimeLeft) / 15 * 100) + '%';
-    timerText.textContent = adTimeLeft + 's';
-    if (adTimeLeft <= 0) {
-      clearInterval(adCountdownInterval); adCountdownInterval = null;
-      skipBtn.className = 'ad-skip-btn enabled';
-      skipBtn.textContent = 'Skip >>';
-    }
-  }, 1000);
-  // Wire fake skip
-  skipBtn.onclick = function() {
-    if (adTimeLeft > 0) return;
-    if (adCountdownInterval) { clearInterval(adCountdownInterval); adCountdownInterval = null; }
-    giveReward();
-  };
-}
-
-function tryRealAd() {
-  // Check if fluidplayer loaded and we're on HTTPS
-  if (typeof fluidPlayer === 'undefined' || location.protocol !== 'https:') {
-    document.getElementById('adStatusText').textContent = 'Ad will play on HTTPS (GitHub Pages)';
+  // Check if fluidplayer and HTTPS available
+  if (typeof fluidPlayer === 'undefined') {
+    document.getElementById('adStatusText').textContent = 'Ad player not available. Deploy to HTTPS (GitHub Pages) for video ads.';
+    var sb = document.getElementById('adSkipBtn');
+    sb.className = 'ad-skip-btn disabled'; sb.textContent = 'Close';
+    sb.onclick = function() { document.getElementById('rewardedOverlay').style.display = 'none'; };
     return;
   }
 
   try {
-    // Reset video element
-    var videoEl = document.getElementById('rewardVideo');
-    videoEl.removeAttribute('data-fluid-player-id');
-    var clone = videoEl.cloneNode(true);
-    videoEl.parentNode.replaceChild(clone, videoEl);
-
     rewardPlayer = fluidPlayer('rewardVideo', {
       layoutControls: { fillToContainer: true, autoPlay: true, mute: true, playButtonShowing: false, playbackRateEnabled: false, allowTheatre: false, volumeBar: false },
       vastOptions: {
-        adList: [{ roll: 'preRoll', vastTag: HILLTOPADS_VAST_TAG }],
+        adList: [{ roll: 'preRoll', vastTag: HILLTOPADS_VAST }],
         skipButtonCaption: 'Skip in [seconds]',
         skipButtonClickCaption: 'Skip >>',
         vastTimeout: 8000
       }
     });
 
-    if (!rewardPlayer) return;
+    if (!rewardPlayer) { document.getElementById('adStatusText').textContent = 'Ad failed to load'; return; }
 
+    // When real ad starts playing
     rewardPlayer.on('vastAdStarted', function() {
-      // Real ad is playing! Switch to real video view
-      realAdActive = true;
-      clearInterval(adCountdownInterval); adCountdownInterval = null;
-      document.getElementById('fakeAdContainer').style.display = 'none';
-      document.getElementById('realAdContainer').style.display = 'block';
-      document.getElementById('realAdSkipBar').style.display = 'flex';
       document.getElementById('adStatusText').textContent = '▶️ Watching ad...';
-
-      // Start real ad skip countdown
+      document.getElementById('adSkipBar').style.display = 'flex';
       adTimeLeft = 15;
-      var rSkipBtn = document.getElementById('realSkipBtn');
-      var rTimer = document.getElementById('realAdTimer');
-      rSkipBtn.className = 'ad-skip-btn disabled';
-      rSkipBtn.textContent = 'Skip';
-      rTimer.textContent = '15s';
+      var skipBtn = document.getElementById('adSkipBtn');
+      var timerText = document.getElementById('adTimerText');
+      var progressFill = document.getElementById('adProgressFill');
+      skipBtn.className = 'ad-skip-btn disabled';
+      skipBtn.textContent = 'Skip';
+      timerText.textContent = '15s';
+      progressFill.style.width = '0%';
+      if (adCountdownInterval) clearInterval(adCountdownInterval);
       adCountdownInterval = setInterval(function() {
         adTimeLeft--;
-        rTimer.textContent = adTimeLeft + 's';
+        progressFill.style.width = ((15 - adTimeLeft) / 15 * 100) + '%';
+        timerText.textContent = adTimeLeft + 's';
         if (adTimeLeft <= 0) {
           clearInterval(adCountdownInterval); adCountdownInterval = null;
-          rSkipBtn.className = 'ad-skip-btn enabled';
-          rSkipBtn.textContent = 'Skip >>';
+          skipBtn.className = 'ad-skip-btn enabled';
+          skipBtn.textContent = 'Skip >>';
         }
       }, 1000);
-      rSkipBtn.onclick = function() {
+      // Wire skip button
+      skipBtn.onclick = function() {
         if (adTimeLeft > 0) return;
         if (adCountdownInterval) { clearInterval(adCountdownInterval); adCountdownInterval = null; }
         giveReward();
@@ -214,20 +154,29 @@ function tryRealAd() {
     rewardPlayer.on('adEnded', function() { giveReward(); });
     rewardPlayer.on('adSkipped', function() { giveReward(); });
     rewardPlayer.on('adError', function() {
-      // Real ad failed - fake ad is already showing as fallback
-      document.getElementById('adStatusText').textContent = 'Loading ad...';
+      document.getElementById('adStatusText').textContent = 'No ad available right now. Try again later.';
+      var sb = document.getElementById('adSkipBtn');
+      sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
+      sb.onclick = function() { document.getElementById('rewardedOverlay').style.display = 'none'; };
     });
 
-    // Fallback timeout: if no ad starts in 10s, keep fake
+    // Timeout: if no ad in 12s
     setTimeout(function() {
-      if (!realAdActive) {
-        document.getElementById('adStatusText').textContent = 'Watch to earn your reward';
+      if (!document.getElementById('adSkipBar').style.display || document.getElementById('adSkipBar').style.display === 'none') {
+        document.getElementById('adStatusText').textContent = 'No ad available. Try again later.';
+        var sb = document.getElementById('adSkipBtn');
+        document.getElementById('adSkipBar').style.display = 'flex';
+        sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
+        sb.onclick = function() { document.getElementById('rewardedOverlay').style.display = 'none'; };
       }
-    }, 10000);
+    }, 12000);
 
   } catch(e) {
-    // Keep fake ad
-    document.getElementById('adStatusText').textContent = 'Watch to earn your reward';
+    document.getElementById('adStatusText').textContent = 'Ad error. Try again later.';
+    var sb = document.getElementById('adSkipBtn');
+    document.getElementById('adSkipBar').style.display = 'flex';
+    sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
+    sb.onclick = function() { document.getElementById('rewardedOverlay').style.display = 'none'; };
   }
 }
 
@@ -433,4 +382,4 @@ function endCheckers(w) { handleGameEnd(w ? 30 : 5, w ? 'You Win!' : 'CPU Wins',
 (function() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); } } } catch(e) {} })();
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </html>
