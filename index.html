@@ -35,7 +35,7 @@
 <script>
 // ===== HILLTOPADS REWARDED VIDEO CONFIG =====
 const HILLTOPADS_VAST_TAG = "https://bubbly-sound.com/dvmPFnz.dCGjN/vjZlGpUJ/yeRmN9/upZrUZlekePPTFYs5DObTYgK0/MoTdMDteNqjNkD5uOSDSQhx/Nkw-";
-const HILLTOPADS_SLIDER_URL = ""; // optional: paste your HilltopAds Video Slider JS URL here for backup
+const HILLTOPADS_SLIDER_URL = ""; // optional backup
 let lastBaseReward = 0;
 let lastGameReplay = null;
 let rewardPlayer = null;
@@ -50,26 +50,51 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
       ${detailsHtml}
       <p style="font-size:24px;color:#ffd700;margin:10px 0;">+${baseCoins} Coins!</p>
       <button onclick="${replayFnName}()" style="margin-bottom:10px;">Play Again</button>
-      <button id="doubleBtn" onclick="showRewardedAd();this.disabled=true;" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;">📺 Double with Video (+${baseCoins})</button>
+      <button id="doubleBtn" onclick="showRewardedAd()" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;">📺 Double with Video (+${baseCoins})</button>
       <p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p>
     </div>`;
 }
 
-function showRewardedAd_ORIG() {
+function showRewardedAd() {
   if (!HILLTOPADS_VAST_TAG) { alert("VAST URL missing"); return; }
+  // disable double button immediately to prevent double clicks
+  const dbl = document.getElementById('doubleBtn');
+  if (dbl) dbl.disabled = true;
+  
   document.getElementById('rewardedOverlay').style.display = 'flex';
   document.getElementById('rewardStatus').textContent = 'Loading video ad...';
+  
+  const closeBtn = document.querySelector('#rewardedOverlay button');
+  closeBtn.disabled = true;
+  let wait = 15;
+  closeBtn.textContent = 'Wait ' + wait + 's';
+  const cd = setInterval(()=>{ wait--; closeBtn.textContent = wait>0 ? 'Wait '+wait+'s' : 'Close'; if(wait<=0){ clearInterval(cd); closeBtn.disabled=false; } },1000);
+  
   const videoEl = document.getElementById('rewardVideo');
   videoEl.innerHTML = '';
   if (rewardPlayer) { try { rewardPlayer.destroy(); } catch(e){} }
+  
   rewardPlayer = fluidPlayer('rewardVideo', {
-    layoutControls: { fillToContainer:true, autoPlay:true, mute:false },
-    vastOptions: { adList: [{roll:'preRoll', vastTag: HILLTOPADS_VAST_TAG }], skipButtonCaption:'Skip in [seconds]' }
+    layoutControls: { fillToContainer: true, autoPlay: true, mute: false },
+    vastOptions: {
+      adList: [{ roll: 'preRoll', vastTag: HILLTOPADS_VAST_TAG }],
+      skipButtonCaption: 'Skip in [seconds]',
+      skipButtonClickCaption: 'Skip >>'
+    }
   });
-  rewardPlayer.on('adEnded', completeReward);
-  rewardPlayer.on('adError', () => { document.getElementById('rewardStatus').textContent='Ad error, granting bonus'; setTimeout(completeReward, 1500); });
+  
+  rewardPlayer.on('adEnded', () => { completeReward(); });
+  rewardPlayer.on('adError', () => {
+    document.getElementById('rewardStatus').textContent = 'No fill, using backup...';
+    if (HILLTOPADS_SLIDER_URL) {
+      const s = document.createElement('script');
+      s.src = HILLTOPADS_SLIDER_URL;
+      document.body.appendChild(s);
+    }
+    setTimeout(completeReward, 3000);
+  });
 }
-function completeReward(){ closeRewarded(); if(lastBaseReward>0){ addCoins(lastBaseReward); const btn=document.getElementById('doubleBtn'); if(btn){ btn.disabled=true; btn.textContent='✅ Claimed'; btn.style.opacity='0.5'; } document.getElementById('doubleMsg').innerHTML="<span class='success'>✅ Doubled! +"+lastBaseReward+" coins</span>"; lastBaseReward=0; } }
+function completeReward(){ closeRewarded(); if(lastBaseReward>0){ addCoins(lastBaseReward); document.getElementById('doubleMsg').innerHTML="<span class='success'>✅ Doubled! +"+lastBaseReward+" coins</span>"; lastBaseReward=0; } }
 function closeRewarded(){ document.getElementById('rewardedOverlay').style.display='none'; if(rewardPlayer){ try{rewardPlayer.pause();}catch(e){} } }
 // ===== END HILLTOPADS CONFIG =====
 
