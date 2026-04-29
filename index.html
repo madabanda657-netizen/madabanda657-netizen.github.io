@@ -25,8 +25,8 @@
 <div id="rewardedOverlay" class="reward-overlay">
   <div class="reward-box">
     <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Watch to Double Your Coins!</h2>
-    <div class="ad-video-wrap">
-      <video id="rewardVideo" style="width:100%;height:100%;background:#000;" playsinline></video>
+    <div class="ad-video-wrap" id="videoWrap">
+      <video id="rewardVideo" playsinline></video>
       <div class="ad-skip-bar" id="adSkipBar" style="display:none;">
         <div class="ad-progress-bar"><div class="ad-progress-fill" id="adProgressFill"></div></div>
         <span class="ad-timer-text" id="adTimerText">15s</span>
@@ -67,7 +67,7 @@ function login() {
         }).catch(function(){});
       } catch(e) {}
     }
-  } catch(e) { alert("Error: " + e.message); }
+  } catch(e) {}
 }
 (function() { var btn = document.getElementById("loginBtn"); if (btn) { btn.onclick = function(e) { if (e) e.preventDefault(); login(); }; } })();
 
@@ -78,6 +78,7 @@ var adCountdownInterval = null;
 var adTimeLeft = 15;
 var rewardPlayer = null;
 var adPlaying = false;
+var adInitAttempt = 0;
 var VAST_TAG = "https://bubbly-sound.com/d.mgFqzsd_GNN/v/ZwGkUy/feYmO9TuUZ/UIlmkrP/TcYt5/OfT/gx0bMxTNMQtqNRjokc5WOsDeQ/xMN/wa";
 
 function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
@@ -89,59 +90,61 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   var db2 = document.getElementById("doubleBtn"); if (db2) db2.onclick = function() { showRewardedAd(); };
 }
 
-function destroyAdPlayer() {
-  if (rewardPlayer) {
-    try { rewardPlayer.pause(); } catch(e) {}
-    try { rewardPlayer.destroy(); } catch(e) {}
-    rewardPlayer = null;
-  }
-  if (adCountdownInterval) { clearInterval(adCountdownInterval); adCountdownInterval = null; }
-  adPlaying = false;
-}
-
-function resetVideoElement() {
-  var v = document.getElementById('rewardVideo');
-  if (!v) return;
-  // Remove all fluidplayer attributes
-  v.removeAttribute('data-fluid-player-id');
-  v.removeAttribute('data-fluid-player');
-  // Remove all child elements added by fluidplayer
-  while (v.firstChild) { v.removeChild(v.firstChild); }
-  // Remove event listeners by replacing source
-  v.src = '';
-  v.load();
-  // Remove any sibling elements fluidplayer may have added
-  var parent = v.parentNode;
-  var siblings = parent.querySelectorAll('.fluid_controls_container, .fluid_vpaid_container, div[id^="fp_"]');
-  for (var i = 0; i < siblings.length; i++) { parent.removeChild(siblings[i]); }
-}
-
 function showRewardedAd() {
   document.getElementById('rewardedOverlay').style.display = 'flex';
   var dbl = document.getElementById('doubleBtn'); if (dbl) dbl.disabled = true;
   document.getElementById('adStatusText').textContent = 'Loading ad...';
   document.getElementById('adSkipBar').style.display = 'none';
   document.getElementById('adRetryBtn').style.display = 'none';
+  adPlaying = false;
+  adInitAttempt = 0;
 
-  // Clean up previous player
-  destroyAdPlayer();
-  resetVideoElement();
+  // Kill previous player completely
+  killAdPlayer();
 
-  // Check if fluidplayer available
+  // Check fluidplayer
   if (typeof fluidPlayer === 'undefined') {
-    document.getElementById('adStatusText').textContent = 'Ad player not loaded. Refresh page or deploy to HTTPS.';
-    var sb = document.getElementById('adSkipBtn');
-    document.getElementById('adSkipBar').style.display = 'flex';
-    sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
-    sb.onclick = function() { closeAdOverlay(); };
+    showAdError('Ad player loading... Refresh page if this continues');
     return;
   }
 
-  // Wait a moment for cleanup, then init
-  setTimeout(function() { initFluidPlayer(); }, 500);
+  // Wait then init
+  setTimeout(function() { createFreshVideoAndInit(); }, 300);
 }
 
-function initFluidPlayer() {
+function killAdPlayer() {
+  if (rewardPlayer) {
+    try { rewardPlayer.pause(); } catch(e) {}
+    try { rewardPlayer.destroy(); } catch(e) {}
+    rewardPlayer = null;
+  }
+  if (adCountdownInterval) { clearInterval(adCountdownInterval); adCountdownInterval = null; }
+}
+
+function createFreshVideoAndInit() {
+  // Remove old video entirely
+  var wrap = document.getElementById('videoWrap');
+  var oldVideo = document.getElementById('rewardVideo');
+  if (oldVideo) {
+    wrap.removeChild(oldVideo);
+  }
+
+  // Remove any leftover fluidplayer elements
+  var leftovers = wrap.querySelectorAll('[class*="fluid"], [id*="fp_"]');
+  for (var i = 0; i < leftovers.length; i++) {
+    try { wrap.removeChild(leftovers[i]); } catch(e) {}
+  }
+
+  // Create brand new video element
+  var newVideo = document.createElement('video');
+  newVideo.id = 'rewardVideo';
+  newVideo.style.width = '100%';
+  newVideo.style.height = '100%';
+  newVideo.style.background = '#000';
+  newVideo.setAttribute('playsinline', '');
+  wrap.insertBefore(newVideo, wrap.firstChild);
+
+  // Init fluidplayer on fresh element
   try {
     rewardPlayer = fluidPlayer('rewardVideo', {
       layoutControls: {
@@ -163,12 +166,13 @@ function initFluidPlayer() {
       }
     });
 
+    adInitAttempt++;
+
     if (!rewardPlayer) {
-      showAdError('Player failed to initialize');
+      showAdError('Player init failed');
       return;
     }
 
-    // Ad started playing successfully
     rewardPlayer.on('vastAdStarted', function() {
       adPlaying = true;
       document.getElementById('adStatusText').textContent = '▶️ Watching ad...';
@@ -177,32 +181,28 @@ function initFluidPlayer() {
       startAdCountdown();
     });
 
-    // Ad completed
     rewardPlayer.on('adEnded', function() {
       giveReward();
     });
 
-    // User skipped ad (via fluidplayer's own skip button)
     rewardPlayer.on('adSkipped', function() {
       giveReward();
     });
 
-    // Ad error - no ad available or VAST parse error
     rewardPlayer.on('adError', function() {
       if (!adPlaying) {
-        showAdError('No ad available right now');
+        showAdError('No ad available right now. Try again.');
       }
     });
 
-    // Timeout: if no ad starts in 15 seconds
     setTimeout(function() {
       if (!adPlaying) {
-        showAdError('No ad available. Try again later.');
+        showAdError('Ad timeout. Try again.');
       }
     }, 15000);
 
-  } catch(e) {
-    showAdError('Ad player error: ' + e.message);
+  } catch(err) {
+    showAdError('Ad error. Try again.');
   }
 }
 
@@ -236,12 +236,10 @@ function startAdCountdown() {
 function showAdError(msg) {
   document.getElementById('adStatusText').textContent = msg;
   document.getElementById('adRetryBtn').style.display = 'block';
-  // Show close button
   var sb = document.getElementById('adSkipBtn');
   document.getElementById('adSkipBar').style.display = 'flex';
   sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
   sb.onclick = function() { closeAdOverlay(); };
-  // Wire retry button
   document.getElementById('adRetryBtn').onclick = function() {
     showRewardedAd();
   };
@@ -259,7 +257,7 @@ function giveReward() {
 
 function closeAdOverlay() {
   document.getElementById('rewardedOverlay').style.display = 'none';
-  destroyAdPlayer();
+  killAdPlayer();
 }
 
 // ========== FIREBASE ==========
@@ -448,4 +446,4 @@ function endCheckers(w) { handleGameEnd(w ? 30 : 5, w ? 'You Win!' : 'CPU Wins',
 (function() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); } } } catch(e) {} })();
 </script>
 </body>
-                                                     </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </html>
