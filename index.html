@@ -98,9 +98,27 @@ function completeReward(){ closeRewarded(); if(lastBaseReward>0){ addCoins(lastB
 function closeRewarded(){ document.getElementById('rewardedOverlay').style.display='none'; if(rewardPlayer){ try{rewardPlayer.pause();}catch(e){} } }
 // ===== END HILLTOPADS CONFIG =====
 
-const firebaseConfig={apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"};firebase.initializeApp(firebaseConfig);const db=firebase.database();const DAILY_LIMIT=1200;let currentGame=null;let gameState={};
+const firebaseConfig={apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"};firebase.initializeApp(firebaseConfig);const db=firebase.database();const DAILY_LIMIT=1200;
+// ===== ONLINE PRESENCE - for green dot in admin inbox =====
+function setupPresence(username){
+  if(!username) return;
+  const presenceRef = db.ref('presence/' + username);
+  db.ref('.info/connected').on('value', snap => {
+    if(snap.val() === true){
+      presenceRef.onDisconnect().set({state:'offline', last: Date.now()});
+      presenceRef.set({state:'online', last: Date.now()});
+      // update lastPlayed for sorting in admin
+      db.ref('leaderboard_all/' + username + '/lastPlayed').set(Date.now());
+      setInterval(() => {
+        presenceRef.update({last: Date.now()});
+        db.ref('leaderboard_all/' + username + '/lastPlayed').set(Date.now());
+      }, 30000);
+    }
+  });
+}
+let currentGame=null;let gameState={};
 function sanitizeUsername(name){return name.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');}
-function login(){var rawName=document.getElementById("usernameInput").value.trim();if(!rawName){document.getElementById("loginMsg").innerHTML="<span class='error'>Please enter a username</span>";return}var name=sanitizeUsername(rawName);db.ref('leaderboard_all/'+name).once('value',snap=>{const data=snap.val();if(data&&data.banned===true){document.getElementById("loginMsg").innerHTML="<span class='error'>🚫 Your account has been banned</span>";return}if(!snap.exists()){db.ref('leaderboard_all/'+name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:rawName})}localStorage.setItem("user",name);localStorage.setItem("displayName",rawName);document.getElementById("loginPage").classList.remove("active");document.querySelector(".nav").style.display="flex";showPage('wallet')})}
+function login(){var rawName=document.getElementById("usernameInput").value.trim();if(!rawName){document.getElementById("loginMsg").innerHTML="<span class='error'>Please enter a username</span>";return}var name=sanitizeUsername(rawName);db.ref('leaderboard_all/'+name).once('value',snap=>{const data=snap.val();if(data&&data.banned===true){document.getElementById("loginMsg").innerHTML="<span class='error'>🚫 Your account has been banned</span>";return}if(!snap.exists()){db.ref('leaderboard_all/'+name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:rawName})}localStorage.setItem("user",name);localStorage.setItem("displayName",rawName);setupPresence(name);document.getElementById("loginPage").classList.remove("active");document.querySelector(".nav").style.display="flex";showPage('wallet')})}
 function showPage(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(page==='wallet'){document.getElementById('walletPage').classList.add('active');document.querySelectorAll('.nav-btn')[0].classList.add('active');showBalance()}else if(page==='games'){document.getElementById('gamesPage').classList.add('active');document.querySelectorAll('.nav-btn')[1].classList.add('active')}}
 function backToGames(){currentGame=null;gameState={};showPage('games')}
 function showBalance(){var user=localStorage.getItem("user")||"Guest";db.ref('leaderboard_all/'+user).once('value',snap=>{var d=snap.val()||{};var coins=d.coins||0;var gp=d.gamesPlayed||0;localStorage.setItem("coins",coins);localStorage.setItem("gamesPlayed",gp);document.getElementById("coins").innerHTML="🪙 "+coins+" Coins";document.getElementById("money").innerHTML="💵 MWK "+Math.floor(coins*0.06);var daily=parseInt(localStorage.getItem("dailyCoins")||0);document.getElementById("activity").innerHTML="🎮 Today's Earnings: "+daily+"/1200 coins";document.getElementById("gamesPlayed").innerHTML=gp;document.getElementById("totalEarned").innerHTML=coins});db.ref('users/'+user).once('value',s=>{var u=s.val()||{};if(u.phone){document.getElementById("number").value=u.phone;document.getElementById("number").disabled=true;document.getElementById("network").value=u.network||"Airtel Money";document.getElementById("saved").innerHTML="<span class='success'>✅ Phone saved</span>"}var task=u.gamesTask||0;var prog=task%10;document.getElementById("taskProgress").innerText=prog+"/10 games";document.getElementById("taskBar").style.width=(prog*10)+"%";var lt=parseInt(localStorage.getItem("lastTaskTime")||0);var left=3600000-(Date.now()-lt);document.getElementById("taskTimer").textContent=left>0?"Next bonus in "+Math.ceil(left/60000)+"m":""});loadMyWithdrawals()}
@@ -137,7 +155,7 @@ function makeMove(r1,c1,r2,c2){const b=gameState.board;b[r2][c2]=b[r1][c1];b[r1]
 function cpuMove(){if(gameState.turn!==-1)return;const moves=getAllMoves(-1);if(!moves.length){endCheckers(true);return}let choice;const caps=moves.filter(m=>Math.abs(m.from[0]-m.to[0])===2);if(gameState.difficulty==='easy'){choice=moves[Math.random()*moves.length|0]}else if(gameState.difficulty==='medium'){choice=(caps.length?caps:moves)[Math.random()*(caps.length||moves.length)|0]}else{let best=-1e9;for(const m of moves){const cp=JSON.parse(JSON.stringify(gameState.board));cp[m.to[0]][m.to[1]]=cp[m.from[0]][m.from[1]];cp[m.from[0]][m.from[1]]=0;if(Math.abs(m.to[0]-m.from[0])===2)cp[(m.from[0]+m.to[0])/2][(m.from[1]+m.to[1])/2]=0;const v=Math.random()*100;if(v>best){best=v;choice=m}}}const cont=makeMove(choice.from[0],choice.from[1],choice.to[0],choice.to[1]);renderCheckers();if(cont)setTimeout(cpuMove,300)}
 function checkWin(){const f=gameState.board.flat();const p=f.filter(x=>x>0).length;const c=f.filter(x=>x<0).length;if(c===0)endCheckers(true);else if(p===0)endCheckers(false);else if(getAllMoves(gameState.turn).length===0)endCheckers(gameState.turn===-1)}
 function endCheckers(w){const cn=w?30:5;handleGameEnd(cn, w?'You Win!':'CPU Wins', '', 'startCheckers')}
-window.onload=function(){const u=localStorage.getItem("user");if(u){document.getElementById("loginPage").classList.remove("active");document.querySelector(".nav").style.display="flex";showPage('wallet')}}
+window.onload=function(){const u=localStorage.getItem("user");if(u){setupPresence(u);document.getElementById("loginPage").classList.remove("active");document.querySelector(".nav").style.display="flex";showPage('wallet')}}
 </script>
 </body>
-</html>
+  </html>
