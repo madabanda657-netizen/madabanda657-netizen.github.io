@@ -5,24 +5,13 @@
 <title>Mada Game Earn</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="ff564c0857f774bad41282e2433586268cdeb186" content="ff564c0857f774bad41282e2433586268cdeb186" />
+<script>window.addEventListener('load',function(){setTimeout(function(){var s=document.createElement('script');s.dataset.zone='10896964';s.src='https://nap5k.com/tag.min.js';s.async=true;(document.body||document.documentElement).appendChild(s)},8000)});</script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <!-- GameDistribution SDK -->
 <script>
-window.GD_OPTIONS = {
-  gameId: "72579",
-  onEvent: function(event) {
-    switch (event.name) {
-      case "SDK_READY":
-        if (window.gdsdk && gdsdk.preloadAd) { gdsdk.preloadAd('rewarded').catch(function(){}); }
-        break;
-      case "SDK_REWARDED_WATCH_COMPLETE":
-        giveReward();
-        break;
-    }
-  },
-};
-(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src='https://html5.api.gamedistribution.com/main.min.js';d.head.appendChild(js);}(document,'script','gamedistribution-jssdk'));
+window.GD_OPTIONS = { gameId: "72579", onEvent: function(e){ if(e.name==="SDK_READY"&&window.gdsdk&&gdsdk.preloadAd)gdsdk.preloadAd("rewarded").catch(function(){}); if(e.name==="SDK_REWARDED_WATCH_COMPLETE")giveReward(); } };
+(function(d,s,i){var j,f=d.getElementsByTagName(s)[0];if(d.getElementById(i))return;j=d.createElement(s);j.id=i;j.src="https://html5.api.gamedistribution.com/main.min.js";f.parentNode.insertBefore(j,f)})(document,"script","gamedistribution-jssdk");
 </script>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.ad-video-wrap{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;position:relative;margin-bottom:15px}.ad-video-wrap video{width:100%;height:100%;display:block}.ad-skip-bar{position:absolute;bottom:0;left:0;right:0;padding:12px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));display:flex;align-items:center;justify-content:space-between;z-index:20}.ad-progress-bar{flex:1;height:4px;background:#333;border-radius:2px;margin-right:15px;overflow:hidden}.ad-progress-fill{height:100%;background:linear-gradient(90deg,#00ffcc,#00ccff);border-radius:2px;transition:width 1s linear;width:0%}.ad-timer-text{font-size:13px;color:#fff;font-weight:bold;min-width:30px}.ad-skip-btn{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer;border:none}.ad-skip-btn.disabled{background:#333;color:#666;cursor:not-allowed}.ad-skip-btn.enabled{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;cursor:pointer}.ad-retry-btn{background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;margin-top:10px;display:none}</style>
 </head>
@@ -103,66 +92,22 @@ function showRewardedAd() {
   document.getElementById('rewardedOverlay').style.display = 'flex';
   var dbl = document.getElementById('doubleBtn'); if (dbl) dbl.disabled = true;
   document.getElementById('adStatusText').textContent = 'Loading ad...';
-  document.getElementById('adSkipBar').style.display = 'none';
   document.getElementById('adRetryBtn').style.display = 'none';
-  var videoWrap = document.querySelector('.ad-video-wrap'); if (videoWrap) videoWrap.style.display = 'none';
-  
-  if (typeof gdsdk !== 'undefined' && gdsdk.showAd) {
-    document.getElementById('adStatusText').textContent = '▶️ Starting rewarded ad...';
-    gdsdk.showAd('rewarded').then(function() {
-      document.getElementById('adStatusText').textContent = 'Ad finished';
-      setTimeout(closeAdOverlay, 800);
-      if (gdsdk.preloadAd) gdsdk.preloadAd('rewarded').catch(function(){});
-    }).catch(function(e) {
-      showAdError('No ad available. Try again.');
-    });
-  } else {
-    document.getElementById('adStatusText').textContent = '⚠️ Testing mode - giving reward';
-    setTimeout(giveReward, 1200);
-  }
-}
-
-function showAdError(msg) {
-  document.getElementById('adStatusText').textContent = msg;
-  document.getElementById('adRetryBtn').style.display = 'block';
-  var sb = document.getElementById('adSkipBtn');
   document.getElementById('adSkipBar').style.display = 'flex';
-  sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
-  sb.onclick = function() { closeAdOverlay(); };
-  document.getElementById('adRetryBtn').onclick = function() { showRewardedAd(); };
-}
-
-function giveReward() {
-  closeAdOverlay();
-  if (lastBaseReward > 0) {
-    try {
-      var user = localStorage.getItem("user") || "Guest";
-      var daily = parseInt(localStorage.getItem("dailyCoins") || 0);
-      var canEarn = Math.max(0, DAILY_LIMIT - daily);
-      var give = Math.min(lastBaseReward, canEarn);
-      if (give > 0 && db) {
-        db.ref('leaderboard_all/' + user).once('value').then(function(snap){
-          var d = snap.val() || {};
-          var newCoins = (d.coins || 0) + give;
-          db.ref('leaderboard_all/' + user).update({coins: newCoins, score: newCoins, lastPlayed: Date.now()});
-          localStorage.setItem("dailyCoins", daily + give);
-          localStorage.setItem("coins", newCoins);
-          showBalance();
-        });
-      } else if (give <= 0) {
-        alert("⚠️ Daily limit reached (1,200 coins). Come back tomorrow!");
-      }
-    } catch(e) {}
-    var m = document.getElementById('doubleMsg');
-    if (m) m.innerHTML = '<span style="color:#51cf66">✅ Doubled! +' + lastBaseReward + ' coins</span>';
-    lastBaseReward = 0;
+  document.getElementById('adTimerText').textContent = '15s';
+  if (typeof gdsdk !== 'undefined' && gdsdk.showAd) {
+    document.getElementById('adStatusText').textContent = '▶️ GameDistribution ad starting...';
+    gdsdk.showAd('rewarded').then(function(){ document.getElementById('adStatusText').textContent='Ad finished'; setTimeout(closeAdOverlay,800); }).catch(function(){ showAdError('No GD ad - test mode'); });
+  } else {
+    var c=15; var t=setInterval(function(){c--;document.getElementById('adTimerText').textContent=c+'s';document.getElementById('adProgressFill').style.width=(15-c)/15*100+'%';document.getElementById('adStatusText').textContent='TEST MODE ('+c+'s) - Monetag still active';if(c<=0){clearInterval(t);giveReward()}},1000);
   }
 }
 
-function closeAdOverlay() {
-  document.getElementById('rewardedOverlay').style.display = 'none';
-  var dbl = document.getElementById('doubleBtn'); if (dbl) dbl.disabled = false;
-}
+function showAdError(msg){document.getElementById('adStatusText').textContent=msg;document.getElementById('adRetryBtn').style.display='block';document.getElementById('adRetryBtn').onclick=function(){showRewardedAd()}}
+
+function giveReward(){closeAdOverlay();if(lastBaseReward>0){try{var u=localStorage.getItem('user')||'Guest',d=parseInt(localStorage.getItem('dailyCoins')||0),c=Math.max(0,DAILY_LIMIT-d),g=Math.min(lastBaseReward,c);if(g>0&&db){db.ref('leaderboard_all/'+u).once('value').then(function(s){var v=s.val()||{},n=(v.coins||0)+g;db.ref('leaderboard_all/'+u).update({coins:n,score:n,lastPlayed:Date.now()});localStorage.setItem('dailyCoins',d+g);localStorage.setItem('coins',n);showBalance()})}else if(g<=0)alert('⚠️ Daily limit reached')}catch(e){}var m=document.getElementById('doubleMsg');if(m)m.innerHTML='<span style="color:#51cf66">✅ Doubled! +'+lastBaseReward+' coins</span>';var b=document.getElementById('doubleBtn');if(b){b.disabled=true;b.style.opacity='0.5';b.innerText='✓ Already Doubled'}lastBaseReward=0}}
+
+function closeAdOverlay(){document.getElementById('rewardedOverlay').style.display='none'}
 
 // ========== FIREBASE ==========
 var db = null;
@@ -369,4 +314,4 @@ function startTempleRun() {
 (function() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); } } } catch(e) {} })();
 </script>
 </body>
-  </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </html>
