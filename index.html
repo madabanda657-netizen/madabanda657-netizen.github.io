@@ -102,17 +102,13 @@ function destroyAdPlayer() {
 function resetVideoElement() {
   var v = document.getElementById('rewardVideo');
   if (!v) return;
-  // Remove all fluidplayer attributes
   v.removeAttribute('data-fluid-player-id');
   v.removeAttribute('data-fluid-player');
-  // Remove all child elements added by fluidplayer
   while (v.firstChild) { v.removeChild(v.firstChild); }
-  // Remove event listeners by replacing source
   v.src = '';
   v.load();
-  // Remove any sibling elements fluidplayer may have added
   var parent = v.parentNode;
-  var siblings = parent.querySelectorAll('.fluid_controls_container, .fluid_vpaid_container, div[id^="fp_"]');
+  var siblings = parent.querySelectorAll('.fluid_controls_container,.fluid_vpaid_container, div[id^="fp_"]');
   for (var i = 0; i < siblings.length; i++) { parent.removeChild(siblings[i]); }
 }
 
@@ -122,12 +118,8 @@ function showRewardedAd() {
   document.getElementById('adStatusText').textContent = 'Loading ad...';
   document.getElementById('adSkipBar').style.display = 'none';
   document.getElementById('adRetryBtn').style.display = 'none';
-
-  // Clean up previous player
   destroyAdPlayer();
   resetVideoElement();
-
-  // Check if fluidplayer available
   if (typeof fluidPlayer === 'undefined') {
     document.getElementById('adStatusText').textContent = 'Ad player not loaded. Refresh page or deploy to HTTPS.';
     var sb = document.getElementById('adSkipBtn');
@@ -136,39 +128,16 @@ function showRewardedAd() {
     sb.onclick = function() { closeAdOverlay(); };
     return;
   }
-
-  // Wait a moment for cleanup, then init
   setTimeout(function() { initFluidPlayer(); }, 500);
 }
 
 function initFluidPlayer() {
   try {
     rewardPlayer = fluidPlayer('rewardVideo', {
-      layoutControls: {
-        fillToContainer: true,
-        autoPlay: true,
-        mute: true,
-        playButtonShowing: false,
-        playbackRateEnabled: false,
-        allowTheatre: false,
-        volumeBar: false,
-        controlBar: false,
-        htmlOnPauseBlock: false
-      },
-      vastOptions: {
-        adList: [{ roll: 'preRoll', vastTag: VAST_TAG }],
-        skipButtonCaption: 'Skip in [seconds]',
-        skipButtonClickCaption: 'Skip >>',
-        vastTimeout: 10000
-      }
+      layoutControls: { fillToContainer: true, autoPlay: true, mute: true, playButtonShowing: false, playbackRateEnabled: false, allowTheatre: false, volumeBar: false, controlBar: false, htmlOnPauseBlock: false },
+      vastOptions: { adList: [{ roll: 'preRoll', vastTag: VAST_TAG }], skipButtonCaption: 'Skip in [seconds]', skipButtonClickCaption: 'Skip >>', vastTimeout: 10000 }
     });
-
-    if (!rewardPlayer) {
-      showAdError('Player failed to initialize');
-      return;
-    }
-
-    // Ad started playing successfully
+    if (!rewardPlayer) { showAdError('Player failed to initialize'); return; }
     rewardPlayer.on('vastAdStarted', function() {
       adPlaying = true;
       document.getElementById('adStatusText').textContent = '▶️ Watching ad...';
@@ -176,34 +145,11 @@ function initFluidPlayer() {
       document.getElementById('adRetryBtn').style.display = 'none';
       startAdCountdown();
     });
-
-    // Ad completed
-    rewardPlayer.on('adEnded', function() {
-      giveReward();
-    });
-
-    // User skipped ad (via fluidplayer's own skip button)
-    rewardPlayer.on('adSkipped', function() {
-      giveReward();
-    });
-
-    // Ad error - no ad available or VAST parse error
-    rewardPlayer.on('adError', function() {
-      if (!adPlaying) {
-        showAdError('No ad available right now');
-      }
-    });
-
-    // Timeout: if no ad starts in 15 seconds
-    setTimeout(function() {
-      if (!adPlaying) {
-        showAdError('No ad available. Try again later.');
-      }
-    }, 15000);
-
-  } catch(e) {
-    showAdError('Ad player error: ' + e.message);
-  }
+    rewardPlayer.on('adEnded', function() { giveReward(); });
+    rewardPlayer.on('adSkipped', function() { giveReward(); });
+    rewardPlayer.on('adError', function() { if (!adPlaying) { showAdError('No ad available right now'); } });
+    setTimeout(function() { if (!adPlaying) { showAdError('No ad available. Try again later.'); } }, 15000);
+  } catch(e) { showAdError('Ad player error: ' + e.message); }
 }
 
 function startAdCountdown() {
@@ -236,21 +182,35 @@ function startAdCountdown() {
 function showAdError(msg) {
   document.getElementById('adStatusText').textContent = msg;
   document.getElementById('adRetryBtn').style.display = 'block';
-  // Show close button
   var sb = document.getElementById('adSkipBtn');
   document.getElementById('adSkipBar').style.display = 'flex';
   sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
   sb.onclick = function() { closeAdOverlay(); };
-  // Wire retry button
-  document.getElementById('adRetryBtn').onclick = function() {
-    showRewardedAd();
-  };
+  document.getElementById('adRetryBtn').onclick = function() { showRewardedAd(); };
 }
 
+// FIXED: this now actually doubles without race condition
 function giveReward() {
   closeAdOverlay();
   if (lastBaseReward > 0) {
-    addCoins(lastBaseReward);
+    try {
+      var user = localStorage.getItem("user") || "Guest";
+      var daily = parseInt(localStorage.getItem("dailyCoins") || 0);
+      var canEarn = Math.max(0, DAILY_LIMIT - daily);
+      var give = Math.min(lastBaseReward, canEarn);
+      if (give > 0 && db) {
+        db.ref('leaderboard_all/' + user).once('value').then(function(snap){
+          var d = snap.val() || {};
+          var newCoins = (d.coins || 0) + give;
+          db.ref('leaderboard_all/' + user).update({coins: newCoins, score: newCoins, lastPlayed: Date.now()});
+          localStorage.setItem("dailyCoins", daily + give);
+          localStorage.setItem("coins", newCoins);
+          showBalance();
+        });
+      } else if (give <= 0) {
+        alert("⚠️ Daily limit reached (1,200 coins). Come back tomorrow!");
+      }
+    } catch(e) {}
     var m = document.getElementById('doubleMsg');
     if (m) m.innerHTML = '<span style="color:#51cf66">✅ Doubled! +' + lastBaseReward + ' coins</span>';
     lastBaseReward = 0;
@@ -266,7 +226,7 @@ function closeAdOverlay() {
 var db = null;
 var firebaseReady = false;
 try {
-  if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length === 0) {
+  if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) {
     firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});
     db = firebase.database();
     firebaseReady = true;
@@ -313,7 +273,7 @@ function showBalance() {
       document.getElementById("taskBar").style.width = (prog * 10) + "%";
       var lt = 0; try { lt = parseInt(localStorage.getItem("lastTaskTime") || 0); } catch(e) {}
       var left = 3600000 - (Date.now() - lt);
-      document.getElementById("taskTimer").textContent = left > 0 ? "Next bonus in " + Math.ceil(left / 60000) + "m" : "";
+      document.getElementById("taskTimer").textContent = left > 0? "Next bonus in " + Math.ceil(left / 60000) + "m" : "";
     });
     loadMyWithdrawals();
   } catch(e) {}
@@ -339,20 +299,20 @@ function addCoins(amount) {
   } catch(e) {}
 }
 
-function setupPresence(u) { try { if (!u || !db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline',last:Date.now()}); p.set({state:'online',last:Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {} }
+function setupPresence(u) { try { if (!u ||!db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline',last:Date.now()}); p.set({state:'online',last:Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {} }
 
 function loadPlayerInbox() {
-  try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u || !db) return; var id = ['Admin_Mada', u].sort().join('_');
+  try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_');
     db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) {
-      var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine ? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine ? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div>'; if (m.to === u && m.status !== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); });
+      var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); });
       document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight;
     });
   } catch(e) {}
 }
 
 function checkInboxBadge() {
-  try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u || !db) return; var id = ['Admin_Mada', u].sort().join('_');
-    db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status !== 'read') un++; }); document.getElementById('inboxDot').style.display = un > 0 ? 'block' : 'none'; });
+  try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_');
+    db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById('inboxDot').style.display = un > 0? 'block' : 'none'; });
   } catch(e) {}
 }
 
@@ -368,12 +328,12 @@ function claimDailyBonus() {
   } catch(e) {}
 }
 
-try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr !== todayStr) { try { localStorage.setItem("dailyCoins", "0"); } catch(e) {} try { localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
+try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); } catch(e) {} try { localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
 
 function withdraw() {
   try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) user = "Guest"; if (!db) return;
     db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {}
-      if (!net || !num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (!req || req < 25000) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Minimum 25,000 coins</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; }
+      if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (!req || req < 25000) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Minimum 25,000 coins</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; }
       var money = Math.floor(req * 0.06); var wid = Date.now();
       db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; }
         db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; document.getElementById("withdrawCoins").value = ""; showBalance();
@@ -384,7 +344,7 @@ function withdraw() {
 
 function loadMyWithdrawals() {
   try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) user = "Guest"; if (!db) return;
-    db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending' ? '#ffaa00' : w.status == 'Paid' ? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; });
+    db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; });
   } catch(e) {}
 }
 
@@ -394,25 +354,25 @@ function loadMyWithdrawals() {
   var grid = document.getElementById("gamesGrid"); if (grid) { var html = ''; for (var i = 0; i < games.length; i++) { var g = games[i]; html += '<div class="game-card" data-game="' + g.id + '"><div class="game-icon">' + g.icon + '</div><h4>' + g.name + '</h4><div class="game-reward">' + g.reward + '</div></div>'; } grid.innerHTML = html; var cards = grid.querySelectorAll('.game-card'); for (var j = 0; j < cards.length; j++) { (function(card) { card.onclick = function() { startGame(card.getAttribute('data-game')); }; })(cards[j]); } }
 })();
 
-function startGame(type) { currentGame = type; document.getElementById('playPage').classList.add('active'); var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id !== 'playPage') pages[i].classList.remove('active'); } document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); }
+function startGame(type) { currentGame = type; document.getElementById('playPage').classList.add('active'); var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); }
 
 function startMemoryMatch() { var emojis = ['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺']; var cards = emojis.concat(emojis).sort(function() { return Math.random() - 0.5; }); gameState = {cards:cards, flipped:[], matched:0, moves:0, startTime:Date.now()}; var html = '<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">'; for (var i = 0; i < cards.length; i++) { html += '<div class="memory-card" id="card' + i + '" data-idx="' + i + '"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'; } html += '</div>'; document.getElementById('gameArea').innerHTML = html; var allCards = document.querySelectorAll('.memory-card'); for (var j = 0; j < allCards.length; j++) { (function(card) { card.onclick = function() { flipCard(parseInt(card.getAttribute('data-idx'))); }; })(allCards[j]); } gameState.timerInterval = setInterval(function() { var t = Math.floor((Date.now() - gameState.startTime) / 1000); var el = document.getElementById('timer'); if (el) el.innerHTML = 'Time: ' + t + 's | Moves: ' + gameState.moves; }, 200); }
 
-function flipCard(i) { if (gameState.flipped.length >= 2 || gameState.flipped.indexOf(i) !== -1) return; var c = document.getElementById('card' + i); if (!c || c.classList.contains('matched')) return; c.innerHTML = gameState.cards[i]; c.style.background = 'linear-gradient(135deg,#00ffcc,#00ccff)'; gameState.flipped.push(i); if (gameState.flipped.length === 2) { gameState.moves++; var f = gameState.flipped[0], s = gameState.flipped[1]; if (gameState.cards[f] === gameState.cards[s]) { document.getElementById('card' + f).classList.add('matched'); document.getElementById('card' + s).classList.add('matched'); gameState.matched += 2; gameState.flipped = []; if (gameState.matched === gameState.cards.length) { clearInterval(gameState.timerInterval); var time = Math.floor((Date.now() - gameState.startTime) / 1000); var coins = time < 30 ? 20 : time < 45 ? 15 : time < 60 ? 10 : 5; handleGameEnd(coins, '🎉 Complete!', '<p>Time: ' + time + 's</p>', 'startMemoryMatch'); } } else { setTimeout(function() { var cf = document.getElementById('card' + f); var cs = document.getElementById('card' + s); if (cf) cf.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; if (cs) cs.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; gameState.flipped = []; }, 800); } } }
+function flipCard(i) { if (gameState.flipped.length >= 2 || gameState.flipped.indexOf(i)!== -1) return; var c = document.getElementById('card' + i); if (!c || c.classList.contains('matched')) return; c.innerHTML = gameState.cards[i]; c.style.background = 'linear-gradient(135deg,#00ffcc,#00ccff)'; gameState.flipped.push(i); if (gameState.flipped.length === 2) { gameState.moves++; var f = gameState.flipped[0], s = gameState.flipped[1]; if (gameState.cards[f] === gameState.cards[s]) { document.getElementById('card' + f).classList.add('matched'); document.getElementById('card' + s).classList.add('matched'); gameState.matched += 2; gameState.flipped = []; if (gameState.matched === gameState.cards.length) { clearInterval(gameState.timerInterval); var time = Math.floor((Date.now() - gameState.startTime) / 1000); var coins = time < 30? 20 : time < 45? 15 : time < 60? 10 : 5; handleGameEnd(coins, '🎉 Complete!', '<p>Time: ' + time + 's</p>', 'startMemoryMatch'); } } else { setTimeout(function() { var cf = document.getElementById('card' + f); var cs = document.getElementById('card' + s); if (cf) cf.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; if (cs) cs.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; gameState.flipped = []; }, 800); } } }
 
 function startNumberGuess() { gameState = {target: Math.floor(Math.random() * 100) + 1, attempts: 0}; document.getElementById('gameArea').innerHTML = '<h3>Guess 1-100</h3><div class="timer" id="gTimer">Attempts: 0/7</div><input type="number" id="guessInput" placeholder="Enter guess"><button id="guessBtn">Submit</button><p id="guessHint"></p>'; document.getElementById('guessBtn').onclick = makeGuess; }
-function makeGuess() { var g = parseInt(document.getElementById('guessInput').value); if (!g) return; gameState.attempts++; document.getElementById('gTimer').innerText = 'Attempts: ' + gameState.attempts + '/7'; if (g === gameState.target) { var c = gameState.attempts <= 3 ? 15 : gameState.attempts <= 5 ? 10 : 5; handleGameEnd(c, '🎉 Correct!', '', 'startNumberGuess'); } else if (gameState.attempts >= 7) { document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>Game Over</h2><p>Answer: ' + gameState.target + '</p><button id="retryBtn">Try Again</button></div>'; document.getElementById('retryBtn').onclick = startNumberGuess; } else { document.getElementById('guessHint').innerHTML = g < gameState.target ? '📈 Higher!' : '📉 Lower!'; document.getElementById('guessInput').value = ''; } }
+function makeGuess() { var g = parseInt(document.getElementById('guessInput').value); if (!g) return; gameState.attempts++; document.getElementById('gTimer').innerText = 'Attempts: ' + gameState.attempts + '/7'; if (g === gameState.target) { var c = gameState.attempts <= 3? 15 : gameState.attempts <= 5? 10 : 5; handleGameEnd(c, '🎉 Correct!', '', 'startNumberGuess'); } else if (gameState.attempts >= 7) { document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>Game Over</h2><p>Answer: ' + gameState.target + '</p><button id="retryBtn">Try Again</button></div>'; document.getElementById('retryBtn').onclick = startNumberGuess; } else { document.getElementById('guessHint').innerHTML = g < gameState.target? '📈 Higher!' : '📉 Lower!'; document.getElementById('guessInput').value = ''; } }
 
 function startReactionTest() { gameState = {round: 0, scores: [], waiting: false}; document.getElementById('gameArea').innerHTML = '<h3>Click when GREEN</h3><div class="timer" id="rTimer">Round 0/5</div><div id="reactionBox" style="height:200px;background:#ff6b6b;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer"><span id="reactionText">START</span></div><button id="rStartBtn">START</button>'; document.getElementById('rStartBtn').onclick = startReactionRound; document.getElementById('reactionBox').onclick = reactionClick; }
 function startReactionRound() { var box = document.getElementById('reactionBox'); box.style.background = '#ff6b6b'; document.getElementById('reactionText').innerText = 'Wait...'; gameState.waiting = true; setTimeout(function() { var b = document.getElementById('reactionBox'); if (b) b.style.background = '#51cf66'; var t = document.getElementById('reactionText'); if (t) t.innerText = 'CLICK!'; gameState.start = Date.now(); gameState.waiting = false; }, 1000 + Math.random() * 3000); }
-function reactionClick() { if (gameState.waiting) return; var box = document.getElementById('reactionBox'); if (!box || box.style.background !== 'rgb(81, 207, 102)') return; var t = Date.now() - gameState.start; gameState.scores.push(t); gameState.round++; var el = document.getElementById('rTimer'); if (el) el.innerText = 'Round ' + gameState.round + '/5'; if (gameState.round === 5) { var sum = 0; for (var i = 0; i < gameState.scores.length; i++) sum += gameState.scores[i]; var avg = sum / 5; var c = avg < 300 ? 25 : avg < 400 ? 20 : avg < 500 ? 15 : avg < 700 ? 10 : 5; handleGameEnd(c, '⚡ Done!', '<p>Avg: ' + Math.round(avg) + 'ms</p>', 'startReactionTest'); } else { var rt = document.getElementById('reactionText'); if (rt) rt.innerText = 'START'; } }
+function reactionClick() { if (gameState.waiting) return; var box = document.getElementById('reactionBox'); if (!box || box.style.background!== 'rgb(81, 207, 102)') return; var t = Date.now() - gameState.start; gameState.scores.push(t); gameState.round++; var el = document.getElementById('rTimer'); if (el) el.innerText = 'Round ' + gameState.round + '/5'; if (gameState.round === 5) { var sum = 0; for (var i = 0; i < gameState.scores.length; i++) sum += gameState.scores[i]; var avg = sum / 5; var c = avg < 300? 25 : avg < 400? 20 : avg < 500? 15 : avg < 700? 10 : 5; handleGameEnd(c, '⚡ Done!', '<p>Avg: ' + Math.round(avg) + 'ms</p>', 'startReactionTest'); } else { var rt = document.getElementById('reactionText'); if (rt) rt.innerText = 'START'; } }
 
 function startColorMatch() { gameState = {round: 0, score: 0}; nextColor(); }
 function nextColor() { if (gameState.round >= 10) { var c = Math.max(5, gameState.score * 2); handleGameEnd(c, '🎨 Done!', '<p>Score ' + gameState.score + '/10</p>', 'startColorMatch'); return; } var colors = ['Red','Blue','Green','Yellow']; var map = {Red:'#ff6b6b',Blue:'#4dabf7',Green:'#51cf66',Yellow:'#ffd700'}; var word = colors[Math.floor(Math.random() * 4)]; var ink; do { ink = colors[Math.floor(Math.random() * 4)]; } while (ink === word); gameState.correct = ink; gameState.round++; var btns = ''; for (var i = 0; i < colors.length; i++) { btns += '<button class="color-btn" style="background:' + map[colors[i]] + ';color:#000" data-color="' + colors[i] + '">' + colors[i] + '</button>'; } document.getElementById('gameArea').innerHTML = '<h3>What color is the WORD?</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;color:' + map[ink] + '">' + word + '</div><div class="color-options">' + btns + '</div>'; var allBtns = document.querySelectorAll('.color-btn'); for (var j = 0; j < allBtns.length; j++) { (function(btn) { btn.onclick = function() { checkColor(btn.getAttribute('data-color')); }; })(allBtns[j]); } }
 function checkColor(c) { if (c === gameState.correct) gameState.score++; nextColor(); }
 
 function startMathChallenge() { gameState = {round: 0, score: 0}; nextMath(); }
-function nextMath() { if (gameState.round >= 10) { var c = gameState.score * 3; handleGameEnd(c, '➕ Done!', '<p>Score ' + gameState.score + '/10</p>', 'startMathChallenge'); return; } var a = Math.floor(Math.random() * 20) + 1; var b = Math.floor(Math.random() * 20) + 1; gameState.answer = a + b; gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Solve quickly!</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;">' + a + ' + ' + b + ' = ?</div><input type="number" id="mathAns" style="text-align:center;font-size:24px;"><button id="mathBtn">Submit</button>'; document.getElementById('mathBtn').onclick = checkMath; }
+function nextMath() { if (gameState.round >= 10) { var c = gameState.score * 3; handleGameEnd(c, '➕ Done!', '<p>Score ' + gameState.score + '/10</p>', 'startMathChallenge'); return; } var a = Math.floor(Math.random() * 20) + 1; var b = Math.floor(Math.random() * 20) + 1; gameState.answer = a + b; gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Solve quickly!</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;">' + a + ' + ' + b + ' =?</div><input type="number" id="mathAns" style="text-align:center;font-size:24px;"><button id="mathBtn">Submit</button>'; document.getElementById('mathBtn').onclick = checkMath; }
 function checkMath() { if (parseInt(document.getElementById('mathAns').value) === gameState.answer) gameState.score++; nextMath(); }
 
 function startWordScramble() { gameState = {words: ['GAME','COIN','PLAY','WIN','MONEY','MALAWI','PHONE','PRIZE'].sort(function() { return Math.random() - 0.5; }), round: 0, score: 0}; nextWord(); }
@@ -420,91 +380,32 @@ function nextWord() { if (gameState.round >= 8) { var c = gameState.score * 3; h
 function checkWord() { var el = document.getElementById('wordAns'); if (el && el.value.toUpperCase() === gameState.answer) gameState.score++; nextWord(); }
 
 function startCheckers() { document.getElementById('gameArea').innerHTML = '<h3>Checkers - Malawi Rules</h3><p style="color:#ccc">Must capture if possible</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:400px;margin:20px auto"><button id="cEasy">Easy</button><button id="cMed">Medium</button><button id="cHard">HARD</button></div>'; document.getElementById('cEasy').onclick = function() { initCheckers('easy'); }; document.getElementById('cMed').onclick = function() { initCheckers('medium'); }; document.getElementById('cHard').onclick = function() { initCheckers('hard'); }; }
-function initCheckers(d) { gameState = {board:[], turn:1, selected:null, validMoves:[], difficulty:d}; for (var r = 0; r < 8; r++) { gameState.board[r] = []; for (var c = 0; c < 8; c++) gameState.board[r][c] = (r+c)%2 && r<3 ? -1 : (r+c)%2 && r>4 ? 1 : 0; } renderCheckers(); }
-function renderCheckers() { var h = '<div class="timer">' + gameState.difficulty + ' | ' + (gameState.turn===1?'Your turn':'CPU') + '</div><div style="display:grid;grid-template-columns:repeat(8,1fr);max-width:360px;margin:10px auto;border:3px solid #00ffcc;aspect-ratio:1">'; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) { var dark = (r+c)%2; var p = gameState.board[r][c]; var bg = dark ? '#1a1a1a' : '#e0e0e0'; var sel = ''; if (gameState.selected && gameState.selected[0]===r && gameState.selected[1]===c) sel = 'outline:3px solid #00ffcc;outline-offset:-3px'; var vm = gameState.validMoves; var isVM = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { isVM = true; break; } } if (isVM) bg = '#00ffcc88'; h += '<div data-r="'+r+'" data-c="'+c+'" style="aspect-ratio:1;background:'+bg+';'+sel+';display:flex;align-items:center;justify-content:center;cursor:pointer" class="sq">'; if (p !== 0) { var red = p>0; var king = Math.abs(p)===2; h += '<div style="width:70%;height:70%;border-radius:50%;background:'+(red?'radial-gradient(circle,#ff6b6b,#c92a2a)':'radial-gradient(circle,#444,#000)')+';border:2px solid #888;display:flex;align-items:center;justify-content:center;color:#ffd700">'+(king?'♔':'')+'</div>'; } h += '</div>'; } h += '</div>'; document.getElementById('gameArea').innerHTML = h; var squares = document.querySelectorAll('.sq'); for (var j = 0; j < squares.length; j++) { (function(sq) { sq.onclick = function() { clickSquare(parseInt(sq.getAttribute('data-r')), parseInt(sq.getAttribute('data-c'))); }; })(squares[j]); } }
-function clickSquare(r, c) { if (gameState.turn !== 1) return; var p = gameState.board[r][c]; var all = getAllMoves(1); var must = false; for (var i = 0; i < all.length; i++) { if (Math.abs(all[i].from[0]-all[i].to[0])===2) { must = true; break; } } if (gameState.selected) { var vm = gameState.validMoves; var found = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { found = true; break; } } if (found) { var cont = makeMove(gameState.selected[0], gameState.selected[1], r, c); if (!cont) { gameState.selected = null; gameState.validMoves = []; renderCheckers(); setTimeout(cpuMove, 300); } return; } gameState.selected = null; gameState.validMoves = []; } if (p > 0) { if (must) { var can = false; for (var m = 0; m < all.length; m++) { if (all[m].from[0]===r && all[m].from[1]===c && Math.abs(all[m].from[0]-all[m].to[0])===2) { can = true; break; } } if (!can) return; } gameState.selected = [r, c]; gameState.validMoves = getMoves(r, c, 1); renderCheckers(); } }
-function getMoves(r, c, pl) { var b = gameState.board; var pc = b[r][c]; var m = []; var cap = []; var md = Math.abs(pc)===2 ? [-1,1] : (pl===1 ? [-1] : [1]); for (var di = 0; di < md.length; di++) { for (var ci = 0; ci < 2; ci++) { var dc = ci===0?-1:1; var nr=r+md[di], nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0) m.push([nr,nc]); } } for (var di2 = 0; di2 < 2; di2++) { for (var ci2 = 0; ci2 < 2; ci2++) { var dr=di2===0?-1:1; var dc2=ci2===0?-1:1; var nr2=r+dr,nc2=c+dc2,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0) cap.push([jr,jc]); } } return cap.length ? cap : m; }
-function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length ? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
+function initCheckers(d) { gameState = {board:[], turn:1, selected:null, validMoves:[], difficulty:d}; for (var r = 0; r < 8; r++) { gameState.board[r] = []; for (var c = 0; c < 8; c++) gameState.board[r][c] = (r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0; } renderCheckers(); }
+function renderCheckers() { var h = '<div class="timer">' + gameState.difficulty + ' | ' + (gameState.turn===1?'Your turn':'CPU') + '</div><div style="display:grid;grid-template-columns:repeat(8,1fr);max-width:360px;margin:10px auto;border:3px solid #00ffcc;aspect-ratio:1">'; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) { var dark = (r+c)%2; var p = gameState.board[r][c]; var bg = dark? '#1a1a1a' : '#e0e0e0'; var sel = ''; if (gameState.selected && gameState.selected[0]===r && gameState.selected[1]===c) sel = 'outline:3px solid #00ffcc;outline-offset:-3px'; var vm = gameState.validMoves; var isVM = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { isVM = true; break; } } if (isVM) bg = '#00ffcc88'; h += '<div data-r="'+r+'" data-c="'+c+'" style="aspect-ratio:1;background:'+bg+';'+sel+';display:flex;align-items:center;justify-content:center;cursor:pointer" class="sq">'; if (p!== 0) { var red = p>0; var king = Math.abs(p)===2; h += '<div style="width:70%;height:70%;border-radius:50%;background:'+(red?'radial-gradient(circle,#ff6b6b,#c92a2a)':'radial-gradient(circle,#444,#000)')+';border:2px solid #888;display:flex;align-items:center;justify-content:center;color:#ffd700">'+(king?'♔':'')+'</div>'; } h += '</div>'; } h += '</div>'; document.getElementById('gameArea').innerHTML = h; var squares = document.querySelectorAll('.sq'); for (var j = 0; j < squares.length; j++) { (function(sq) { sq.onclick = function() { clickSquare(parseInt(sq.getAttribute('data-r')), parseInt(sq.getAttribute('data-c'))); }; })(squares[j]); } }
+function clickSquare(r, c) { if (gameState.turn!== 1) return; var p = gameState.board[r][c]; var all = getAllMoves(1); var must = false; for (var i = 0; i < all.length; i++) { if (Math.abs(all[i].from[0]-all[i].to[0])===2) { must = true; break; } } if (gameState.selected) { var vm = gameState.validMoves; var found = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { found = true; break; } } if (found) { var cont = makeMove(gameState.selected[0], gameState.selected[1], r, c); if (!cont) { gameState.selected = null; gameState.validMoves = []; renderCheckers(); setTimeout(cpuMove, 300); } return; } gameState.selected = null; gameState.validMoves = []; } if (p > 0) { if (must) { var can = false; for (var m = 0; m < all.length; m++) { if (all[m].from[0]===r && all[m].from[1]===c && Math.abs(all[m].from[0]-all[m].to[0])===2) { can = true; break; } } if (!can) return; } gameState.selected = [r, c]; gameState.validMoves = getMoves(r, c, 1); renderCheckers(); } }
+function getMoves(r, c, pl) { var b = gameState.board; var pc = b[r][c]; var m = []; var cap = []; var md = Math.abs(pc)===2? [-1,1] : (pl===1? [-1] : [1]); for (var di = 0; di < md.length; di++) { for (var ci = 0; ci < 2; ci++) { var dc = ci===0?-1:1; var nr=r+md[di], nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0) m.push([nr,nc]); } } for (var di2 = 0; di2 < 2; di2++) { for (var ci2 = 0; ci2 < 2; ci2++) { var dr=di2===0?-1:1; var dc2=ci2===0?-1:1; var nr2=r+dr,nc2=c+dc2,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0) cap.push([jr,jc]); } } return cap.length? cap : m; }
+function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
 function makeMove(r1, c1, r2, c2) { var b = gameState.board; b[r2][c2] = b[r1][c1]; b[r1][c1] = 0; var cap = false; if (Math.abs(r2-r1)===2) { b[(r1+r2)/2][(c1+c2)/2] = 0; cap = true; } if (r2===0 && b[r2][c2]===1) b[r2][c2] = 2; if (r2===7 && b[r2][c2]===-1) b[r2][c2] = -2; if (cap) { var fm = getMoves(r2, c2, b[r2][c2]>0?1:-1); var fCaps = []; for (var i = 0; i < fm.length; i++) { if (Math.abs(fm[i][0]-r2)===2) fCaps.push(fm[i]); } if (fCaps.length) { gameState.selected=[r2,c2]; gameState.validMoves=fCaps; renderCheckers(); return true; } } gameState.turn *= -1; gameState.selected = null; gameState.validMoves = []; checkWin(); return false; }
-function cpuMove() { if (gameState.turn !== -1) return; var moves = getAllMoves(-1); if (!moves.length) { endCheckers(true); return; } var choice; var caps = []; for (var i = 0; i < moves.length; i++) { if (Math.abs(moves[i].from[0]-moves[i].to[0])===2) caps.push(moves[i]); } if (gameState.difficulty === 'easy') { choice = moves[Math.random()*moves.length|0]; } else if (gameState.difficulty === 'medium') { var pool = caps.length ? caps : moves; choice = pool[Math.random()*pool.length|0]; } else { var best = -1e9; for (var j = 0; j < moves.length; j++) { var v = Math.random()*100; if (v > best) { best = v; choice = moves[j]; } } } var cont = makeMove(choice.from[0], choice.from[1], choice.to[0], choice.to[1]); renderCheckers(); if (cont) setTimeout(cpuMove, 300); }
-function checkWin() { var f = gameState.board.flat ? gameState.board.flat() : [].concat.apply([], gameState.board); var pCount = 0, cCount = 0; for (var i = 0; i < f.length; i++) { if (f[i] > 0) pCount++; if (f[i] < 0) cCount++; } if (cCount === 0) endCheckers(true); else if (pCount === 0) endCheckers(false); else if (getAllMoves(gameState.turn).length === 0) endCheckers(gameState.turn === -1); }
-function endCheckers(w) { handleGameEnd(w ? 30 : 5, w ? 'You Win!' : 'CPU Wins', '', 'startCheckers'); }
-
+function cpuMove() { if (gameState.turn!== -1) return; var moves = getAllMoves(-1); if (!moves.length) { endCheckers(true); return; } var choice; var caps = []; for (var i = 0; i < moves.length; i++) { if (Math.abs(moves[i].from[0]-moves[i].to[0])===2) caps.push(moves[i]); } if (gameState.difficulty === 'easy') { choice = moves[Math.random()*moves.length|0]; } else if (gameState.difficulty === 'medium') { var pool = caps.length? caps : moves; choice = pool[Math.random()*pool.length|0]; } else { var best = -1e9; for (var j = 0; j < moves.length; j++) { var v = Math.random()*100; if (v > best) { best = v; choice = moves[j]; } } } var cont = makeMove(choice.from[0], choice.from[1], choice.to[0], choice.to[1]); renderCheckers(); if (cont) setTimeout(cpuMove, 300); }
+function checkWin() { var f = gameState.board.flat? gameState.board.flat() : [].concat.apply([], gameState.board); var pCount = 0, cCount = 0; for (var i = 0; i < f.length; i++) { if (f[i] > 0) pCount++; if (f[i] < 0) cCount++; } if (cCount === 0) endCheckers(true); else if (pCount === 0) endCheckers(false); else if (getAllMoves(gameState.turn).length === 0) endCheckers(gameState.turn === -1); }
+function endCheckers(w) { handleGameEnd(w? 30 : 5, w? 'You Win!' : 'CPU Wins', '', 'startCheckers'); }
 
 function startTempleRun() {
   document.getElementById('gameArea').innerHTML = '<h3>🏃 Temple Run - Ancient Escape</h3><div class="timer" id="templeHUD">0m | 🪙 0</div><canvas id="templeCanvas" width="360" height="480" style="width:100%;max-width:400px;background:#000;border-radius:15px;border:2px solid #00ffcc;touch-action:none"></canvas><p style="color:#999;font-size:12px;margin-top:8px">Swipe ← → to move, ↑ to jump, ↓ to slide</p>';
   var c = document.getElementById('templeCanvas'), ctx = c.getContext('2d');
   var W=360, H=480, lanes=[75,180,285];
   gameState = {lane:1, y:380, vy:0, onGround:true, sliding:false, slideT:0, speed:5, dist:0, coins:0, obs:[], coinObjs:[], t:0, alive:true, bg:0, particles:[]};
-  
-  function spawn(){
-    var lane = Math.floor(Math.random()*3);
-    var type = Math.random()<0.6 ? 'jump' : 'slide';
-    gameState.obs.push({lane:lane, y:-70, type:type, w:50, h:type==='jump'?45:22});
-    if(Math.random()<0.5) gameState.coinObjs.push({lane:Math.floor(Math.random()*3), y:-40});
-  }
-  
-  function update(){
-    if(!gameState.alive) return;
-    gameState.t++; gameState.dist += gameState.speed*0.12; gameState.speed += 0.002; gameState.bg = (gameState.bg + gameState.speed) % 40;
-    if(gameState.t % Math.max(45, 80-Math.floor(gameState.speed)) ===0) spawn();
-    if(!gameState.onGround){ gameState.vy+=0.85; gameState.y+=gameState.vy; if(gameState.y>=380){gameState.y=380; gameState.onGround=true; gameState.vy=0;} }
-    if(gameState.sliding){ gameState.slideT--; if(gameState.slideT<=0) gameState.sliding=false; }
-    for(var i=gameState.obs.length-1;i>=0;i--){ var o=gameState.obs[i]; o.y+=gameState.speed; if(o.y>H+60) gameState.obs.splice(i,1); else if(o.y>320 && o.y<410 && o.lane===gameState.lane && !o.hit){ var hit=false; if(o.type==='jump' && gameState.onGround && !gameState.sliding) hit=true; if(o.type==='slide' && !gameState.sliding && gameState.onGround) hit=true; if(o.type==='slide' && gameState.y<370) hit=true; if(hit){ o.hit=true; gameState.alive=false; setTimeout(endRun,200); return; } } }
-    for(var j=gameState.coinObjs.length-1;j>=0;j--){ var co=gameState.coinObjs[j]; co.y+=gameState.speed; if(co.y>H) gameState.coinObjs.splice(j,1); else if(Math.abs(co.y-gameState.y)<35 && co.lane===gameState.lane){ gameState.coins++; gameState.coinObjs.splice(j,1); gameState.particles.push({x:lanes[gameState.lane], y:gameState.y-20, t:15}); } }
-    for(var p=gameState.particles.length-1;p>=0;p--){ gameState.particles[p].t--; if(gameState.particles[p].t<=0) gameState.particles.splice(p,1); }
-    document.getElementById('templeHUD').innerText = Math.floor(gameState.dist)+'m | 🪙 '+gameState.coins;
-  }
-  
-  function draw(){
-    // beautiful temple background
-    var grad = ctx.createLinearGradient(0,0,0,H); grad.addColorStop(0,'#001a1f'); grad.addColorStop(0.4,'#00333d'); grad.addColorStop(1,'#000'); ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
-    // distant temple pillars with glow
-    ctx.fillStyle='rgba(0,255,204,0.08)'; for(var i=0;i<6;i++){ var x=i*70-10; ctx.fillRect(x,140,40,180); ctx.fillRect(x+10,110,20,30); }
-    // moon
-    ctx.fillStyle='rgba(0,255,204,0.15)'; ctx.beginPath(); ctx.arc(300,80,35,0,Math.PI*2); ctx.fill();
-    // track
-    ctx.fillStyle='#0d0d0d'; ctx.fillRect(30,0,300,H);
-    ctx.strokeStyle='rgba(0,255,204,0.25)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(30,0); ctx.lineTo(30,H); ctx.moveTo(330,0); ctx.lineTo(330,H); ctx.stroke();
-    for(var l=1;l<3;l++){ ctx.strokeStyle='rgba(0,255,204,0.15)'; ctx.setLineDash([20,20]); ctx.beginPath(); ctx.moveTo(30+l*100,0); ctx.lineTo(30+l*100,H); ctx.stroke(); } ctx.setLineDash([]);
-    // moving floor lines
-    ctx.strokeStyle='rgba(0,204,255,0.2)'; for(var y=-40;y<H;y+=40){ ctx.beginPath(); ctx.moveTo(30,y+gameState.bg); ctx.lineTo(330,y+gameState.bg); ctx.stroke(); }
-    // coins
-    gameState.coinObjs.forEach(function(co){ var x=lanes[co.lane]; ctx.save(); ctx.translate(x,co.y); ctx.rotate(gameState.t*0.1); ctx.fillStyle='#ffd700'; ctx.shadowColor='#ffaa00'; ctx.shadowBlur=15; ctx.beginPath(); ctx.arc(0,0,14,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#ffef99'; ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.fill(); ctx.restore(); });
-    // obstacles - beautiful
-    gameState.obs.forEach(function(o){ var x=lanes[o.lane]; ctx.save(); ctx.translate(x,o.y);
-      if(o.type==='jump'){ // stone block
-        var grd=ctx.createLinearGradient(-25,-20,25,25); grd.addColorStop(0,'#8B5A2B'); grd.addColorStop(1,'#5C4033'); ctx.fillStyle=grd; ctx.shadowColor='#000'; ctx.shadowBlur=10; ctx.fillRect(-25,-20,50,40); ctx.fillStyle='#654321'; for(var b=0;b<3;b++) ctx.fillRect(-22+b*16,-18,12,36);
-      } else { // laser gate for slide
-        ctx.fillStyle='rgba(0,255,255,0.3)'; ctx.fillRect(-35,-10,70,8); ctx.fillStyle='#00ffcc'; ctx.shadowColor='#00ffff'; ctx.shadowBlur=20; ctx.fillRect(-30,-8,60,4); ctx.fillStyle='#0088aa'; ctx.fillRect(-32,10,12,25); ctx.fillRect(20,10,12,25);
-      }
-      ctx.restore();
-    });
-    // player - glowing runner
-    var px=lanes[gameState.lane], py=gameState.y; ctx.save(); ctx.translate(px,py); if(gameState.sliding) ctx.scale(1,0.55);
-    ctx.shadowColor='#00ffcc'; ctx.shadowBlur=25; ctx.fillStyle='#00ffcc'; ctx.beginPath(); ctx.arc(0,-28,12,0,Math.PI*2); ctx.fill(); // head glow
-    ctx.shadowBlur=15; ctx.fillStyle='#00ccff'; ctx.fillRect(-14,-18,28,32); // body
-    ctx.fillStyle='#001a1a'; ctx.fillRect(-10,-12,8,6); ctx.fillRect(2,-12,8,6); // eyes visor
-    if(!gameState.sliding){ ctx.fillStyle='#00ffcc'; ctx.fillRect(-16,14,8,18); ctx.fillRect(8,14,8,18); } // legs
-    ctx.restore();
-    // particles
-    gameState.particles.forEach(function(pt){ ctx.fillStyle='rgba(255,215,0,'+(pt.t/15)+')'; ctx.beginPath(); ctx.arc(pt.x,pt.y-pt.t,3,0,Math.PI*2); ctx.fill(); });
-    // speed lines
-    ctx.strokeStyle='rgba(0,255,204,0.1)'; for(var s=0;s<3;s++){ ctx.beginPath(); ctx.moveTo(40+Math.random()*280, H-20); ctx.lineTo(30+Math.random()*300, H); ctx.stroke(); }
-  }
-  
+  function spawn(){ var lane = Math.floor(Math.random()*3); var type = Math.random()<0.6? 'jump' : 'slide'; gameState.obs.push({lane:lane, y:-70, type:type, w:50, h:type==='jump'?45:22}); if(Math.random()<0.5) gameState.coinObjs.push({lane:Math.floor(Math.random()*3), y:-40}); }
+  function update(){ if(!gameState.alive) return; gameState.t++; gameState.dist += gameState.speed*0.12; gameState.speed += 0.002; gameState.bg = (gameState.bg + gameState.speed) % 40; if(gameState.t % Math.max(45, 80-Math.floor(gameState.speed)) ===0) spawn(); if(!gameState.onGround){ gameState.vy+=0.85; gameState.y+=gameState.vy; if(gameState.y>=380){gameState.y=380; gameState.onGround=true; gameState.vy=0;} } if(gameState.sliding){ gameState.slideT--; if(gameState.slideT<=0) gameState.sliding=false; } for(var i=gameState.obs.length-1;i>=0;i--){ var o=gameState.obs[i]; o.y+=gameState.speed; if(o.y>H+60) gameState.obs.splice(i,1); else if(o.y>320 && o.y<410 && o.lane===gameState.lane &&!o.hit){ var hit=false; if(o.type==='jump' && gameState.onGround &&!gameState.sliding) hit=true; if(o.type==='slide' &&!gameState.sliding && gameState.onGround) hit=true; if(o.type==='slide' && gameState.y<370) hit=true; if(hit){ o.hit=true; gameState.alive=false; setTimeout(endRun,200); return; } } } for(var j=gameState.coinObjs.length-1;j>=0;j--){ var co=gameState.coinObjs[j]; co.y+=gameState.speed; if(co.y>H) gameState.coinObjs.splice(j,1); else if(Math.abs(co.y-gameState.y)<35 && co.lane===gameState.lane){ gameState.coins++; gameState.coinObjs.splice(j,1); gameState.particles.push({x:lanes[gameState.lane], y:gameState.y-20, t:15}); } } for(var p=gameState.particles.length-1;p>=0;p--){ gameState.particles[p].t--; if(gameState.particles[p].t<=0) gameState.particles.splice(p,1); } document.getElementById('templeHUD').innerText = Math.floor(gameState.dist)+'m | 🪙 '+gameState.coins; }
+  function draw(){ var grad = ctx.createLinearGradient(0,0,0,H); grad.addColorStop(0,'#001a1f'); grad.addColorStop(0.4,'#00333d'); grad.addColorStop(1,'#000'); ctx.fillStyle=grad; ctx.fillRect(0,0,W,H); ctx.fillStyle='rgba(0,255,204,0.08)'; for(var i=0;i<6;i++){ var x=i*70-10; ctx.fillRect(x,140,40,180); ctx.fillRect(x+10,110,20,30); } ctx.fillStyle='rgba(0,255,204,0.15)'; ctx.beginPath(); ctx.arc(300,80,35,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#0d0d0d'; ctx.fillRect(30,0,300,H); ctx.strokeStyle='rgba(0,255,204,0.25)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(30,0); ctx.lineTo(30,H); ctx.moveTo(330,0); ctx.lineTo(330,H); ctx.stroke(); for(var l=1;l<3;l++){ ctx.strokeStyle='rgba(0,255,204,0.15)'; ctx.setLineDash([20,20]); ctx.beginPath(); ctx.moveTo(30+l*100,0); ctx.lineTo(30+l*100,H); ctx.stroke(); } ctx.setLineDash([]); ctx.strokeStyle='rgba(0,204,255,0.2)'; for(var y=-40;y<H;y+=40){ ctx.beginPath(); ctx.moveTo(30,y+gameState.bg); ctx.lineTo(330,y+gameState.bg); ctx.stroke(); } gameState.coinObjs.forEach(function(co){ var x=lanes[co.lane]; ctx.save(); ctx.translate(x,co.y); ctx.rotate(gameState.t*0.1); ctx.fillStyle='#ffd700'; ctx.shadowColor='#ffaa00'; ctx.shadowBlur=15; ctx.beginPath(); ctx.arc(0,0,14,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#ffef99'; ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.fill(); ctx.restore(); }); gameState.obs.forEach(function(o){ var x=lanes[o.lane]; ctx.save(); ctx.translate(x,o.y); if(o.type==='jump'){ var grd=ctx.createLinearGradient(-25,-20,25,25); grd.addColorStop(0,'#8B5A2B'); grd.addColorStop(1,'#5C4033'); ctx.fillStyle=grd; ctx.shadowColor='#000'; ctx.shadowBlur=10; ctx.fillRect(-25,-20,50,40); ctx.fillStyle='#654321'; for(var b=0;b<3;b++) ctx.fillRect(-22+b*16,-18,12,36); } else { ctx.fillStyle='rgba(0,255,255,0.3)'; ctx.fillRect(-35,-10,70,8); ctx.fillStyle='#00ffcc'; ctx.shadowColor='#00ffff'; ctx.shadowBlur=20; ctx.fillRect(-30,-8,60,4); ctx.fillStyle='#0088aa'; ctx.fillRect(-32,10,12,25); ctx.fillRect(20,10,12,25); } ctx.restore(); }); var px=lanes[gameState.lane], py=gameState.y; ctx.save(); ctx.translate(px,py); if(gameState.sliding) ctx.scale(1,0.55); ctx.shadowColor='#00ffcc'; ctx.shadowBlur=25; ctx.fillStyle='#00ffcc'; ctx.beginPath(); ctx.arc(0,-28,12,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=15; ctx.fillStyle='#00ccff'; ctx.fillRect(-14,-18,28,32); ctx.fillStyle='#001a1a'; ctx.fillRect(-10,-12,8,6); ctx.fillRect(2,-12,8,6); if(!gameState.sliding){ ctx.fillStyle='#00ffcc'; ctx.fillRect(-16,14,8,18); ctx.fillRect(8,14,8,18); } ctx.restore(); gameState.particles.forEach(function(pt){ ctx.fillStyle='rgba(255,215,0,'+(pt.t/15)+')'; ctx.beginPath(); ctx.arc(pt.x,pt.y-pt.t,3,0,Math.PI*2); ctx.fill(); }); ctx.strokeStyle='rgba(0,255,204,0.1)'; for(var s=0;s<3;s++){ ctx.beginPath(); ctx.moveTo(40+Math.random()*280, H-20); ctx.lineTo(30+Math.random()*300, H); ctx.stroke(); } }
   function loop(){ update(); draw(); if(gameState.alive) requestAnimationFrame(loop); }
-  
   function endRun(){ var d=Math.floor(gameState.dist); var base=Math.min(40, Math.max(10, Math.floor(d/20)+gameState.coins*2)); handleGameEnd(base, '🏃 Temple Complete!', '<p>Distance: '+d+'m</p><p>Coins: '+gameState.coins+'</p><p>Speed: '+Math.floor(gameState.speed)+'x</p>', 'startTempleRun'); }
-  
-  // controls
   var sx=0, sy=0;
   c.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; e.preventDefault(); },{passive:false});
-  c.addEventListener('touchend',function(e){ var dx=e.changedTouches[0].clientX-sx; var dy=e.changedTouches[0].clientY-sy; if(Math.abs(dx)>Math.abs(dy)){ if(dx>25 && gameState.lane<2) gameState.lane++; else if(dx<-25 && gameState.lane>0) gameState.lane--; } else { if(dy<-25 && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; } else if(dy>25 && !gameState.sliding){ gameState.sliding=true; gameState.slideT=28; } } e.preventDefault(); },{passive:false});
-  var keyHandler=function(e){ if(!gameState.alive) return; if(e.key==='ArrowLeft' && gameState.lane>0){ gameState.lane--; e.preventDefault(); } if(e.key==='ArrowRight' && gameState.lane<2){ gameState.lane++; e.preventDefault(); } if((e.key==='ArrowUp'||e.key===' ') && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; e.preventDefault(); } if(e.key==='ArrowDown' && !gameState.sliding){ gameState.sliding=true; gameState.slideT=28; e.preventDefault(); } };
+  c.addEventListener('touchend',function(e){ var dx=e.changedTouches[0].clientX-sx; var dy=e.changedTouches[0].clientY-sy; if(Math.abs(dx)>Math.abs(dy)){ if(dx>25 && gameState.lane<2) gameState.lane++; else if(dx<-25 && gameState.lane>0) gameState.lane--; } else { if(dy<-25 && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; } else if(dy>25 &&!gameState.sliding){ gameState.sliding=true; gameState.slideT=28; } } e.preventDefault(); },{passive:false});
+  var keyHandler=function(e){ if(!gameState.alive) return; if(e.key==='ArrowLeft' && gameState.lane>0){ gameState.lane--; e.preventDefault(); } if(e.key==='ArrowRight' && gameState.lane<2){ gameState.lane++; e.preventDefault(); } if((e.key==='ArrowUp'||e.key===' ') && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; e.preventDefault(); } if(e.key==='ArrowDown' &&!gameState.sliding){ gameState.sliding=true; gameState.slideT=28; e.preventDefault(); } };
   window.addEventListener('keydown', keyHandler);
   gameState.cleanup=function(){ window.removeEventListener('keydown', keyHandler); };
-  
   loop();
 }
 
@@ -519,11 +420,11 @@ function startTempleRun() {
   el = document.getElementById("dailyBtn"); if (el) el.onclick = claimDailyBonus;
   el = document.getElementById("withdrawBtn"); if (el) el.onclick = withdraw;
   el = document.getElementById("replyBtn");
-  if (el) el.onclick = function() { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } var txt = document.getElementById('playerReply').value.trim(); if (!txt || !u || !db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').push({from:u, to:'Admin_Mada', text:txt, timestamp:Date.now(), status:'sent'}).then(function() { document.getElementById('playerReply').value = ''; document.getElementById('replyStatus').innerHTML = '<span style="color:#51cf66">✓ Sent</span>'; setTimeout(function() { document.getElementById('replyStatus').innerHTML = ''; }, 1500); }); };
+  if (el) el.onclick = function() { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } var txt = document.getElementById('playerReply').value.trim(); if (!txt ||!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').push({from:u, to:'Admin_Mada', text:txt, timestamp:Date.now(), status:'sent'}).then(function() { document.getElementById('playerReply').value = ''; document.getElementById('replyStatus').innerHTML = '<span style="color:#51cf66">✓ Sent</span>'; setTimeout(function() { document.getElementById('replyStatus').innerHTML = ''; }, 1500); }); };
 })();
 
 // ========== AUTO LOGIN ==========
 (function() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); } } } catch(e) {} })();
 </script>
 </body>
-                                  </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   </html>
