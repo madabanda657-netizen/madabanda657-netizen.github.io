@@ -5,10 +5,25 @@
 <title>Mada Game Earn</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="ff564c0857f774bad41282e2433586268cdeb186" content="ff564c0857f774bad41282e2433586268cdeb186" />
-<script>window.addEventListener('load',function(){setTimeout(function(){var s=document.createElement('script');s.dataset.zone='10896964';s.src='https://nap5k.com/tag.min.js';s.async=true;(document.body||document.documentElement).appendChild(s)},8000)});</script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+<!-- GameDistribution SDK -->
+<script>
+window.GD_OPTIONS = {
+  gameId: "72579",
+  onEvent: function(event) {
+    switch (event.name) {
+      case "SDK_READY":
+        if (window.gdsdk && gdsdk.preloadAd) { gdsdk.preloadAd('rewarded').catch(function(){}); }
+        break;
+      case "SDK_REWARDED_WATCH_COMPLETE":
+        giveReward();
+        break;
+    }
+  },
+};
+(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src='https://html5.api.gamedistribution.com/main.min.js';d.head.appendChild(js);}(document,'script','gamedistribution-jssdk'));
+</script>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.ad-video-wrap{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;position:relative;margin-bottom:15px}.ad-video-wrap video{width:100%;height:100%;display:block}.ad-skip-bar{position:absolute;bottom:0;left:0;right:0;padding:12px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));display:flex;align-items:center;justify-content:space-between;z-index:20}.ad-progress-bar{flex:1;height:4px;background:#333;border-radius:2px;margin-right:15px;overflow:hidden}.ad-progress-fill{height:100%;background:linear-gradient(90deg,#00ffcc,#00ccff);border-radius:2px;transition:width 1s linear;width:0%}.ad-timer-text{font-size:13px;color:#fff;font-weight:bold;min-width:30px}.ad-skip-btn{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer;border:none}.ad-skip-btn.disabled{background:#333;color:#666;cursor:not-allowed}.ad-skip-btn.enabled{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;cursor:pointer}.ad-retry-btn{background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;margin-top:10px;display:none}</style>
 </head>
 <body>
@@ -74,11 +89,6 @@ function login() {
 // ========== REAL VIDEO REWARD AD ==========
 var lastBaseReward = 0;
 var lastGameReplay = null;
-var adCountdownInterval = null;
-var adTimeLeft = 15;
-var rewardPlayer = null;
-var adPlaying = false;
-var VAST_TAG = "https://bubbly-sound.com/d.mgFqzsd_GNN/v/ZwGkUy/feYmO9TuUZ/UIlmkrP/TcYt5/OfT/gx0bMxTNMQtqNRjokc5WOsDeQ/xMN/wa";
 
 function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   addCoins(baseCoins);
@@ -89,94 +99,27 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   var db2 = document.getElementById("doubleBtn"); if (db2) db2.onclick = function() { showRewardedAd(); };
 }
 
-function destroyAdPlayer() {
-  if (rewardPlayer) {
-    try { rewardPlayer.pause(); } catch(e) {}
-    try { rewardPlayer.destroy(); } catch(e) {}
-    rewardPlayer = null;
-  }
-  if (adCountdownInterval) { clearInterval(adCountdownInterval); adCountdownInterval = null; }
-  adPlaying = false;
-}
-
-function resetVideoElement() {
-  var v = document.getElementById('rewardVideo');
-  if (!v) return;
-  v.removeAttribute('data-fluid-player-id');
-  v.removeAttribute('data-fluid-player');
-  while (v.firstChild) { v.removeChild(v.firstChild); }
-  v.src = '';
-  v.load();
-  var parent = v.parentNode;
-  var siblings = parent.querySelectorAll('.fluid_controls_container,.fluid_vpaid_container, div[id^="fp_"]');
-  for (var i = 0; i < siblings.length; i++) { parent.removeChild(siblings[i]); }
-}
-
 function showRewardedAd() {
   document.getElementById('rewardedOverlay').style.display = 'flex';
   var dbl = document.getElementById('doubleBtn'); if (dbl) dbl.disabled = true;
   document.getElementById('adStatusText').textContent = 'Loading ad...';
   document.getElementById('adSkipBar').style.display = 'none';
   document.getElementById('adRetryBtn').style.display = 'none';
-  destroyAdPlayer();
-  resetVideoElement();
-  if (typeof fluidPlayer === 'undefined') {
-    document.getElementById('adStatusText').textContent = 'Ad player not loaded. Refresh page or deploy to HTTPS.';
-    var sb = document.getElementById('adSkipBtn');
-    document.getElementById('adSkipBar').style.display = 'flex';
-    sb.className = 'ad-skip-btn enabled'; sb.textContent = 'Close';
-    sb.onclick = function() { closeAdOverlay(); };
-    return;
+  var videoWrap = document.querySelector('.ad-video-wrap'); if (videoWrap) videoWrap.style.display = 'none';
+  
+  if (typeof gdsdk !== 'undefined' && gdsdk.showAd) {
+    document.getElementById('adStatusText').textContent = '▶️ Starting rewarded ad...';
+    gdsdk.showAd('rewarded').then(function() {
+      document.getElementById('adStatusText').textContent = 'Ad finished';
+      setTimeout(closeAdOverlay, 800);
+      if (gdsdk.preloadAd) gdsdk.preloadAd('rewarded').catch(function(){});
+    }).catch(function(e) {
+      showAdError('No ad available. Try again.');
+    });
+  } else {
+    document.getElementById('adStatusText').textContent = '⚠️ Testing mode - giving reward';
+    setTimeout(giveReward, 1200);
   }
-  setTimeout(function() { initFluidPlayer(); }, 500);
-}
-
-function initFluidPlayer() {
-  try {
-    rewardPlayer = fluidPlayer('rewardVideo', {
-      layoutControls: { fillToContainer: true, autoPlay: true, mute: true, playButtonShowing: false, playbackRateEnabled: false, allowTheatre: false, volumeBar: false, controlBar: false, htmlOnPauseBlock: false },
-      vastOptions: { adList: [{ roll: 'preRoll', vastTag: VAST_TAG }], skipButtonCaption: 'Skip in [seconds]', skipButtonClickCaption: 'Skip >>', vastTimeout: 10000 }
-    });
-    if (!rewardPlayer) { showAdError('Player failed to initialize'); return; }
-    rewardPlayer.on('vastAdStarted', function() {
-      adPlaying = true;
-      document.getElementById('adStatusText').textContent = '▶️ Watching ad...';
-      document.getElementById('adSkipBar').style.display = 'flex';
-      document.getElementById('adRetryBtn').style.display = 'none';
-      startAdCountdown();
-    });
-    rewardPlayer.on('adEnded', function() { giveReward(); });
-    rewardPlayer.on('adSkipped', function() { giveReward(); });
-    rewardPlayer.on('adError', function() { if (!adPlaying) { showAdError('No ad available right now'); } });
-    setTimeout(function() { if (!adPlaying) { showAdError('No ad available. Try again later.'); } }, 15000);
-  } catch(e) { showAdError('Ad player error: ' + e.message); }
-}
-
-function startAdCountdown() {
-  adTimeLeft = 15;
-  var skipBtn = document.getElementById('adSkipBtn');
-  var timerText = document.getElementById('adTimerText');
-  var progressFill = document.getElementById('adProgressFill');
-  skipBtn.className = 'ad-skip-btn disabled';
-  skipBtn.textContent = 'Skip';
-  timerText.textContent = '15s';
-  progressFill.style.width = '0%';
-  if (adCountdownInterval) clearInterval(adCountdownInterval);
-  adCountdownInterval = setInterval(function() {
-    adTimeLeft--;
-    progressFill.style.width = ((15 - adTimeLeft) / 15 * 100) + '%';
-    timerText.textContent = adTimeLeft + 's';
-    if (adTimeLeft <= 0) {
-      clearInterval(adCountdownInterval); adCountdownInterval = null;
-      skipBtn.className = 'ad-skip-btn enabled';
-      skipBtn.textContent = 'Skip >>';
-    }
-  }, 1000);
-  skipBtn.onclick = function() {
-    if (adTimeLeft > 0) return;
-    if (adCountdownInterval) { clearInterval(adCountdownInterval); adCountdownInterval = null; }
-    giveReward();
-  };
 }
 
 function showAdError(msg) {
@@ -189,7 +132,6 @@ function showAdError(msg) {
   document.getElementById('adRetryBtn').onclick = function() { showRewardedAd(); };
 }
 
-// FIXED: this now actually doubles without race condition
 function giveReward() {
   closeAdOverlay();
   if (lastBaseReward > 0) {
@@ -219,7 +161,7 @@ function giveReward() {
 
 function closeAdOverlay() {
   document.getElementById('rewardedOverlay').style.display = 'none';
-  destroyAdPlayer();
+  var dbl = document.getElementById('doubleBtn'); if (dbl) dbl.disabled = false;
 }
 
 // ========== FIREBASE ==========
@@ -427,4 +369,4 @@ function startTempleRun() {
 (function() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); } } } catch(e) {} })();
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   </html>
+  </html>
