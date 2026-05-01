@@ -8,42 +8,72 @@
 <script>window.addEventListener('load',function(){setTimeout(function(){var s=document.createElement('script');s.dataset.zone='10896964';s.src='https://nap5k.com/tag.min.js';s.async=true;(document.body||document.documentElement).appendChild(s)},8000)});</script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<!-- GameDistribution SDK -->
+<!-- GameDistribution SDK - UPDATED WITH NEW ID -->
 <script>
 window.GD_OPTIONS = { gameId: "cc073c05c95a4d59b6d89aeba3d281e2", onEvent: function(e){ if(e.name==="SDK_READY"&&window.gdsdk&&gdsdk.preloadAd)gdsdk.preloadAd("rewarded").catch(function(){}); if(e.name==="SDK_REWARDED_WATCH_COMPLETE")giveReward(); } };
 (function(d,s,i){var j,f=d.getElementsByTagName(s)[0];if(d.getElementById(i))return;j=d.createElement(s);j.id=i;j.src="https://html5.api.gamedistribution.com/main.min.js";f.parentNode.insertBefore(j,f)})(document,"script","gamedistribution-jssdk");
 </script>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.ad-video-wrap{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;position:relative;margin-bottom:15px}.ad-video-wrap video{width:100%;height:100%;display:block}.ad-skip-bar{position:absolute;bottom:0;left:0;right:0;padding:12px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));display:flex;align-items:center;justify-content:space-between;z-index:20}.ad-progress-bar{flex:1;height:4px;background:#333;border-radius:2px;margin-right:15px;overflow:hidden}.ad-progress-fill{height:100%;background:linear-gradient(90deg,#00ffcc,#00ccff);border-radius:2px;transition:width 1s linear;width:0%}.ad-timer-text{font-size:13px;color:#fff;font-weight:bold;min-width:30px}.ad-skip-btn{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer;border:none}.ad-skip-btn.disabled{background:#333;color:#666;cursor:not-allowed}.ad-skip-btn.enabled{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;cursor:pointer}.ad-retry-btn{background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;margin-top:10px;display:none}</style>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px;font-size:13px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.ad-video-wrap{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;position:relative;margin-bottom:15px}.ad-video-wrap video{width:100%;height:100%;display:block}.ad-skip-bar{position:absolute;bottom:0;left:0;right:0;padding:12px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));display:flex;align-items:center;justify-content:space-between;z-index:20}.ad-progress-bar{flex:1;height:4px;background:#333;border-radius:2px;margin-right:15px;overflow:hidden}.ad-progress-fill{height:100%;background:linear-gradient(90deg,#00ffcc,#00ccff);border-radius:2px;transition:width 1s linear;width:0%}.ad-timer-text{font-size:13px;color:#fff;font-weight:bold;min-width:30px}.ad-skip-btn{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:bold;cursor:pointer;border:none}.ad-skip-btn.disabled{background:#333;color:#666;cursor:not-allowed}.ad-skip-btn.enabled{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;cursor:pointer}.ad-retry-btn{background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;margin-top:10px;display:none}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}.progress-container{background:#222;height:10px;border-radius:5px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;background:linear-gradient(45deg,#00ffcc,#00ccff);transition:width 0.3s}</style>
 </head>
 <body>
 <div class="container">
 <div id="loginPage" class="page active"><h1>🎮 Mada Game Earn</h1><div class="card"><h3>👤 Enter Username</h3><input type="text" id="usernameInput" placeholder="Enter your name"><button id="loginBtn">Start Playing</button><p id="loginMsg" style="margin-top:10px;"></p></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App</p></div>
-<div id="walletPage" class="page"><h1>💳 Wallet</h1><div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;"></p><p id="money" style="font-size:20px;color:#00ffcc;"></p><p id="activity" style="margin-top:15px;color:#999;"></p></div><div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div><div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 100 coins free every day!</p><button id="dailyBtn">Claim +100 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div><div class="card"><h3>🎯 Task: Play 10 Games</h3><p id="taskProgress" style="color:#00ffcc">0/10 games</p><div style="background:#222;height:10px;border-radius:5px;overflow:hidden;margin:8px 0"><div id="taskBar" style="height:100%;width:0%;background:linear-gradient(45deg,#00ffcc,#00ccff);transition:width.3s"></div></div><p style="color:#ffd700">Reward: 50 coins (1hr cooldown)</p><p id="taskTimer" style="color:#888;font-size:12px;margin-top:4px"></p></div><div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div><div class="card"><h3>💸 Withdraw</h3><input type="number" id="withdrawCoins" placeholder="Enter coins (min 25000)"><button id="withdrawBtn">Request Withdrawal</button><p id="msg" style="margin-top:10px;"></p></div><div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div><div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">✅ Minimum: 25,000 coins<br>💵 25,000 coins = MWK 1,500<br>🎮 Max 1,200 coins per day<br>⚠️ Fake activity = Permanent ban<br>⏱️ Processing time: 24-48 hours</p></div></div>
-<div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:20px;">Play games to earn coins!</p><div class="games-grid" id="gamesGrid"></div></div></div>
+
+<div id="walletPage" class="page">
+  <h1>💳 Wallet</h1>
+  <div class="card">
+    <h3>💰 Balance</h3>
+    <p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p>
+    <p id="money" style="font-size:20px;color:#00ffcc;">💵 MWK 0</p>
+  </div>
+
+  <div class="card">
+    <h3>📊 Earnings Dashboard</h3>
+    <div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5 Coins</span></div>
+    <div class="flex-row"><span>📺 Watch Ad Bonus</span><span style="color:#ffd700;font-weight:bold">+10 Coins</span></div>
+    <div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/1200</span></div>
+    <div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div>
+    <p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~48 MWK</span></p>
+    <p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p>
+  </div>
+
+  <div class="card">
+    <h3>🎯 Next Withdrawal Goal</h3>
+    <p id="nextGoalText" style="color:#00ffcc;margin-bottom:10px;">0 / 5,000 coins</p>
+    <div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div>
+    <p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 200 MWK</p>
+  </div>
+
+  <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
+  
+  <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 100 coins free every day!</p><button id="dailyBtn">Claim +100 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
+  
+  <div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div>
+  
+  <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 200 MWK</option><option value="10000">10,000 Coins → 400 MWK</option><option value="25000">25,000 Coins → 1,000 MWK</option><option value="50000">50,000 Coins → 2,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><p id="msg" style="margin-top:10px;"></p></div>
+  
+  <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
+  
+  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 200 MWK<br>🥈 10,000 Coins = 400 MWK<br>🥇 25,000 Coins = 1,000 MWK<br>💎 50,000 Coins = 2,000 MWK<br><br>⚠️ Fake activity = Permanent ban<br>⏱️ Processing time: 24-48 hours</p></div>
+</div>
+
+<div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:20px;">Play games to earn 5 coins each!</p><div class="games-grid" id="gamesGrid"></div></div></div>
 <div id="inboxPage" class="page"><h1>💬 Support Inbox</h1><div class="card" style="text-align:left;max-height:380px;overflow-y:auto;padding:12px;background:#0a0a0a" id="adminChatBox"><div style="color:#666;text-align:center;padding:30px">No messages</div></div><div class="card"><input type="text" id="playerReply" placeholder="Reply to Admin..." style="margin-bottom:8px"><button id="replyBtn">Send Reply</button><p id="replyStatus" style="margin-top:8px;font-size:12px;height:16px"></p></div></div>
 <div id="playPage" class="page"><button class="back-btn" id="backBtn">← Back to Games</button><h2 id="gameTitle"></h2><div class="card"><div id="gameArea" class="game-area"></div></div></div>
 </div>
 <div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
 
-<!-- REAL VIDEO AD ONLY -->
 <div id="rewardedOverlay" class="reward-overlay">
   <div class="reward-box">
-    <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Watch to Double Your Coins!</h2>
-    <div class="ad-video-wrap">
-      <video id="rewardVideo" style="width:100%;height:100%;background:#000;" playsinline></video>
-      <div class="ad-skip-bar" id="adSkipBar" style="display:none;">
-        <div class="ad-progress-bar"><div class="ad-progress-fill" id="adProgressFill"></div></div>
-        <span class="ad-timer-text" id="adTimerText">15s</span>
-        <button class="ad-skip-btn disabled" id="adSkipBtn">Skip</button>
-      </div>
-    </div>
+    <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Watch Ad for +10 Bonus!</h2>
+    <div class="ad-video-wrap"><video id="rewardVideo" style="width:100%;height:100%;background:#000;" playsinline></video><div class="ad-skip-bar" id="adSkipBar" style="display:none;"><div class="ad-progress-bar"><div class="ad-progress-fill" id="adProgressFill"></div></div><span class="ad-timer-text" id="adTimerText">15s</span><button class="ad-skip-btn disabled" id="adSkipBtn">Skip</button></div></div>
     <p id="adStatusText" style="color:#888;font-size:12px;margin-top:10px;">Loading ad...</p>
     <button class="ad-retry-btn" id="adRetryBtn" style="padding:12px;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;border:none;width:100%;">🔄 Retry Ad</button>
   </div>
 </div>
 
 <script>
-// ========== LOGIN FIRST ==========
+// ========== LOGIN ==========
 function login() {
   try {
     var rawName = document.getElementById("usernameInput").value.trim();
@@ -55,18 +85,10 @@ function login() {
     document.getElementById("mainNav").style.display = "flex";
     showPage('wallet');
     if (db) {
-      try {
-        setupPresence(name); checkInboxBadge();
+      try { setupPresence(name); checkInboxBadge();
         db.ref('leaderboard_all/' + name).once('value', function(snap) {
           var data = snap.val();
-          if (data && data.banned === true) {
-            try { localStorage.removeItem("user"); } catch(e) {}
-            try { localStorage.removeItem("displayName"); } catch(e) {}
-            document.getElementById("loginPage").classList.add("active");
-            document.getElementById("mainNav").style.display = "none";
-            document.getElementById("loginMsg").innerHTML = '<span style="color:#ff6b6b">🚫 Your account has been banned</span>';
-            return;
-          }
+          if (data && data.banned === true) { try { localStorage.removeItem("user"); } catch(e) {} try { localStorage.removeItem("displayName"); } catch(e) {} document.getElementById("loginPage").classList.add("active"); document.getElementById("mainNav").style.display = "none"; document.getElementById("loginMsg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; }
           if (!snap.exists()) { db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:rawName}).catch(function(){}); }
         }).catch(function(){});
       } catch(e) {}
@@ -75,7 +97,7 @@ function login() {
 }
 (function() { var btn = document.getElementById("loginBtn"); if (btn) { btn.onclick = function(e) { if (e) e.preventDefault(); login(); }; } })();
 
-// ========== REAL VIDEO REWARD AD ==========
+// ========== AD REWARD SYSTEM (+10 Bonus) ==========
 var lastBaseReward = 0;
 var lastGameReplay = null;
 
@@ -83,7 +105,7 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   addCoins(baseCoins);
   lastBaseReward = baseCoins;
   lastGameReplay = replayFnName;
-  document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Double (+' + baseCoins + ')</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
+  document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Watch Ad (+10 Bonus)</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
   var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); };
   var db2 = document.getElementById("doubleBtn"); if (db2) db2.onclick = function() { showRewardedAd(); };
 }
@@ -99,68 +121,100 @@ function showRewardedAd() {
     document.getElementById('adStatusText').textContent = '▶️ GameDistribution ad starting...';
     gdsdk.showAd('rewarded').then(function(){ document.getElementById('adStatusText').textContent='Ad finished'; setTimeout(closeAdOverlay,800); }).catch(function(){ showAdError('No GD ad - test mode'); });
   } else {
-    var c=15; var t=setInterval(function(){c--;document.getElementById('adTimerText').textContent=c+'s';document.getElementById('adProgressFill').style.width=(15-c)/15*100+'%';document.getElementById('adStatusText').textContent='TEST MODE ('+c+'s) - Monetag still active';if(c<=0){clearInterval(t);giveReward()}},1000);
+    var c=15; var t=setInterval(function(){c--;document.getElementById('adTimerText').textContent=c+'s';document.getElementById('adProgressFill').style.width=(15-c)/15*100+'%';document.getElementById('adStatusText').textContent='TEST MODE ('+c+'s)';if(c<=0){clearInterval(t);giveReward()}},1000);
   }
 }
 
 function showAdError(msg){document.getElementById('adStatusText').textContent=msg;document.getElementById('adRetryBtn').style.display='block';document.getElementById('adRetryBtn').onclick=function(){showRewardedAd()}}
 
-function giveReward(){closeAdOverlay();if(lastBaseReward>0){try{var u=localStorage.getItem('user')||'Guest',d=parseInt(localStorage.getItem('dailyCoins')||0),c=Math.max(0,DAILY_LIMIT-d),g=Math.min(lastBaseReward,c);if(g>0&&db){db.ref('leaderboard_all/'+u).once('value').then(function(s){var v=s.val()||{},n=(v.coins||0)+g;db.ref('leaderboard_all/'+u).update({coins:n,score:n,lastPlayed:Date.now()});localStorage.setItem('dailyCoins',d+g);localStorage.setItem('coins',n);showBalance()})}else if(g<=0)alert('⚠️ Daily limit reached')}catch(e){}var m=document.getElementById('doubleMsg');if(m)m.innerHTML='<span style="color:#51cf66">✅ Doubled! +'+lastBaseReward+' coins</span>';var b=document.getElementById('doubleBtn');if(b){b.disabled=true;b.style.opacity='0.5';b.innerText='✓ Already Doubled'}lastBaseReward=0}}
+function giveReward(){
+  closeAdOverlay();
+  var adBonus = 10; // EXACTLY +10 COINS AS PER SCREENSHOT
+  try{
+    var u=localStorage.getItem('user')||'Guest',d=parseInt(localStorage.getItem('dailyCoins')||0),c=Math.max(0,DAILY_LIMIT-d),g=Math.min(adBonus,c);
+    if(g>0&&db){
+      db.ref('leaderboard_all/'+u).once('value').then(function(s){
+        var v=s.val()||{},n=(v.coins||0)+g;
+        db.ref('leaderboard_all/'+u).update({coins:n,score:n,lastPlayed:Date.now()});
+        localStorage.setItem('dailyCoins',d+g);localStorage.setItem('coins',n);showBalance()
+      })
+    }else if(g<=0)alert('⚠️ Daily limit reached')
+  }catch(e){}
+  var m=document.getElementById('doubleMsg');if(m)m.innerHTML='<span style="color:#51cf66">✅ Ad Bonus! +'+adBonus+' coins</span>';
+  var b=document.getElementById('doubleBtn');if(b){b.disabled=true;b.style.opacity='0.5';b.innerText='✓ Bonus Claimed'}
+  lastBaseReward=0;
+}
 
 function closeAdOverlay(){document.getElementById('rewardedOverlay').style.display='none'}
 
 // ========== FIREBASE ==========
 var db = null;
-var firebaseReady = false;
 try {
   if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) {
     firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});
     db = firebase.database();
-    firebaseReady = true;
   }
-} catch(e) { db = null; firebaseReady = false; }
+} catch(e) { db = null; }
 
 var DAILY_LIMIT = 1200;
 var currentGame = null;
 var gameState = {};
+var countdownInterval = null;
 
 function showPage(page) {
   try {
-    var pages = document.querySelectorAll('.page');
-    for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
-    var btns = document.querySelectorAll('.nav-btn');
-    for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
-    if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); btns[0].classList.add('active'); showBalance(); }
-    else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); btns[1].classList.add('active'); }
-    else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); btns[2].classList.add('active'); loadPlayerInbox(); }
+    var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
+    var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+    if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); btns[0].classList.add('active'); showBalance(); startCountdown(); }
+    else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
+    else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); btns[2].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
   } catch(e) {}
+}
+
+function startCountdown() {
+  if(countdownInterval) clearInterval(countdownInterval);
+  function update() {
+    var now = new Date();
+    var midnight = new Date(now); midnight.setHours(24,0,0,0);
+    var diff = midnight - now;
+    var h = Math.floor(diff / 3600000); var m = Math.floor((diff % 3600000) / 60000); var s = Math.floor((diff % 60000) / 1000);
+    var el = document.getElementById("dailyCountdown");
+    if(el) el.innerText = String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0');
+  }
+  update(); countdownInterval = setInterval(update, 1000);
 }
 
 function showBalance() {
   try {
-    var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; }
-    if (!user) user = "Guest";
-    if (!db) { document.getElementById("coins").innerHTML = "🪙 0 Coins"; document.getElementById("money").innerHTML = "💵 MWK 0"; document.getElementById("activity").innerHTML = "🎮 0/1200 coins today"; document.getElementById("gamesPlayed").innerHTML = "0"; document.getElementById("totalEarned").innerHTML = "0"; return; }
+    var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; }
+    if (!db) { document.getElementById("coins").innerHTML = "🪙 0 Coins"; document.getElementById("money").innerHTML = "💵 MWK 0"; return; }
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
       var d = snap.val() || {}; var coins = d.coins || 0; var gp = d.gamesPlayed || 0;
       try { localStorage.setItem("coins", coins); } catch(e) {}
-      try { localStorage.setItem("gamesPlayed", gp); } catch(e) {}
+      
       document.getElementById("coins").innerHTML = "🪙 " + coins + " Coins";
-      document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.06);
-      var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
-      document.getElementById("activity").innerHTML = "🎮 Today's Earnings: " + daily + "/1200 coins";
+      document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.04);
       document.getElementById("gamesPlayed").innerHTML = gp;
       document.getElementById("totalEarned").innerHTML = coins;
-    });
-    db.ref('users/' + user).once('value', function(s) {
-      var u = s.val() || {};
-      if (u.phone) { document.getElementById("number").value = u.phone; document.getElementById("number").disabled = true; document.getElementById("network").value = u.network || "Airtel Money"; document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Phone saved</span>'; }
-      var task = u.gamesTask || 0; var prog = task % 10;
-      document.getElementById("taskProgress").innerText = prog + "/10 games";
-      document.getElementById("taskBar").style.width = (prog * 10) + "%";
-      var lt = 0; try { lt = parseInt(localStorage.getItem("lastTaskTime") || 0); } catch(e) {}
-      var left = 3600000 - (Date.now() - lt);
-      document.getElementById("taskTimer").textContent = left > 0? "Next bonus in " + Math.ceil(left / 60000) + "m" : "";
+
+      var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
+      document.getElementById("dailyLimitText").innerText = daily + "/1200";
+      document.getElementById("dailyLimitBar").style.width = (daily / 1200 * 100) + "%";
+
+      var tiers = [5000, 10000, 25000, 50000];
+      var rewards = [200, 400, 1000, 2000];
+      var nextIdx = tiers.findIndex(t => coins < t);
+      if(nextIdx === -1) nextIdx = tiers.length - 1;
+      
+      var goalTarget = tiers[nextIdx];
+      var prevTarget = nextIdx > 0 ? tiers[nextIdx - 1] : 0;
+      var progressInTier = coins - prevTarget;
+      var tierSize = goalTarget - prevTarget;
+      var percent = Math.min(100, (progressInTier / tierSize) * 100);
+
+      document.getElementById("nextGoalText").innerText = coins + " / " + goalTarget + " coins";
+      document.getElementById("nextGoalBar").style.width = percent + "%";
+      document.getElementById("nextGoalReward").innerText = "Reach " + goalTarget + " to withdraw " + rewards[nextIdx] + " MWK";
     });
     loadMyWithdrawals();
   } catch(e) {}
@@ -168,8 +222,7 @@ function showBalance() {
 
 function addCoins(amount) {
   try {
-    var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; }
-    if (!user) user = "Guest";
+    var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; }
     var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
     var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn);
     if (give <= 0) { alert("⚠️ Daily limit reached (1,200 coins). Come back tomorrow!"); return; }
@@ -179,9 +232,6 @@ function addCoins(amount) {
       db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});
       daily += give; try { localStorage.setItem("dailyCoins", daily); } catch(e) {}
       showBalance();
-      db.ref('users/' + user + '/gamesTask').transaction(function(c) { return (c || 0) + 1; }, function(e, ok, sn) {
-        if (ok) { var cnt = sn.val(); if (cnt % 10 === 0) { var lastTask = 0; try { lastTask = parseInt(localStorage.getItem("lastTaskTime") || 0); } catch(e) {} if (Date.now() - lastTask < 3600000) return; try { localStorage.setItem("lastTaskTime", Date.now()); } catch(e) {} var d2 = 0; try { d2 = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {} var can2 = Math.max(0, DAILY_LIMIT - d2); var taskGive = Math.min(50, can2); if (taskGive > 0) { db.ref('leaderboard_all/' + user).once('value', function(s2) { var val2 = s2.val() || {}; var nc = (val2.coins || 0) + taskGive; db.ref('leaderboard_all/' + user).update({coins:nc,score:nc}); setTimeout(function() { alert("🎯 Task Complete! +" + taskGive + " coins"); showBalance(); }, 500); }); } } }
-      });
     });
   } catch(e) {}
 }
@@ -199,13 +249,13 @@ function loadPlayerInbox() {
 
 function checkInboxBadge() {
   try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_');
-    db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById('inboxDot').style.display = un > 0? 'block' : 'none'; });
+    db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; });
   } catch(e) {}
 }
 
 function saveDetails() {
-  try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) user = "Guest"; var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return;
-    db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); } catch(e) {} try { localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + '</span>'; document.getElementById("number").disabled = true; });
+  try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return;
+    db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + '</span>'; document.getElementById("number").disabled = true; });
   } catch(e) {}
 }
 
@@ -215,56 +265,68 @@ function claimDailyBonus() {
   } catch(e) {}
 }
 
-try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); } catch(e) {} try { localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
+try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
 
 function withdraw() {
-  try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) user = "Guest"; if (!db) return;
-    db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {}
-      if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (!req || req < 25000) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Minimum 25,000 coins</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; }
-      var money = Math.floor(req * 0.06); var wid = Date.now();
+  try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return;
+    db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; 
+      var req = parseInt(document.getElementById("withdrawCoins").value);
+      var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {}
+      
+      if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } 
+      if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; }
+      
+      var money = Math.floor(req * 0.04); var wid = Date.now();
       db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; }
-        db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; document.getElementById("withdrawCoins").value = ""; showBalance();
+        db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance();
       });
     });
   } catch(e) {}
 }
 
 function loadMyWithdrawals() {
-  try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) user = "Guest"; if (!db) return;
+  try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return;
     db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; });
   } catch(e) {}
 }
 
-// ========== GAMES ==========
+// ========== GAMES (HTML5 GAME COMPLETELY REMOVED) ==========
 (function() {
-  var games = [{id:'temple',icon:'🏃',name:'Temple Run',reward:'10-40 coins'},{id:'memory',icon:'🧠',name:'Memory Match',reward:'5-20 coins'},{id:'number',icon:'🔢',name:'Number Guess',reward:'5-15 coins'},{id:'reaction',icon:'⚡',name:'Reaction Test',reward:'5-25 coins'},{id:'color',icon:'🎨',name:'Color Match',reward:'5-20 coins'},{id:'math',icon:'➕',name:'Math Challenge',reward:'10-30 coins'},{id:'word',icon:'📝',name:'Word Scramble',reward:'10-25 coins'},{id:'checkers',icon:'⚫',name:'Checkers',reward:'5-30 coins'}];
+  var games = [
+    {id:'temple',icon:'🏃',name:'Temple Run',reward:'+5 coins'},
+    {id:'memory',icon:'🧠',name:'Memory Match',reward:'+5 coins'},
+    {id:'number',icon:'🔢',name:'Number Guess',reward:'+5 coins'},
+    {id:'reaction',icon:'⚡',name:'Reaction Test',reward:'+5 coins'},
+    {id:'color',icon:'🎨',name:'Color Match',reward:'+5 coins'},
+    {id:'math',icon:'➕',name:'Math Challenge',reward:'+5 coins'},
+    {id:'word',icon:'📝',name:'Word Scramble',reward:'+5 coins'},
+    {id:'checkers',icon:'⚫',name:'Checkers',reward:'+5 coins'}
+  ];
   var grid = document.getElementById("gamesGrid"); if (grid) { var html = ''; for (var i = 0; i < games.length; i++) { var g = games[i]; html += '<div class="game-card" data-game="' + g.id + '"><div class="game-icon">' + g.icon + '</div><h4>' + g.name + '</h4><div class="game-reward">' + g.reward + '</div></div>'; } grid.innerHTML = html; var cards = grid.querySelectorAll('.game-card'); for (var j = 0; j < cards.length; j++) { (function(card) { card.onclick = function() { startGame(card.getAttribute('data-game')); }; })(cards[j]); } }
 })();
 
-function startGame(type) { currentGame = type; document.getElementById('playPage').classList.add('active'); var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); }
+function startGame(type) { currentGame = type; document.getElementById('playPage').classList.add('active'); var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); 
+if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); }
 
 function startMemoryMatch() { var emojis = ['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺']; var cards = emojis.concat(emojis).sort(function() { return Math.random() - 0.5; }); gameState = {cards:cards, flipped:[], matched:0, moves:0, startTime:Date.now()}; var html = '<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">'; for (var i = 0; i < cards.length; i++) { html += '<div class="memory-card" id="card' + i + '" data-idx="' + i + '"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'; } html += '</div>'; document.getElementById('gameArea').innerHTML = html; var allCards = document.querySelectorAll('.memory-card'); for (var j = 0; j < allCards.length; j++) { (function(card) { card.onclick = function() { flipCard(parseInt(card.getAttribute('data-idx'))); }; })(allCards[j]); } gameState.timerInterval = setInterval(function() { var t = Math.floor((Date.now() - gameState.startTime) / 1000); var el = document.getElementById('timer'); if (el) el.innerHTML = 'Time: ' + t + 's | Moves: ' + gameState.moves; }, 200); }
 
-function flipCard(i) { if (gameState.flipped.length >= 2 || gameState.flipped.indexOf(i)!== -1) return; var c = document.getElementById('card' + i); if (!c || c.classList.contains('matched')) return; c.innerHTML = gameState.cards[i]; c.style.background = 'linear-gradient(135deg,#00ffcc,#00ccff)'; gameState.flipped.push(i); if (gameState.flipped.length === 2) { gameState.moves++; var f = gameState.flipped[0], s = gameState.flipped[1]; if (gameState.cards[f] === gameState.cards[s]) { document.getElementById('card' + f).classList.add('matched'); document.getElementById('card' + s).classList.add('matched'); gameState.matched += 2; gameState.flipped = []; if (gameState.matched === gameState.cards.length) { clearInterval(gameState.timerInterval); var time = Math.floor((Date.now() - gameState.startTime) / 1000); var coins = time < 30? 20 : time < 45? 15 : time < 60? 10 : 5; handleGameEnd(coins, '🎉 Complete!', '<p>Time: ' + time + 's</p>', 'startMemoryMatch'); } } else { setTimeout(function() { var cf = document.getElementById('card' + f); var cs = document.getElementById('card' + s); if (cf) cf.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; if (cs) cs.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; gameState.flipped = []; }, 800); } } }
+function flipCard(i) { if (gameState.flipped.length >= 2 || gameState.flipped.indexOf(i)!== -1) return; var c = document.getElementById('card' + i); if (!c || c.classList.contains('matched')) return; c.innerHTML = gameState.cards[i]; c.style.background = 'linear-gradient(135deg,#00ffcc,#00ccff)'; gameState.flipped.push(i); if (gameState.flipped.length === 2) { gameState.moves++; var f = gameState.flipped[0], s = gameState.flipped[1]; if (gameState.cards[f] === gameState.cards[s]) { document.getElementById('card' + f).classList.add('matched'); document.getElementById('card' + s).classList.add('matched'); gameState.matched += 2; gameState.flipped = []; if (gameState.matched === gameState.cards.length) { clearInterval(gameState.timerInterval); handleGameEnd(5, '🎉 Complete!', '<p>Well done!</p>', 'startMemoryMatch'); } } else { setTimeout(function() { var cf = document.getElementById('card' + f); var cs = document.getElementById('card' + s); if (cf) cf.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; if (cs) cs.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; gameState.flipped = []; }, 800); } } }
 
 function startNumberGuess() { gameState = {target: Math.floor(Math.random() * 100) + 1, attempts: 0}; document.getElementById('gameArea').innerHTML = '<h3>Guess 1-100</h3><div class="timer" id="gTimer">Attempts: 0/7</div><input type="number" id="guessInput" placeholder="Enter guess"><button id="guessBtn">Submit</button><p id="guessHint"></p>'; document.getElementById('guessBtn').onclick = makeGuess; }
-function makeGuess() { var g = parseInt(document.getElementById('guessInput').value); if (!g) return; gameState.attempts++; document.getElementById('gTimer').innerText = 'Attempts: ' + gameState.attempts + '/7'; if (g === gameState.target) { var c = gameState.attempts <= 3? 15 : gameState.attempts <= 5? 10 : 5; handleGameEnd(c, '🎉 Correct!', '', 'startNumberGuess'); } else if (gameState.attempts >= 7) { document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>Game Over</h2><p>Answer: ' + gameState.target + '</p><button id="retryBtn">Try Again</button></div>'; document.getElementById('retryBtn').onclick = startNumberGuess; } else { document.getElementById('guessHint').innerHTML = g < gameState.target? '📈 Higher!' : '📉 Lower!'; document.getElementById('guessInput').value = ''; } }
+function makeGuess() { var g = parseInt(document.getElementById('guessInput').value); if (!g) return; gameState.attempts++; document.getElementById('gTimer').innerText = 'Attempts: ' + gameState.attempts + '/7'; if (g === gameState.target) { handleGameEnd(5, '🎉 Correct!', '', 'startNumberGuess'); } else if (gameState.attempts >= 7) { handleGameEnd(1, 'Game Over', '<p>Answer: ' + gameState.target + '</p>', 'startNumberGuess'); } else { document.getElementById('guessHint').innerHTML = g < gameState.target? '📈 Higher!' : '📉 Lower!'; document.getElementById('guessInput').value = ''; } }
 
 function startReactionTest() { gameState = {round: 0, scores: [], waiting: false}; document.getElementById('gameArea').innerHTML = '<h3>Click when GREEN</h3><div class="timer" id="rTimer">Round 0/5</div><div id="reactionBox" style="height:200px;background:#ff6b6b;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer"><span id="reactionText">START</span></div><button id="rStartBtn">START</button>'; document.getElementById('rStartBtn').onclick = startReactionRound; document.getElementById('reactionBox').onclick = reactionClick; }
 function startReactionRound() { var box = document.getElementById('reactionBox'); box.style.background = '#ff6b6b'; document.getElementById('reactionText').innerText = 'Wait...'; gameState.waiting = true; setTimeout(function() { var b = document.getElementById('reactionBox'); if (b) b.style.background = '#51cf66'; var t = document.getElementById('reactionText'); if (t) t.innerText = 'CLICK!'; gameState.start = Date.now(); gameState.waiting = false; }, 1000 + Math.random() * 3000); }
-function reactionClick() { if (gameState.waiting) return; var box = document.getElementById('reactionBox'); if (!box || box.style.background!== 'rgb(81, 207, 102)') return; var t = Date.now() - gameState.start; gameState.scores.push(t); gameState.round++; var el = document.getElementById('rTimer'); if (el) el.innerText = 'Round ' + gameState.round + '/5'; if (gameState.round === 5) { var sum = 0; for (var i = 0; i < gameState.scores.length; i++) sum += gameState.scores[i]; var avg = sum / 5; var c = avg < 300? 25 : avg < 400? 20 : avg < 500? 15 : avg < 700? 10 : 5; handleGameEnd(c, '⚡ Done!', '<p>Avg: ' + Math.round(avg) + 'ms</p>', 'startReactionTest'); } else { var rt = document.getElementById('reactionText'); if (rt) rt.innerText = 'START'; } }
+function reactionClick() { if (gameState.waiting) return; var box = document.getElementById('reactionBox'); if (!box || box.style.background!== 'rgb(81, 207, 102)') return; var t = Date.now() - gameState.start; gameState.scores.push(t); gameState.round++; if (gameState.round === 5) { handleGameEnd(5, '⚡ Done!', '<p>Test complete</p>', 'startReactionTest'); } else { var rt = document.getElementById('reactionText'); if (rt) rt.innerText = 'START'; } }
 
 function startColorMatch() { gameState = {round: 0, score: 0}; nextColor(); }
-function nextColor() { if (gameState.round >= 10) { var c = Math.max(5, gameState.score * 2); handleGameEnd(c, '🎨 Done!', '<p>Score ' + gameState.score + '/10</p>', 'startColorMatch'); return; } var colors = ['Red','Blue','Green','Yellow']; var map = {Red:'#ff6b6b',Blue:'#4dabf7',Green:'#51cf66',Yellow:'#ffd700'}; var word = colors[Math.floor(Math.random() * 4)]; var ink; do { ink = colors[Math.floor(Math.random() * 4)]; } while (ink === word); gameState.correct = ink; gameState.round++; var btns = ''; for (var i = 0; i < colors.length; i++) { btns += '<button class="color-btn" style="background:' + map[colors[i]] + ';color:#000" data-color="' + colors[i] + '">' + colors[i] + '</button>'; } document.getElementById('gameArea').innerHTML = '<h3>What color is the WORD?</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;color:' + map[ink] + '">' + word + '</div><div class="color-options">' + btns + '</div>'; var allBtns = document.querySelectorAll('.color-btn'); for (var j = 0; j < allBtns.length; j++) { (function(btn) { btn.onclick = function() { checkColor(btn.getAttribute('data-color')); }; })(allBtns[j]); } }
-function checkColor(c) { if (c === gameState.correct) gameState.score++; nextColor(); }
+function nextColor() { if (gameState.round >= 10) { handleGameEnd(5, '🎨 Done!', '<p>Score ' + gameState.score + '/10</p>', 'startColorMatch'); return; } var colors = ['Red','Blue','Green','Yellow']; var map = {Red:'#ff6b6b',Blue:'#4dabf7',Green:'#51cf66',Yellow:'#ffd700'}; var word = colors[Math.floor(Math.random() * 4)]; var ink; do { ink = colors[Math.floor(Math.random() * 4)]; } while (ink === word); gameState.correct = ink; gameState.round++; var btns = ''; for (var i = 0; i < colors.length; i++) { btns += '<button class="color-btn" style="background:' + map[colors[i]] + ';color:#000" data-color="' + colors[i] + '">' + colors[i] + '</button>'; } document.getElementById('gameArea').innerHTML = '<h3>What color is the WORD?</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;color:' + map[ink] + '">' + word + '</div><div class="color-options">' + btns + '</div>'; var allBtns = document.querySelectorAll('.color-btn'); for (var j = 0; j < allBtns.length; j++) { (function(btn) { btn.onclick = function() { if(btn.getAttribute('data-color') === gameState.correct) gameState.score++; nextColor(); }; })(allBtns[j]); } }
 
 function startMathChallenge() { gameState = {round: 0, score: 0}; nextMath(); }
-function nextMath() { if (gameState.round >= 10) { var c = gameState.score * 3; handleGameEnd(c, '➕ Done!', '<p>Score ' + gameState.score + '/10</p>', 'startMathChallenge'); return; } var a = Math.floor(Math.random() * 20) + 1; var b = Math.floor(Math.random() * 20) + 1; gameState.answer = a + b; gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Solve quickly!</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;">' + a + ' + ' + b + ' =?</div><input type="number" id="mathAns" style="text-align:center;font-size:24px;"><button id="mathBtn">Submit</button>'; document.getElementById('mathBtn').onclick = checkMath; }
-function checkMath() { if (parseInt(document.getElementById('mathAns').value) === gameState.answer) gameState.score++; nextMath(); }
+function nextMath() { if (gameState.round >= 10) { handleGameEnd(5, '➕ Done!', '<p>Score ' + gameState.score + '/10</p>', 'startMathChallenge'); return; } var a = Math.floor(Math.random() * 20) + 1; var b = Math.floor(Math.random() * 20) + 1; gameState.answer = a + b; gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Solve quickly!</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;">' + a + ' + ' + b + ' =?</div><input type="number" id="mathAns" style="text-align:center;font-size:24px;"><button id="mathBtn">Submit</button>'; document.getElementById('mathBtn').onclick = function(){ if(parseInt(document.getElementById('mathAns').value) === gameState.answer) gameState.score++; nextMath(); }; }
 
 function startWordScramble() { gameState = {words: ['GAME','COIN','PLAY','WIN','MONEY','MALAWI','PHONE','PRIZE'].sort(function() { return Math.random() - 0.5; }), round: 0, score: 0}; nextWord(); }
-function nextWord() { if (gameState.round >= 8) { var c = gameState.score * 3; handleGameEnd(c, '📝 Done!', '<p>Score ' + gameState.score + '/8</p>', 'startWordScramble'); return; } var w = gameState.words[gameState.round]; gameState.answer = w; var s = w.split('').sort(function() { return Math.random() - 0.5; }).join(''); gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Unscramble!</h3><div class="timer">' + gameState.round + '/8 | Score: ' + gameState.score + '</div><div style="font-size:48px;letter-spacing:8px;margin:30px;">' + s + '</div><input type="text" id="wordAns" style="text-align:center;font-size:24px;text-transform:uppercase;"><button id="wordBtn">Submit</button>'; document.getElementById('wordBtn').onclick = checkWord; }
-function checkWord() { var el = document.getElementById('wordAns'); if (el && el.value.toUpperCase() === gameState.answer) gameState.score++; nextWord(); }
+function nextWord() { if (gameState.round >= 8) { handleGameEnd(5, '📝 Done!', '<p>Score ' + gameState.score + '/8</p>', 'startWordScramble'); return; } var w = gameState.words[gameState.round]; gameState.answer = w; var s = w.split('').sort(function() { return Math.random() - 0.5; }).join(''); gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Unscramble!</h3><div class="timer">' + gameState.round + '/8 | Score: ' + gameState.score + '</div><div style="font-size:48px;letter-spacing:8px;margin:30px;">' + s + '</div><input type="text" id="wordAns" style="text-align:center;font-size:24px;text-transform:uppercase;"><button id="wordBtn">Submit</button>'; document.getElementById('wordBtn').onclick = function(){ var el=document.getElementById('wordAns'); if(el && el.value.toUpperCase() === gameState.answer) gameState.score++; nextWord(); }; }
 
 function startCheckers() { document.getElementById('gameArea').innerHTML = '<h3>Checkers - Malawi Rules</h3><p style="color:#ccc">Must capture if possible</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:400px;margin:20px auto"><button id="cEasy">Easy</button><button id="cMed">Medium</button><button id="cHard">HARD</button></div>'; document.getElementById('cEasy').onclick = function() { initCheckers('easy'); }; document.getElementById('cMed').onclick = function() { initCheckers('medium'); }; document.getElementById('cHard').onclick = function() { initCheckers('hard'); }; }
 function initCheckers(d) { gameState = {board:[], turn:1, selected:null, validMoves:[], difficulty:d}; for (var r = 0; r < 8; r++) { gameState.board[r] = []; for (var c = 0; c < 8; c++) gameState.board[r][c] = (r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0; } renderCheckers(); }
@@ -275,7 +337,7 @@ function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8;
 function makeMove(r1, c1, r2, c2) { var b = gameState.board; b[r2][c2] = b[r1][c1]; b[r1][c1] = 0; var cap = false; if (Math.abs(r2-r1)===2) { b[(r1+r2)/2][(c1+c2)/2] = 0; cap = true; } if (r2===0 && b[r2][c2]===1) b[r2][c2] = 2; if (r2===7 && b[r2][c2]===-1) b[r2][c2] = -2; if (cap) { var fm = getMoves(r2, c2, b[r2][c2]>0?1:-1); var fCaps = []; for (var i = 0; i < fm.length; i++) { if (Math.abs(fm[i][0]-r2)===2) fCaps.push(fm[i]); } if (fCaps.length) { gameState.selected=[r2,c2]; gameState.validMoves=fCaps; renderCheckers(); return true; } } gameState.turn *= -1; gameState.selected = null; gameState.validMoves = []; checkWin(); return false; }
 function cpuMove() { if (gameState.turn!== -1) return; var moves = getAllMoves(-1); if (!moves.length) { endCheckers(true); return; } var choice; var caps = []; for (var i = 0; i < moves.length; i++) { if (Math.abs(moves[i].from[0]-moves[i].to[0])===2) caps.push(moves[i]); } if (gameState.difficulty === 'easy') { choice = moves[Math.random()*moves.length|0]; } else if (gameState.difficulty === 'medium') { var pool = caps.length? caps : moves; choice = pool[Math.random()*pool.length|0]; } else { var best = -1e9; for (var j = 0; j < moves.length; j++) { var v = Math.random()*100; if (v > best) { best = v; choice = moves[j]; } } } var cont = makeMove(choice.from[0], choice.from[1], choice.to[0], choice.to[1]); renderCheckers(); if (cont) setTimeout(cpuMove, 300); }
 function checkWin() { var f = gameState.board.flat? gameState.board.flat() : [].concat.apply([], gameState.board); var pCount = 0, cCount = 0; for (var i = 0; i < f.length; i++) { if (f[i] > 0) pCount++; if (f[i] < 0) cCount++; } if (cCount === 0) endCheckers(true); else if (pCount === 0) endCheckers(false); else if (getAllMoves(gameState.turn).length === 0) endCheckers(gameState.turn === -1); }
-function endCheckers(w) { handleGameEnd(w? 30 : 5, w? 'You Win!' : 'CPU Wins', '', 'startCheckers'); }
+function endCheckers(w) { handleGameEnd(w? 5 : 1, w? 'You Win!' : 'CPU Wins', '', 'startCheckers'); }
 
 function startTempleRun() {
   document.getElementById('gameArea').innerHTML = '<h3>🏃 Temple Run - Ancient Escape</h3><div class="timer" id="templeHUD">0m | 🪙 0</div><canvas id="templeCanvas" width="360" height="480" style="width:100%;max-width:400px;background:#000;border-radius:15px;border:2px solid #00ffcc;touch-action:none"></canvas><p style="color:#999;font-size:12px;margin-top:8px">Swipe ← → to move, ↑ to jump, ↓ to slide</p>';
@@ -284,13 +346,13 @@ function startTempleRun() {
   gameState = {lane:1, y:380, vy:0, onGround:true, sliding:false, slideT:0, speed:5, dist:0, coins:0, obs:[], coinObjs:[], t:0, alive:true, bg:0, particles:[]};
   function spawn(){ var lane = Math.floor(Math.random()*3); var type = Math.random()<0.6? 'jump' : 'slide'; gameState.obs.push({lane:lane, y:-70, type:type, w:50, h:type==='jump'?45:22}); if(Math.random()<0.5) gameState.coinObjs.push({lane:Math.floor(Math.random()*3), y:-40}); }
   function update(){ if(!gameState.alive) return; gameState.t++; gameState.dist += gameState.speed*0.12; gameState.speed += 0.002; gameState.bg = (gameState.bg + gameState.speed) % 40; if(gameState.t % Math.max(45, 80-Math.floor(gameState.speed)) ===0) spawn(); if(!gameState.onGround){ gameState.vy+=0.85; gameState.y+=gameState.vy; if(gameState.y>=380){gameState.y=380; gameState.onGround=true; gameState.vy=0;} } if(gameState.sliding){ gameState.slideT--; if(gameState.slideT<=0) gameState.sliding=false; } for(var i=gameState.obs.length-1;i>=0;i--){ var o=gameState.obs[i]; o.y+=gameState.speed; if(o.y>H+60) gameState.obs.splice(i,1); else if(o.y>320 && o.y<410 && o.lane===gameState.lane &&!o.hit){ var hit=false; if(o.type==='jump' && gameState.onGround &&!gameState.sliding) hit=true; if(o.type==='slide' &&!gameState.sliding && gameState.onGround) hit=true; if(o.type==='slide' && gameState.y<370) hit=true; if(hit){ o.hit=true; gameState.alive=false; setTimeout(endRun,200); return; } } } for(var j=gameState.coinObjs.length-1;j>=0;j--){ var co=gameState.coinObjs[j]; co.y+=gameState.speed; if(co.y>H) gameState.coinObjs.splice(j,1); else if(Math.abs(co.y-gameState.y)<35 && co.lane===gameState.lane){ gameState.coins++; gameState.coinObjs.splice(j,1); gameState.particles.push({x:lanes[gameState.lane], y:gameState.y-20, t:15}); } } for(var p=gameState.particles.length-1;p>=0;p--){ gameState.particles[p].t--; if(gameState.particles[p].t<=0) gameState.particles.splice(p,1); } document.getElementById('templeHUD').innerText = Math.floor(gameState.dist)+'m | 🪙 '+gameState.coins; }
-  function draw(){ var grad = ctx.createLinearGradient(0,0,0,H); grad.addColorStop(0,'#001a1f'); grad.addColorStop(0.4,'#00333d'); grad.addColorStop(1,'#000'); ctx.fillStyle=grad; ctx.fillRect(0,0,W,H); ctx.fillStyle='rgba(0,255,204,0.08)'; for(var i=0;i<6;i++){ var x=i*70-10; ctx.fillRect(x,140,40,180); ctx.fillRect(x+10,110,20,30); } ctx.fillStyle='rgba(0,255,204,0.15)'; ctx.beginPath(); ctx.arc(300,80,35,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#0d0d0d'; ctx.fillRect(30,0,300,H); ctx.strokeStyle='rgba(0,255,204,0.25)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(30,0); ctx.lineTo(30,H); ctx.moveTo(330,0); ctx.lineTo(330,H); ctx.stroke(); for(var l=1;l<3;l++){ ctx.strokeStyle='rgba(0,255,204,0.15)'; ctx.setLineDash([20,20]); ctx.beginPath(); ctx.moveTo(30+l*100,0); ctx.lineTo(30+l*100,H); ctx.stroke(); } ctx.setLineDash([]); ctx.strokeStyle='rgba(0,204,255,0.2)'; for(var y=-40;y<H;y+=40){ ctx.beginPath(); ctx.moveTo(30,y+gameState.bg); ctx.lineTo(330,y+gameState.bg); ctx.stroke(); } gameState.coinObjs.forEach(function(co){ var x=lanes[co.lane]; ctx.save(); ctx.translate(x,co.y); ctx.rotate(gameState.t*0.1); ctx.fillStyle='#ffd700'; ctx.shadowColor='#ffaa00'; ctx.shadowBlur=15; ctx.beginPath(); ctx.arc(0,0,14,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#ffef99'; ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.fill(); ctx.restore(); }); gameState.obs.forEach(function(o){ var x=lanes[o.lane]; ctx.save(); ctx.translate(x,o.y); if(o.type==='jump'){ var grd=ctx.createLinearGradient(-25,-20,25,25); grd.addColorStop(0,'#8B5A2B'); grd.addColorStop(1,'#5C4033'); ctx.fillStyle=grd; ctx.shadowColor='#000'; ctx.shadowBlur=10; ctx.fillRect(-25,-20,50,40); ctx.fillStyle='#654321'; for(var b=0;b<3;b++) ctx.fillRect(-22+b*16,-18,12,36); } else { ctx.fillStyle='rgba(0,255,255,0.3)'; ctx.fillRect(-35,-10,70,8); ctx.fillStyle='#00ffcc'; ctx.shadowColor='#00ffff'; ctx.shadowBlur=20; ctx.fillRect(-30,-8,60,4); ctx.fillStyle='#0088aa'; ctx.fillRect(-32,10,12,25); ctx.fillRect(20,10,12,25); } ctx.restore(); }); var px=lanes[gameState.lane], py=gameState.y; ctx.save(); ctx.translate(px,py); if(gameState.sliding) ctx.scale(1,0.55); ctx.shadowColor='#00ffcc'; ctx.shadowBlur=25; ctx.fillStyle='#00ffcc'; ctx.beginPath(); ctx.arc(0,-28,12,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=15; ctx.fillStyle='#00ccff'; ctx.fillRect(-14,-18,28,32); ctx.fillStyle='#001a1a'; ctx.fillRect(-10,-12,8,6); ctx.fillRect(2,-12,8,6); if(!gameState.sliding){ ctx.fillStyle='#00ffcc'; ctx.fillRect(-16,14,8,18); ctx.fillRect(8,14,8,18); } ctx.restore(); gameState.particles.forEach(function(pt){ ctx.fillStyle='rgba(255,215,0,'+(pt.t/15)+')'; ctx.beginPath(); ctx.arc(pt.x,pt.y-pt.t,3,0,Math.PI*2); ctx.fill(); }); ctx.strokeStyle='rgba(0,255,204,0.1)'; for(var s=0;s<3;s++){ ctx.beginPath(); ctx.moveTo(40+Math.random()*280, H-20); ctx.lineTo(30+Math.random()*300, H); ctx.stroke(); } }
+  function draw(){ var grad = ctx.createLinearGradient(0,0,0,H); grad.addColorStop(0,'#001a1f'); grad.addColorStop(0.4,'#00333d'); grad.addColorStop(1,'#000'); ctx.fillStyle=grad; ctx.fillRect(0,0,W,H); ctx.fillStyle='rgba(0,255,204,0.08)'; for(var i=0;i<6;i++){ var x=i*70-10; ctx.fillRect(x,140,40,180); ctx.fillRect(x+10,110,20,30); } ctx.fillStyle='rgba(0,255,204,0.15)'; ctx.beginPath(); ctx.arc(300,80,35,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#0d0d0d'; ctx.fillRect(30,0,300,H); ctx.strokeStyle='rgba(0,255,204,0.25)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(30,0); ctx.lineTo(30,H); ctx.moveTo(330,0); ctx.lineTo(330,H); ctx.stroke(); for(var l=1;l<3;l++){ ctx.strokeStyle='rgba(0,255,204,0.15)'; ctx.setLineDash([20,20]); ctx.beginPath(); ctx.moveTo(30+l*100,0); ctx.lineTo(30+l*100,H); ctx.stroke(); } ctx.setLineDash([]); ctx.strokeStyle='rgba(0,204,255,0.2)'; for(var y=-40;y<H;y+=40){ ctx.beginPath(); ctx.moveTo(30,y+gameState.bg); ctx.lineTo(330,y+gameState.bg); ctx.stroke(); } gameState.coinObjs.forEach(function(co){ var x=lanes[co.lane]; ctx.save(); ctx.translate(x,co.y); ctx.rotate(gameState.t*0.1); ctx.fillStyle='#ffd700'; ctx.shadowColor='#ffaa00'; ctx.shadowBlur=15; ctx.beginPath(); ctx.arc(0,0,14,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#ffef99'; ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.fill(); ctx.restore(); }); gameState.obs.forEach(function(o){ var x=lanes[o.lane]; ctx.save(); ctx.translate(x,o.y); if(o.type==='jump'){ var grd=ctx.createLinearGradient(-25,-20,25,25); grd.addColorStop(0,'#8B5A2B'); grd.addColorStop(1,'#5C4033'); ctx.fillStyle=grd; ctx.shadowColor='#000'; ctx.shadowBlur=10; ctx.fillRect(-25,-20,50,40); ctx.fillStyle='#654321'; for(var b=0;b<3;b++) ctx.fillRect(-22+b*16,-18,12,36); } else { ctx.fillStyle='rgba(0,255,255,0.3)'; ctx.fillRect(-35,-10,70,8); ctx.fillStyle='#00ffcc'; ctx.shadowColor='#00ffff'; ctx.shadowBlur=20; ctx.fillRect(-30,-8,60,4); ctx.fillStyle='#0088aa'; ctx.fillRect(-32,10,12,25); ctx.fillRect(20,10,12,25); } ctx.restore(); }); var px=lanes[gameState.lane], py=gameState.y; ctx.save(); ctx.translate(px,py); if(gameState.sliding) ctx.scale(1,0.55); ctx.shadowColor='#00ffcc'; ctx.shadowBlur=25; ctx.fillStyle='#00ffcc'; ctx.beginPath(); ctx.arc(0,-28,12,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=15; ctx.fillStyle='#00ccff'; ctx.fillRect(-14,-18,28,32); ctx.fillStyle='#001a1a'; ctx.fillRect(-10,-12,8,6); ctx.fillRect(2,-12,8,6); if(!gameState.sliding){ ctx.fillStyle='#00ffcc'; ctx.fillRect(-16,14,8,18); ctx.fillRect(8,14,8,18); } ctx.restore(); gameState.particles.forEach(function(pt){ ctx.fillStyle='rgba(255,215,0,'+(pt.t/15)+')'; ctx.beginPath(); ctx.arc(pt.x,pt.y-pt.t,3,0,Math.PI*2); ctx.fill(); }); }
   function loop(){ update(); draw(); if(gameState.alive) requestAnimationFrame(loop); }
-  function endRun(){ var d=Math.floor(gameState.dist); var base=Math.min(40, Math.max(10, Math.floor(d/20)+gameState.coins*2)); handleGameEnd(base, '🏃 Temple Complete!', '<p>Distance: '+d+'m</p><p>Coins: '+gameState.coins+'</p><p>Speed: '+Math.floor(gameState.speed)+'x</p>', 'startTempleRun'); }
+  function endRun(){ var d=Math.floor(gameState.dist); handleGameEnd(5, '🏃 Temple Complete!', '<p>Distance: '+d+'m</p><p>Coins: '+gameState.coins+'</p>', 'startTempleRun'); }
   var sx=0, sy=0;
   c.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; e.preventDefault(); },{passive:false});
   c.addEventListener('touchend',function(e){ var dx=e.changedTouches[0].clientX-sx; var dy=e.changedTouches[0].clientY-sy; if(Math.abs(dx)>Math.abs(dy)){ if(dx>25 && gameState.lane<2) gameState.lane++; else if(dx<-25 && gameState.lane>0) gameState.lane--; } else { if(dy<-25 && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; } else if(dy>25 &&!gameState.sliding){ gameState.sliding=true; gameState.slideT=28; } } e.preventDefault(); },{passive:false});
-  var keyHandler=function(e){ if(!gameState.alive) return; if(e.key==='ArrowLeft' && gameState.lane>0){ gameState.lane--; e.preventDefault(); } if(e.key==='ArrowRight' && gameState.lane<2){ gameState.lane++; e.preventDefault(); } if((e.key==='ArrowUp'||e.key===' ') && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; e.preventDefault(); } if(e.key==='ArrowDown' &&!gameState.sliding){ gameState.sliding=true; gameState.slideT=28; e.preventDefault(); } };
+  var keyHandler=function(e){ if(!gameState.alive) return; if(e.key==='ArrowLeft' && gameStatecc073c05c95a4d59b6d89aeba3d281e2.lane>0){ gameState.lane--; e.preventDefault(); } if(e.key==='ArrowRight' && gameState.lane<2){ gameState.lane++; e.preventDefault(); } if((e.key==='ArrowUp'||e.key===' ') && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; e.preventDefault(); } if(e.key==='ArrowDown' &&!gameState.sliding){ gameState.sliding=true; gameState.slideT=28; e.preventDefault(); } };
   window.addEventListener('keydown', keyHandler);
   gameState.cleanup=function(){ window.removeEventListener('keydown', keyHandler); };
   loop();
@@ -314,4 +376,4 @@ function startTempleRun() {
 (function() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); } } } catch(e) {} })();
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </html>
+  </html>
