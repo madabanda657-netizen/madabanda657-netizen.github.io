@@ -46,9 +46,20 @@
 <div id="playPage" class="page"><button class="back-btn" id="backBtn">← Back to Games</button><h2 id="gameTitle"></h2><div class="card"><div id="gameArea" class="game-area"></div></div></div>
 </div>
 
-<div id="bottomAd" class="ad-slot-bottom">
-  <!-- MONETAG VIGNETTE BANNER - paste your Monetag code here -->
-  <div id="monetag-vignette" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;">Monetag Ad</div>
+<div id="bottomAd" class="ad-slot-bottom" style="display:none">
+  <!-- HilltopAds Wallet Banner - Zone 7013601 -->
+  <script>
+  (function(cgpz){
+  var d = document,
+      s = d.createElement('script'),
+      l = d.scripts[d.scripts.length - 1];
+  s.settings = cgpz || {};
+  s.src = "//shameful-farm.com/bcX.V/s/dgGWl/0qYUWZcO/beBm/9uuoZ_UllfkWPzTdcDwEMOTRMv2RMHD-EXtuN/zfAKxKMxzhYLw/NLQe";
+  s.async = true;
+  s.referrerPolicy = 'no-referrer-when-downgrade';
+  l.parentNode.insertBefore(s, l);
+  })({})
+  </script>
 </div>
 
 <div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
@@ -124,6 +135,7 @@ var lastBaseReward = 0;
 function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   addCoins(baseCoins);
   lastBaseReward = baseCoins;
+  window.currentGameRewardClaimed = false;
   document.getElementById('gameArea').innerHTML = 
     '<div class="ad-slot-native"><div class="ad-container-native"></div></div>' +
     '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Watch Video (+50 Bonus)</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
@@ -132,6 +144,7 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
 }
 
 function showRewardedAd() {
+  if (window.currentGameRewardClaimed) { alert('Bonus already claimed for this game'); return; }
   var dbl = document.getElementById('doubleBtn'); if (dbl) { dbl.disabled = true; dbl.innerText = 'Loading video...'; }
   
   // HILLTOPADS REWARDED VIDEO - real video rewards
@@ -152,6 +165,7 @@ function showRewardedAd() {
 }
 
 function giveReward(){
+  window.currentGameRewardClaimed = true;
   var adBonus = 50; 
   try{var u=localStorage.getItem('user')||'Guest',d=parseInt(localStorage.getItem('dailyCoins')||0),c=Math.max(0,DAILY_LIMIT-d),g=Math.min(adBonus,c);if(g>0&&db){db.ref('leaderboard_all/'+u).once('value').then(function(s){var v=s.val()||{},n=(v.coins||0)+g;db.ref('leaderboard_all/'+u).update({coins:n,score:n,lastPlayed:Date.now()});localStorage.setItem('dailyCoins',d+g);localStorage.setItem('coins',n);showBalance()})}else if(g<=0)alert('⚠️ Daily limit reached')}catch(e){}
   var m=document.getElementById('doubleMsg');if(m)m.innerHTML='<span style="color:#51cf66">✅ Ad Bonus! +'+adBonus+' coins</span>';var b=document.getElementById('doubleBtn');if(b){b.disabled=true;b.style.opacity='0.5';b.innerText='✓ Bonus Claimed'}lastBaseReward=0;
@@ -162,6 +176,8 @@ function showPage(page) {
   try {
     var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
     var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+    var bottomAd = document.getElementById('bottomAd');
+    if (bottomAd) bottomAd.style.display = (page === 'wallet') ? 'flex' : 'none';
     if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); }
     else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
     else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
@@ -215,7 +231,7 @@ function setupPresence(u) { try { if (!u ||!db) return; var p = db.ref('presence
 function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + '</span>'; document.getElementById("number").disabled = true; }); } catch(e) {} }
-function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +300 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
+function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
 try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
 function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.04); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
 function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
@@ -325,64 +341,64 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- HilltopAds Rewarded Video -->
+<!-- HilltopAds Rewarded Video - ZONE 6998413 FULL INTEGRATION -->
 <div id="ht-ad-container" style="display:none;position:fixed;inset:0;background:#000;z-index:9999;align-items:center;justify-content:center;">
   <div id="ht-video" style="width:100%;max-width:480px;aspect-ratio:9/16;background:#000;position:relative;">
+    <div id="ht-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#00ffcc;font-size:18px;flex-direction:column;z-index:10"><div>Loading ad...</div><div style="font-size:11px;color:#666;margin-top:6px">HilltopAds Zone 6998413</div></div>
     <video id="ht-content" playsinline style="width:100%;height:100%;background:#000;"></video>
-    <div id="ht-close" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;display:none;cursor:pointer;">Skip</div>
+    <div id="ht-close" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.7);color:#fff;padding:8px 12px;border-radius:20px;font-size:13px;display:none;cursor:pointer;border:1px solid #fff3;z-index:20">Skip ✕</div>
+    <div id="ht-reward-label" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,255,204,0.2);color:#00ffcc;padding:6px 14px;border-radius:12px;font-size:12px;border:1px solid #00ffcc;z-index:20">Watch full video = +50 coins</div>
   </div>
 </div>
 <script>
-const HILLTOP_VAST = "https://bubbly-sound.com/dKmFFpzSd.GINpvOZuGlUy/fe/m_9JujZTUmlBkyPbTEYC5EOwTagU0cM/TzMBtqNOjCkT5/OSDnQtxfNtwa";
-let htAdDisplay, htLoader, htManager, htVideoEl;
+// ================= HILLTOPADS VAST - YOUR APPROVED ZONE =================
+const HILLTOP_VAST = "https://bubbly-sound.com/dimhFoz.dgG/NXvoZjGiUI/iewms9/u_ZWu_lukYP/TYYe5QOFTOgyOyMzTQM/t/Nijbk/5AOeDYQLxsNEwI";
+let htAdDisplay, htLoader, htManager, htVideoEl, htRewardEarned=false;
 
-function initHilltop() {
-  htVideoEl = document.getElementById('ht-content');
-  htAdDisplay = new google.ima.AdDisplayContainer(document.getElementById('ht-video'), htVideoEl);
-  htLoader = new google.ima.AdsLoader(htAdDisplay);
+function initHilltop(){
+  htVideoEl=document.getElementById('ht-content');
+  htAdDisplay=new google.ima.AdDisplayContainer(document.getElementById('ht-video'), htVideoEl);
+  htLoader=new google.ima.AdsLoader(htAdDisplay);
   htLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false);
   htLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false);
 }
-
-function playHilltopRewarded(onComplete) {
-  document.getElementById('ht-ad-container').style.display = 'flex';
-  htAdDisplay.initialize();
-  const adsRequest = new google.ima.AdsRequest();
-  adsRequest.adTagUrl = HILLTOP_VAST;
-  adsRequest.linearAdSlotWidth = 480;
-  adsRequest.linearAdSlotHeight = 854;
+function playHilltopRewarded(cb){
+  htRewardEarned=false;
+  document.getElementById('ht-ad-container').style.display='flex';
+  document.getElementById('ht-loading').style.display='flex';
+  document.getElementById('ht-close').style.display='none';
+  try{htAdDisplay.initialize()}catch(e){}
+  const adsRequest=new google.ima.AdsRequest();
+  adsRequest.adTagUrl=HILLTOP_VAST;
+  adsRequest.linearAdSlotWidth=480;
+  adsRequest.linearAdSlotHeight=854;
   adsRequest.setAdWillAutoPlay(true);
   adsRequest.setAdWillPlayMuted(false);
+  window.htOnComplete=cb;
   htLoader.requestAds(adsRequest);
-  window.htOnComplete = onComplete;
 }
-
-function onAdsManagerLoaded(e) {
-  htManager = e.getAdsManager(htVideoEl);
+function onAdsManagerLoaded(e){
+  document.getElementById('ht-loading').style.display='none';
+  htManager=e.getAdsManager(htVideoEl);
   htManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError);
-  htManager.addEventListener(google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED, () => {});
-  htManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, finishAd);
+  htManager.addEventListener(google.ima.AdEvent.Type.STARTED, ()=>{ setTimeout(()=>{document.getElementById('ht-close').style.display='block'},15000); });
+  htManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, ()=>{ htRewardEarned=true; });
   htManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, finishAd);
-  htManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, finishAd);
-  htManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, finishAd);
-  try {
-    htManager.init(480, 854, google.ima.ViewMode.NORMAL);
-    htManager.start();
-  } catch(err) { onAdError(err); }
+  htManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, finishAd);
+  htManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, ()=>{ htRewardEarned=false; finishAd(); });
+  document.getElementById('ht-close').onclick=()=>{ if(htManager) htManager.skip(); };
+  try{ htManager.init(480,854,google.ima.ViewMode.NORMAL); htManager.start(); }catch(err){ onAdError(err); }
 }
-
-function finishAd() {
-  document.getElementById('ht-ad-container').style.display = 'none';
-  if (htManager) { htManager.destroy(); }
-  if (window.htOnComplete) { window.htOnComplete(true); }
+function finishAd(){
+  document.getElementById('ht-ad-container').style.display='none';
+  if(htManager){ try{ htManager.destroy(); }catch(e){} }
+  if(window.htOnComplete){ window.htOnComplete(htRewardEarned); }
 }
-
-function onAdError(e) {
-  console.log('Hilltop error', e);
-  document.getElementById('ht-ad-container').style.display = 'none';
-  if (window.htOnComplete) { window.htOnComplete(false); }
+function onAdError(e){
+  console.log('HilltopAds error', e);
+  document.getElementById('ht-ad-container').style.display='none';
+  if(window.htOnComplete){ window.htOnComplete(false); }
 }
-
 document.addEventListener('DOMContentLoaded', initHilltop);
 </script>
 
@@ -410,7 +426,6 @@ function startFiveMinTimer() {
       clearInterval(fiveMinInterval);
       document.getElementById('fiveMinBtn').style.display = 'block';
       document.getElementById('fiveMinText').innerText = 'Ready to claim!';
-      // Vibrate if supported
       if (navigator.vibrate) navigator.vibrate(200);
     }
   }, 1000);
@@ -420,12 +435,10 @@ function claimFiveMinBonus() {
   if (fiveMinClaimed) return;
   var user = localStorage.getItem('user') || 'Guest';
   var bonus = 100;
-  // Add coins
   if (db) {
     db.ref('leaderboard_all/'+user).once('value').then(function(s){
       var v = s.val()||{}, n=(v.coins||0)+bonus;
       db.ref('leaderboard_all/'+user).update({coins:n, totalEarned:(v.totalEarned||0)+bonus});
-      updateWallet();
     });
   }
   localStorage.setItem('fiveMinClaimed', new Date().toDateString());
@@ -436,7 +449,6 @@ function claimFiveMinBonus() {
   alert('🎉 +100 coins for staying 5 minutes!');
 }
 
-// Start timer when user is active
 document.addEventListener('visibilitychange', function(){
   if (!document.hidden && !fiveMinClaimed) startFiveMinTimer();
 });
@@ -450,23 +462,17 @@ window.addEventListener('load', function(){
 </script>
 
 <script>
-// === ADS SAFETY: keep users in game, no new tabs ===
+// === ADS SAFETY ===
 (function(){
-  // Block popups from ad containers
   const originalOpen = window.open;
   window.open = function(url, name, specs){
     const inAd = document.querySelector('#topAd:hover, #bottomAd:hover');
-    if(inAd){ console.warn('Blocked ad popup to keep game safe'); return null; }
-    // Force same-tab navigation
+    if(inAd){ console.warn('Blocked ad popup'); return null; }
     return originalOpen.call(window, url, '_self');
   };
-  // Remove target=_blank from ad links
   document.addEventListener('click', function(e){
     const a = e.target.closest('#topAd a, #bottomAd a');
-    if(a){
-      if(a.target === '_blank'){ a.removeAttribute('target'); }
-      e.stopPropagation();
-    }
+    if(a){ if(a.target === '_blank'){ a.removeAttribute('target'); } e.stopPropagation(); }
   }, true);
 })();
 </script>
