@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- Google AdSense Meta Tag Verification -->
+<meta name="google-adsense-account" content="ca-pub-9591565264573924">
+<!-- Google AdSense Code Snippet (More Reliable Verification + Serves Ads) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9591565264573924" crossorigin="anonymous"></script>
+
 <meta charset="UTF-8">
 <title>Mada Game Earn</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="ff564c0857f774bad41282e2433586268cdeb186" content="ff564c0857f774bad41282e2433586268cdeb186" />
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<!-- MONETAG REWARDED INTERSTITIAL - REPLACE WITH YOUR CODE FROM MONETAG DASHBOARD -->
 
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px;font-size:13px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}.progress-container{background:#222;height:10px;border-radius:5px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;background:linear-gradient(45deg,#00ffcc,#00ccff);transition:width 0.3s}
 .ad-slot-top{width:100%;min-height:50px;background:#0a0a0a;margin-bottom:15px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -47,7 +51,6 @@
 </div>
 
 <div id="bottomAd" class="ad-slot-bottom" style="display:none">
-  <!-- HilltopAds Wallet Banner - Zone 7013601 -->
   <script>
   (function(cgpz){
   var d = document,
@@ -76,11 +79,7 @@
 </div>
 
 <script>
-// =========================================================================
-// MONETAG REWARDED AD DIRECT LINK:
-// =========================================================================
 var MONETAG_REWARDED_LINK = "https://omg10.com/4/10952907";
-// =========================================================================
 
 var db = null;
 try { if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) { firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"}); db = firebase.database(); } } catch(e) { db = null; console.warn('Firebase init failed', e); }
@@ -93,52 +92,30 @@ function login() {
     var msgEl = document.getElementById("loginMsg");
     if (!rawName) { if(msgEl) msgEl.innerHTML = '<span class="error">Please enter a username</span>'; if(input) input.focus(); return; }
     if (rawName.length < 2) { if(msgEl) msgEl.innerHTML = '<span class="error">Name too short</span>'; return; }
-    
     var name = rawName.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, '');
-    try { localStorage.setItem("user", name); localStorage.setItem("displayName", rawName); } catch(e) { console.warn('localStorage failed', e); }
-    
-    // UI TRANSITION FIRST - always works even if Firebase fails
+    try { localStorage.setItem("user", name); localStorage.setItem("displayName", rawName); } catch(e) {}
     document.getElementById("loginPage").classList.remove("active");
     document.getElementById("mainNav").style.display = "flex";
     showPage('wallet');
     if(msgEl) msgEl.innerHTML = '';
-    
-    // Firebase operations AFTER UI (non-blocking)
     setTimeout(function(){
       if (!db) return;
-      try { 
-        setupPresence(name); 
-        checkInboxBadge();
+      try {
+        setupPresence(name); checkInboxBadge();
         db.ref('leaderboard_all/' + name).once('value').then(function(snap) {
           var data = snap.val();
-          if (data && data.banned === true) { 
-            try { localStorage.removeItem("user"); localStorage.removeItem("displayName"); } catch(e) {}
-            document.getElementById("loginPage").classList.add("active"); 
-            document.getElementById("mainNav").style.display = "none"; 
-            if(msgEl) msgEl.innerHTML = '<span class="error">🚫 Account banned</span>'; 
-            return; 
-          }
-          if (!snap.exists()) { 
-            db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:rawName}).catch(function(){}); 
-          }
+          if (data && data.banned === true) { try { localStorage.removeItem("user"); localStorage.removeItem("displayName"); } catch(e) {} document.getElementById("loginPage").classList.add("active"); document.getElementById("mainNav").style.display = "none"; if(msgEl) msgEl.innerHTML = '<span class="error">🚫 Account banned</span>'; return; }
+          if (!snap.exists()) { db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:rawName}).catch(function(){}); }
         }).catch(function(err){ console.warn('DB check failed', err); });
-      } catch(e) { console.warn('Post-login error', e); }
+      } catch(e) {}
     }, 100);
-    
-  } catch(e) { 
-    console.error("Login error:", e); 
-    alert("Error: " + e.message); 
-  }
+  } catch(e) { console.error("Login error:", e); alert("Error: " + e.message); }
 }
 
 var lastBaseReward = 0;
 function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
-  addCoins(baseCoins);
-  lastBaseReward = baseCoins;
-  window.currentGameRewardClaimed = false;
-  document.getElementById('gameArea').innerHTML = 
-    '<div class="ad-slot-native"><div class="ad-container-native"></div></div>' +
-    '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Watch Video (+50 Bonus)</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
+  addCoins(baseCoins); lastBaseReward = baseCoins; window.currentGameRewardClaimed = false;
+  document.getElementById('gameArea').innerHTML = '<div class="ad-slot-native"><div class="ad-container-native"></div></div><div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Watch Video (+50 Bonus)</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
   var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); };
   var db2 = document.getElementById("doubleBtn"); if (db2) db2.onclick = function() { showRewardedAd(); };
 }
@@ -146,27 +123,11 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
 function showRewardedAd() {
   if (window.currentGameRewardClaimed) { alert('Bonus already claimed for this game'); return; }
   var dbl = document.getElementById('doubleBtn'); if (dbl) { dbl.disabled = true; dbl.innerText = 'Loading video...'; }
-  
-  // HILLTOPADS REWARDED VIDEO - real video rewards
-  if (typeof playHilltopRewarded === 'function') {
-    playHilltopRewarded(function(success){
-      if(success){
-        console.log('HilltopAds completed');
-        giveReward();
-      } else {
-        alert('Video not ready, please try again');
-        if (dbl) { dbl.disabled = false; dbl.innerText = '📺 Watch Video (+50 Bonus)'; }
-      }
-    });
-  } else {
-    console.warn('Hilltop not initialized');
-    if (dbl) { dbl.disabled = false; dbl.innerText = '📺 Watch Video (+50 Bonus)'; }
-  }
+  if (typeof playHilltopRewarded === 'function') { playHilltopRewarded(function(success){ if(success){ giveReward(); } else { alert('Video not ready, please try again'); if (dbl) { dbl.disabled = false; dbl.innerText = '📺 Watch Video (+50 Bonus)'; } } }); } else { if (dbl) { dbl.disabled = false; dbl.innerText = '📺 Watch Video (+50 Bonus)'; } }
 }
 
 function giveReward(){
-  window.currentGameRewardClaimed = true;
-  var adBonus = 50; 
+  window.currentGameRewardClaimed = true; var adBonus = 50;
   try{var u=localStorage.getItem('user')||'Guest',d=parseInt(localStorage.getItem('dailyCoins')||0),c=Math.max(0,DAILY_LIMIT-d),g=Math.min(adBonus,c);if(g>0&&db){db.ref('leaderboard_all/'+u).once('value').then(function(s){var v=s.val()||{},n=(v.coins||0)+g;db.ref('leaderboard_all/'+u).update({coins:n,score:n,lastPlayed:Date.now()});localStorage.setItem('dailyCoins',d+g);localStorage.setItem('coins',n);showBalance()})}else if(g<=0)alert('⚠️ Daily limit reached')}catch(e){}
   var m=document.getElementById('doubleMsg');if(m)m.innerHTML='<span style="color:#51cf66">✅ Ad Bonus! +'+adBonus+' coins</span>';var b=document.getElementById('doubleBtn');if(b){b.disabled=true;b.style.opacity='0.5';b.innerText='✓ Bonus Claimed'}lastBaseReward=0;
 }
@@ -176,12 +137,11 @@ function showPage(page) {
   try {
     var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
     var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
-    var bottomAd = document.getElementById('bottomAd');
-    if (bottomAd) bottomAd.style.display = (page === 'wallet') ? 'flex' : 'none';
+    var bottomAd = document.getElementById('bottomAd'); if (bottomAd) bottomAd.style.display = (page === 'wallet') ? 'flex' : 'none';
     if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); }
     else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
     else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
-  } catch(e) { console.error('showPage error', e); }
+  } catch(e) {}
 }
 
 function startCountdown() {
@@ -236,23 +196,19 @@ try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { last
 function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.04); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
 function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
 
-// ========== GAMES ==========
 (function() {
   var games = [{id:'temple',icon:'🏃',name:'Temple Run',reward:'+5 coins'},{id:'memory',icon:'🧠',name:'Memory Match',reward:'+5 coins'},{id:'number',icon:'🔢',name:'Number Guess',reward:'+5 coins'},{id:'reaction',icon:'⚡',name:'Reaction Test',reward:'+5 coins'},{id:'color',icon:'🎨',name:'Color Match',reward:'+5 coins'},{id:'math',icon:'➕',name:'Math Challenge',reward:'+5 coins'},{id:'word',icon:'📝',name:'Word Scramble',reward:'+5 coins'},{id:'checkers',icon:'⚫',name:'Checkers',reward:'+5 coins'}];
   var grid = document.getElementById("gamesGrid"); if (grid) { var html = ''; for (var i = 0; i < games.length; i++) { var g = games[i]; html += '<div class="game-card" data-game="' + g.id + '"><div class="game-icon">' + g.icon + '</div><h4>' + g.name + '</h4><div class="game-reward">' + g.reward + '</div></div>'; } grid.innerHTML = html; var cards = grid.querySelectorAll('.game-card'); for (var j = 0; j < cards.length; j++) { (function(card) { card.onclick = function() { startGame(card.getAttribute('data-game')); }; })(cards[j]); } }
 })();
 
-function startGame(type) { 
-  currentGame = type; 
-  document.getElementById('playPage').classList.add('active'); 
-  var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } 
-  document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); 
-  document.getElementById('topAd').classList.add('hide-ad');
-  document.getElementById('bottomAd').classList.add('hide-ad');
-  if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); 
+function startGame(type) {
+  currentGame = type; document.getElementById('playPage').classList.add('active');
+  var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); }
+  document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1);
+  document.getElementById('topAd').classList.add('hide-ad'); document.getElementById('bottomAd').classList.add('hide-ad');
+  if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers();
 }
 
-// ... (rest of game functions unchanged - truncated for brevity in this script, but full code included in file) ...
 function startMemoryMatch() { var emojis = ['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺']; var cards = emojis.concat(emojis).sort(function() { return Math.random() - 0.5; }); gameState = {cards:cards, flipped:[], matched:0, moves:0, startTime:Date.now()}; var html = '<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">'; for (var i = 0; i < cards.length; i++) { html += '<div class="memory-card" id="card' + i + '" data-idx="' + i + '"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'; } html += '</div>'; document.getElementById('gameArea').innerHTML = html; var allCards = document.querySelectorAll('.memory-card'); for (var j = 0; j < allCards.length; j++) { (function(card) { card.onclick = function() { flipCard(parseInt(card.getAttribute('data-idx'))); }; })(allCards[j]); } gameState.timerInterval = setInterval(function() { var t = Math.floor((Date.now() - gameState.startTime) / 1000); var el = document.getElementById('timer'); if (el) el.innerHTML = 'Time: ' + t + 's | Moves: ' + gameState.moves; }, 200); }
 function flipCard(i) { if (gameState.flipped.length >= 2 || gameState.flipped.indexOf(i)!== -1) return; var c = document.getElementById('card' + i); if (!c || c.classList.contains('matched')) return; c.innerHTML = gameState.cards[i]; c.style.background = 'linear-gradient(135deg,#00ffcc,#00ccff)'; gameState.flipped.push(i); if (gameState.flipped.length === 2) { gameState.moves++; var f = gameState.flipped[0], s = gameState.flipped[1]; if (gameState.cards[f] === gameState.cards[s]) { document.getElementById('card' + f).classList.add('matched'); document.getElementById('card' + s).classList.add('matched'); gameState.matched += 2; gameState.flipped = []; if (gameState.matched === gameState.cards.length) { clearInterval(gameState.timerInterval); handleGameEnd(5, '🎉 Complete!', '<p>Well done!</p>', 'startMemoryMatch'); } } else { setTimeout(function() { var cf = document.getElementById('card' + f); var cs = document.getElementById('card' + s); if (cf) cf.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; if (cs) cs.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; gameState.flipped = []; }, 800); } } }
 function startNumberGuess() { gameState = {target: Math.floor(Math.random() * 100) + 1, attempts: 0}; document.getElementById('gameArea').innerHTML = '<h3>Guess 1-100</h3><div class="timer" id="gTimer">Attempts: 0/7</div><input type="number" id="guessInput" placeholder="Enter guess"><button id="guessBtn">Submit</button><p id="guessHint"></p>'; document.getElementById('guessBtn').onclick = makeGuess; }
@@ -295,53 +251,23 @@ function startTempleRun() {
   loop();
 }
 
-// ========== WIRE BUTTONS - FIXED ==========
 document.addEventListener('DOMContentLoaded', function() {
-  var loginBtn = document.getElementById("loginBtn");
-  if (loginBtn) {
-    loginBtn.addEventListener('click', function(e){ e.preventDefault(); login(); });
-  }
-  var usernameInput = document.getElementById("usernameInput");
-  if (usernameInput) {
-    usernameInput.addEventListener('keypress', function(e){ if(e.key === 'Enter'){ e.preventDefault(); login(); }});
-    setTimeout(function(){ usernameInput.focus(); }, 300);
-  }
-
+  var loginBtn = document.getElementById("loginBtn"); if (loginBtn) loginBtn.addEventListener('click', function(e){ e.preventDefault(); login(); });
+  var usernameInput = document.getElementById("usernameInput"); if (usernameInput) { usernameInput.addEventListener('keypress', function(e){ if(e.key === 'Enter'){ e.preventDefault(); login(); }}); setTimeout(function(){ usernameInput.focus(); }, 300); }
   var el;
-  el = document.getElementById("backBtn"); 
-  if (el) el.onclick = function() { 
-    if(gameState && gameState.cleanup) gameState.cleanup(); 
-    currentGame = null; gameState = {}; 
-    document.getElementById('topAd').classList.remove('hide-ad');
-    document.getElementById('bottomAd').classList.remove('hide-ad');
-    showPage('games'); 
-  };
+  el = document.getElementById("backBtn"); if (el) el.onclick = function() { if(gameState && gameState.cleanup) gameState.cleanup(); currentGame = null; gameState = {}; document.getElementById('topAd').classList.remove('hide-ad'); document.getElementById('bottomAd').classList.remove('hide-ad'); showPage('games'); };
   el = document.getElementById("navWallet"); if (el) el.onclick = function() { showPage('wallet'); };
   el = document.getElementById("navGames"); if (el) el.onclick = function() { showPage('games'); };
   el = document.getElementById("navInbox"); if (el) el.onclick = function() { showPage('inbox'); };
   el = document.getElementById("saveBtn"); if (el) el.onclick = saveDetails;
   el = document.getElementById("dailyBtn"); if (el) el.onclick = claimDailyBonus;
   el = document.getElementById("withdrawBtn"); if (el) el.onclick = withdraw;
-  el = document.getElementById("replyBtn");
-  if (el) el.onclick = function() { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } var txt = document.getElementById('playerReply').value.trim(); if (!txt ||!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').push({from:u, to:'Admin_Mada', text:txt, timestamp:Date.now(), status:'sent'}).then(function() { document.getElementById('playerReply').value = ''; document.getElementById('replyStatus').innerHTML = '<span style="color:#51cf66">✓ Sent</span>'; setTimeout(function() { document.getElementById('replyStatus').innerHTML = ''; }, 1500); }); };
-  
-  el = document.getElementById("manualClaimBtn");
-  if (el) el.onclick = function() { giveReward(); };
-
-  // Auto-login
-  try { 
-    var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } 
-    if (u) { 
-      document.getElementById("loginPage").classList.remove("active"); 
-      document.getElementById("mainNav").style.display = "flex"; 
-      showPage('wallet'); 
-      if (db) { setupPresence(u); checkInboxBadge(); } 
-    } 
-  } catch(e) {}
+  el = document.getElementById("replyBtn"); if (el) el.onclick = function() { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } var txt = document.getElementById('playerReply').value.trim(); if (!txt ||!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').push({from:u, to:'Admin_Mada', text:txt, timestamp:Date.now(), status:'sent'}).then(function() { document.getElementById('playerReply').value = ''; document.getElementById('replyStatus').innerHTML = '<span style="color:#51cf66">✓ Sent</span>'; setTimeout(function() { document.getElementById('replyStatus').innerHTML = ''; }, 1500); }); };
+  el = document.getElementById("manualClaimBtn"); if (el) el.onclick = function() { giveReward(); };
+  try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); } } } catch(e) {}
 });
 </script>
 
-<!-- HilltopAds Rewarded Video - ZONE 6998413 FULL INTEGRATION -->
 <div id="ht-ad-container" style="display:none;position:fixed;inset:0;background:#000;z-index:9999;align-items:center;justify-content:center;">
   <div id="ht-video" style="width:100%;max-width:480px;aspect-ratio:9/16;background:#000;position:relative;">
     <div id="ht-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#00ffcc;font-size:18px;flex-direction:column;z-index:10"><div>Loading ad...</div><div style="font-size:11px;color:#666;margin-top:6px">HilltopAds Zone 6998413</div></div>
@@ -351,118 +277,25 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </div>
 <script>
-// ================= HILLTOPADS VAST - YOUR APPROVED ZONE =================
 const HILLTOP_VAST = "https://bubbly-sound.com/dimhFoz.dgG/NXvoZjGiUI/iewms9/u_ZWu_lukYP/TYYe5QOFTOgyOyMzTQM/t/Nijbk/5AOeDYQLxsNEwI";
 let htAdDisplay, htLoader, htManager, htVideoEl, htRewardEarned=false;
-
-function initHilltop(){
-  htVideoEl=document.getElementById('ht-content');
-  htAdDisplay=new google.ima.AdDisplayContainer(document.getElementById('ht-video'), htVideoEl);
-  htLoader=new google.ima.AdsLoader(htAdDisplay);
-  htLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false);
-  htLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false);
-}
-function playHilltopRewarded(cb){
-  htRewardEarned=false;
-  document.getElementById('ht-ad-container').style.display='flex';
-  document.getElementById('ht-loading').style.display='flex';
-  document.getElementById('ht-close').style.display='none';
-  try{htAdDisplay.initialize()}catch(e){}
-  const adsRequest=new google.ima.AdsRequest();
-  adsRequest.adTagUrl=HILLTOP_VAST;
-  adsRequest.linearAdSlotWidth=480;
-  adsRequest.linearAdSlotHeight=854;
-  adsRequest.setAdWillAutoPlay(true);
-  adsRequest.setAdWillPlayMuted(false);
-  window.htOnComplete=cb;
-  htLoader.requestAds(adsRequest);
-}
-function onAdsManagerLoaded(e){
-  document.getElementById('ht-loading').style.display='none';
-  htManager=e.getAdsManager(htVideoEl);
-  htManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError);
-  htManager.addEventListener(google.ima.AdEvent.Type.STARTED, ()=>{ setTimeout(()=>{document.getElementById('ht-close').style.display='block'},15000); });
-  htManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, ()=>{ htRewardEarned=true; });
-  htManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, finishAd);
-  htManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, finishAd);
-  htManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, ()=>{ htRewardEarned=false; finishAd(); });
-  document.getElementById('ht-close').onclick=()=>{ if(htManager) htManager.skip(); };
-  try{ htManager.init(480,854,google.ima.ViewMode.NORMAL); htManager.start(); }catch(err){ onAdError(err); }
-}
-function finishAd(){
-  document.getElementById('ht-ad-container').style.display='none';
-  if(htManager){ try{ htManager.destroy(); }catch(e){} }
-  if(window.htOnComplete){ window.htOnComplete(htRewardEarned); }
-}
-function onAdError(e){
-  console.log('HilltopAds error', e);
-  document.getElementById('ht-ad-container').style.display='none';
-  if(window.htOnComplete){ window.htOnComplete(false); }
-}
+function initHilltop(){ htVideoEl=document.getElementById('ht-content'); htAdDisplay=new google.ima.AdDisplayContainer(document.getElementById('ht-video'), htVideoEl); htLoader=new google.ima.AdsLoader(htAdDisplay); htLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false); htLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false); }
+function playHilltopRewarded(cb){ htRewardEarned=false; document.getElementById('ht-ad-container').style.display='flex'; document.getElementById('ht-loading').style.display='flex'; document.getElementById('ht-close').style.display='none'; try{htAdDisplay.initialize()}catch(e){} const adsRequest=new google.ima.AdsRequest(); adsRequest.adTagUrl=HILLTOP_VAST; adsRequest.linearAdSlotWidth=480; adsRequest.linearAdSlotHeight=854; adsRequest.setAdWillAutoPlay(true); adsRequest.setAdWillPlayMuted(false); window.htOnComplete=cb; htLoader.requestAds(adsRequest); }
+function onAdsManagerLoaded(e){ document.getElementById('ht-loading').style.display='none'; htManager=e.getAdsManager(htVideoEl); htManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError); htManager.addEventListener(google.ima.AdEvent.Type.STARTED, ()=>{ setTimeout(()=>{document.getElementById('ht-close').style.display='block'},15000); }); htManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, ()=>{ htRewardEarned=true; }); htManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, finishAd); htManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, finishAd); htManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, ()=>{ htRewardEarned=false; finishAd(); }); document.getElementById('ht-close').onclick=()=>{ if(htManager) htManager.skip(); }; try{ htManager.init(480,854,google.ima.ViewMode.NORMAL); htManager.start(); }catch(err){ onAdError(err); } }
+function finishAd(){ document.getElementById('ht-ad-container').style.display='none'; if(htManager){ try{ htManager.destroy(); }catch(e){} } if(window.htOnComplete){ window.htOnComplete(htRewardEarned); } }
+function onAdError(e){ console.log('HilltopAds error', e); document.getElementById('ht-ad-container').style.display='none'; if(window.htOnComplete){ window.htOnComplete(false); } }
 document.addEventListener('DOMContentLoaded', initHilltop);
 </script>
 
 <script>
-// 5-MINUTE RETENTION SYSTEM
-var fiveMinSeconds = 0;
-var fiveMinInterval = null;
-var fiveMinClaimed = localStorage.getItem('fiveMinClaimed') === new Date().toDateString();
-
-function startFiveMinTimer() {
-  if (fiveMinClaimed) {
-    document.getElementById('fiveMinText').innerText = 'Already claimed today!';
-    document.getElementById('fiveMinBar').style.width = '100%';
-    return;
-  }
-  if (fiveMinInterval) return;
-  fiveMinInterval = setInterval(function(){
-    fiveMinSeconds++;
-    var pct = Math.min(100, (fiveMinSeconds/300)*100);
-    document.getElementById('fiveMinBar').style.width = pct + '%';
-    var m = Math.floor(fiveMinSeconds/60);
-    var s = fiveMinSeconds%60;
-    document.getElementById('fiveMinText').innerText = m+':'+(s<10?'0':'')+s+' / 5:00';
-    if (fiveMinSeconds >= 300) {
-      clearInterval(fiveMinInterval);
-      document.getElementById('fiveMinBtn').style.display = 'block';
-      document.getElementById('fiveMinText').innerText = 'Ready to claim!';
-      if (navigator.vibrate) navigator.vibrate(200);
-    }
-  }, 1000);
-}
-
-function claimFiveMinBonus() {
-  if (fiveMinClaimed) return;
-  var user = localStorage.getItem('user') || 'Guest';
-  var bonus = 100;
-  if (db) {
-    db.ref('leaderboard_all/'+user).once('value').then(function(s){
-      var v = s.val()||{}, n=(v.coins||0)+bonus;
-      db.ref('leaderboard_all/'+user).update({coins:n, totalEarned:(v.totalEarned||0)+bonus});
-    });
-  }
-  localStorage.setItem('fiveMinClaimed', new Date().toDateString());
-  fiveMinClaimed = true;
-  document.getElementById('fiveMinBtn').style.display = 'none';
-  document.getElementById('fiveMinText').innerText = 'Claimed +100! Come back tomorrow';
-  document.getElementById('fiveMinBar').style.width = '100%';
-  alert('🎉 +100 coins for staying 5 minutes!');
-}
-
-document.addEventListener('visibilitychange', function(){
-  if (!document.hidden && !fiveMinClaimed) startFiveMinTimer();
-});
-window.addEventListener('load', function(){
-  setTimeout(function(){
-    var btn = document.getElementById('fiveMinBtn');
-    if (btn) btn.onclick = claimFiveMinBonus;
-    startFiveMinTimer();
-  }, 2000);
-});
+var fiveMinSeconds = 0; var fiveMinInterval = null; var fiveMinClaimed = localStorage.getItem('fiveMinClaimed') === new Date().toDateString();
+function startFiveMinTimer() { if (fiveMinClaimed) { document.getElementById('fiveMinText').innerText = 'Already claimed today!'; document.getElementById('fiveMinBar').style.width = '100%'; return; } if (fiveMinInterval) return; fiveMinInterval = setInterval(function(){ fiveMinSeconds++; var pct = Math.min(100, (fiveMinSeconds/300)*100); document.getElementById('fiveMinBar').style.width = pct + '%'; var m = Math.floor(fiveMinSeconds/60); var s = fiveMinSeconds%60; document.getElementById('fiveMinText').innerText = m+':'+(s<10?'0':'')+s+' / 5:00'; if (fiveMinSeconds >= 300) { clearInterval(fiveMinInterval); document.getElementById('fiveMinBtn').style.display = 'block'; document.getElementById('fiveMinText').innerText = 'Ready to claim!'; if (navigator.vibrate) navigator.vibrate(200); } }, 1000); }
+function claimFiveMinBonus() { if (fiveMinClaimed) return; var user = localStorage.getItem('user') || 'Guest'; var bonus = 100; if (db) { db.ref('leaderboard_all/'+user).once('value').then(function(s){ var v = s.val()||{}, n=(v.coins||0)+bonus; db.ref('leaderboard_all/'+user).update({coins:n, totalEarned:(v.totalEarned||0)+bonus}); }); } localStorage.setItem('fiveMinClaimed', new Date().toDateString()); fiveMinClaimed = true; document.getElementById('fiveMinBtn').style.display = 'none'; document.getElementById('fiveMinText').innerText = 'Claimed +100! Come back tomorrow'; document.getElementById('fiveMinBar').style.width = '100%'; alert('🎉 +100 coins for staying 5 minutes!'); }
+document.addEventListener('visibilitychange', function(){ if (!document.hidden && !fiveMinClaimed) startFiveMinTimer(); });
+window.addEventListener('load', function(){ setTimeout(function(){ var btn = document.getElementById('fiveMinBtn'); if (btn) btn.onclick = claimFiveMinBonus; startFiveMinTimer(); }, 2000); });
 </script>
 
 <script>
-// === ADS SAFETY ===
 (function(){
   const originalOpen = window.open;
   window.open = function(url, name, specs){
@@ -477,4 +310,4 @@ window.addEventListener('load', function(){
 })();
 </script>
 </body>
-</html>
+                                                                                                                                                                                                                                                                                        </html>
