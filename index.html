@@ -338,6 +338,19 @@ document.addEventListener('DOMContentLoaded', function() {
   el = document.getElementById("manualClaimBtn");
   if (el) el.onclick = function() { giveReward(); };
 
+  // --- FIXED: Start Surveys Button ---
+  el = document.getElementById("surveyBtn");
+  if (el) el.onclick = function() {
+    var uid = localStorage.getItem('user') || 'guest_' + Math.random().toString(36).substr(2,9);
+    var name = localStorage.getItem('displayName') || uid;
+    // Your CPX Research App ID is 32824 (from your code)
+    var url = 'https://offers.cpx-research.com/index.php?app_id=32824&ext_user_id=' + encodeURIComponent(uid) + '&username=' + encodeURIComponent(name);
+    // Open in new tab - works best for mobile users in Malawi
+    window.open(url, '_blank');
+    // Optional: track click
+    console.log('CPX opened for', uid);
+  };
+
   // Auto-login
   try { 
     var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } 
