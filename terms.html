@@ -1,22 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Terms of Service - Mada Game Earn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — Mada Game Earn</title>
+    <meta name="description" content="Terms of Service for Mada Game Earn, a trivia game in Malawi rewarding users with coins for playing and completing surveys via TheoremReach.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { color-scheme: light; }
+        body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+        h1, h2, h3, .display { font-family: 'Outfit', sans-serif; }
+        .prose p { line-height: 1.8; }
+        .prose li { margin-top: 0.5rem; }
+        @media print {
+            header, aside, #toast, .no-print { display: none !important; }
+            main { padding: 0 !important; }
+            article { box-shadow: none !important; border: none !important; }
+        }
+    </style>
 </head>
-<body style="font-family:Arial;max-width:700px;margin:40px auto;padding:20px;line-height:1.6">
-<h1>Terms of Service</h1>
-<p><strong>Mada Game Earn</strong><br>Effective: May 6, 2026</p>
-<h2>1. Acceptance</h2>
-<p>By using Mada Game Earn you agree to these terms.</p>
-<h2>2. Service</h2>
-<p>Play games and complete surveys to earn coins. 100 coins = $1 USD.</p>
-<h2>3. Rewards</h2>
-<p>Minimum payout: 5,000 coins. Payouts via Airtel Money or TNM Mpamba. We may deny rewards for fraud.</p>
-<h2>4. Prohibited</h2>
-<p>No VPNs, no bots, no multiple accounts, no cheating. Violation = ban and lose all coins.</p>
-<h2>5. Contact</h2>
-<p>Email: madabanda657@gmail.com</p>
+<body class="bg-[#f7f8fc] text-slate-800 antialiased" id="top">
+    <div class="absolute inset-x-0 top-0 -z-10 h-[520px] overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-violet-600/20 via-indigo-500/15 to-transparent"></div>
+        <div class="absolute -top-24 left-1/2 h-72 w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 opacity-20 blur-3xl"></div>
+    </div>
+
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/70 border-b border-slate-200/60">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 grid place-items-center shadow-md shadow-violet-600/20">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-white"><path d="M12 4l3 5h5l-4 4 3 5-5-2-5 2 3-5-4-4h5l3-5z" fill="currentColor"/></svg>
+                </div>
+                <div>
+                    <div class="display font-bold leading-none tracking-tight text-slate-900">Mada Game Earn</div>
+                    <div class="text-[11px] text-slate-500 -mt-0.5">Trivia for Malawi</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="window.print()" class="no-print hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+                    Print
+                </button>
+                <a href="#contact" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-violet-600 text-white hover:bg-violet-700 transition">
+                    Contact
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+        <div class="mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-50 text-violet-700 text-xs font-medium border border-violet-200">
+                <span class="h-1.5 w-1.5 rounded-full bg-violet-600 animate-pulse"></span>
+                Effective: May 6, 2026
+            </div>
+            <h1 class="display text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mt-4">Terms of Service</h1>
+            <p class="mt-3 text-lg text-slate-600 max-w-2xl">Please read these terms carefully before using Mada Game Earn. By playing our trivia game or completing surveys, you agree to these terms.</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-sm">🇲🇼 Made for Malawi</span>
+                <span class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-sm">100 Coins = $1 USD</span>
+                <span class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-sm">Payout: Airtel Money & TNM Mpamba</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <aside class="lg:col-span-4 xl:col-span-3">
+                <div class="lg:sticky lg:top-24">
+                    <details class="lg:hidden group bg-white rounded-2xl border border-slate-200 p-4">
+                        <summary class="flex items-center justify-between cursor-pointer list-none">
+                            <span class="font-semibold text-slate-900">On this page</span>
+                            <svg class="w-4 h-4 transition group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </summary>
+                        <nav class="mt-3 space-y-2 text-sm">
+                            <a class="block text-slate-600 hover:text-violet-700" href="#acceptance">1. Acceptance</a>
+                            <a class="block text-slate-600 hover:text-violet-700" href="#service">2. Service Description</a>
+                            <a class="block text-slate-600 hover:text-violet-700" href="#accounts">3. User Accounts</a>
+                            <a class="block text-slate-600 hover:text-violet-700" href="#rewards">4. Rewards</a>
+                            <a class="block text-slate-600 hover:text-violet-700" href="#prohibited">5. Prohibited Conduct</a>
+                            <a class="block text-slate-600 hover:text-violet-700" href="#disclaimer">6. Disclaimer</a>
+                            <a class="block text-slate-600 hover:text-violet-700" href="#changes">7. Changes</a>
+                        </nav>
+                    </details>
+
+                    <div class="hidden lg:block bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <h3 class="font-semibold text-slate-900 mb-3">Contents</h3>
+                        <nav class="space-y-2.5 text-[14px]">
+                            <a href="#acceptance" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">1</span> Acceptance</a>
+                            <a href="#service" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">2</span> Service Description</a>
+                            <a href="#accounts" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">3</span> User Accounts</a>
+                            <a href="#rewards" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">4</span> Rewards</a>
+                            <a href="#prohibited" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">5</span> Prohibited Conduct</a>
+                            <a href="#disclaimer" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">6</span> Disclaimer</a>
+                            <a href="#changes" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">7</span> Changes</a>
+                            <a href="#contact" class="flex gap-2 text-slate-600 hover:text-violet-700"><span class="text-slate-400">8</span> Contact</a>
+                        </nav>
+                        <div class="mt-5 pt-5 border-t">
+                            <a href="#top" class="text-xs text-slate-500 hover:text-slate-700">↑ Back to top</a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <article class="lg:col-span-8 xl:col-span-9">
+                <div class="bg-white rounded-[28px] border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+                    <div class="px-6 sm:px-10 py-8 sm:py-10 prose max-w-none prose-slate">
+                        
+                        <section id="acceptance" class="scroll-mt-24">
+                            <h2 class="display text-2xl font-bold text-slate-900">1. Acceptance of Terms</h2>
+                            <p>Welcome to <strong>Mada Game Earn</strong> ("App", "Service", "we", "us"). These Terms of Service ("Terms") govern your use of our trivia game operated in Malawi.</p>
+                            <p>By downloading, installing, or using Mada Game Earn, you agree to be legally bound by these Terms. If you do not agree, do not use the App.</p>
+                            <p>You confirm you are at least 18 years old, or have verifiable parental/guardian consent, and are a resident of Malawi.</p>
+                        </section>
+
+                        <section id="service" class="scroll-mt-24 mt-10">
+                            <h2 class="display text-2xl font-bold text-slate-900">2. Service Description</h2>
+                            <p>Mada Game Earn is a free-to-play trivia game where users earn virtual Coins for:</p>
+                            <ul class="list-disc pl-5">
+                                <li>Answering trivia questions correctly</li>
+                                <li>Maintaining daily play streaks</li>
+                                <li>Completing optional market research surveys via our partner <strong>TheoremReach</strong></li>
+                            </ul>
+                            <p>The Service is for entertainment purposes only. We do not require any payment to play.</p>
+                            <div class="not-prose mt-4 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-sm">
+                                <strong>Third-Party Surveys:</strong> TheoremReach is an independent provider. When you choose a survey, you leave our App and are subject to TheoremReach's terms and privacy policy. We are not responsible for survey availability, qualification, disqualifications, or content.
+                            </div>
+                        </section>
+
+                        <section id="accounts" class="scroll-mt-24 mt-10">
+                            <h2 class="display text-2xl font-bold text-slate-900">3. User Accounts</h2>
+                            <ul class="list-disc pl-5">
+                                <li>You must provide accurate information, including your true name and valid Malawian mobile number.</li>
+                                <li>You are responsible for keeping your device and account secure.</li>
+                                <li><strong>One account per person.</strong> Creating multiple accounts on one or more devices is prohibited.</li>
+                                <li>We reserve the right to suspend or terminate accounts with suspicious activity, fraudulent earnings, or violations of these Terms.</li>
+                                <li>You may not transfer, sell, or share your account.</li>
+                            </ul>
+                        </section>
+
+                        <section id="rewards" class="scroll-mt-24 mt-10">
+                            <h2 class="display text-2xl font-bold text-slate-900">4. Rewards and Payouts</h2>
+                            <p>Coins are a virtual in-app currency with no monetary value outside Mada Game Earn.</p>
+                            
+                            <div class="not-prose my-6 grid sm:grid-cols-3 gap-3">
+                                <div class="p-4 rounded-2xl bg-slate-900 text-white">
+                                    <div class="text-xs opacity-70">Exchange Rate</div>
+                                    <div class="text-2xl font-bold mt-1">100 Coins</div>
+                                    <div class="text-lg">= $1 USD</div>
+                                </div>
+                                <div class="p-4 rounded-2xl bg-violet-600 text-white">
+                                    <div class="text-xs opacity-80">Minimum Payout</div>
+                                    <div class="text-2xl font-bold mt-1">5,000 Coins</div>
+                                    <div class="text-lg">= $50 USD</div>
+                                </div>
+                                <div class="p-4 rounded-2xl bg-white border border-slate-200">
+                                    <div class="text-xs text-slate-500">Payout Methods</div>
+                                    <div class="text-base font-semibold mt-1 text-slate-900">Airtel Money</div>
+                                    <div class="text-base font-semibold text-slate-900">TNM Mpamba</div>
+                                </div>
+                            </div>
+
+                            <ul class="list-disc pl-5">
+                                <li>Payouts are processed <strong>only</strong> to registered Malawian Airtel Money or TNM Mpamba numbers matching your account name.</li>
+                                <li>Payouts are converted to Malawian Kwacha (MWK) using the prevailing market rate at time of processing.</li>
+                                <li>Processing time is typically <strong>3-7 business days</strong> after approval. Delays may occur during holidays or high volume.</li>
+                                <li>Coins earned from TheoremReach surveys are pending for 24-72 hours for verification. Reversed or fraudulent surveys will be deducted.</li>
+                                <li>You are responsible for providing the correct mobile money details. We are not liable for transfers to incorrect numbers you provide.</li>
+                                <li>We reserve the right to request KYC verification (ID) for payouts over 10,000 coins.</li>
+                                <li>Coins may expire after 12 months of account inactivity.</li>
+                                <li>Mobile money fees charged by Airtel or TNM are deducted from your payout.</li>
+                            </ul>
+                        </section>
+
+                        <section id="prohibited" class="scroll-mt-24 mt-10">
+                            <h2 class="display text-2xl font-bold text-slate-900">5. Prohibited Conduct</h2>
+                            <p>You agree NOT to:</p>
+                            <ul class="list-disc pl-5">
+                                <li>Use VPNs, proxies, or GPS spoofing to appear outside Malawi</li>
+                                <li>Use bots, auto-clickers, emulators, or scripts</li>
+                                <li>Create multiple accounts or farm rewards</li>
+                                <li>Provide false information on surveys or cheat trivia</li>
+                                <li>Exploit bugs, hack, or reverse-engineer the App</li>
+                                <li>Submit fraudulent TheoremReach completions (results in permanent ban and forfeiture)</li>
+                                <li>Harass other players or post offensive content</li>
+                            </ul>
+                            <p>Violation will result in immediate account termination, forfeiture of all Coins, and permanent ban from future payouts.</p>
+                        </section>
+
+                        <section id="disclaimer" class="scroll-mt-24 mt-10">
+                            <h2 class="display text-2xl font-bold text-slate-900">6. Disclaimer of Warranties & Limitation of Liability</h2>
+                            <p>The Service is provided "AS IS" and "AS AVAILABLE". We do not guarantee you will qualify for surveys, earn a specific amount, or receive uninterrupted service.</p>
+                            <p>We are not affiliated with Airtel Malawi or TNM, and are not liable for delays or failures by their mobile money systems. We are not liable for actions or omissions of TheoremReach.</p>
+                            <p>To the maximum extent permitted by Malawian law, our total liability for any claim is limited to the amount of your last successful payout or MWK 5,000, whichever is less.</p>
+                            <p>Mada Game Earn is not a gambling, investment, or employment opportunity. Coins have no cash value until successfully redeemed.</p>
+                        </section>
+
+                        <section id="changes" class="scroll-mt-24 mt-10">
+                            <h2 class="display text-2xl font-bold text-slate-900">7. Changes to Terms</h2>
+                            <p>We may update these Terms at any time to reflect changes in our Service, rewards, or legal requirements. The "Effective" date at the top will be updated.</p>
+                            <p>Material changes (such as payout threshold or exchange rate) will be notified in-app at least 7 days in advance. Your continued use after changes become effective constitutes acceptance.</p>
+                        </section>
+
+                        <section id="contact" class="scroll-mt-24 mt-12">
+                            <div class="not-prose p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                                <h3 class="display text-xl font-bold text-slate-900">8. Contact Us</h3>
+                                <p class="text-slate-600 mt-1">Questions about these Terms, payouts, or your account?</p>
+                                <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                                    <a href="mailto:madabanda657@gmail.com" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800 transition">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+                                        madabanda657@gmail.com
+                                    </a>
+                                    <button id="copy-email" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 font-medium hover:bg-slate-50 transition">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                        Copy Email
+                                    </button>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-3">We typically reply within 48 hours. Please include your in-app User ID.</p>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    <div class="px-6 sm:px-10 py-6 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                        <p class="text-xs text-slate-500">© <span id="year"></span> Mada Game Earn. All rights reserved. Operated in Malawi.</p>
+                        <p class="text-xs text-slate-500">Version 1.0</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 transition-all duration-300 opacity-0 translate-y-2 pointer-events-none z-50">
+        <div class="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-lg flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+            Email copied to clipboard
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const year = document.getElementById('year');
+            if (year) year.textContent = new Date().getFullYear();
+
+            const copyBtn = document.getElementById('copy-email');
+            const toast = document.getElementById('toast');
+            
+            if (copyBtn) {
+                copyBtn.addEventListener('click', async () => {
+                    const email = 'madabanda657@gmail.com';
+                    try {
+                        await navigator.clipboard.writeText(email);
+                        toast.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+                        setTimeout(() => {
+                            toast.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+                        }, 2200);
+                    } catch (e) {
+                        window.location.href = 'mailto:' + email;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
-</html>
+              </html>
