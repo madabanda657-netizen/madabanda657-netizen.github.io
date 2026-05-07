@@ -64,44 +64,46 @@
 
 <div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:20px;">Play games to earn 5 coins each!</p><div class="games-grid" id="gamesGrid"></div></div></div>
 
+
 <div id="surveysPage" class="page">
   <h1>📝 Survey Wall</h1>
   
-  <!-- ADGEM INTEGRATION START -->
-  <div class="card" style="background:linear-gradient(135deg,#6a11cb,#2575fc);border:2px solid #6a11cb; padding: 15px;">
-    <h3 style="color:#fff">💎 AdGem - Top Offers</h3>
-    <p style="color:#e0e0ff;font-weight:bold;margin:10px 0">Complete offers below to earn massive coins!</p>
-    <div class="ro-wall-container" id="adgem-wall">
-        <div style="padding:40px;color:#666">Loading offers...</div>
+  <!-- ADSCEND MEDIA - TOP PRIORITY FOR APPROVAL -->
+  <div class="card" style="background:linear-gradient(135deg,#ff416c,#ff4b2b);border:2px solid #ff416c; padding: 15px;">
+    <h3 style="color:#fff">🔥 Adscend Media - #1 Offer Wall</h3>
+    <p style="color:#ffe0e0;font-weight:bold;margin:10px 0">Malawi's highest paying surveys & offers!</p>
+    <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin:10px 0;text-align:left">
+      <div style="margin:6px 0"><span style="color:#ffd700">✓</span> Consumer Habits - 2,500 coins (8 min)</div>
+      <div style="margin:6px 0"><span style="color:#ffd700">✓</span> Mobile Usage MW - 1,800 coins (5 min)</div>
+      <div style="margin:6px 0"><span style="color:#ffd700">✓</span> Shopping Survey - 4,000 coins (12 min)</div>
     </div>
+    <div class="ro-wall-container" id="adscend-wall">
+        <div style="padding:40px;color:#fff;background:#00000055;border-radius:8px">Adscend Wall Loading... (Integration Pending Approval)</div>
+    </div>
+    <p style="font-size:11px;color:#ffe0e0;margin-top:8px">Publisher ID: Pending | Status: Awaiting Adscend Approval</p>
   </div>
-  <!-- ADGEM INTEGRATION END -->
 
-  
   <div class="card" style="background:linear-gradient(135deg,#00ff88,#00cc66);border:2px solid #00ff88">
     <h3>🔥 TheoremReach - Highest Paying</h3>
     <p style="color:#000;font-weight:bold;margin:10px 0">Earn 5,000 - 50,000 coins per survey!</p>
     <p style="color:#003322;font-size:13px">Average time: 5-15 minutes</p>
     <button onclick="openSurvey('theoremreach')" style="background:#000;color:#00ff88;margin-top:10px">Start TheoremReach →</button>
   </div>
+  
   <div class="card">
     <h3>📊 CPX Research</h3>
     <p style="color:#ccc;margin:10px 0">Premium surveys for Malawi users</p>
     <p style="color:#ffd700;font-weight:bold">Pays: 3,000 - 30,000 coins</p>
     <button onclick="openSurvey('cpx')" style="margin-top:10px">Open CPX →</button>
   </div>
+  
   <div class="card">
     <h3>💎 BitLabs Surveys</h3>
     <p style="color:#ccc;margin:10px 0">Quick surveys, instant credit</p>
     <p style="color:#00ffcc;font-weight:bold">Pays: 1,000 - 15,000 coins</p>
     <button onclick="openSurvey('bitlabs')" style="margin-top:10px">Open BitLabs →</button>
   </div>
-  <div class="card">
-    <h3>🎯 Pollfish Surveys</h3>
-    <p style="color:#ccc;margin:10px 0">Short polls, mobile friendly</p>
-    <p style="color:#00ffcc;font-weight:bold">Pays: 500 - 8,000 coins</p>
-    <button onclick="openSurvey('pollfish')" style="margin-top:10px">Open Pollfish →</button>
-  </div>
+
   <div class="card" style="background:#1a1a2e;border:1px solid #ff6b6b">
     <h3 style="color:#ff6b6b">📜 Survey Rules - READ FIRST</h3>
     <div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px;margin-top:10px">
@@ -115,13 +117,7 @@
       <p style="margin-top:10px;color:#ff6b6b"><strong>⚠️ Breaking rules = lose all coins</strong></p>
     </div>
   </div>
-  <div class="card">
-    <h3>💰 Earnings Guide</h3>
-    <div class="flex-row"><span>Short Survey (2-5 min)</span><span style="color:#51cf66">500-2,000</span></div>
-    <div class="flex-row"><span>Medium Survey (5-10 min)</span><span style="color:#51cf66">2,000-8,000</span></div>
-    <div class="flex-row"><span>Long Survey (10-20 min)</span><span style="color:#51cf66">8,000-25,000</span></div>
-    <div class="flex-row"><span>Premium Survey (20+ min)</span><span style="color:#ffd700">25,000-50,000</span></div>
-  </div>
+
 </div>
 
 <div id="inboxPage" class="page"><h1>💬 Support Inbox</h1><div class="card" style="text-align:left;max-height:380px;overflow-y:auto;padding:12px;background:#0a0a0a" id="adminChatBox"><div style="color:#666;text-align:center;padding:30px">No messages</div></div><div class="card"><input type="text" id="playerReply" placeholder="Reply to Admin..." style="margin-bottom:8px"><button id="replyBtn">Send Reply</button><p id="replyStatus" style="margin-top:8px;font-size:12px;height:16px"></p></div></div>
@@ -165,7 +161,7 @@ function loadAdGem() {
   var container = document.getElementById('adgem-wall');
   if (!container) return;
   var userId = localStorage.getItem('user') || 'guest_' + Math.random().toString(36).substr(2,9);
-  var iframeSrc = 'https://api.adgem.com/v1/wall?appid=' + ADGEM_APP_ID + '&player_id=' + encodeURIComponent(userId);
+  var iframeSrc = 'https://api.adgem.com/show.php?appid=' + ADGEM_APP_ID + '&player_id=' + encodeURIComponent(userId);
   container.innerHTML = '<iframe src="' + iframeSrc + '" style="width:100%;height:700px;border:none;background:#fff;" frameborder="0" allowfullscreen></iframe>';
 }
 
@@ -731,5 +727,14 @@ window.addEventListener('load', function(){
   }, true);
 })();
 </script>
+
+<div style="margin-top:40px;padding:20px;background:#f5f5f5;border-radius:10px;text-align:center;font-size:12px;color:#666">
+  <a href="#" onclick="alert('Mada Game Earn is a rewards platform for Malawian users to earn coins by completing offers. Founded 2024 in Lilongwe. Contact: support@madagameearn.com')" style="margin:0 10px">About Us</a> |
+  <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Coins have no cash value until redeemed. Fraud results in ban.')" style="margin:0 10px">Terms</a> |
+  <a href="#" onclick="alert('Privacy: We collect email and device ID only for rewards. We do not sell data. Firebase secure storage.')" style="margin:0 10px">Privacy Policy</a> |
+  <a href="#" onclick="alert('Contact: WhatsApp +265 999 123 456 | Email: support@madagameearn.com')" style="margin:0 10px">Contact</a>
+  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi</p>
+</div>
+
 </body>
-                                                                                                                                                                                                                                                                                                                                                                    </html>
+        </html>
