@@ -15,7 +15,7 @@
 .ad-slot-native{width:100%;min-height:100px;background:#0a0a0a;margin:15px 0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .hide-ad{display:none !important}
 
-/* RapidoReach iFrame Specific Styles */
+/* Survey wall styles */
 .ro-wall-container {
     width: 100%;
     min-height: 600px;
@@ -49,7 +49,7 @@
   <div class="card" id="pendingSurveysCard">
     <h3>⏳ Pending Surveys</h3>
     <div id="pendingSurveysList" style="text-align:left;max-height:180px;overflow-y:auto;color:#ccc;font-size:13px">Checking...</div>
-    <p style="font-size:11px;color:#666;margin-top:8px">TheoremReach & RapidoReach rewards appear here and credit automatically</p>
+    <p style="font-size:11px;color:#666;margin-top:8px">TheoremReach rewards appear here and credit automatically</p>
   </div>
   <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Watch Ad Bonus</span><span style="color:#ffd700;font-weight:bold">+50 Coins</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/1200</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~24 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
   <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ffcc;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
@@ -67,16 +67,17 @@
 <div id="surveysPage" class="page">
   <h1>📝 Survey Wall</h1>
   
-  <!-- RAPIDOREACH INTEGRATION START -->
+  <!-- ADGEM INTEGRATION START -->
   <div class="card" style="background:linear-gradient(135deg,#6a11cb,#2575fc);border:2px solid #6a11cb; padding: 15px;">
-    <h3 style="color:#fff">⚡ RapidoReach - Top Surveys</h3>
-    <p style="color:#e0e0ff;font-weight:bold;margin:10px 0">Complete surveys below to earn massive coins!</p>
-    <div class="ro-wall-container" id="rapidoreach-wall">
-        <!-- RapidoReach Iframe loads here dynamically -->
+    <h3 style="color:#fff">💎 AdGem - Top Offers</h3>
+    <p style="color:#e0e0ff;font-weight:bold;margin:10px 0">Complete offers below to earn massive coins!</p>
+    <div class="ro-wall-container" id="adgem-wall">
+        <div style="padding:40px;color:#666">Loading offers...</div>
     </div>
   </div>
-  <!-- RAPIDOREACH INTEGRATION END -->
+  <!-- ADGEM INTEGRATION END -->
 
+  
   <div class="card" style="background:linear-gradient(135deg,#00ff88,#00cc66);border:2px solid #00ff88">
     <h3>🔥 TheoremReach - Highest Paying</h3>
     <p style="color:#000;font-weight:bold;margin:10px 0">Earn 5,000 - 50,000 coins per survey!</p>
@@ -156,6 +157,18 @@
 </div>
 
 <script>
+
+// --- ADGEM CONFIG ---
+const ADGEM_APP_ID = '32532';
+
+function loadAdGem() {
+  var container = document.getElementById('adgem-wall');
+  if (!container) return;
+  var userId = localStorage.getItem('user') || 'guest_' + Math.random().toString(36).substr(2,9);
+  var iframeSrc = 'https://api.adgem.com/v1/wall?appid=' + ADGEM_APP_ID + '&player_id=' + encodeURIComponent(userId);
+  container.innerHTML = '<iframe src="' + iframeSrc + '" style="width:100%;height:700px;border:none;background:#fff;" frameborder="0" allowfullscreen></iframe>';
+}
+
 var MONETAG_REWARDED_LINK = "https://omg10.com/4/10952907";
 
 var db = null;
@@ -169,27 +182,6 @@ function generateCaptcha(){
   captchaAnswer = a+b;
   var el = document.getElementById('captchaQ');
   if(el) el.innerText = a + ' + ' + b;
-}
-
-// --- RAPIDOREACH CONFIG - FIXED ---
-const RAPIDOREACH_APP_ID = 'lEKdBhaCs6X';
-const RAPIDOREACH_SECURITY_KEY = '1f42df3d1e3dccf2290ee224d6dd7c1d';
-
-function loadRapidOreach() {
-  var container = document.getElementById('rapidoreach-wall');
-  if (!container) return;
-  
-  var internalUserId = localStorage.getItem('user') || 'guest_' + Math.random().toString(36).substr(2, 9);
-  
-  // Generate proper UID: userId-appId-md5(userId+appId+key)[0:10]
-  var concat = internalUserId + RAPIDOREACH_APP_ID + RAPIDOREACH_SECURITY_KEY;
-  var checksum = md5(concat).substring(0, 10).toLowerCase();
-  var fullUid = internalUserId + '-' + RAPIDOREACH_APP_ID + '-' + checksum;
-  
-  // CORRECT URL - www.rapidoreach.com not wall.rapidoreach.com
-  var iframeSrc = 'https://www.rapidoreach.com/offerwall/?userId=' + encodeURIComponent(fullUid);
-  
-  container.innerHTML = '<iframe src="' + iframeSrc + '" style="width:100%;height:700px;border:none;background:#fff;" frameborder="0" allowfullscreen allow="clipboard-write"></iframe>';
 }
 
 function register() {
@@ -227,7 +219,7 @@ function register() {
           db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,email:email});
         }
       });
-      setupPresence(name); checkInboxBadge(); initTheoremReachPostback(); loadRapidOreach();
+      setupPresence(name); checkInboxBadge(); initTheoremReachPostback(); 
     }, 200);
   } catch(e){ alert("Error: " + e.message); }
 }
@@ -252,7 +244,7 @@ function login() {
     document.getElementById("loginPage").classList.remove("active");
     document.getElementById("mainNav").style.display = "flex";
     showPage('wallet');
-    if(db){ setupPresence(name); checkInboxBadge(); initTheoremReachPostback(); loadRapidOreach(); }
+    if(db){ setupPresence(name); checkInboxBadge(); initTheoremReachPostback();  }
   } catch(e){ alert(e.message); }
 }
 
@@ -434,7 +426,7 @@ function showPage(page) {
       document.getElementById('surveysPage').classList.add('active'); 
       if(btns[2]) btns[2].classList.add('active'); 
       if(countdownInterval) clearInterval(countdownInterval); 
-      loadRapidOreach(); // Load RO when user visits survey tab
+       // Load RO when user visits survey tab
     }
     else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
   } catch(e) { console.error('showPage error', e); }
@@ -588,7 +580,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById("loginPage").classList.remove("active"); 
       document.getElementById("mainNav").style.display = "flex"; 
       showPage('wallet'); 
-      if (db) { setupPresence(u); checkInboxBadge(); initTheoremReachPostback(); loadRapidOreach(); } 
+      if (db) { setupPresence(u); checkInboxBadge(); initTheoremReachPostback();  } 
     } 
   } catch(e) {}
 });
@@ -740,4 +732,4 @@ window.addEventListener('load', function(){
 })();
 </script>
 </body>
-  </html>
+                                                                                                                                                                                                                                                                                                                                                                    </html>
