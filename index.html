@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
 
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ffcc;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px;font-size:13px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}.progress-container{background:#222;height:10px;border-radius:5px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;background:linear-gradient(45deg,#00ffcc,#00ccff);transition:width 0.3s}
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ccff;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:15px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:2px solid #00ffcc;color:#00ffcc;padding:10px 20px;margin:0;width:auto;font-size:14px}.nav-btn.active{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border-color:transparent}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px;font-size:13px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}.progress-container{background:#222;height:10px;border-radius:5px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;background:linear-gradient(45deg,#00ffcc,#00ccff);transition:width 0.3s}
 .ad-slot-top{width:100%;min-height:50px;background:#0a0a0a;margin-bottom:15px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .ad-slot-bottom{position:fixed;bottom:60px;left:0;right:0;height:50px;background:#0a0a0a;z-index:99;display:flex;align-items:center;justify-content:center;border-top:1px solid #222}
 .ad-slot-native{width:100%;min-height:100px;background:#0a0a0a;margin:15px 0;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -32,6 +32,68 @@
 }
 </style>
   <!-- Wortise Web SDK -->
+<!-- GameMonetize SDK -->
+<script type="text/javascript">
+   
+function logout(){
+  if(confirm('Logout?')){
+    localStorage.removeItem('user');
+    localStorage.removeItem('displayName');
+    document.getElementById('mainNav').style.display='none';
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('loginPage').classList.add('active');
+  }
+}
+function showForgot(){
+  document.getElementById('forgotBox').style.display = document.getElementById('forgotBox').style.display==='none'?'block':'none';
+}
+function resetPassword(){
+  var email = document.getElementById('forgotEmail').value.trim();
+  var newPass = document.getElementById('newPass').value;
+  var msg = document.getElementById('forgotMsg');
+  if(!email || newPass.length<6){ msg.innerHTML='<span style="color:#ff6b6b">Enter valid email and password</span>'; return; }
+  if(!db){ msg.innerHTML='<span style="color:#ff6b6b">Database not ready</span>'; return; }
+  // Find user by email
+  db.ref('users').orderByChild('email').equalTo(email).once('value', function(snap){
+    if(!snap.exists()){ msg.innerHTML='<span style="color:#ff6b6b">Email not found</span>'; return; }
+    snap.forEach(function(child){
+      var username = child.key;
+      db.ref('users/'+username).update({password: md5(newPass)});
+      msg.innerHTML='<span style="color:#51cf66">✅ Password reset! Login with new password</span>';
+    });
+  });
+}
+
+window.SDK_OPTIONS = {
+      gameId: "0bs30hpn5ry39prugsgjmvugx1ym4n30",
+      onEvent: function (a) {
+         switch (a.name) {
+            case "SDK_GAME_PAUSE":
+               // pause game logic / mute audio
+               break;
+            case "SDK_GAME_START":
+               // advertisement done, resume game logic and unmute audio
+               if (window.pendingReward) {
+                  addCoins(window.pendingReward);
+                  window.pendingReward = 0;
+                  var msg = document.getElementById('watchMsg');
+                  if (msg) msg.innerHTML = '<span style="color:#51cf66">✅ +50 coins!</span>';
+                  var dmsg = document.getElementById('doubleMsg');
+                  if (dmsg) dmsg.innerHTML = '<span style="color:#51cf66">✅ Ad Bonus! +50 coins</span>';
+                  updateWatchUI && updateWatchUI();
+               }
+               break;
+            case "SDK_READY":
+               console.log("GameMonetize SDK ready");
+               break;
+         }
+      }
+   };
+(function (a, b, c) {
+   var d = a.getElementsByTagName(b)[0];
+   a.getElementById(c) || (a = a.createElement(b), a.id = c, a.src = "https://api.gamemonetize.com/sdk.js", d.parentNode.insertBefore(a, d))
+})(document, "script", "gamemonetize-sdk");
+</script>
 </head>
 <body>
 <div class="container">
@@ -40,9 +102,16 @@
   <!-- ads removed -->
 </div>
 
-<div id="loginPage" class="page active"><h1>🎮 Mada Game Earn</h1><div class="card"><h3>👤 Create Account</h3><input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20"><input type="email" id="emailInput" placeholder="Email address"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and email to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div><div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div><button id="loginBtn" type="button" onclick="register()" style="position:relative;z-index:10">Create Account & Play</button><p id="loginMsg" style="margin-top:10px;"></p><p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a></p></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p></div>
+<div id="loginPage" class="page active"><h1>🎮 Mada Game Earn</h1><div class="card"><h3>👤 Create Account</h3><input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20"><input type="email" id="emailInput" placeholder="Email address"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and email to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div><div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div><button id="loginBtn" type="button" onclick="register()" style="position:relative;z-index:10">Create Account & Play</button><p id="loginMsg" style="margin-top:10px;"></p><p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a> • <a href="#" onclick="showForgot();return false" style="color:#00ffcc">Forgot Password?</a></p>
+<div id="forgotBox" style="display:none;margin-top:15px;padding:15px;background:#0a0a0a;border-radius:10px;border:1px solid #00ffcc33">
+  <input type="email" id="forgotEmail" placeholder="Enter your email" style="margin-bottom:10px">
+  <input type="password" id="newPass" placeholder="New password (min 6 chars)" style="margin-bottom:10px">
+  <button onclick="resetPassword()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000">Reset Password</button>
+  <p id="forgotMsg" style="margin-top:8px;font-size:12px"></p>
+</div></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p></div>
 
 <div id="walletPage" class="page">
+  <div style="text-align:right;margin-bottom:10px"><button onclick="logout()" style="width:auto;padding:8px 15px;background:#333;color:#00ffcc;border:1px solid #00ffcc55">🚪 Logout</button></div>
   <h1>💳 Wallet</h1>
   <div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p><p id="money" style="font-size:20px;color:#00ffcc;">💵 MWK 0</p></div>
 
@@ -70,7 +139,7 @@
     <p id="watchText" style="margin:8px 0;color:#00ffcc">0 / 20 videos today</p>
     <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Watch Video (+50)</button>
     <p id="watchMsg" style="margin-top:10px;font-size:13px;height:18px"></p>
-    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Wortise • 20 videos max per day</p>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by GameMonetize • 20 videos max per day</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
@@ -99,7 +168,55 @@
 </div>
 
 <script>
+window.pendingReward = 0;
 
+function watchToEarn(){
+  var btn = document.getElementById('watchBtn');
+  var msg = document.getElementById('watchMsg');
+  if(btn) {btn.disabled=true; btn.innerText='Loading...';}
+  if(msg) msg.innerText='Preparing video...';
+  
+  // Show timer overlay
+  var overlay = document.getElementById('rewardedOverlay');
+  var statusText = document.getElementById('adStatusText');
+  var claimBtn = document.getElementById('manualClaimBtn');
+  var iframeWrap = document.querySelector('#rewardedOverlay .reward-box > div');
+  if(iframeWrap) iframeWrap.style.display='none';
+  if(overlay) overlay.style.display='flex';
+  if(claimBtn) claimBtn.style.display='none';
+  
+  var seconds = 20;
+  if(statusText){ statusText.innerText = '⏳ Please watch for ' + seconds + 's...'; statusText.style.color='#ffd700'; }
+  
+  var countdown = setInterval(function(){
+    seconds--;
+    if(statusText) statusText.innerText = '⏳ Please watch for ' + seconds + 's...';
+    if(seconds <= 0){
+      clearInterval(countdown);
+      if(statusText){ statusText.innerText = '✅ Video complete!'; statusText.style.color='#51cf66'; }
+      if(overlay) setTimeout(()=>{ overlay.style.display='none'; }, 800);
+      // Give reward
+      window.pendingReward = 50;
+      addCoins(50);
+      var daily = parseInt(localStorage.getItem('watchCount')||'0')+1;
+      localStorage.setItem('watchCount', daily);
+      updateWatchUI();
+      if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +50 coins!</span>';
+      if(btn){ btn.disabled=false; btn.innerText='▶ Watch Video (+50)'; }
+      // Try to show real GameMonetize ad in background for future
+      if(typeof sdk !== 'undefined' && sdk.showBanner){ try{ sdk.showBanner(); }catch(e){} }
+    }
+  }, 1000);
+}
+
+
+function updateWatchUI(){
+  var daily = parseInt(localStorage.getItem('watchCount')||'0');
+  var el = document.getElementById('watchText');
+  if(el) el.innerText = daily + ' / 20 videos today';
+  var bar = document.getElementById('watchBar');
+  if(bar) bar.style.width = (daily/20*100) + '%';
+}
 
 // --- WORTISE REMOVED FOR APPCREATOR24 ---
 let wortiseRewarded = null;
@@ -161,7 +278,7 @@ function register() {
     
     setTimeout(function(){
       if (!db) return;
-      db.ref('users/' + name).set({email: email, created: Date.now(), country: "MW", agreed: true});
+      db.ref('users/' + name).set({email: email, created: Date.now(), country: "MW", agreed: true, password: md5(pass)});
       db.ref('leaderboard_all/' + name).once('value').then(function(snap){
         if(!snap.exists()){
           db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,email:email});
@@ -188,11 +305,20 @@ function login() {
     var msgEl = document.getElementById("loginMsg");
     if (!rawName || !pass) { msgEl.innerHTML = '<span class="error">Enter username and password</span>'; return; }
     var name = rawName.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, '');
-    localStorage.setItem("user", name); localStorage.setItem("displayName", rawName);
-    document.getElementById("loginPage").classList.remove("active");
-    document.getElementById("mainNav").style.display = "flex";
-    showPage('wallet');
-    if(db){ setupPresence(name); checkInboxBadge();  }
+    msgEl.innerHTML = '<span class="success">Checking...</span>';
+    if(!db){ msgEl.innerHTML = '<span class="error">Database error</span>'; return; }
+    db.ref('users/' + name).once('value', function(snap){
+      var data = snap.val();
+      if(!data){ msgEl.innerHTML = '<span class="error">User not found</span>'; return; }
+      if(data.password !== md5(pass)){ msgEl.innerHTML = '<span class="error">Wrong password</span>'; return; }
+      // Success
+      localStorage.setItem("user", name); 
+      localStorage.setItem("displayName", rawName);
+      document.getElementById("loginPage").classList.remove("active");
+      document.getElementById("mainNav").style.display = "flex";
+      showPage('wallet');
+      setupPresence(name); checkInboxBadge();
+    });
   } catch(e){ alert(e.message); }
 }
 
@@ -210,39 +336,34 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
 
 function showRewardedAd() {
   if (window.currentGameRewardClaimed) { alert('Bonus already claimed for this game'); return; }
-  var dbl = document.getElementById('doubleBtn'); if (dbl) { dbl.disabled = true; dbl.innerText = 'Opening ad...'; }
-  try { window.open(MONETAG_REWARDED_LINK, '_blank'); } catch(e) { console.warn('Popup blocked', e); }
+  var dbl = document.getElementById('doubleBtn');
+  if(dbl){ dbl.disabled=true; dbl.innerText='Loading...'; }
   
   var overlay = document.getElementById('rewardedOverlay');
   var statusText = document.getElementById('adStatusText');
   var claimBtn = document.getElementById('manualClaimBtn');
   var iframeWrap = document.querySelector('#rewardedOverlay .reward-box > div');
+  if(iframeWrap) iframeWrap.style.display='none';
+  if(overlay) overlay.style.display='flex';
+  if(claimBtn) claimBtn.style.display='none';
   
-  if (iframeWrap) iframeWrap.style.display = 'none';
-  overlay.style.display = 'flex';
-  claimBtn.style.display = 'none';
+  var seconds = 20;
+  if(statusText){ statusText.innerText = '⏳ Watch bonus ad ' + seconds + 's...'; statusText.style.color='#ffd700'; }
   
-  var seconds = 15;
-  statusText.innerText = '⏳ Please watch ad for ' + seconds + 's...';
-  statusText.style.color = '#ffd700';
-  
-  var countdown = setInterval(function() {
+  var countdown = setInterval(function(){
     seconds--;
-    statusText.innerText = '⏳ Please watch ad for ' + seconds + 's...';
-    if (seconds <= 0) {
+    if(statusText) statusText.innerText = '⏳ Watch bonus ad ' + seconds + 's...';
+    if(seconds <= 0){
       clearInterval(countdown);
-      statusText.innerText = '✅ You watched! Claim your +50 coins';
-      statusText.style.color = '#51cf66';
-      claimBtn.style.display = 'block';
-      claimBtn.innerText = '✅ Claim +50 Coins';
-      claimBtn.onclick = function() {
-        overlay.style.display = 'none';
-        giveReward();
-        if (dbl) { dbl.innerText = '✓ Bonus Claimed'; }
-      };
+      if(overlay) overlay.style.display='none';
+      window.currentGameRewardClaimed = true;
+      giveReward();
+      if(dbl){ dbl.innerText='✓ Bonus Claimed'; }
+      if(typeof sdk !== 'undefined' && sdk.showBanner){ try{ sdk.showBanner(); }catch(e){} }
     }
   }, 1000);
 }
+
 
 function giveReward(){
   window.currentGameRewardClaimed = true;
@@ -426,7 +547,7 @@ function addCoins(amount) {
 function setupPresence(u) { try { if (!u ||!db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline',last:Date.now()}); p.set({state:'online',last:Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {} }
 function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
-function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + '</span>'; document.getElementById("number").disabled = true; }); } catch(e) {} }
+function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
 function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
 try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
 function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.04); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
@@ -490,6 +611,21 @@ function startTempleRun() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+// Lock phone if already saved
+setTimeout(function(){
+  var savedNum = localStorage.getItem('number');
+  if(savedNum){
+    var numEl = document.getElementById('number');
+    var netEl = document.getElementById('network');
+    var btn = document.getElementById('saveBtn');
+    if(numEl){ numEl.value = savedNum; numEl.disabled = true; }
+    if(netEl){ netEl.value = localStorage.getItem('network')||'Airtel Money'; netEl.disabled = true; }
+    if(btn){ btn.disabled = true; btn.innerText = 'Locked'; }
+    document.getElementById('saved').innerHTML = '<span style="color:#51cf66">✅ Saved and locked</span>';
+  }
+}, 1000);
+
   var loginBtn = document.getElementById("loginBtn");
   if (loginBtn) {
     loginBtn.addEventListener('click', function(e){ e.preventDefault(); login(); });
@@ -689,4 +825,4 @@ window.addEventListener('load', function(){
 </div>
 
 </body>
-    </html>
+</html>
