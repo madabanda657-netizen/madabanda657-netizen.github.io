@@ -33,6 +33,8 @@
 </style>
   <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
   <script async="async" data-cfasync="false" src="https://pl29315230.profitablecpmratenetwork.com/8dd30229fd7b7e3f3aeef1a7af787161/invoke.js"></script>
+  <!-- Wortise Web SDK -->
+  <script src="https://cdn.wortise.com/sdk/web/wortise.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -46,16 +48,12 @@
 <div id="walletPage" class="page">
   <h1>💳 Wallet</h1>
   <div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p><p id="money" style="font-size:20px;color:#00ffcc;">💵 MWK 0</p></div>
-  <div class="card" id="pendingSurveysCard">
-    <h3>⏳ Pending Surveys</h3>
-    <div id="pendingSurveysList" style="text-align:left;max-height:180px;overflow-y:auto;color:#ccc;font-size:13px">Checking...</div>
-    <p style="font-size:11px;color:#666;margin-top:8px">TheoremReach rewards appear here and credit automatically</p>
-  </div>
+
   <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Watch Ad Bonus</span><span style="color:#ffd700;font-weight:bold">+50 Coins</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/1200</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~24 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
   <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ffcc;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
-  <div class="card" id="fiveMinCard"><h3>⏱️ 5-Minute Loyalty Bonus</h3><p style="color:#ccc">Stay and play for 5 minutes to earn <span style="color:#ffd700">+100 coins</span>!</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="fiveMinBar" style="width:0%;background:linear-gradient(90deg,#00ffcc,#ffd700)"></div></div><p id="fiveMinText" style="margin-top:8px;color:#00ffcc">0:00 / 5:00</p><button id="fiveMinBtn" style="display:none;background:linear-gradient(45deg,#ffd700,#ffaa00)">Claim +100 Coins</button></div>
+  <div class="card" id="fiveMinCard"><h3>⏱️ 5-Minute Loyalty Bonus</h3><p style="color:#ccc">Stay and play for 5 minutes to earn <span style="color:#ffd700">+100 coins</span>!</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="fiveMinBar" style="width:0%;background:linear-gradient(90deg,#00ffcc,#ffd700)"></div></div><p id="fiveMinText" style="margin-top:8px;color:#00ccff">0:00 / 5:00</p><button id="fiveMinBtn" style="display:none;background:linear-gradient(45deg,#ffd700,#ffaa00)">Claim +100 Coins</button></div>
   <div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div>
   <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><p id="msg" style="margin-top:10px;"></p></div>
   <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
@@ -65,60 +63,24 @@
 <div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:20px;">Play games to earn 5 coins each!</p><div class="games-grid" id="gamesGrid"></div></div></div>
 
 
-<div id="surveysPage" class="page">
-  <h1>📝 Survey Wall</h1>
-  
-  <!-- ADSCEND MEDIA - TOP PRIORITY FOR APPROVAL -->
-  <div class="card" style="background:linear-gradient(135deg,#ff416c,#ff4b2b);border:2px solid #ff416c; padding: 15px;">
-    <h3 style="color:#fff">🔥 Adscend Media - #1 Offer Wall</h3>
-    <p style="color:#ffe0e0;font-weight:bold;margin:10px 0">Malawi's highest paying surveys & offers!</p>
-    <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin:10px 0;text-align:left">
-      <div style="margin:6px 0"><span style="color:#ffd700">✓</span> Consumer Habits - 2,500 coins (8 min)</div>
-      <div style="margin:6px 0"><span style="color:#ffd700">✓</span> Mobile Usage MW - 1,800 coins (5 min)</div>
-      <div style="margin:6px 0"><span style="color:#ffd700">✓</span> Shopping Survey - 4,000 coins (12 min)</div>
-    </div>
-    <div class="ro-wall-container" id="adscend-wall">
-        <div style="padding:40px;color:#fff;background:#00000055;border-radius:8px">Adscend Wall Loading... (Integration Pending Approval)</div>
-    </div>
-    <p style="font-size:11px;color:#ffe0e0;margin-top:8px">Publisher ID: Pending | Status: Awaiting Adscend Approval</p>
-  </div>
 
-  <div class="card" style="background:linear-gradient(135deg,#00ff88,#00cc66);border:2px solid #00ff88">
-    <h3>🔥 TheoremReach - Highest Paying</h3>
-    <p style="color:#000;font-weight:bold;margin:10px 0">Earn 5,000 - 50,000 coins per survey!</p>
-    <p style="color:#003322;font-size:13px">Average time: 5-15 minutes</p>
-    <button onclick="openSurvey('theoremreach')" style="background:#000;color:#00ff88;margin-top:10px">Start TheoremReach →</button>
+<div id="watchPage" class="page">
+  <h1>📺 Watch & Earn</h1>
+  <div class="card" style="background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc">
+    <h3>Watch Video = +50 Coins</h3>
+    <p style="color:#ccc;margin:10px 0">Watch short videos to earn instantly. No games needed!</p>
+    <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
+    <p id="watchText" style="margin:8px 0;color:#00ffcc">0 / 20 videos today</p>
+    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Watch Video (+50)</button>
+    <p id="watchMsg" style="margin-top:10px;font-size:13px;height:18px"></p>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Wortise • 20 videos max per day</p>
   </div>
-  
   <div class="card">
-    <h3>📊 CPX Research</h3>
-    <p style="color:#ccc;margin:10px 0">Premium surveys for Malawi users</p>
-    <p style="color:#ffd700;font-weight:bold">Pays: 3,000 - 30,000 coins</p>
-    <button onclick="openSurvey('cpx')" style="margin-top:10px">Open CPX →</button>
+    <h3>💡 How it works</h3>
+    <p style="text-align:left;color:#ccc;line-height:1.8">1. Click Watch Video<br>2. Watch full ad (15-30 sec)<br>3. Get +50 coins instantly<br>4. Repeat up to 20x daily</p>
   </div>
-  
-  <div class="card">
-    <h3>💎 BitLabs Surveys</h3>
-    <p style="color:#ccc;margin:10px 0">Quick surveys, instant credit</p>
-    <p style="color:#00ffcc;font-weight:bold">Pays: 1,000 - 15,000 coins</p>
-    <button onclick="openSurvey('bitlabs')" style="margin-top:10px">Open BitLabs →</button>
-  </div>
-
-  <div class="card" style="background:#1a1a2e;border:1px solid #ff6b6b">
-    <h3 style="color:#ff6b6b">📜 Survey Rules - READ FIRST</h3>
-    <div style="text-align:left;color:#ccc;line-height:1.8;font-size:13px;margin-top:10px">
-      <p><strong style="color:#ffd700">1. ONE ACCOUNT ONLY:</strong> Multiple accounts = permanent ban</p>
-      <p><strong style="color:#ffd700">2. NO VPN/PROXY:</strong> Use your real Malawi IP only</p>
-      <p><strong style="color:#ffd700">3. HONEST ANSWERS:</strong> Fake answers = no payment + ban</p>
-      <p><strong style="color:#ffd700">4. COMPLETE FULLY:</strong> Don't close survey early</p>
-      <p><strong style="color:#ffd700">5. AGE 18+:</strong> Most surveys require adult</p>
-      <p><strong style="color:#ffd700">6. WAIT TIME:</strong> Coins credit in 5-30 minutes</p>
-      <p><strong style="color:#ffd700">7. DAILY LIMIT:</strong> Max 10 surveys per day</p>
-      <p style="margin-top:10px;color:#ff6b6b"><strong>⚠️ Breaking rules = lose all coins</strong></p>
-    </div>
-  </div>
-
 </div>
+
 
 <div id="inboxPage" class="page"><h1>💬 Support Inbox</h1><div class="card" style="text-align:left;max-height:380px;overflow-y:auto;padding:12px;background:#0a0a0a" id="adminChatBox"><div style="color:#666;text-align:center;padding:30px">No messages</div></div><div class="card"><input type="text" id="playerReply" placeholder="Reply to Admin..." style="margin-bottom:8px"><button id="replyBtn">Send Reply</button><p id="replyStatus" style="margin-top:8px;font-size:12px;height:16px"></p></div></div>
 <div id="playPage" class="page"><button class="back-btn" id="backBtn">← Back to Games</button><h2 id="gameTitle"></h2><div class="card"><div id="gameArea" class="game-area"></div></div></div>
@@ -139,7 +101,7 @@
   </script>
 </div>
 
-<div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navSurveys">📝 Surveys</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
+<div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navWatch">📺 Watch</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
 
 <div id="rewardedOverlay" class="reward-overlay">
   <div class="reward-box">
@@ -153,6 +115,65 @@
 </div>
 
 <script>
+
+
+// --- WORTISE WATCH & EARN ---
+let wortiseRewarded;
+try {
+  Wortise.init("YOUR_WORTISE_APP_ID"); // replace with your real App ID
+  wortiseRewarded = new WortiseRewarded("test-rewarded"); // change to your real ad unit
+  wortiseRewarded.loadAd();
+} catch(e){ console.warn('Wortise init failed', e); }
+
+let watchCount = parseInt(localStorage.getItem('watchToday') || '0');
+let watchDate = localStorage.getItem('watchDate');
+const WATCH_LIMIT = 20;
+const WATCH_REWARD = 50;
+
+if (watchDate !== new Date().toDateString()) {
+  watchCount = 0;
+  localStorage.setItem('watchToday', '0');
+  localStorage.setItem('watchDate', new Date().toDateString());
+}
+
+function updateWatchUI(){
+  const txt = document.getElementById('watchText');
+  const bar = document.getElementById('watchBar');
+  const btn = document.getElementById('watchBtn');
+  if(txt) txt.innerText = watchCount + ' / ' + WATCH_LIMIT + ' videos today';
+  if(bar) bar.style.width = (watchCount/WATCH_LIMIT*100) + '%';
+  if(btn){ btn.disabled = watchCount >= WATCH_LIMIT; if(watchCount>=WATCH_LIMIT) btn.innerText='Limit Reached'; }
+}
+
+function watchToEarn(){
+  if(watchCount >= WATCH_LIMIT){ alert('Daily limit reached'); return; }
+  document.getElementById('watchMsg').innerHTML = '<span style="color:#ffd700">Loading...</span>';
+  if(wortiseRewarded && wortiseRewarded.isAvailable){
+    wortiseRewarded.showAd();
+  } else {
+    // fallback to Hilltop
+    playHilltopRewarded(function(watched){ if(watched) creditWatch(); });
+    if(wortiseRewarded) wortiseRewarded.loadAd();
+  }
+}
+
+function creditWatch(){
+  const user = localStorage.getItem('user'); if(!user||!db) return;
+  watchCount++; localStorage.setItem('watchToday', watchCount);
+  db.ref('leaderboard_all/'+user).once('value').then(s=>{
+    const d=s.val()||{}; const n=(d.coins||0)+WATCH_REWARD;
+    return db.ref('leaderboard_all/'+user).update({coins:n,score:n,watchEarned:(d.watchEarned||0)+WATCH_REWARD,lastPlayed:Date.now()});
+  }).then(()=>{
+    document.getElementById('watchMsg').innerHTML='<span style="color:#51cf66">✓ +50 coins!</span>';
+    updateWatchUI(); showBalance(); setTimeout(()=>{document.getElementById('watchMsg').innerHTML='';},2000);
+  });
+}
+
+if(typeof wortiseRewarded !== 'undefined'){
+  wortiseRewarded.onCompleted = ()=>{ creditWatch(); wortiseRewarded.loadAd(); };
+  wortiseRewarded.onFailedToLoad = ()=>{ wortiseRewarded.loadAd(); };
+}
+
 
 // --- ADGEM CONFIG ---
 const ADGEM_APP_ID = '32532';
@@ -215,7 +236,7 @@ function register() {
           db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,email:email});
         }
       });
-      setupPresence(name); checkInboxBadge(); initTheoremReachPostback(); 
+      setupPresence(name); checkInboxBadge(); 
     }, 200);
   } catch(e){ alert("Error: " + e.message); }
 }
@@ -240,7 +261,7 @@ function login() {
     document.getElementById("loginPage").classList.remove("active");
     document.getElementById("mainNav").style.display = "flex";
     showPage('wallet');
-    if(db){ setupPresence(name); checkInboxBadge(); initTheoremReachPostback();  }
+    if(db){ setupPresence(name); checkInboxBadge();  }
   } catch(e){ alert(e.message); }
 }
 
@@ -416,13 +437,13 @@ function showPage(page) {
     if (bottomAd) bottomAd.style.display = (page === 'wallet') ? 'flex' : 'none';
     var mainNav = document.getElementById('mainNav');
     if (mainNav) mainNav.style.display = 'flex';
-    if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); updatePendingSurveys(); startCountdown(); }
+    if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); }
     else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
-    else if (page === 'surveys') { 
-      document.getElementById('surveysPage').classList.add('active'); 
+    else if (page === 'watch') { 
+      document.getElementById('watchPage').classList.add('active'); 
       if(btns[2]) btns[2].classList.add('active'); 
       if(countdownInterval) clearInterval(countdownInterval); 
-       // Load RO when user visits survey tab
+      updateWatchUI();
     }
     else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
   } catch(e) { console.error('showPage error', e); }
@@ -466,7 +487,7 @@ function addCoins(amount) {
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
       var d = snap.val() || {}; var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1;
       db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});
-      daily += give; try { localStorage.setItem("dailyCoins", daily); } catch(e) {} showBalance(); updatePendingSurveys();
+      daily += give; try { localStorage.setItem("dailyCoins", daily); } catch(e) {} showBalance();
     });
   } catch(e) {}
 }
@@ -475,9 +496,9 @@ function setupPresence(u) { try { if (!u ||!db) return; var p = db.ref('presence
 function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + '</span>'; document.getElementById("number").disabled = true; }); } catch(e) {} }
-function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); updatePendingSurveys(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
+function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
 try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
-function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.04); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); updatePendingSurveys(); }); }); } catch(e) {} }
+function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.04); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
 function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
 
 (function() {
@@ -513,7 +534,7 @@ function initCheckers(d) { gameState = {board:[], turn:1, selected:null, validMo
 function renderCheckers() { var h = '<div class="timer">' + gameState.difficulty + ' | ' + (gameState.turn===1?'Your turn':'CPU') + '</div><div style="display:grid;grid-template-columns:repeat(8,1fr);max-width:360px;margin:10px auto;border:3px solid #00ffcc;aspect-ratio:1">'; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) { var dark = (r+c)%2; var p = gameState.board[r][c]; var bg = dark? '#1a1a1a' : '#e0e0e0'; var sel = ''; if (gameState.selected && gameState.selected[0]===r && gameState.selected[1]===c) sel = 'outline:3px solid #00ffcc;outline-offset:-3px'; var vm = gameState.validMoves; var isVM = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { isVM = true; break; } } if (isVM) bg = '#00ffcc88'; h += '<div data-r="'+r+'" data-c="'+c+'" style="aspect-ratio:1;background:'+bg+';'+sel+';display:flex;align-items:center;justify-content:center;cursor:pointer" class="sq">'; if (p!== 0) { var red = p>0; var king = Math.abs(p)===2; h += '<div style="width:70%;height:70%;border-radius:50%;background:'+(red?'radial-gradient(circle,#ff6b6b,#c92a2a)':'radial-gradient(circle,#444,#000)')+';border:2px solid #888;display:flex;align-items:center;justify-content:center;color:#ffd700">'+(king?'♔':'')+'</div>'; } h += '</div>'; } h += '</div>'; document.getElementById('gameArea').innerHTML = h; var squares = document.querySelectorAll('.sq'); for (var j = 0; j < squares.length; j++) { (function(sq) { sq.onclick = function() { clickSquare(parseInt(sq.getAttribute('data-r')), parseInt(sq.getAttribute('data-c'))); }; })(squares[j]); } }
 function clickSquare(r, c) { if (gameState.turn!== 1) return; var p = gameState.board[r][c]; var all = getAllMoves(1); var must = false; for (var i = 0; i < all.length; i++) { if (Math.abs(all[i].from[0]-all[i].to[0])===2) { must = true; break; } } if (gameState.selected) { var vm = gameState.validMoves; var found = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { found = true; break; } } if (found) { var cont = makeMove(gameState.selected[0], gameState.selected[1], r, c); if (!cont) { gameState.selected = null; gameState.validMoves = []; renderCheckers(); setTimeout(cpuMove, 300); } return; } gameState.selected = null; gameState.validMoves = []; } if (p > 0) { if (must) { var can = false; for (var m = 0; m < all.length; m++) { if (all[m].from[0]===r && all[m].from[1]===c && Math.abs(all[m].from[0]-all[m].to[0])===2) { can = true; break; } } if (!can) return; } gameState.selected = [r, c]; gameState.validMoves = getMoves(r, c, 1); renderCheckers(); } }
 function getMoves(r, c, pl) { var b = gameState.board; var pc = b[r][c]; var m = []; var cap = []; var md = Math.abs(pc)===2? [-1,1] : (pl===1? [-1] : [1]); for (var di = 0; di < md.length; di++) { for (var ci = 0; ci < 2; ci++) { var dc = ci===0?-1:1; var nr=r+md[di], nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0) m.push([nr,nc]); } } for (var di2 = 0; di2 < 2; di2++) { for (var ci2 = 0; ci2 < 2; ci2++) { var dr=di2===0?-1:1; var dc2=ci2===0?-1:1; var nr2=r+dr,nc2=c+dc2,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0) cap.push([jr,jc]); } } return cap.length? cap : m; }
-function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
+function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
 function makeMove(r1, c1, r2, c2) { var b = gameState.board; b[r2][c2] = b[r1][c1]; b[r1][c1] = 0; var cap = false; if (Math.abs(r2-r1)===2) { b[(r1+r2)/2][(c1+c2)/2] = 0; cap = true; } if (r2===0 && b[r2][c2]===1) b[r2][c2] = 2; if (r2===7 && b[r2][c2]===-1) b[r2][c2] = -2; if (cap) { var fm = getMoves(r2, c2, b[r2][c2]>0?1:-1); var fCaps = []; for (var i = 0; i < fm.length; i++) { if (Math.abs(fm[i][0]-r2)===2) fCaps.push(fm[i]); } if (fCaps.length) { gameState.selected=[r2,c2]; gameState.validMoves=fCaps; renderCheckers(); return true; } } gameState.turn *= -1; gameState.selected = null; gameState.validMoves = []; checkWin(); return false; }
 function cpuMove() { if (gameState.turn!== -1) return; var moves = getAllMoves(-1); if (!moves.length) { endCheckers(true); return; } var choice; var caps = []; for (var i = 0; i < moves.length; i++) { if (Math.abs(moves[i].from[0]-moves[i].to[0])===2) caps.push(moves[i]); } if (gameState.difficulty === 'easy') { choice = moves[Math.random()*moves.length|0]; } else if (gameState.difficulty === 'medium') { var pool = caps.length? caps : moves; choice = pool[Math.random()*pool.length|0]; } else { var best = -1e9; for (var j = 0; j < moves.length; j++) { var v = Math.random()*100; if (v > best) { best = v; choice = moves[j]; } } } var cont = makeMove(choice.from[0], choice.from[1], choice.to[0], choice.to[1]); renderCheckers(); if (cont) setTimeout(cpuMove, 300); }
 function checkWin() { var f = gameState.board.flat? gameState.board.flat() : [].concat.apply([], gameState.board); var pCount = 0, cCount = 0; for (var i = 0; i < f.length; i++) { if (f[i] > 0) pCount++; if (f[i] < 0) cCount++; } if (cCount === 0) endCheckers(true); else if (pCount === 0) endCheckers(false); else if (getAllMoves(gameState.turn).length === 0) endCheckers(gameState.turn === -1); }
@@ -559,7 +580,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   el = document.getElementById("navWallet"); if (el) el.onclick = function() { showPage('wallet'); };
   el = document.getElementById("navGames"); if (el) el.onclick = function() { showPage('games'); };
-  el = document.getElementById("navSurveys"); if (el) el.onclick = function() { showPage('surveys'); };
+  el = document.getElementById("navWatch"); if (el) el.onclick = function() { showPage('watch'); };
   el = document.getElementById("navInbox"); if (el) el.onclick = function() { showPage('inbox'); };
   el = document.getElementById("saveBtn"); if (el) el.onclick = saveDetails;
   el = document.getElementById("dailyBtn"); if (el) el.onclick = claimDailyBonus;
@@ -576,7 +597,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById("loginPage").classList.remove("active"); 
       document.getElementById("mainNav").style.display = "flex"; 
       showPage('wallet'); 
-      if (db) { setupPresence(u); checkInboxBadge(); initTheoremReachPostback();  } 
+      if (db) { setupPresence(u); checkInboxBadge();   } 
     } 
   } catch(e) {}
 });
@@ -652,7 +673,7 @@ function onAdError(e){
 }
 
 document.addEventListener('DOMContentLoaded', initHilltop);
-  initTheoremReachPostback();
+  
 </script>
 
 <script>
@@ -737,4 +758,4 @@ window.addEventListener('load', function(){
 </div>
 
 </body>
-        </html>
+</html>
