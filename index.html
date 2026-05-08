@@ -31,16 +31,13 @@
     display: block;
 }
 </style>
-  <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-  <script async="async" data-cfasync="false" src="https://pl29315230.profitablecpmratenetwork.com/8dd30229fd7b7e3f3aeef1a7af787161/invoke.js"></script>
   <!-- Wortise Web SDK -->
-  <script src="https://cdn.wortise.com/sdk/web/wortise.min.js"></script>
 </head>
 <body>
 <div class="container">
 
 <div id="topAd" class="ad-slot-top">
-  <div id="container-8dd30229fd7b7e3f3aeef1a7af787161"></div>
+  <!-- ads removed -->
 </div>
 
 <div id="loginPage" class="page active"><h1>🎮 Mada Game Earn</h1><div class="card"><h3>👤 Create Account</h3><input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20"><input type="email" id="emailInput" placeholder="Email address"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and email to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div><div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div><button id="loginBtn" type="button" onclick="register()" style="position:relative;z-index:10">Create Account & Play</button><p id="loginMsg" style="margin-top:10px;"></p><p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a></p></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p></div>
@@ -86,20 +83,7 @@
 <div id="playPage" class="page"><button class="back-btn" id="backBtn">← Back to Games</button><h2 id="gameTitle"></h2><div class="card"><div id="gameArea" class="game-area"></div></div></div>
 </div>
 
-<div id="bottomAd" class="ad-slot-bottom" style="display:none">
-  <script>
-  (function(cgpz){
-  var d = document,
-      s = d.createElement('script'),
-      l = d.scripts[d.scripts.length - 1];
-  s.settings = cgpz || {};
-  s.src = "//shameful-farm.com/bcX.V/s/dgGWl/0qYUWZcO/beBm/9uuoZ_UllfkWPzTdcDwEMOTRMv2RMHD-EXtuN/zfAKxKMxzhYLw/NLQe";
-  s.async = true;
-  s.referrerPolicy = 'no-referrer-when-downgrade';
-  l.parentNode.insertBefore(s, l);
-  })({})
-  </script>
-</div>
+<div id="bottomAd" class="ad-slot-bottom" style="display:none"></div>
 
 <div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navWatch">📺 Watch</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
 
@@ -117,62 +101,9 @@
 <script>
 
 
-// --- WORTISE WATCH & EARN ---
-let wortiseRewarded;
-try {
-  Wortise.init("38deb805-2f2c-4a0d-88ec-a41169ee3b71"); // replace with your real App ID
-  wortiseRewarded = new WortiseRewarded("test-video"); // change to your real ad unit
-  wortiseRewarded.loadAd();
-} catch(e){ console.warn('Wortise init failed', e); }
+// --- WORTISE REMOVED FOR APPCREATOR24 ---
+let wortiseRewarded = null;
 
-let watchCount = parseInt(localStorage.getItem('watchToday') || '0');
-let watchDate = localStorage.getItem('watchDate');
-const WATCH_LIMIT = 20;
-const WATCH_REWARD = 50;
-
-if (watchDate !== new Date().toDateString()) {
-  watchCount = 0;
-  localStorage.setItem('watchToday', '0');
-  localStorage.setItem('watchDate', new Date().toDateString());
-}
-
-function updateWatchUI(){
-  const txt = document.getElementById('watchText');
-  const bar = document.getElementById('watchBar');
-  const btn = document.getElementById('watchBtn');
-  if(txt) txt.innerText = watchCount + ' / ' + WATCH_LIMIT + ' videos today';
-  if(bar) bar.style.width = (watchCount/WATCH_LIMIT*100) + '%';
-  if(btn){ btn.disabled = watchCount >= WATCH_LIMIT; if(watchCount>=WATCH_LIMIT) btn.innerText='Limit Reached'; }
-}
-
-function watchToEarn(){
-  if(watchCount >= WATCH_LIMIT){ alert('Daily limit reached'); return; }
-  document.getElementById('watchMsg').innerHTML = '<span style="color:#ffd700">Loading...</span>';
-  if(wortiseRewarded && wortiseRewarded.isAvailable){
-    wortiseRewarded.showAd();
-  } else {
-    // fallback to Hilltop
-    playHilltopRewarded(function(watched){ if(watched) creditWatch(); });
-    if(wortiseRewarded) wortiseRewarded.loadAd();
-  }
-}
-
-function creditWatch(){
-  const user = localStorage.getItem('user'); if(!user||!db) return;
-  watchCount++; localStorage.setItem('watchToday', watchCount);
-  db.ref('leaderboard_all/'+user).once('value').then(s=>{
-    const d=s.val()||{}; const n=(d.coins||0)+WATCH_REWARD;
-    return db.ref('leaderboard_all/'+user).update({coins:n,score:n,watchEarned:(d.watchEarned||0)+WATCH_REWARD,lastPlayed:Date.now()});
-  }).then(()=>{
-    document.getElementById('watchMsg').innerHTML='<span style="color:#51cf66">✓ +50 coins!</span>';
-    updateWatchUI(); showBalance(); setTimeout(()=>{document.getElementById('watchMsg').innerHTML='';},2000);
-  });
-}
-
-if(typeof wortiseRewarded !== 'undefined'){
-  wortiseRewarded.onCompleted = ()=>{ creditWatch(); wortiseRewarded.loadAd(); };
-  wortiseRewarded.onFailedToLoad = ()=>{ wortiseRewarded.loadAd(); };
-}
 
 
 // --- ADGEM CONFIG ---
@@ -758,4 +689,4 @@ window.addEventListener('load', function(){
 </div>
 
 </body>
-                                                                                                                                                                                                                                          </html>
+    </html>
