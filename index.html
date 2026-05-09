@@ -94,6 +94,20 @@ window.SDK_OPTIONS = {
    a.getElementById(c) || (a = a.createElement(b), a.id = c, a.src = "https://api.gamemonetize.com/sdk.js", d.parentNode.insertBefore(a, d))
 })(document, "script", "gamemonetize-sdk");
 </script>
+
+<!-- Adsterra Rewarded Loader -->
+<script>
+const ADSTERRA_SCRIPT = "https://pl29281398.profitablecpmratenetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js";
+function loadAdsterraReward(){
+  const frame = document.getElementById('rewardIframe');
+  const wrap = document.querySelector('#rewardedOverlay .reward-box > div');
+  if(wrap) wrap.style.display='block';
+  if(frame){
+    // load ad inside the overlay iframe so it works in WebView (no popup block)
+    frame.srcdoc = '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center"><script src="'+ADSTERRA_SCRIPT+'"><\/script></body></html>';
+  }
+}
+</script>
 </head>
 <body>
 <div class="container">
@@ -139,7 +153,7 @@ window.SDK_OPTIONS = {
     <p id="watchText" style="margin:8px 0;color:#00ffcc">0 / 20 videos today</p>
     <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Watch Video (+50)</button>
     <p id="watchMsg" style="margin-top:10px;font-size:13px;height:18px"></p>
-    <p style="font-size:11px;color:#888;margin-top:10px">Powered by GameMonetize • 20 videos max per day</p>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Adsterra • 20 videos max per day</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
@@ -181,7 +195,7 @@ function watchToEarn(){
   var statusText = document.getElementById('adStatusText');
   var claimBtn = document.getElementById('manualClaimBtn');
   var iframeWrap = document.querySelector('#rewardedOverlay .reward-box > div');
-  if(iframeWrap) iframeWrap.style.display='none';
+  if(iframeWrap) iframeWrap.style.display='block';
   if(overlay) overlay.style.display='flex';
   if(claimBtn) claimBtn.style.display='none';
   
@@ -343,7 +357,7 @@ function showRewardedAd() {
   var statusText = document.getElementById('adStatusText');
   var claimBtn = document.getElementById('manualClaimBtn');
   var iframeWrap = document.querySelector('#rewardedOverlay .reward-box > div');
-  if(iframeWrap) iframeWrap.style.display='none';
+  if(iframeWrap) iframeWrap.style.display='block';
   if(overlay) overlay.style.display='flex';
   if(claimBtn) claimBtn.style.display='none';
   
@@ -826,3 +840,4 @@ window.addEventListener('load', function(){
 
 </body>
 </html>
+
