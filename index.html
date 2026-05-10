@@ -125,9 +125,9 @@ function loadCpaGripLocker(onReady){
 <div id="walletPage" class="page">
   <div style="text-align:right;margin-bottom:10px"><button onclick="logout()" style="width:auto;padding:8px 15px;background:#333;color:#00ffcc;border:1px solid #00ffcc55">🚪 Logout</button></div>
   <h1>💳 Wallet</h1>
-  <div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p><p id="money" style="font-size:20px;color:#00ffcc;">💵 MWK 0</p></div>
+  <div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p><p id="money" style="font-size:20px;color:#00ccff;">💵 MWK 0</p></div>
 
-  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Watch Offer</span><span style="color:#ffd700;font-weight:bold">+1,200 Coins (24 MWK)</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/12000</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~240 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
+  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Offers</span><span style="color:#ffd700;font-weight:bold">+1,200 Coins (24 MWK)</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/12000</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~240 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
   <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ccff;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
@@ -143,19 +143,19 @@ function loadCpaGripLocker(onReady){
 
 
 <div id="watchPage" class="page">
-  <h1>📺 Watch & Earn</h1>
+  <h1>📺 Offers & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc">
-    <h3>Watch Offer = +1,200 Coins</h3>
+    <h3>Complete Offer = +1,200 Coins</h3>
     <p style="color:#ccc;margin:10px 0">Complete 1 offer to earn 24 MWK instantly. Powered by CPA Grip • Malawi Offers!</p>
     <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
     <p id="watchText" style="margin:8px 0;color:#00ccff">0 / 10 offers today</p>
-    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Watch Offer (+24 MWK)</button>
+    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Complete Offer (+24 MWK)</button>
     <p id="watchMsg" style="margin-top:10px;font-size:13px;height:18px"></p>
     <p style="font-size:11px;color:#888;margin-top:10px">Powered by CPA Grip • Malawi Offers • 10 offers max per day • Dinani, pangani offer, bwerani</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
-    <p style="text-align:left;color:#ccc;line-height:1.8">1. Click Watch Offer<br>2. Complete 1 offer (Tap Coin)<br>3. Come back & click "I Completed"<br>4. Get +1,200 coins (24 MWK) instantly</p>
+    <p style="text-align:left;color:#ccc;line-height:1.8">1. Click Complete Offer<br>2. Complete 1 offer (Tap Coin)<br>3. Come back & click "I Completed"<br>4. Get +1,200 coins (24 MWK) instantly</p>
   </div>
 </div>
 
@@ -166,7 +166,7 @@ function loadCpaGripLocker(onReady){
 
 <div id="bottomAd" class="ad-slot-bottom" style="display:none"></div>
 
-<div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navWatch">📺 Watch</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
+<div class="nav" id="mainNav"><button class="nav-btn active" id="navWallet">💳 Wallet</button><button class="nav-btn" id="navGames">🎮 Games</button><button class="nav-btn" id="navWatch">📺 Offers</button><button class="nav-btn" id="navInbox" style="position:relative">💬 Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button></div>
 
 <div id="rewardedOverlay" class="reward-overlay">
   <div class="reward-box">
@@ -203,7 +203,7 @@ function watchToEarn(){
   if(!lockerWin){
     if(statusText) statusText.innerText = '❌ Popup blocked! Allow popups and tap again';
     if(statusText) statusText.style.color='#ff6b6b';
-    if(btn){ btn.disabled=false; btn.innerText='▶ Watch Offer (+24 MWK)'; }
+    if(btn){ btn.disabled=false; btn.innerText='▶ Complete Offer (+24 MWK)'; }
     return;
   }
 
@@ -228,7 +228,7 @@ function watchToEarn(){
         localStorage.setItem('watchCount', daily);
         updateWatchUI();
         if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +1,200 coins (24 MWK)!</span>';
-        if(btn){ btn.disabled=false; btn.innerText='▶ Watch Offer (+24 MWK)'; }
+        if(btn){ btn.disabled=false; btn.innerText='▶ Complete Offer (+24 MWK)'; }
       };
     }
   }, 1000);
@@ -769,4 +769,4 @@ setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
 </script>
 </body>
-    </html>
+</html>
