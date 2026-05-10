@@ -98,17 +98,12 @@ window.SDK_OPTIONS = {
 
 <!-- CPA Grip Integration - Malawi Offers -->
 <script>
-const CPAGRIP_ID = "1895102";
+const CPAGRIP_URL = "https://singingfiles.com/1895314"; // Your live MadaGame_MW locker
 function loadCpaGripLocker(onReady){
-  // Load CPA Grip script dynamically on click (prevents auto-popup)
-  if(!document.getElementById('cpagrip-script')){
-    var s = document.createElement('script');
-    s.id = 'cpagrip-script';
-    s.type = 'text/javascript';
-    s.src = 'https://singingfiles.com/script_include.php?id=' + CPAGRIP_ID;
-    document.head.appendChild(s);
-  }
-  if(onReady) setTimeout(onReady, 1200);
+  // Open immediately to avoid popup blocker
+  var win = window.open(CPAGRIP_URL, '_blank');
+  if(!win && onReady) { alert('Please allow popups for this site'); }
+  if(onReady) setTimeout(onReady, 500);
 }
 </script>
 </head>
@@ -138,9 +133,9 @@ function loadCpaGripLocker(onReady){
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
   <div class="card" id="fiveMinCard"><h3>⏱️ 5-Minute Loyalty Bonus</h3><p style="color:#ccc">Stay and play for 5 minutes to earn <span style="color:#ffd700">+100 coins</span>!</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="fiveMinBar" style="width:0%;background:linear-gradient(90deg,#00ffcc,#ffd700)"></div></div><p id="fiveMinText" style="margin-top:8px;color:#00ccff">0:00 / 5:00</p><button id="fiveMinBtn" style="display:none;background:linear-gradient(45deg,#ffd700,#ffaa00)">Claim +100 Coins</button></div>
   <div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div>
-  <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><p id="msg" style="margin-top:10px;"></p></div>
+  <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><div id="withdrawCountdown" style="text-align:center;margin-top:8px;font-size:12px;color:#aaa"></div><p id="msg" style="margin-top:10px;"></p></div>
   <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
-  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠️ Fake activity = Permanent ban<br>⏱️ Processing time: 24-48 hours</p></div>
+  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠️ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱️ Processing: Within 24 hours</p></div>
 </div>
 
 <div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:20px;">Play games to earn 5 coins each!</p><div class="games-grid" id="gamesGrid"></div></div></div>
@@ -201,35 +196,42 @@ function watchToEarn(){
   var claimBtn = document.getElementById('manualClaimBtn');
   if(overlay) overlay.style.display='flex';
   if(claimBtn) claimBtn.style.display='none';
-  if(statusText){ statusText.innerText = '⏳ Loading Malawi offers...'; statusText.style.color='#ffd700'; }
+  if(statusText){ statusText.innerText = '⏳ Opening offer...'; statusText.style.color='#ffd700'; }
 
-  // Load CPA Grip locker (will popup automatically)
-  loadCpaGripLocker(function(){
-    if(btn) btn.innerText='Complete offer...';
-    if(msg) msg.innerText='Complete the offer, then return';
-    var seconds = 30;
-    if(statusText){ statusText.innerText = '⏳ Please complete offer, return in ' + seconds + 's...'; }
+  // OPEN IMMEDIATELY - no delay
+  var lockerWin = window.open(CPAGRIP_URL, '_blank');
+  if(!lockerWin){
+    if(statusText) statusText.innerText = '❌ Popup blocked! Allow popups and tap again';
+    if(statusText) statusText.style.color='#ff6b6b';
+    if(btn){ btn.disabled=false; btn.innerText='▶ Watch Offer (+24 MWK)'; }
+    return;
+  }
+
+  // Start timer
+  if(btn) btn.innerText='Complete offer...';
+  if(msg) msg.innerText='Complete the offer, then return';
+  var seconds = 30;
+  if(statusText){ statusText.innerText = '⏳ Please complete offer, return in ' + seconds + 's...'; }
     
-    var countdown = setInterval(function(){
-      seconds--;
-      if(statusText) statusText.innerText = '⏳ Return and claim in ' + seconds + 's...';
-      if(seconds <= 0){
-        clearInterval(countdown);
-        if(statusText){ statusText.innerText = '✅ Ready to claim!'; statusText.style.color='#51cf66'; }
-        if(claimBtn) claimBtn.style.display='block';
-        claimBtn.onclick = function(){
-          if(overlay) overlay.style.display='none';
-          window.pendingReward = 1200;
-          addCoins(1200);
-          var daily = parseInt(localStorage.getItem('watchCount')||'0')+1;
-          localStorage.setItem('watchCount', daily);
-          updateWatchUI();
-          if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +1,200 coins (24 MWK)!</span>';
-          if(btn){ btn.disabled=false; btn.innerText='▶ Watch Offer (+24 MWK)'; }
-        };
-      }
-    }, 1000);
-  });
+  var countdown = setInterval(function(){
+    seconds--;
+    if(statusText) statusText.innerText = '⏳ Return and claim in ' + seconds + 's...';
+    if(seconds <= 0){
+      clearInterval(countdown);
+      if(statusText){ statusText.innerText = '✅ Ready to claim!'; statusText.style.color='#51cf66'; }
+      if(claimBtn) claimBtn.style.display='block';
+      claimBtn.onclick = function(){
+        if(overlay) overlay.style.display='none';
+        window.pendingReward = 1200;
+        addCoins(1200);
+        var daily = parseInt(localStorage.getItem('watchCount')||'0')+1;
+        localStorage.setItem('watchCount', daily);
+        updateWatchUI();
+        if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +1,200 coins (24 MWK)!</span>';
+        if(btn){ btn.disabled=false; btn.innerText='▶ Watch Offer (+24 MWK)'; }
+      };
+    }
+  }, 1000);
 }
 
 
@@ -351,10 +353,8 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   lastBaseReward = baseCoins;
   window.currentGameRewardClaimed = false;
   document.getElementById('gameArea').innerHTML = 
-    '<div class="ad-slot-native"><div class="ad-container-native"></div></div>' +
-    '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Watch Offer (+1,200 Bonus)</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
+    '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button></div>';
   var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); };
-  var db2 = document.getElementById("doubleBtn"); if (db2) db2.onclick = function() { showRewardedAd(); };
 }
 
 function showRewardedAd() {
@@ -575,7 +575,19 @@ function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user")
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
 function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
 try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("watchCount", "0"); } catch(e) {} } } catch(e) {}
-function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
+function withdraw() { try { 
+  // Check Friday 6-9pm Malawi time
+  var now = new Date();
+  var malawiOffset = 2*60;
+  var utc = now.getTime() + (now.getTimezoneOffset()*60000);
+  var malawiTime = new Date(utc + (malawiOffset*60000));
+  var day = malawiTime.getDay();
+  var hour = malawiTime.getHours();
+  if(day !== 5 || hour < 18 || hour >= 21){
+    document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⏰ Withdrawals only Fridays 6PM-9PM (Malawi time). Check countdown above.</span>';
+    return;
+  }
+  var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
 function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
 
 (function() {
@@ -703,5 +715,58 @@ setTimeout(function(){
   <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by CPA Grip • Malawi Offers</p>
 </div>
 
+
+<script>
+// Friday Withdrawal Countdown
+function updateWithdrawCountdown(){
+  var el = document.getElementById('withdrawCountdown');
+  if(!el) return;
+  
+  var now = new Date();
+  var malawiOffset = 2*60;
+  var utc = now.getTime() + (now.getTimezoneOffset()*60000);
+  var malawiTime = new Date(utc + (malawiOffset*60000));
+  
+  var day = malawiTime.getDay();
+  var hour = malawiTime.getHours();
+  var minute = malawiTime.getMinutes();
+  
+  // Check if currently in withdrawal window
+  if(day === 5 && hour >= 18 && hour < 21){
+    var end = new Date(malawiTime);
+    end.setHours(21,0,0,0);
+    var diff = end - malawiTime;
+    var h = Math.floor(diff/3600000);
+    var m = Math.floor((diff%3600000)/60000);
+    var s = Math.floor((diff%60000)/1000);
+    el.innerHTML = '<span style="color:#51cf66">🟢 WITHDRAWALS OPEN! Closes in '+h+'h '+m+'m '+s+'s</span>';
+    return;
+  }
+  
+  // Calculate next Friday 6PM
+  var next = new Date(malawiTime);
+  var daysUntilFri = (5 - day + 7) % 7;
+  if(daysUntilFri === 0) daysUntilFri = 7;
+  if(day === 5 && hour < 18) daysUntilFri = 0;
+  
+  next.setDate(malawiTime.getDate() + daysUntilFri);
+  next.setHours(18,0,0,0);
+  
+  var diff = next - malawiTime;
+  var days = Math.floor(diff/86400000);
+  var h = Math.floor((diff%86400000)/3600000);
+  var m = Math.floor((diff%3600000)/60000);
+  var s = Math.floor((diff%60000)/1000);
+  
+  var text = '';
+  if(days > 0) text += days + 'd ';
+  text += h + 'h ' + m + 'm ' + s + 's';
+  
+  el.innerHTML = '⏰ Next withdrawal: Friday 6PM<br><span style="color:#ffd700">'+text+'</span>';
+}
+
+setInterval(updateWithdrawCountdown, 1000);
+setTimeout(updateWithdrawCountdown, 500);
+</script>
 </body>
-</html>
+    </html>
