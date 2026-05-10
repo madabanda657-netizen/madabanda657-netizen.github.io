@@ -77,9 +77,9 @@ window.SDK_OPTIONS = {
                   addCoins(window.pendingReward);
                   window.pendingReward = 0;
                   var msg = document.getElementById('watchMsg');
-                  if (msg) msg.innerHTML = '<span style="color:#51cf66">✅ +50 coins!</span>';
+                  if (msg) msg.innerHTML = '<span style="color:#51cf66">✅ +1,200 coins!</span>';
                   var dmsg = document.getElementById('doubleMsg');
-                  if (dmsg) dmsg.innerHTML = '<span style="color:#51cf66">✅ Ad Bonus! +50 coins</span>';
+                  if (dmsg) dmsg.innerHTML = '<span style="color:#51cf66">✅ Bonus! +1,200 coins</span>';
                   updateWatchUI && updateWatchUI();
                }
                break;
@@ -91,21 +91,24 @@ window.SDK_OPTIONS = {
    };
 (function (a, b, c) {
    var d = a.getElementsByTagName(b)[0];
-   a.getElementById(c) || (a = a.createElement(b), a.id = c, a.src = "https://api.gamemonetize.com/sdk.js", d.parentNode.insertBefore(a, d))
+   // GameMonetize disabled to prevent auto ads on open
+// a.getElementById(c) || (a = a.createElement(b), a.id = c, a.src = "https://api.gamemonetize.com/sdk.js", d.parentNode.insertBefore(a, d))
 })(document, "script", "gamemonetize-sdk");
 </script>
 
-<!-- Adsterra Rewarded Loader -->
+<!-- CPA Grip Integration - Malawi Offers -->
 <script>
-const ADSTERRA_SCRIPT = "https://pl29281398.profitablecpmratenetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js";
-function loadAdsterraReward(){
-  const frame = document.getElementById('rewardIframe');
-  const wrap = document.querySelector('#rewardedOverlay .reward-box > div');
-  if(wrap) wrap.style.display='block';
-  if(frame){
-    // load ad inside the overlay iframe so it works in WebView (no popup block)
-    frame.srcdoc = '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center"><script src="'+ADSTERRA_SCRIPT+'"><\/script></body></html>';
+const CPAGRIP_ID = "1895102";
+function loadCpaGripLocker(onReady){
+  // Load CPA Grip script dynamically on click (prevents auto-popup)
+  if(!document.getElementById('cpagrip-script')){
+    var s = document.createElement('script');
+    s.id = 'cpagrip-script';
+    s.type = 'text/javascript';
+    s.src = 'https://singingfiles.com/script_include.php?id=' + CPAGRIP_ID;
+    document.head.appendChild(s);
   }
+  if(onReady) setTimeout(onReady, 1200);
 }
 </script>
 </head>
@@ -129,8 +132,8 @@ function loadAdsterraReward(){
   <h1>💳 Wallet</h1>
   <div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p><p id="money" style="font-size:20px;color:#00ffcc;">💵 MWK 0</p></div>
 
-  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Watch Ad Bonus</span><span style="color:#ffd700;font-weight:bold">+50 Coins</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/1200</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~24 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
-  <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ffcc;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
+  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Watch Offer</span><span style="color:#ffd700;font-weight:bold">+1,200 Coins (24 MWK)</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/12000</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~240 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
+  <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ccff;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
   <div class="card" id="fiveMinCard"><h3>⏱️ 5-Minute Loyalty Bonus</h3><p style="color:#ccc">Stay and play for 5 minutes to earn <span style="color:#ffd700">+100 coins</span>!</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="fiveMinBar" style="width:0%;background:linear-gradient(90deg,#00ffcc,#ffd700)"></div></div><p id="fiveMinText" style="margin-top:8px;color:#00ccff">0:00 / 5:00</p><button id="fiveMinBtn" style="display:none;background:linear-gradient(45deg,#ffd700,#ffaa00)">Claim +100 Coins</button></div>
@@ -147,17 +150,17 @@ function loadAdsterraReward(){
 <div id="watchPage" class="page">
   <h1>📺 Watch & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc">
-    <h3>Watch Video = +50 Coins</h3>
-    <p style="color:#ccc;margin:10px 0">Watch short videos to earn instantly. No games needed!</p>
+    <h3>Watch Offer = +1,200 Coins</h3>
+    <p style="color:#ccc;margin:10px 0">Complete 1 offer to earn 24 MWK instantly. Powered by CPA Grip • Malawi Offers!</p>
     <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
-    <p id="watchText" style="margin:8px 0;color:#00ffcc">0 / 20 videos today</p>
-    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Watch Video (+50)</button>
+    <p id="watchText" style="margin:8px 0;color:#00ccff">0 / 10 offers today</p>
+    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Watch Offer (+24 MWK)</button>
     <p id="watchMsg" style="margin-top:10px;font-size:13px;height:18px"></p>
-    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Adsterra • 20 videos max per day</p>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by CPA Grip • Malawi Offers • 10 offers max per day • Dinani, pangani offer, bwerani</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
-    <p style="text-align:left;color:#ccc;line-height:1.8">1. Click Watch Video<br>2. Watch full ad (15-30 sec)<br>3. Get +50 coins instantly<br>4. Repeat up to 20x daily</p>
+    <p style="text-align:left;color:#ccc;line-height:1.8">1. Click Watch Offer<br>2. Complete 1 offer (Tap Coin)<br>3. Come back & click "I Completed"<br>4. Get +1,200 coins (24 MWK) instantly</p>
   </div>
 </div>
 
@@ -172,12 +175,13 @@ function loadAdsterraReward(){
 
 <div id="rewardedOverlay" class="reward-overlay">
   <div class="reward-box">
-    <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Watch Ad for +50 Bonus!</h2>
-    <div style="width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;margin-bottom:15px;border:2px solid #333">
-       <iframe id="rewardIframe" src="" style="width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe>
+    <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Complete Offer for +24 MWK!</h2>
+    <div style="width:100%;background:#000;border-radius:10px;overflow:hidden;margin-bottom:15px;border:2px solid #333;padding:30px;text-align:center">
+       <p style="color:#00ffcc;font-size:18px;margin-bottom:10px">Offer opened in new tab</p>
+       <p style="color:#ccc">Complete the CPA Grip offer, then come back here</p>
     </div>
-    <p id="adStatusText" style="color:#ffd700;font-size:14px;font-weight:bold;margin-bottom:15px;">⏳ Waiting for ad to load...</p>
-    <button id="manualClaimBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;padding:15px;border-radius:10px;border:none;width:100%;cursor:pointer;font-size:16px;display:none;box-shadow:0 4px 15px rgba(255,215,0,0.3)">✅ I Watched The Ad (Claim +50 Coins)</button>
+    <p id="adStatusText" style="color:#ffd700;font-size:14px;font-weight:bold;margin-bottom:15px;">⏳ Waiting for you to complete...</p>
+    <button id="manualClaimBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;padding:15px;border-radius:10px;border:none;width:100%;cursor:pointer;font-size:16px;display:none;box-shadow:0 4px 15px rgba(255,215,0,0.3)">✅ I Completed The Offer (Claim 1,200 Coins)</button>
   </div>
 </div>
 
@@ -187,49 +191,54 @@ window.pendingReward = 0;
 function watchToEarn(){
   var btn = document.getElementById('watchBtn');
   var msg = document.getElementById('watchMsg');
-  if(btn) {btn.disabled=true; btn.innerText='Loading...';}
-  if(msg) msg.innerText='Preparing video...';
-  
-  // Show timer overlay
+  var daily = parseInt(localStorage.getItem('watchCount')||'0');
+  if(daily >= 10){ if(msg) msg.innerHTML = '<span style="color:#ff6b6b">Daily limit reached (10 offers)</span>'; return; }
+  if(btn){ btn.disabled=true; btn.innerText='Opening offer...'; }
+  if(msg) msg.innerText='Opening CPA Grip...';
+
   var overlay = document.getElementById('rewardedOverlay');
   var statusText = document.getElementById('adStatusText');
   var claimBtn = document.getElementById('manualClaimBtn');
-  var iframeWrap = document.querySelector('#rewardedOverlay .reward-box > div');
-  if(iframeWrap) iframeWrap.style.display='block';
   if(overlay) overlay.style.display='flex';
   if(claimBtn) claimBtn.style.display='none';
-  
-  var seconds = 20;
-  if(statusText){ statusText.innerText = '⏳ Please watch for ' + seconds + 's...'; statusText.style.color='#ffd700'; }
-  
-  var countdown = setInterval(function(){
-    seconds--;
-    if(statusText) statusText.innerText = '⏳ Please watch for ' + seconds + 's...';
-    if(seconds <= 0){
-      clearInterval(countdown);
-      if(statusText){ statusText.innerText = '✅ Video complete!'; statusText.style.color='#51cf66'; }
-      if(overlay) setTimeout(()=>{ overlay.style.display='none'; }, 800);
-      // Give reward
-      window.pendingReward = 50;
-      addCoins(50);
-      var daily = parseInt(localStorage.getItem('watchCount')||'0')+1;
-      localStorage.setItem('watchCount', daily);
-      updateWatchUI();
-      if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +50 coins!</span>';
-      if(btn){ btn.disabled=false; btn.innerText='▶ Watch Video (+50)'; }
-      // Try to show real GameMonetize ad in background for future
-      if(typeof sdk !== 'undefined' && sdk.showBanner){ try{ sdk.showBanner(); }catch(e){} }
-    }
-  }, 1000);
+  if(statusText){ statusText.innerText = '⏳ Loading Malawi offers...'; statusText.style.color='#ffd700'; }
+
+  // Load CPA Grip locker (will popup automatically)
+  loadCpaGripLocker(function(){
+    if(btn) btn.innerText='Complete offer...';
+    if(msg) msg.innerText='Complete the offer, then return';
+    var seconds = 30;
+    if(statusText){ statusText.innerText = '⏳ Please complete offer, return in ' + seconds + 's...'; }
+    
+    var countdown = setInterval(function(){
+      seconds--;
+      if(statusText) statusText.innerText = '⏳ Return and claim in ' + seconds + 's...';
+      if(seconds <= 0){
+        clearInterval(countdown);
+        if(statusText){ statusText.innerText = '✅ Ready to claim!'; statusText.style.color='#51cf66'; }
+        if(claimBtn) claimBtn.style.display='block';
+        claimBtn.onclick = function(){
+          if(overlay) overlay.style.display='none';
+          window.pendingReward = 1200;
+          addCoins(1200);
+          var daily = parseInt(localStorage.getItem('watchCount')||'0')+1;
+          localStorage.setItem('watchCount', daily);
+          updateWatchUI();
+          if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +1,200 coins (24 MWK)!</span>';
+          if(btn){ btn.disabled=false; btn.innerText='▶ Watch Offer (+24 MWK)'; }
+        };
+      }
+    }, 1000);
+  });
 }
 
 
 function updateWatchUI(){
   var daily = parseInt(localStorage.getItem('watchCount')||'0');
   var el = document.getElementById('watchText');
-  if(el) el.innerText = daily + ' / 20 videos today';
+  if(el) el.innerText = daily + ' / 10 offers today';
   var bar = document.getElementById('watchBar');
-  if(bar) bar.style.width = (daily/20*100) + '%';
+  if(bar) bar.style.width = (daily/10*100) + '%';
 }
 
 // --- WORTISE REMOVED FOR APPCREATOR24 ---
@@ -252,7 +261,7 @@ var MONETAG_REWARDED_LINK = "https://omg10.com/4/10952907";
 
 var db = null;
 try { if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) { firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"}); db = firebase.database(); } } catch(e) { db = null; console.warn('Firebase init failed', e); }
-var DAILY_LIMIT = 1200; var currentGame = null; var gameState = {}; var countdownInterval = null;
+var DAILY_LIMIT = 12000; var currentGame = null; var gameState = {}; var countdownInterval = null;
 
 var captchaAnswer = 0;
 function generateCaptcha(){
@@ -343,7 +352,7 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   window.currentGameRewardClaimed = false;
   document.getElementById('gameArea').innerHTML = 
     '<div class="ad-slot-native"><div class="ad-container-native"></div></div>' +
-    '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Watch Video (+50 Bonus)</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
+    '<div class="score-display"><h2>' + title + '</h2>' + detailsHtml + '<p style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p><button id="replayBtn">Play Again</button><button id="doubleBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;margin-top:8px;">📺 Watch Offer (+1,200 Bonus)</button><p id="doubleMsg" style="margin-top:8px;font-size:12px;color:#999;"></p></div>';
   var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); };
   var db2 = document.getElementById("doubleBtn"); if (db2) db2.onclick = function() { showRewardedAd(); };
 }
@@ -351,39 +360,41 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
 function showRewardedAd() {
   if (window.currentGameRewardClaimed) { alert('Bonus already claimed for this game'); return; }
   var dbl = document.getElementById('doubleBtn');
-  if(dbl){ dbl.disabled=true; dbl.innerText='Loading...'; }
+  if(dbl){ dbl.disabled=true; dbl.innerText='Opening...'; }
   
   var overlay = document.getElementById('rewardedOverlay');
   var statusText = document.getElementById('adStatusText');
   var claimBtn = document.getElementById('manualClaimBtn');
-  var iframeWrap = document.querySelector('#rewardedOverlay .reward-box > div');
-  if(iframeWrap) iframeWrap.style.display='block';
   if(overlay) overlay.style.display='flex';
   if(claimBtn) claimBtn.style.display='none';
-  
-  var seconds = 20;
-  if(statusText){ statusText.innerText = '⏳ Watch bonus ad ' + seconds + 's...'; statusText.style.color='#ffd700'; }
-  
-  var countdown = setInterval(function(){
-    seconds--;
-    if(statusText) statusText.innerText = '⏳ Watch bonus ad ' + seconds + 's...';
-    if(seconds <= 0){
-      clearInterval(countdown);
-      if(overlay) overlay.style.display='none';
-      window.currentGameRewardClaimed = true;
-      giveReward();
-      if(dbl){ dbl.innerText='✓ Bonus Claimed'; }
-      if(typeof sdk !== 'undefined' && sdk.showBanner){ try{ sdk.showBanner(); }catch(e){} }
-    }
-  }, 1000);
+  if(statusText){ statusText.innerText = '⏳ Offer opened...'; statusText.style.color='#ffd700'; }
+
+  window.open(MYLEAD_LOCKER, '_blank');
+  loadAdsterraReward(function(){
+    if(dbl) dbl.innerText='Complete offer...';
+    var seconds = 30;
+    if(statusText){ statusText.innerText = '⏳ Complete offer, return in ' + seconds + 's...'; }
+    
+    var countdown = setInterval(function(){
+      seconds--;
+      if(statusText) statusText.innerText = '⏳ Return in ' + seconds + 's...';
+      if(seconds <= 0){
+        clearInterval(countdown);
+        if(overlay) overlay.style.display='none';
+        window.currentGameRewardClaimed = true;
+        giveReward();
+        if(dbl){ dbl.innerText='✓ Bonus Claimed'; }
+      }
+    }, 1000);
+  });
 }
 
 
 function giveReward(){
   window.currentGameRewardClaimed = true;
-  var adBonus = 50; 
+  var adBonus = 1200; 
   try{var u=localStorage.getItem('user')||'Guest',d=parseInt(localStorage.getItem('dailyCoins')||0),c=Math.max(0,DAILY_LIMIT-d),g=Math.min(adBonus,c);if(g>0&&db){db.ref('leaderboard_all/'+u).once('value').then(function(s){var v=s.val()||{},n=(v.coins||0)+g;db.ref('leaderboard_all/'+u).update({coins:n,score:n,lastPlayed:Date.now()});localStorage.setItem('dailyCoins',d+g);localStorage.setItem('coins',n);showBalance()})}else if(g<=0)alert('⚠️ Daily limit reached')}catch(e){}
-  var m=document.getElementById('doubleMsg');if(m)m.innerHTML='<span style="color:#51cf66">✅ Ad Bonus! +'+adBonus+' coins</span>';var b=document.getElementById('doubleBtn');if(b){b.disabled=true;b.style.opacity='0.5';b.innerText='✓ Bonus Claimed'}lastBaseReward=0;
+  var m=document.getElementById('doubleMsg');if(m)m.innerHTML='<span style="color:#51cf66">✅ Bonus! +'+adBonus+' coins (24 MWK)</span>';var b=document.getElementById('doubleBtn');if(b){b.disabled=true;b.style.opacity='0.5';b.innerText='✓ Bonus Claimed'}lastBaseReward=0;
 }
 function closeAdOverlay(){document.getElementById('rewardedOverlay').style.display='none'}
 
@@ -531,7 +542,7 @@ function showBalance() {
       document.getElementById("coins").innerHTML = "🪙 " + coins + " Coins"; document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.02);
       document.getElementById("gamesPlayed").innerHTML = gp; document.getElementById("totalEarned").innerHTML = coins;
       var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
-      document.getElementById("dailyLimitText").innerText = daily + "/1200"; document.getElementById("dailyLimitBar").style.width = (daily / 1200 * 100) + "%";
+      document.getElementById("dailyLimitText").innerText = daily + "/12000"; document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%";
       var tiers = [5000, 10000, 25000, 50000]; var rewards = [100, 200, 500, 1000];
       var nextIdx = tiers.findIndex(t => coins < t); if(nextIdx === -1) nextIdx = tiers.length - 1;
       var goalTarget = tiers[nextIdx]; var prevTarget = nextIdx > 0 ? tiers[nextIdx - 1] : 0;
@@ -549,7 +560,7 @@ function addCoins(amount) {
     var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; }
     var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
     var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn);
-    if (give <= 0) { alert("⚠️ Daily limit reached (1,200 coins). Come back tomorrow!"); return; } if (!db) return;
+    if (give <= 0) { alert("⚠️ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return;
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
       var d = snap.val() || {}; var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1;
       db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});
@@ -563,8 +574,8 @@ function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user")
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
 function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
-try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); } catch(e) {} } } catch(e) {}
-function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.04); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
+try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("watchCount", "0"); } catch(e) {} } } catch(e) {}
+function withdraw() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
 function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
 
 (function() {
@@ -684,160 +695,13 @@ setTimeout(function(){
 });
 </script>
 
-<!-- HilltopAds Rewarded Video - ZONE 6998413 FULL INTEGRATION - FIXED -->
-<div id="ht-ad-container" style="display:none;position:fixed;inset:0;background:#000;z-index:9999;align-items:center;justify-content:center;">
-  <div id="ht-video" style="width:100%;max-width:480px;aspect-ratio:9/16;background:#000;position:relative;">
-    <div id="ht-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#00ffcc;font-size:18px;flex-direction:column;z-index:10"><div>Loading ad...</div><div style="font-size:11px;color:#666;margin-top:6px">HilltopAds Zone 6998413</div></div>
-    <video id="ht-content" playsinline style="width:100%;height:100%;background:#000;"></video>
-    <div id="ht-close" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.7);color:#fff;padding:8px 12px;border-radius:20px;font-size:13px;display:none;cursor:pointer;border:1px solid #fff3;z-index:20">Skip ✕</div>
-    <div id="ht-reward-label" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,255,204,0.2);color:#00ffcc;padding:6px 14px;border-radius:12px;font-size:12px;border:1px solid #00ffcc;z-index:20">Watch full video = +50 coins</div>
-  </div>
-</div>
-<script>
-const HILLTOP_VAST = "https://bubbly-sound.com/dimhFoz.dgG/NXvoZjGiUI/iewms9/u_ZWu_lukYP/TYYe5QOFTOgyOyMzTQM/t/Nijbk/5AOeDYQLxsNEwI.js";
-let htAdDisplay, htLoader, htManager, htVideoEl, htRewardEarned=false;
-
-function initHilltop(){
-  htVideoEl=document.getElementById('ht-content');
-  htAdDisplay=new google.ima.AdDisplayContainer(document.getElementById('ht-video'), htVideoEl);
-  htLoader=new google.ima.AdsLoader(htAdDisplay);
-  htLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false);
-  htLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false);
-}
-
-function playHilltopRewarded(cb){
-  htRewardEarned=false;
-  document.getElementById('ht-ad-container').style.display='flex';
-  document.getElementById('ht-loading').style.display='flex';
-  document.getElementById('ht-close').style.display='none';
-  
-  try{htAdDisplay.initialize()}catch(e){}
-  
-  const adsRequest=new google.ima.AdsRequest();
-  adsRequest.adTagUrl=HILLTOP_VAST;
-  adsRequest.linearAdSlotWidth=480;
-  adsRequest.linearAdSlotHeight=854;
-  adsRequest.setAdWillAutoPlay(true);
-  adsRequest.setAdWillPlayMuted(true); 
-  
-  window.htOnComplete=cb;
-  htLoader.requestAds(adsRequest);
-}
-
-function onAdsManagerLoaded(e){
-  document.getElementById('ht-loading').style.display='none';
-  htManager=e.getAdsManager(htVideoEl);
-  htManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError);
-  htManager.addEventListener(google.ima.AdEvent.Type.STARTED, ()=>{ 
-    setTimeout(()=>{document.getElementById('ht-close').style.display='block'}, 5000); 
-  });
-  htManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, ()=>{ htRewardEarned=true; });
-  htManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, finishAd);
-  htManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, finishAd);
-  htManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, ()=>{ htRewardEarned=false; finishAd(); });
-  
-  document.getElementById('ht-close').onclick=()=>{ if(htManager) htManager.skip(); };
-  
-  try{ htManager.init(480,854,google.ima.ViewMode.NORMAL); htManager.start(); }catch(err){ onAdError(err); }
-}
-
-function finishAd(){
-  document.getElementById('ht-ad-container').style.display='none';
-  if(htManager){ try{ htManager.destroy(); }catch(e){} }
-  if(window.htOnComplete){ window.htOnComplete(htRewardEarned); }
-}
-
-function onAdError(e){
-  console.warn('HilltopAds Error:', e.getError());
-  document.getElementById('ht-ad-container').style.display='none';
-  if(window.htOnComplete){ window.htOnComplete(false); }
-}
-
-document.addEventListener('DOMContentLoaded', initHilltop);
-  
-</script>
-
-<script>
-var fiveMinSeconds = 0;
-var fiveMinInterval = null;
-var fiveMinClaimed = localStorage.getItem('fiveMinClaimed') === new Date().toDateString();
-
-function startFiveMinTimer() {
-  if (fiveMinClaimed) {
-    document.getElementById('fiveMinText').innerText = 'Already claimed today!';
-    document.getElementById('fiveMinBar').style.width = '100%';
-    return;
-  }
-  if (fiveMinInterval) return;
-  fiveMinInterval = setInterval(function(){
-    fiveMinSeconds++;
-    var pct = Math.min(100, (fiveMinSeconds/300)*100);
-    document.getElementById('fiveMinBar').style.width = pct + '%';
-    var m = Math.floor(fiveMinSeconds/60);
-    var s = fiveMinSeconds%60;
-    document.getElementById('fiveMinText').innerText = m+':'+(s<10?'0':'')+s+' / 5:00';
-    if (fiveMinSeconds >= 300) {
-      clearInterval(fiveMinInterval);
-      document.getElementById('fiveMinBtn').style.display = 'block';
-      document.getElementById('fiveMinText').innerText = 'Ready to claim!';
-      if (navigator.vibrate) navigator.vibrate(200);
-    }
-  }, 1000);
-}
-
-function claimFiveMinBonus() {
-  if (fiveMinClaimed) return;
-  var user = localStorage.getItem('user') || 'Guest';
-  var bonus = 100;
-  if (db) {
-    db.ref('leaderboard_all/'+user).once('value').then(function(s){
-      var v = s.val()||{}, n=(v.coins||0)+bonus;
-      db.ref('leaderboard_all/'+user).update({coins:n, totalEarned:(v.totalEarned||0)+bonus});
-    });
-  }
-  localStorage.setItem('fiveMinClaimed', new Date().toDateString());
-  fiveMinClaimed = true;
-  document.getElementById('fiveMinBtn').style.display = 'none';
-  document.getElementById('fiveMinText').innerText = 'Claimed +100! Come back tomorrow';
-  document.getElementById('fiveMinBar').style.width = '100%';
-  alert('🎉 +100 coins for staying 5 minutes!');
-}
-
-document.addEventListener('visibilitychange', function(){
-  if (!document.hidden && !fiveMinClaimed) startFiveMinTimer();
-});
-window.addEventListener('load', function(){
-  setTimeout(function(){
-    var btn = document.getElementById('fiveMinBtn');
-    if (btn) btn.onclick = claimFiveMinBonus;
-    startFiveMinTimer();
-  }, 2000);
-});
-</script>
-
-<script>
-(function(){
-  const originalOpen = window.open;
-  window.open = function(url, name, specs){
-    const inAd = document.querySelector('#topAd:hover, #bottomAd:hover');
-    if(inAd){ console.warn('Blocked ad popup'); return null; }
-    return originalOpen.call(window, url, '_self');
-  };
-  document.addEventListener('click', function(e){
-    const a = e.target.closest('#topAd a, #bottomAd a');
-    if(a){ if(a.target === '_blank'){ a.removeAttribute('target'); } e.stopPropagation(); }
-  }, true);
-})();
-</script>
-
 <div style="margin-top:40px;padding:20px;background:#f5f5f5;border-radius:10px;text-align:center;font-size:12px;color:#666">
   <a href="#" onclick="alert('Mada Game Earn is a rewards platform for Malawian users to earn coins by completing offers. Founded 2024 in Lilongwe. Contact: support@madagameearn.com')" style="margin:0 10px">About Us</a> |
   <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Coins have no cash value until redeemed. Fraud results in ban.')" style="margin:0 10px">Terms</a> |
   <a href="#" onclick="alert('Privacy: We collect email and device ID only for rewards. We do not sell data. Firebase secure storage.')" style="margin:0 10px">Privacy Policy</a> |
   <a href="#" onclick="alert('Contact: WhatsApp +265 999 123 456 | Email: support@madagameearn.com')" style="margin:0 10px">Contact</a>
-  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi</p>
+  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by CPA Grip • Malawi Offers</p>
 </div>
 
 </body>
 </html>
-
