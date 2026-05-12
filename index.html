@@ -98,11 +98,11 @@ window.SDK_OPTIONS = {
 
 <!-- Offermaru Integration - Malawi Offers -->
 <script>
-const OFFERMARU_URL = "https://offermaru.com/wall/9tFSTbgmmw/"; // Your live Offermaru wall
+const OFFERMARU_URL = "https://wall.offermaru.com/19741"; // Your live Offermaru wall
 function loadCpaGripLocker(onReady){
   // Open Offermaru immediately to avoid popup blocker
   var user = localStorage.getItem('user') || 'guest';
-  var url = OFFERMARU_URL + '?s1=' + encodeURIComponent(user);
+  var url = OFFERMARU_URL + '?user_id=' + encodeURIComponent(user);
   var win = window.open(url, '_blank');
   if(!win && onReady) { alert('Please allow popups for this site'); }
   if(onReady) setTimeout(onReady, 500);
@@ -199,7 +199,7 @@ function watchToEarn(){
   if(statusText){ statusText.innerText = '⏳ Opening Offermaru...'; statusText.style.color='#ffd700'; }
 
   // OPEN OFFERMARU WITH USER ID - THIS IS THE KEY FIX
-  var url = OFFERMARU_URL + '?s1=' + encodeURIComponent(user);
+  var url = OFFERMARU_URL + '?user_id=' + encodeURIComponent(user);
   var lockerWin = window.open(url, '_blank');
   
   if(!lockerWin){
