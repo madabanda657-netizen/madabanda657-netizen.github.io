@@ -96,12 +96,14 @@ window.SDK_OPTIONS = {
 })(document, "script", "gamemonetize-sdk");
 </script>
 
-<!-- CPA Grip Integration - Malawi Offers -->
+<!-- Offermaru Integration - Malawi Offers -->
 <script>
-const CPAGRIP_URL = "https://singingfiles.com/1895314"; // Your live MadaGame_MW locker
+const OFFERMARU_URL = "https://offermaru.com/wall/9tFSTbgmmw/"; // Your live Offermaru wall
 function loadCpaGripLocker(onReady){
-  // Open immediately to avoid popup blocker
-  var win = window.open(CPAGRIP_URL, '_blank');
+  // Open Offermaru immediately to avoid popup blocker
+  var user = localStorage.getItem('user') || 'guest';
+  var url = OFFERMARU_URL + '?s1=' + encodeURIComponent(user);
+  var win = window.open(url, '_blank');
   if(!win && onReady) { alert('Please allow popups for this site'); }
   if(onReady) setTimeout(onReady, 500);
 }
@@ -127,7 +129,7 @@ function loadCpaGripLocker(onReady){
   <h1>💳 Wallet</h1>
   <div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p><p id="money" style="font-size:20px;color:#00ccff;">💵 MWK 0</p></div>
 
-  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Offers</span><span style="color:#ffd700;font-weight:bold">+1,200 Coins (24 MWK)</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/12000</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~240 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
+  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Offers</span><span style="color:#ffd700;font-weight:bold">+500-5000 Coins</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/12000</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~240 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
   <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ccff;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
@@ -145,17 +147,17 @@ function loadCpaGripLocker(onReady){
 <div id="watchPage" class="page">
   <h1>📺 Offers & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc">
-    <h3>Complete Offer = +1,200 Coins</h3>
-    <p style="color:#ccc;margin:10px 0">Complete 1 offer to earn 24 MWK instantly. Powered by CPA Grip • Malawi Offers!</p>
+    <h3>Complete Offer = +500 to 5000 Coins</h3>
+    <p style="color:#ccc;margin:10px 0">Complete offers to earn instantly. Powered by Offermaru • Auto-credit!</p>
     <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
     <p id="watchText" style="margin:8px 0;color:#00ccff">0 / 10 offers today</p>
-    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Complete Offer (+24 MWK)</button>
+    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Open Offers Wall</button>
     <p id="watchMsg" style="margin-top:10px;font-size:13px;height:18px"></p>
-    <p style="font-size:11px;color:#888;margin-top:10px">Powered by CPA Grip • Malawi Offers • 10 offers max per day • Dinani, pangani offer, bwerani</p>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Offermaru • Auto S2S • Coins added automatically after completion</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
-    <p style="text-align:left;color:#ccc;line-height:1.8">1. Click Complete Offer<br>2. Complete 1 offer (Tap Coin)<br>3. Come back & click "I Completed"<br>4. Get +1,200 coins (24 MWK) instantly</p>
+    <p style="text-align:left;color:#ccc;line-height:1.8">1. Click Open Offers<br>2. Complete any offer<br>3. Come back - coins auto-added in 30 seconds<br>4. No manual claim needed!</p>
   </div>
 </div>
 
@@ -170,13 +172,13 @@ function loadCpaGripLocker(onReady){
 
 <div id="rewardedOverlay" class="reward-overlay">
   <div class="reward-box">
-    <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Complete Offer for +24 MWK!</h2>
+    <h2 style="color:#00ffcc;margin-bottom:15px;font-size:18px;">📺 Offermaru Offers</h2>
     <div style="width:100%;background:#000;border-radius:10px;overflow:hidden;margin-bottom:15px;border:2px solid #333;padding:30px;text-align:center">
-       <p style="color:#00ffcc;font-size:18px;margin-bottom:10px">Offer opened in new tab</p>
-       <p style="color:#ccc">Complete the CPA Grip offer, then come back here</p>
+       <p style="color:#00ffcc;font-size:18px;margin-bottom:10px">Offer wall opened in new tab</p>
+       <p style="color:#ccc">Complete any offer, coins will be added automatically</p>
     </div>
-    <p id="adStatusText" style="color:#ffd700;font-size:14px;font-weight:bold;margin-bottom:15px;">⏳ Waiting for you to complete...</p>
-    <button id="manualClaimBtn" style="background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;font-weight:bold;padding:15px;border-radius:10px;border:none;width:100%;cursor:pointer;font-size:16px;display:none;box-shadow:0 4px 15px rgba(255,215,0,0.3)">✅ I Completed The Offer (Claim 1,200 Coins)</button>
+    <p id="adStatusText" style="color:#ffd700;font-size:14px;font-weight:bold;margin-bottom:15px;">⏳ Waiting for completion...</p>
+    <button id="manualClaimBtn" onclick="document.getElementById('rewardedOverlay').style.display='none'" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;font-weight:bold;padding:15px;border-radius:10px;border:none;width:100%;cursor:pointer;font-size:16px;">✅ Close & Check Wallet</button>
   </div>
 </div>
 
@@ -186,52 +188,38 @@ window.pendingReward = 0;
 function watchToEarn(){
   var btn = document.getElementById('watchBtn');
   var msg = document.getElementById('watchMsg');
-  var daily = parseInt(localStorage.getItem('watchCount')||'0');
-  if(daily >= 10){ if(msg) msg.innerHTML = '<span style="color:#ff6b6b">Daily limit reached (10 offers)</span>'; return; }
-  if(btn){ btn.disabled=true; btn.innerText='Opening offer...'; }
-  if(msg) msg.innerText='Opening CPA Grip...';
+  var user = localStorage.getItem('user') || 'guest_' + Math.random().toString(36).substr(2,6);
+  
+  if(btn){ btn.disabled=true; btn.innerText='Opening...'; }
+  if(msg) msg.innerText='Opening Offermaru...';
 
   var overlay = document.getElementById('rewardedOverlay');
   var statusText = document.getElementById('adStatusText');
-  var claimBtn = document.getElementById('manualClaimBtn');
   if(overlay) overlay.style.display='flex';
-  if(claimBtn) claimBtn.style.display='none';
-  if(statusText){ statusText.innerText = '⏳ Opening offer...'; statusText.style.color='#ffd700'; }
+  if(statusText){ statusText.innerText = '⏳ Opening Offermaru...'; statusText.style.color='#ffd700'; }
 
-  // OPEN IMMEDIATELY - no delay
-  var lockerWin = window.open(CPAGRIP_URL, '_blank');
+  // OPEN OFFERMARU WITH USER ID - THIS IS THE KEY FIX
+  var url = OFFERMARU_URL + '?s1=' + encodeURIComponent(user);
+  var lockerWin = window.open(url, '_blank');
+  
   if(!lockerWin){
     if(statusText) statusText.innerText = '❌ Popup blocked! Allow popups and tap again';
     if(statusText) statusText.style.color='#ff6b6b';
-    if(btn){ btn.disabled=false; btn.innerText='▶ Complete Offer (+24 MWK)'; }
+    if(btn){ btn.disabled=false; btn.innerText='▶ Open Offers Wall'; }
     return;
   }
 
-  // Start timer
-  if(btn) btn.innerText='Complete offer...';
-  if(msg) msg.innerText='Complete the offer, then return';
-  var seconds = 30;
-  if(statusText){ statusText.innerText = '⏳ Please complete offer, return in ' + seconds + 's...'; }
-    
-  var countdown = setInterval(function(){
-    seconds--;
-    if(statusText) statusText.innerText = '⏳ Return and claim in ' + seconds + 's...';
-    if(seconds <= 0){
-      clearInterval(countdown);
-      if(statusText){ statusText.innerText = '✅ Ready to claim!'; statusText.style.color='#51cf66'; }
-      if(claimBtn) claimBtn.style.display='block';
-      claimBtn.onclick = function(){
-        if(overlay) overlay.style.display='none';
-        window.pendingReward = 1200;
-        addCoins(1200);
-        var daily = parseInt(localStorage.getItem('watchCount')||'0')+1;
-        localStorage.setItem('watchCount', daily);
-        updateWatchUI();
-        if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +1,200 coins (24 MWK)!</span>';
-        if(btn){ btn.disabled=false; btn.innerText='▶ Complete Offer (+24 MWK)'; }
-      };
-    }
-  }, 1000);
+  // Update UI
+  if(btn) btn.innerText='Offers opened';
+  if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ Complete offer, return for auto-credit</span>';
+  if(statusText){ statusText.innerText = '✅ Offermaru opened! Complete offer and return'; statusText.style.color='#51cf66'; }
+  
+  setTimeout(function(){
+    if(btn){ btn.disabled=false; btn.innerText='▶ Open Offers Wall'; }
+    if(overlay) overlay.style.display='none';
+    // Refresh balance after 30 seconds to catch S2S credit
+    setTimeout(function(){ showBalance(); }, 30000);
+  }, 3000);
 }
 
 
@@ -712,7 +700,7 @@ setTimeout(function(){
   <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Coins have no cash value until redeemed. Fraud results in ban.')" style="margin:0 10px">Terms</a> |
   <a href="#" onclick="alert('Privacy: We collect email and device ID only for rewards. We do not sell data. Firebase secure storage.')" style="margin:0 10px">Privacy Policy</a> |
   <a href="#" onclick="alert('Contact: WhatsApp +265 999 123 456 | Email: support@madagameearn.com')" style="margin:0 10px">Contact</a>
-  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by CPA Grip • Malawi Offers</p>
+  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by Offermaru • Auto S2S</p>
 </div>
 
 
