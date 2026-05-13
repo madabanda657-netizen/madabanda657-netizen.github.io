@@ -108,6 +108,29 @@ function loadCpaGripLocker(onReady){
   if(onReady) setTimeout(onReady, 500);
 }
 </script>
+<!-- ADDED: AdMaven - KEEPING OFFERMARU -->
+<script>
+const ADMAVEN_URL = "https://speedy-links.com/s?oIjdfpmR"; // Your AdMaven locker
+function watchAdMaven(){
+  var user = localStorage.getItem('user') || 'guest';
+  var url = ADMAVEN_URL + '&subid=' + encodeURIComponent(user);
+  window.open(url, '_blank');
+  setTimeout(function(){ 
+    if(confirm('Did you complete the AdMaven offer? Tap OK to claim +500 coins')) {
+      claimAdMaven();
+    }
+  }, 15000);
+}
+function claimAdMaven(){
+  addCoins(500);
+  var msg = document.getElementById('watchMsg');
+  if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins from AdMaven!</span>';
+  showBalance();
+  var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1;
+  localStorage.setItem('watchCount', daily);
+  updateWatchUI();
+}
+</script>
 </head>
 <body>
 <div class="container">
@@ -151,9 +174,12 @@ function loadCpaGripLocker(onReady){
     <p style="color:#ccc;margin:10px 0">Complete offers to earn instantly. Powered by Offermaru • Auto-credit!</p>
     <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
     <p id="watchText" style="margin:8px 0;color:#00ccff">0 / 10 offers today</p>
-    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Open Offers Wall</button>
+    <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Open Offers Wall (Offermaru)</button>
     <p id="watchMsg" style="margin-top:10px;font-size:13px;height:18px"></p>
-    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Offermaru • Auto S2S • Coins added automatically after completion</p>
+    <!-- ADDED BUTTONS - DO NOT REMOVE OFFERMARU -->
+    <button id="watchBtn2" onclick="watchAdMaven()" style="background:linear-gradient(45deg,#ffaa00,#ff6600);font-size:16px;padding:12px;margin-top:10px">▶ Open AdMaven Locker (NEW)</button>
+    <button onclick="claimAdMaven()" style="background:linear-gradient(45deg,#ffd700,#ffaa00);margin-top:8px;font-size:14px;padding:10px">💰 Claim AdMaven +500</button>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Offermaru + AdMaven • Coins added after completion</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
@@ -215,7 +241,7 @@ function watchToEarn(){
   if(statusText){ statusText.innerText = '✅ Offermaru opened! Complete offer and return'; statusText.style.color='#51cf66'; }
   
   setTimeout(function(){
-    if(btn){ btn.disabled=false; btn.innerText='▶ Open Offers Wall'; }
+    if(btn){ btn.disabled=false; btn.innerText='▶ Open Offers Wall (Offermaru)'; }
     if(overlay) overlay.style.display='none';
     // Refresh balance after 30 seconds to catch S2S credit
     setTimeout(function(){ showBalance(); }, 30000);
@@ -700,7 +726,7 @@ setTimeout(function(){
   <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Coins have no cash value until redeemed. Fraud results in ban.')" style="margin:0 10px">Terms</a> |
   <a href="#" onclick="alert('Privacy: We collect email and device ID only for rewards. We do not sell data. Firebase secure storage.')" style="margin:0 10px">Privacy Policy</a> |
   <a href="#" onclick="alert('Contact: WhatsApp +265 999 123 456 | Email: support@madagameearn.com')" style="margin:0 10px">Contact</a>
-  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by Offermaru • Auto S2S</p>
+  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by Offermaru + AdMaven</p>
 </div>
 
 
