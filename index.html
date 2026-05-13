@@ -160,6 +160,50 @@ function claimAdMaven(){
   updateWatchUI();
 }
 </script>
+<!-- ADDED: CPAgrip - WORLDWIDE -->
+<script>
+const CPAGRIP_URL = "https://singingfiles.com/1895839";
+function watchCpaGrip(){
+  var user = localStorage.getItem('user') || 'guest';
+  var url = CPAGRIP_URL + '?subid=' + encodeURIComponent(user);
+  var claimBtn = document.getElementById('claimCpaGripBtn');
+  var watchBtn = document.getElementById('watchBtn3');
+  var msg = document.getElementById('watchMsg');
+  if(claimBtn){ claimBtn.disabled=true; claimBtn.style.opacity='0.5'; claimBtn.style.cursor='not-allowed'; }
+  if(watchBtn){ watchBtn.disabled=true; watchBtn.innerText='Opening...'; }
+  var win = window.open(url, '_blank', 'noopener,noreferrer');
+  if(!win){
+    alert('⚠️ Popup blocked! Please allow popups, then tap again.');
+    if(watchBtn){ watchBtn.disabled=false; watchBtn.innerText='▶ Open CPAgrip Locker (Worldwide)'; }
+    return;
+  }
+  if(msg) msg.innerHTML = '<span style="color:#ffd700">⏳ Complete offer, wait 15s...</span>';
+  localStorage.removeItem('cpagrip_ready');
+  setTimeout(function(){
+    if(claimBtn){ claimBtn.disabled=false; claimBtn.style.opacity='1'; claimBtn.style.cursor='pointer'; }
+    if(watchBtn){ watchBtn.disabled=false; watchBtn.innerText='▶ Open CPAgrip Locker (Worldwide)'; }
+    localStorage.setItem('cpagrip_ready', Date.now());
+    if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ Offer ready! Tap Claim button now</span>';
+  }, 15000);
+}
+function claimCpaGrip(){
+  var ready = localStorage.getItem('cpagrip_ready');
+  var claimBtn = document.getElementById('claimCpaGripBtn');
+  if(!ready){
+    alert('⚠️ Please open and complete the CPAgrip offer first!');
+    return;
+  }
+  localStorage.removeItem('cpagrip_ready');
+  if(claimBtn){ claimBtn.disabled=true; claimBtn.style.opacity='0.5'; claimBtn.style.cursor='not-allowed'; }
+  addCoins(1000);
+  var msg = document.getElementById('watchMsg');
+  if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +1,000 coins from CPAgrip!</span>';
+  showBalance();
+  var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1;
+  localStorage.setItem('watchCount', daily);
+  updateWatchUI();
+}
+</script>
 </head>
 <body>
 <div class="container">
@@ -208,7 +252,9 @@ function claimAdMaven(){
     <!-- ADDED BUTTONS - DO NOT REMOVE OFFERMARU -->
     <button id="watchBtn2" onclick="watchAdMaven()" style="background:linear-gradient(45deg,#ffaa00,#ff6600);font-size:16px;padding:12px;margin-top:10px">▶ Open AdMaven Locker (NEW)</button>
     <button id="claimAdMavenBtn" onclick="claimAdMaven()" disabled style="background:linear-gradient(45deg,#ffd700,#ffaa00);margin-top:8px;font-size:14px;padding:10px;opacity:0.5;cursor:not-allowed">💰 Claim AdMaven +500</button>
-    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Offermaru + AdMaven • Coins added after completion</p>
+    <button id="watchBtn3" onclick="watchCpaGrip()" style="background:linear-gradient(45deg,#00ccff,#0066ff);font-size:16px;padding:12px;margin-top:10px">▶ Open CPAgrip Locker (Worldwide)</button>
+    <button id="claimCpaGripBtn" onclick="claimCpaGrip()" disabled style="background:linear-gradient(45deg,#00ffcc,#0099ff);margin-top:8px;font-size:14px;padding:10px;opacity:0.5;cursor:not-allowed">💰 Claim CPAgrip +1,000</button>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Offermaru + AdMaven + CPAgrip • Coins added after completion</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
@@ -747,4 +793,4 @@ setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
 </script>
 </body>
-</html>
+    </html>
