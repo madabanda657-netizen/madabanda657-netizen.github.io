@@ -103,18 +103,18 @@ function loadCpaGripLocker(onReady){
 }
 </script>
 
-<!-- UPDATED: AdMaven + CPAgrip + Affmine -->
+<!-- UPDATED: AdMaven + CPAgrip + Affmine + Zeydoo -->
 <script>
 const ADMAVEN_URL = "https://speedy-links.com/s?o1jdfpmR"; // Your CORRECT AdMaven link
 const CPAGRIP_URL = "https://singingfiles.com/1895839"; // Your CPAgrip link
 const AFFMINE_URL = "https://hubverify.com/cl/?o=6a0727f72fe16"; // Your Affmine link
+const ZEYDOO_URL = "https://ldl1.com/link?z=11012941"; // Your CLEAN Zeydoo Fortune Wheel link
 
 function watchAdMaven(){
   var user = localStorage.getItem('user') || 'guest';
   var url = ADMAVEN_URL + '&subid=' + encodeURIComponent(user);
   window.open(url, '_blank');
   
-  // Disable claim button and start 60s timer
   var claimBtn = document.getElementById('claimAdMavenBtn');
   if(claimBtn){
      claimBtn.disabled = true;
@@ -137,7 +137,7 @@ function watchAdMaven(){
 
 function claimAdMaven(){
   var claimBtn = document.getElementById('claimAdMavenBtn');
-  if(claimBtn && claimBtn.disabled) return; // Extra safety
+  if(claimBtn && claimBtn.disabled) return;
   
   addCoins(500);
   var msg = document.getElementById('watchMsg');
@@ -147,7 +147,6 @@ function claimAdMaven(){
   localStorage.setItem('watchCount', daily);
   updateWatchUI();
   
-  // Disable again after claiming
   if(claimBtn){
     claimBtn.disabled = true;
     claimBtn.innerText = '✅ Claimed!';
@@ -161,7 +160,6 @@ function watchCPAgrip(){
   var url = CPAGRIP_URL + '?subid=' + encodeURIComponent(user);
   window.open(url, '_blank');
   
-  // Disable claim button and start 60s timer
   var claimBtn = document.getElementById('claimCPAgripBtn');
   if(claimBtn){
      claimBtn.disabled = true;
@@ -184,7 +182,7 @@ function watchCPAgrip(){
 
 function claimCPAgrip(){
   var claimBtn = document.getElementById('claimCPAgripBtn');
-  if(claimBtn && claimBtn.disabled) return; // Extra safety
+  if(claimBtn && claimBtn.disabled) return;
   
   addCoins(500);
   var msg = document.getElementById('watchMsg');
@@ -194,7 +192,6 @@ function claimCPAgrip(){
   localStorage.setItem('watchCount', daily);
   updateWatchUI();
   
-  // Disable again after claiming
   if(claimBtn){
     claimBtn.disabled = true;
     claimBtn.innerText = '✅ Claimed!';
@@ -208,7 +205,6 @@ function watchAffmine(){
   var url = AFFMINE_URL + '&subid=' + encodeURIComponent(user);
   window.open(url, '_blank');
   
-  // Disable claim button and start 60s timer
   var claimBtn = document.getElementById('claimAffmineBtn');
   if(claimBtn){
      claimBtn.disabled = true;
@@ -231,7 +227,7 @@ function watchAffmine(){
 
 function claimAffmine(){
   var claimBtn = document.getElementById('claimAffmineBtn');
-  if(claimBtn && claimBtn.disabled) return; // Extra safety
+  if(claimBtn && claimBtn.disabled) return;
   
   addCoins(500);
   var msg = document.getElementById('watchMsg');
@@ -241,7 +237,52 @@ function claimAffmine(){
   localStorage.setItem('watchCount', daily);
   updateWatchUI();
   
-  // Disable again after claiming
+  if(claimBtn){
+    claimBtn.disabled = true;
+    claimBtn.innerText = '✅ Claimed!';
+    claimBtn.style.background = '#333';
+    claimBtn.style.color = '#51cf66';
+  }
+}
+
+function watchZeydoo(){
+  var user = localStorage.getItem('user') || 'guest';
+  var clickId = Date.now();
+  var url = ZEYDOO_URL + '&var=' + encodeURIComponent(user) + '&ymid=' + clickId;
+  window.open(url, '_blank');
+  
+  var claimBtn = document.getElementById('claimZeydooBtn');
+  if(claimBtn){
+     claimBtn.disabled = true;
+     claimBtn.innerText = '⏳ Complete offer (wait 60s)...';
+     claimBtn.style.background = '#333';
+     claimBtn.style.color = '#666';
+     claimBtn.style.cursor = 'not-allowed';
+  }
+  
+  setTimeout(function(){ 
+    if(claimBtn){
+      claimBtn.disabled = false;
+      claimBtn.innerText = '💰 Claim Zeydoo +500';
+      claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)';
+      claimBtn.style.color = '#000';
+      claimBtn.style.cursor = 'pointer';
+    }
+  }, 60000);
+}
+
+function claimZeydoo(){
+  var claimBtn = document.getElementById('claimZeydooBtn');
+  if(claimBtn && claimBtn.disabled) return;
+  
+  addCoins(500);
+  var msg = document.getElementById('watchMsg');
+  if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins from Zeydoo!</span>';
+  showBalance();
+  var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1;
+  localStorage.setItem('watchCount', daily);
+  updateWatchUI();
+  
   if(claimBtn){
     claimBtn.disabled = true;
     claimBtn.innerText = '✅ Claimed!';
@@ -290,7 +331,7 @@ function claimAffmine(){
   <h1>📺 Offers & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc">
     <h3>Complete Offer = +500 to 5000 Coins</h3>
-    <p style="color:#ccc;margin:10px 0">Complete offers to earn instantly. Powered by Offermaru, AdMaven, CPAgrip & Affmine • Auto-credit!</p>
+    <p style="color:#ccc;margin:10px 0">Complete offers to earn instantly. Powered by Offermaru, AdMaven, CPAgrip, Affmine & Zeydoo • Auto-credit!</p>
     <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
     <p id="watchText" style="margin:8px 0;color:#00ccff">0 / 10 offers today</p>
     
@@ -309,8 +350,12 @@ function claimAffmine(){
     <button id="watchBtn5" onclick="watchAffmine()" style="background:linear-gradient(45deg,#00b894,#00cec9);font-size:16px;padding:12px;margin-top:15px;color:#fff">▶ Open Affmine Locker</button>
     <button id="claimAffmineBtn" onclick="claimAffmine()" disabled style="background:#333;color:#666;cursor:not-allowed;margin-top:8px;font-size:14px;padding:10px">⏳ Complete Affmine to Claim +500</button>
     
+    <!-- Zeydoo -->
+    <button id="watchBtn6" onclick="watchZeydoo()" style="background:linear-gradient(45deg,#e74c3c,#c0392b);font-size:16px;padding:12px;margin-top:15px;color:#fff">🎡 Open Zeydoo Fortune Wheel</button>
+    <button id="claimZeydooBtn" onclick="claimZeydoo()" disabled style="background:#333;color:#666;cursor:not-allowed;margin-top:8px;font-size:14px;padding:10px">⏳ Complete Zeydoo to Claim +500</button>
+    
     <p id="watchMsg" style="margin-top:15px;font-size:13px;height:18px"></p>
-    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Offermaru + AdMaven + CPAgrip + Affmine • Complete offer, wait 60s, then claim!</p>
+    <p style="font-size:11px;color:#888;margin-top:10px">Powered by Offermaru + AdMaven + CPAgrip + Affmine + Zeydoo • Complete offer, wait 60s, then claim!</p>
   </div>
   <div class="card">
     <h3>💡 How it works</h3>
@@ -847,7 +892,7 @@ setTimeout(function(){
   <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Coins have no cash value until redeemed. Fraud results in ban.')" style="margin:0 10px">Terms</a> |
   <a href="#" onclick="alert('Privacy: We collect email and device ID only for rewards. We do not sell data. Firebase secure storage.')" style="margin:0 10px">Privacy Policy</a> |
   <a href="#" onclick="alert('Contact: WhatsApp +265 999 123 456 | Email: support@madagameearn.com')" style="margin:0 10px">Contact</a>
-  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by Offermaru + AdMaven + CPAgrip + Affmine</p>
+  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi - Powered by Offermaru + AdMaven + CPAgrip + Affmine + Zeydoo</p>
 </div>
 
 
