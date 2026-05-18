@@ -116,11 +116,31 @@ function watchZeydoo(){
   var user = localStorage.getItem('user') || 'guest';
   var clickId = Date.now();
   var url = ZEYDOO_URL + '&var=' + encodeURIComponent(user) + '&ymid=' + clickId;
-  window.location.href = url;
+  
+  // FIX: Open securely inside the app using an iframe overlay instead of window.location.href
+  var overlay = document.getElementById('offerIframeOverlay');
+  if(!overlay){
+    overlay = document.createElement('div');
+    overlay.id = 'offerIframeOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:none;flex-direction:column;';
+    overlay.innerHTML = '<div style="padding:10px;background:#111;text-align:center;z-index:100000;"><button onclick="closeOfferIframe()" style="background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:bold;font-size:16px;">✕ Close Offer & Return to App</button></div><iframe id="offerFrame" src="" style="flex:1;width:100%;border:none;margin:0;padding:0;"></iframe>';
+    document.body.appendChild(overlay);
+  }
+  document.getElementById('offerFrame').src = url;
+  overlay.style.display = 'flex';
+  
   var claimBtn = document.getElementById('claimZeydooBtn');
   if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '⏳ Complete offer (wait 60s)...'; claimBtn.style.background = '#333'; claimBtn.style.color = '#666'; claimBtn.style.cursor = 'not-allowed'; }
   setTimeout(function(){ if(claimBtn){ claimBtn.disabled = false; claimBtn.innerText = '💰 Claim Zeydoo +500'; claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)'; claimBtn.style.color = '#000'; claimBtn.style.cursor = 'pointer'; } }, 60000);
 }
+
+// FIX: Added function to close the in-app iframe safely
+function closeOfferIframe(){
+  var overlay = document.getElementById('offerIframeOverlay');
+  if(overlay) overlay.style.display = 'none';
+  document.getElementById('offerFrame').src = 'about:blank';
+}
+
 function claimZeydoo(){ var claimBtn = document.getElementById('claimZeydooBtn'); if(claimBtn && claimBtn.disabled) return; addCoins(500); var msg = document.getElementById('watchMsg'); if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins from Zeydoo!</span>'; showBalance(); var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1; localStorage.setItem('watchCount', daily); updateWatchUI(); if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } }
 </script>
 </head>
@@ -322,6 +342,11 @@ function login() {
     var rawName = (input && input.value || "").trim();
     var pass = document.getElementById("passwordInput").value;
     var msgEl = document.getElementById("loginMsg");
+    
+    // FIX: Added Captcha Validation to Login to prevent bypassing
+    var captcha = parseInt(document.getElementById("captchaA").value);
+    if(captcha !== captchaAnswer){ msgEl.innerHTML = '<span class="error">Wrong captcha</span>'; generateCaptcha(); return; }
+    
     if (!rawName || !pass) { msgEl.innerHTML = '<span class="error">Enter username and password</span>'; return; }
     var name = rawName.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, '');
     msgEl.innerHTML = '<span class="success">Checking...</span>';
@@ -552,7 +577,7 @@ function renderBoard(list, user){
         <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
           <span style="width:30px;text-align:center;font-weight:bold">${medal}</span>
           <span style="font-size:20px">${flag}</span>
-          <span style="font-weight:${isMe?'bold':'normal'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.displayName}${online}</span>
+          <span style="font-weight:${isMe?'bold':'normal'};white-space:nowrap;overflow:hidden;overflow-ellipsis">${p.displayName}${online}</span>
         </div>
         <div style="text-align:right">
           <div style="color:#ffd700;font-weight:bold">${p.coins.toLocaleString()} 🪙</div>
