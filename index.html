@@ -74,7 +74,7 @@ window.SDK_OPTIONS = {
 
 <script>
 const OFFERMARU_URL = "https://wall.offermaru.com/19741"; 
-const ADMAVEN_URL = "https://speedy-links.com/s?KZQIp2Va";
+const ADMAVEN_URL = "https://speedy-links.com/s?KZQlp2Va";
 const CPAGRIP_URL = "https://singingfiles.com/1895839";
 const AFFMINE_URL = "https://hubverify.com/cl/?o=6a0727f72fe16";
 const ZEYDOO_URL = "https://ldl1.com/link?z=11012941";
@@ -83,7 +83,8 @@ var currentOfferType = "";
 
 function watchAdMaven(){
   var user = localStorage.getItem('user') || 'guest';
-  var url = ADMAVEN_URL + '&subid=' + encodeURIComponent(user);
+  var clickId = Date.now() + '_' + Math.random().toString(36).substr(2,5);
+  var url = ADMAVEN_URL + '&subid=' + encodeURIComponent(user + '_' + clickId);
   openOfferIframe(url, 'AdMaven');
 }
 function claimAdMaven(){ 
@@ -94,7 +95,8 @@ function claimAdMaven(){
 
 function watchCPAgrip(){
   var user = localStorage.getItem('user') || 'guest';
-  var url = CPAGRIP_URL + '?subid=' + encodeURIComponent(user);
+  var clickId = Date.now() + '_' + Math.random().toString(36).substr(2,5);
+  var url = CPAGRIP_URL + '?subid1=' + encodeURIComponent(user + '_' + clickId);
   openOfferIframe(url, 'CPAgrip');
 }
 function claimCPAgrip(){ 
@@ -105,7 +107,8 @@ function claimCPAgrip(){
 
 function watchAffmine(){
   var user = localStorage.getItem('user') || 'guest';
-  var url = AFFMINE_URL + '&subid=' + encodeURIComponent(user);
+  var clickId = Date.now() + '_' + Math.random().toString(36).substr(2,5);
+  var url = AFFMINE_URL + '&subid=' + encodeURIComponent(user + '_' + clickId);
   openOfferIframe(url, 'Affmine');
 }
 function claimAffmine(){ 
@@ -145,6 +148,18 @@ function openOfferIframe(url, type) {
   }
   document.getElementById('offerFrame').src = url;
   overlay.style.display = 'flex';
+  
+  // Fallback for phones that block iframes
+  setTimeout(function(){
+    var frame = document.getElementById('offerFrame');
+    try {
+      if(!frame.contentWindow || frame.src === 'about:blank'){
+        window.open(url, '_blank');
+      }
+    } catch(e){
+      window.open(url, '_blank');
+    }
+  }, 2000);
   
   history.pushState({iframeOpen: true}, "Offer");
 }
@@ -208,7 +223,7 @@ window.addEventListener('popstate', function(event) {
   <div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div>
   <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><div id="withdrawCountdown" style="text-align:center;margin-top:8px;font-size:12px;color:#aaa"></div><p id="msg" style="margin-top:10px;"></p></div>
   <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
-  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠️ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱️ Processing: Within 24 hours</p></div>
+  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours</p></div>
 </div>
 
 <div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:20px;">Play games to earn 5 coins each!</p><div class="games-grid" id="gamesGrid"></div></div></div>
@@ -495,7 +510,7 @@ function addCoins(amount) {
     var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; }
     var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
     var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn);
-    if (give <= 0) { alert("⚠️ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return;
+    if (give <= 0) { alert("⚠ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return;
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
       var d = snap.val() || {}; var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1;
       db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});
@@ -521,7 +536,7 @@ function withdraw() { try {
     document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⏰ Withdrawals only Fridays 6PM-9PM (Malawi time). Check countdown above.</span>';
     return;
   }
-  var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠️ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
+  var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
 function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
 
 (function() {
@@ -679,7 +694,9 @@ function renderBoard(list, user){
 function shareRank(){
   const user = localStorage.getItem("user") || "Player";
   const data = window.myRankData || {rank:"#?", coins:0, view:"daily"};
-  const text = `🎮 I'm ranked ${data.rank} on Mada Game Earn (${data.view}) with ${data.coins.toLocaleString()} coins! 🇲🇼\n\nPlay & earn real MWK - join now!`;
+  const text = `🎮 I'm ranked ${data.rank} on Mada Game Earn (${data.view}) with ${data.coins.toLocaleString()} coins! 🇲🇼
+
+Play & earn real MWK - join now!`;
   if(navigator.share){ navigator.share({title:"Mada Game Earn", text:text}).catch(()=>{}); } else { navigator.clipboard.writeText(text).then(()=> alert("Rank copied! Share on WhatsApp")); }
 }
 
@@ -783,4 +800,4 @@ setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
 </script>
 </body>
-  </html>
+</html>
