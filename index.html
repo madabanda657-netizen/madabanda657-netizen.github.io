@@ -18,9 +18,19 @@
 .ro-wall-container {width: 100%;min-height: 600px;margin-top: 15px;border-radius: 10px;overflow: hidden;background: #fff;}
 .ro-wall-container iframe {width: 100%;height: 700px;border: none;display: block;}
 
-/* Added animation for when postback updates balance */
 @keyframes coinDrop { 0% { transform: scale(1); } 50% { transform: scale(1.2); color: #ffd700; } 100% { transform: scale(1); } }
 .coin-update { animation: coinDrop 0.5s ease; }
+
+.upload-label{display:block;background:linear-gradient(45deg,#9b59b6,#8e44ad);color:#fff;padding:14px;border-radius:10px;cursor:pointer;font-weight:bold;font-size:16px;margin:10px 0;transition:opacity 0.2s}.upload-label:hover{opacity:0.9}.upload-label:active{opacity:0.8}
+.upload-song-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#1a1a1a;border-radius:8px;margin:5px 0;border:1px solid #333;gap:8px}
+.upload-song-name{color:#ccc;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:left}
+.upload-song-btn{width:auto!important;padding:8px 14px!important;font-size:12px!important;margin:0!important;white-space:nowrap}
+.upload-song-earned{color:#51cf66;font-size:12px;white-space:nowrap}
+.upload-player-box{background:#0a0a0a;border-radius:12px;padding:15px;margin:12px 0;border:1px solid #9b59b644}
+.upload-player-box audio{width:100%;border-radius:8px;outline:none;height:40px}
+.upload-listen-bar{height:8px;border-radius:4px;overflow:hidden;margin-top:10px;background:#222}
+.upload-listen-fill{height:100%;background:linear-gradient(90deg,#9b59b6,#e74c3c);transition:width 1s linear;border-radius:4px}
+.upload-count-badge{display:inline-block;background:#9b59b6;color:#fff;font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:10px}
 </style>
 
 <script type="text/javascript">
@@ -148,7 +158,6 @@ function openOfferIframe(url, type) {
   document.getElementById('offerFrame').src = url;
   overlay.style.display = 'flex';
   
-  // Fallback for phones that block iframes
   setTimeout(function(){
     var frame = document.getElementById('offerFrame');
     try {
@@ -168,14 +177,17 @@ function closeOfferIframe(){
   if(overlay) overlay.style.display = 'none';
   document.getElementById('offerFrame').src = 'about:blank';
   
-  var claimBtnId = 'claim' + currentOfferType + 'Btn';
-  var claimBtn = document.getElementById(claimBtnId);
-  if(claimBtn) {
-    claimBtn.style.display = 'block';
-    claimBtn.disabled = false;
-    claimBtn.innerText = '💰 Claim ' + currentOfferType + ' +500 (Server Verify)';
-    claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)';
-    claimBtn.style.color = '#000';
+  // Don't show claim button for UploadMusic type
+  if(currentOfferType !== 'UploadMusic'){
+    var claimBtnId = 'claim' + currentOfferType + 'Btn';
+    var claimBtn = document.getElementById(claimBtnId);
+    if(claimBtn) {
+      claimBtn.style.display = 'block';
+      claimBtn.disabled = false;
+      claimBtn.innerText = '💰 Claim ' + currentOfferType + ' +500 (Server Verify)';
+      claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)';
+      claimBtn.style.color = '#000';
+    }
   }
 }
 
@@ -249,8 +261,6 @@ window.addEventListener('popstate', function(event) {
     <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
     <p id="watchText" style="margin:8px 0;color:#00ccff">0 / 10 offers today</p>
     
-    <!-- Offermaru removed -->
-    
     <div style="margin-top:20px; border-top:1px solid #222; padding-top:15px;">
       <button id="watchBtn2" onclick="watchAdMaven()" style="background:linear-gradient(45deg,#ffaa00,#ff6600);font-size:16px;padding:12px;">▶ Open AdMaven Locker</button>
       <button id="claimAdMavenBtn" class="claim-btn-offer" onclick="claimAdMaven()" style="display:none;margin-top:8px;font-size:14px;padding:10px;background:#333;color:#666;cursor:not-allowed">⏳ Complete AdMaven to Claim +500</button>
@@ -276,6 +286,32 @@ window.addEventListener('popstate', function(event) {
   <div class="card"><h3>💡 How it works</h3><p style="text-align:left;color:#ccc;line-height:1.8">1. Click Open Locker/Offer<br>2. Complete the offer fully inside the window<br>3. Click "Complete offer and back to Mada Game"<br>4. Your coins will be added to your wallet automatically by our server within a few minutes!</p></div>
 </div>
 
+
+<div id="listenPage" class="page">
+  <h1>🎵 Listen & Earn</h1>
+  <div class="card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #9b59b6">
+    <h3 style="color:#9b59b6">📁 Upload Your Music</h3>
+    <p style="color:#ccc;margin:10px 0;">Upload songs from your device, listen for 60s, earn <span style="color:#ffd700;font-weight:bold">50 coins</span> each!</p>
+    <span class="upload-count-badge" id="uploadCountBadge">🎵 0 songs earned today</span>
+    <label for="musicFileInput" class="upload-label">📂 Choose Music Files</label>
+    <input type="file" id="musicFileInput" accept="audio/*" multiple style="display:none">
+    <div id="uploadedMusicList" style="margin:10px 0;max-height:260px;overflow-y:auto">
+      <p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p>
+    </div>
+    <div id="customAudioPlayer" style="display:none" class="upload-player-box">
+      <p id="uploadedSongName" style="color:#9b59b6;font-weight:bold;margin-bottom:10px;font-size:15px"></p>
+      <audio id="uploadedAudio" controls></audio>
+      <div class="upload-listen-bar"><div class="upload-listen-fill" id="uploadListenBar" style="width:0%"></div></div>
+      <p id="uploadListenTimer" style="margin-top:8px;font-size:15px;color:#ffd700;height:20px"></p>
+      <p id="uploadListenMsg" style="margin-top:6px;font-size:13px;height:18px"></p>
+    </div>
+    <div style="margin-top:15px;border-top:1px solid #222;padding-top:12px;text-align:left">
+      <h3 style="color:#9b59b6;font-size:14px">💡 How It Works</h3>
+      <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Choose Music Files" to upload songs<br>2. Press ▶ Play on any song in the list<br>3. Complete the short AdMaven offer<br>4. Song plays for 60 seconds — keep listening!<br>5. +50 coins added to your balance!<br><br><span style="color:#ffd700">⚠ Each song earns coins once per day<br>⚠ Coins only added if you listen the full 60s</span></p>
+    </div>
+  </div>
+</div>
+
 <div id="inboxPage" class="page">
   <h1>💬 Support Inbox</h1>
   <div class="card" style="text-align:left;max-height:380px;overflow-y:auto;padding:12px;background:#0a0a0a" id="adminChatBox"><div style="color:#666;text-align:center;padding:30px">No messages</div></div>
@@ -292,6 +328,7 @@ window.addEventListener('popstate', function(event) {
   <button class="nav-btn" id="navGames"><span class="nav-icon">🎮</span>Games</button>
   <button class="nav-btn" id="navBoard"><span class="nav-icon">🏆</span>Board</button>
   <button class="nav-btn" id="navWatch"><span class="nav-icon">📺</span>Offers</button>
+  <button class="nav-btn" id="navListen"><span class="nav-icon">🎵</span>Listen</button>
   <button class="nav-btn" id="navInbox" style="position:relative"><span class="nav-icon">💬</span>Inbox<span id="inboxDot" style="display:none;position:absolute;top:6px;right:10px;width:8px;height:8px;background:#ff4444;border-radius:50%"></span></button>
 </div>
 
@@ -443,6 +480,7 @@ function showPage(page) {
     else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
     else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); }
     else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); updateWatchUI(); }
+    else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); }
     else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
   } catch(e) { console.error('showPage error', e); }
 }
@@ -453,7 +491,6 @@ function startCountdown() {
   update(); countdownInterval = setInterval(update, 1000);
 }
 
-// REAL-TIME BALANCE LISTENER: Updates wallet instantly when postback hits Firebase!
 var lastKnownBalance = -1;
 function startRealtimeBalance() {
   var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; }
@@ -461,12 +498,11 @@ function startRealtimeBalance() {
   db.ref('leaderboard_all/' + user + '/coins').on('value', function(snap) {
     var coins = snap.val() || 0;
     if (lastKnownBalance !== -1 && coins > lastKnownBalance) {
-      // Postback added coins! Animate the wallet!
       var coinsEl = document.getElementById("coins");
       if (coinsEl) {
         coinsEl.innerHTML = "🪙 " + coins + " Coins";
         coinsEl.classList.remove('coin-update');
-        void coinsEl.offsetWidth; // trigger reflow
+        void coinsEl.offsetWidth;
         coinsEl.classList.add('coin-update');
       }
       var moneyEl = document.getElementById("money");
@@ -487,7 +523,7 @@ function showBalance() {
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
       var d = snap.val() || {}; var coins = d.coins || 0; var gp = d.gamesPlayed || 0;
       try { localStorage.setItem("coins", coins); } catch(e) {}
-      lastKnownBalance = coins; // Update tracking variable
+      lastKnownBalance = coins;
       document.getElementById("coins").innerHTML = "🪙 " + coins + " Coins"; document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.02);
       document.getElementById("gamesPlayed").innerHTML = gp; document.getElementById("totalEarned").innerHTML = coins;
       var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
@@ -523,7 +559,7 @@ function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user")
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
 function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
-try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("watchCount", "0"); } catch(e) {} } } catch(e) {}
+try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("watchCount", "0"); localStorage.setItem("rewardedSongs", "[]"); } catch(e) {} } } catch(e) {}
 function withdraw() { try { 
   var now = new Date();
   var malawiOffset = 2*60;
@@ -571,7 +607,7 @@ function initCheckers(d) { gameState = {board:[], turn:1, selected:null, validMo
 function renderCheckers() { var h = '<div class="timer">' + gameState.difficulty + ' | ' + (gameState.turn===1?'Your turn':'CPU') + '</div><div style="display:grid;grid-template-columns:repeat(8,1fr);max-width:360px;margin:10px auto;border:3px solid #00ffcc;aspect-ratio:1">'; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) { var dark = (r+c)%2; var p = gameState.board[r][c]; var bg = dark? '#1a1a1a' : '#e0e0e0'; var sel = ''; if (gameState.selected && gameState.selected[0]===r && gameState.selected[1]===c) sel = 'outline:3px solid #00ffcc;outline-offset:-3px'; var vm = gameState.validMoves; var isVM = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { isVM = true; break; } } if (isVM) bg = '#00ffcc88'; h += '<div data-r="'+r+'" data-c="'+c+'" style="aspect-ratio:1;background:'+bg+';'+sel+';display:flex;align-items:center;justify-content:center;cursor:pointer" class="sq">'; if (p!== 0) { var red = p>0; var king = Math.abs(p)===2; h += '<div style="width:70%;height:70%;border-radius:50%;background:'+(red?'radial-gradient(circle,#ff6b6b,#c92a2a)':'radial-gradient(circle,#444,#000)')+';border:2px solid #888;display:flex;align-items:center;justify-content:center;color:#ffd700">'+(king?'♔':'')+'</div>'; } h += '</div>'; } h += '</div>'; document.getElementById('gameArea').innerHTML = h; var squares = document.querySelectorAll('.sq'); for (var j = 0; j < squares.length; j++) { (function(sq) { sq.onclick = function() { clickSquare(parseInt(sq.getAttribute('data-r')), parseInt(sq.getAttribute('data-c'))); }; })(squares[j]); } }
 function clickSquare(r, c) { if (gameState.turn!== 1) return; var p = gameState.board[r][c]; var all = getAllMoves(1); var must = false; for (var i = 0; i < all.length; i++) { if (Math.abs(all[i].from[0]-all[i].to[0])===2) { must = true; break; } } if (gameState.selected) { var vm = gameState.validMoves; var found = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { found = true; break; } } if (found) { var cont = makeMove(gameState.selected[0], gameState.selected[1], r, c); if (!cont) { gameState.selected = null; gameState.validMoves = []; renderCheckers(); setTimeout(cpuMove, 300); } return; } gameState.selected = null; gameState.validMoves = []; } if (p > 0) { if (must) { var can = false; for (var m = 0; m < all.length; m++) { if (all[m].from[0]===r && all[m].from[1]===c && Math.abs(all[m].from[0]-all[m].to[0])===2) { can = true; break; } } if (!can) return; } gameState.selected = [r, c]; gameState.validMoves = getMoves(r, c, 1); renderCheckers(); } }
 function getMoves(r, c, pl) { var b = gameState.board; var pc = b[r][c]; var m = []; var cap = []; var md = Math.abs(pc)===2? [-1,1] : (pl===1? [-1] : [1]); for (var di = 0; di < md.length; di++) { for (var ci = 0; ci < 2; ci++) { var dc = ci===0?-1:1; var nr=r+md[di], nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0) m.push([nr,nc]); } } for (var di2 = 0; di2 < 2; di2++) { for (var ci2 = 0; ci2 < 2; ci2++) { var dr=di2===0?-1:1; var dc2=ci2===0?-1:1; var nr2=r+dr,nc2=c+dc2,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0) cap.push([jr,jc]); } } return cap.length? cap : m; }
-function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
+function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
 function makeMove(r1, c1, r2, c2) { var b = gameState.board; b[r2][c2] = b[r1][c1]; b[r1][c1] = 0; var cap = false; if (Math.abs(r2-r1)===2) { b[(r1+r2)/2][(c1+c2)/2] = 0; cap = true; } if (r2===0 && b[r2][c2]===1) b[r2][c2] = 2; if (r2===7 && b[r2][c2]===-1) b[r2][c2] = -2; if (cap) { var fm = getMoves(r2, c2, b[r2][c2]>0?1:-1); var fCaps = []; for (var i = 0; i < fm.length; i++) { if (Math.abs(fm[i][0]-r2)===2) fCaps.push(fm[i]); } if (fCaps.length) { gameState.selected=[r2,c2]; gameState.validMoves=fCaps; renderCheckers(); return true; } } gameState.turn *= -1; gameState.selected = null; gameState.validMoves = []; checkWin(); return false; }
 function cpuMove() { if (gameState.turn!== -1) return; var moves = getAllMoves(-1); if (!moves.length) { endCheckers(true); return; } var choice; var caps = []; for (var i = 0; i < moves.length; i++) { if (Math.abs(moves[i].from[0]-moves[i].to[0])===2) caps.push(moves[i]); } if (gameState.difficulty === 'easy') { choice = moves[Math.random()*moves.length|0]; } else if (gameState.difficulty === 'medium') { var pool = caps.length? caps : moves; choice = pool[Math.random()*pool.length|0]; } else { var best = -1e9; for (var j = 0; j < moves.length; j++) { var v = Math.random()*100; if (v > best) { best = v; choice = moves[j]; } } } var cont = makeMove(choice.from[0], choice.from[1], choice.to[0], choice.to[1]); renderCheckers(); if (cont) setTimeout(cpuMove, 300); }
 function checkWin() { var f = gameState.board.flat? gameState.board.flat() : [].concat.apply([], gameState.board); var pCount = 0, cCount = 0; for (var i = 0; i < f.length; i++) { if (f[i] > 0) pCount++; if (f[i] < 0) cCount++; } if (cCount === 0) endCheckers(true); else if (pCount === 0) endCheckers(false); else if (getAllMoves(gameState.turn).length === 0) endCheckers(gameState.turn === -1); }
@@ -693,14 +729,243 @@ function renderBoard(list, user){
 function shareRank(){
   const user = localStorage.getItem("user") || "Player";
   const data = window.myRankData || {rank:"#?", coins:0, view:"daily"};
-  const text = `🎮 I'm ranked ${data.rank} on Mada Game Earn (${data.view}) with ${data.coins.toLocaleString()} coins! 🇲🇼
-
-Play & earn real MWK - join now!`;
+  const text = `🎮 I'm ranked ${data.rank} on Mada Game Earn (${data.view}) with ${data.coins.toLocaleString()} coins! 🇲🇼\n\nPlay & earn real MWK - join now!`;
   if(navigator.share){ navigator.share({title:"Mada Game Earn", text:text}).catch(()=>{}); } else { navigator.clipboard.writeText(text).then(()=> alert("Rank copied! Share on WhatsApp")); }
 }
 
 var leaderboardInterval;
 setInterval(function(){ if(document.getElementById('leaderboardPage').classList.contains('active')) updateLeaderboard(); }, 10000);
+
+
+/* ===== UPLOAD MUSIC FEATURE WITH ADMAVEN ===== */
+var uploadedSongs = [];
+var rewardedSongs = [];
+var uploadListenInterval = null;
+var currentUploadSongIndex = -1;
+var pendingPlayIndex = -1;
+
+try {
+  var savedRewarded = localStorage.getItem('rewardedSongs');
+  if (savedRewarded) rewardedSongs = JSON.parse(savedRewarded);
+} catch(e) { rewardedSongs = []; }
+
+function handleMusicUpload() {
+  var input = document.getElementById('musicFileInput');
+  if (!input || !input.files || input.files.length === 0) return;
+  
+  var addedCount = 0;
+  for (var i = 0; i < input.files.length; i++) {
+    var file = input.files[i];
+    if (!file.type.startsWith('audio/')) continue;
+    
+    var isDuplicate = false;
+    for (var d = 0; d < uploadedSongs.length; d++) {
+      if (uploadedSongs[d].name === file.name) { isDuplicate = true; break; }
+    }
+    if (isDuplicate) continue;
+    
+    var url = URL.createObjectURL(file);
+    uploadedSongs.push({name: file.name, url: url, size: file.size});
+    addedCount++;
+  }
+  
+  if (addedCount > 0) {
+    var msgEl = document.getElementById('uploadListenMsg');
+    if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ ' + addedCount + ' song(s) added!</span>';
+    setTimeout(function(){ if(msgEl) msgEl.innerHTML = ''; }, 3000);
+  }
+  
+  renderUploadedSongs();
+  input.value = '';
+}
+
+function renderUploadedSongs() {
+  var list = document.getElementById('uploadedMusicList');
+  if (!list) return;
+  
+  if (uploadedSongs.length === 0) {
+    list.innerHTML = '<p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p>';
+    updateUploadCountBadge();
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < uploadedSongs.length; i++) {
+    var song = uploadedSongs[i];
+    var isRewarded = rewardedSongs.indexOf(song.name) !== -1;
+    var isPlaying = (currentUploadSongIndex === i);
+    
+    html += '<div class="upload-song-item">';
+    html += '<span class="upload-song-name">🎵 ' + song.name.replace(/</g,'&lt;') + '</span>';
+    if (isRewarded) {
+      html += '<span class="upload-song-earned">✅ Earned</span>';
+    } else {
+      html += '<button class="upload-song-btn" onclick="playUploadedSong(' + i + ')" style="background:' + (isPlaying ? 'linear-gradient(45deg,#e74c3c,#c0392b)' : 'linear-gradient(45deg,#9b59b6,#8e44ad)') + ';color:#fff">' + (isPlaying ? '⏹ Stop' : '▶ Play') + '</button>';
+    }
+    html += '</div>';
+  }
+  list.innerHTML = html;
+  updateUploadCountBadge();
+}
+
+function updateUploadCountBadge() {
+  var badge = document.getElementById('uploadCountBadge');
+  if (badge) {
+    var todayEarned = rewardedSongs.length;
+    badge.innerText = '🎵 ' + todayEarned + ' song' + (todayEarned !== 1 ? 's' : '') + ' earned today';
+  }
+}
+
+function playUploadedSong(index) {
+  if (index < 0 || index >= uploadedSongs.length) return;
+  
+  var song = uploadedSongs[index];
+  var audio = document.getElementById('uploadedAudio');
+  var player = document.getElementById('customAudioPlayer');
+  var nameEl = document.getElementById('uploadedSongName');
+  var timerEl = document.getElementById('uploadListenTimer');
+  var msgEl = document.getElementById('uploadListenMsg');
+  var barEl = document.getElementById('uploadListenBar');
+  
+  // If same song is playing, stop it
+  if (currentUploadSongIndex === index && !audio.paused) {
+    audio.pause();
+    audio.currentTime = 0;
+    if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; }
+    currentUploadSongIndex = -1;
+    if (timerEl) timerEl.innerText = '';
+    if (msgEl) msgEl.innerHTML = '';
+    if (barEl) barEl.style.width = '0%';
+    renderUploadedSongs();
+    return;
+  }
+  
+  // If already earned for this song today, play without reward
+  if (rewardedSongs.indexOf(song.name) !== -1) {
+    if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⚠ Already earned coins for this song today!</span>';
+    player.style.display = 'block';
+    nameEl.innerText = '🎵 ' + song.name;
+    audio.src = song.url;
+    audio.play();
+    currentUploadSongIndex = index;
+    if (timerEl) timerEl.innerText = 'Listening (no reward - already earned)';
+    if (barEl) barEl.style.width = '100%';
+    renderUploadedSongs();
+    return;
+  }
+  
+  // Stop any previous listening
+  if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; }
+  
+  // Store which song we want to play
+  pendingPlayIndex = index;
+  
+  // Show player area with waiting message
+  player.style.display = 'block';
+  nameEl.innerText = '🎵 ' + song.name;
+  if (timerEl) timerEl.innerText = '';
+  if (barEl) barEl.style.width = '0%';
+  if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">⏳ Complete the AdMaven offer to start earning...</span>';
+  
+  renderUploadedSongs();
+  
+  // Open AdMaven offer first
+  var user = localStorage.getItem('user') || 'guest';
+  var clickId = Date.now() + '_' + Math.random().toString(36).substr(2,5);
+  var url = ADMAVEN_URL + '&subid=' + encodeURIComponent(user + '_' + clickId + '_uploadmusic');
+  openOfferIframe(url, 'UploadMusic');
+  
+  // Wait for user to complete/close the offer, then start song + timer
+  var checkClosed = setInterval(function(){
+    var overlay = document.getElementById('offerIframeOverlay');
+    if(!overlay || overlay.style.display === 'none'){
+      clearInterval(checkClosed);
+      // Now start the actual song playback and 60s timer
+      startUploadedSongPlayback(pendingPlayIndex);
+    }
+  }, 1000);
+}
+
+function startUploadedSongPlayback(index) {
+  if (index < 0 || index >= uploadedSongs.length) return;
+  
+  var song = uploadedSongs[index];
+  var audio = document.getElementById('uploadedAudio');
+  var player = document.getElementById('customAudioPlayer');
+  var nameEl = document.getElementById('uploadedSongName');
+  var timerEl = document.getElementById('uploadListenTimer');
+  var msgEl = document.getElementById('uploadListenMsg');
+  var barEl = document.getElementById('uploadListenBar');
+  
+  // Start playback
+  audio.src = song.url;
+  audio.play();
+  currentUploadSongIndex = index;
+  
+  var listenedSeconds = 0;
+  var requiredSeconds = 60;
+  
+  if (timerEl) timerEl.innerText = '0s / ' + requiredSeconds + 's';
+  if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">🎧 Listening... Keep the song playing to earn +50 coins!</span>';
+  if (barEl) { barEl.style.width = '0%'; barEl.style.background = 'linear-gradient(90deg,#9b59b6,#e74c3c)'; }
+  
+  renderUploadedSongs();
+  
+  if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; }
+  
+  uploadListenInterval = setInterval(function() {
+    // Only count if audio is actually playing
+    if (audio.paused) {
+      if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⏸ Song paused! Press play to continue earning...</span>';
+      return;
+    }
+    
+    listenedSeconds++;
+    var percent = Math.min(100, (listenedSeconds / requiredSeconds) * 100);
+    if (timerEl) timerEl.innerText = listenedSeconds + 's / ' + requiredSeconds + 's';
+    if (barEl) barEl.style.width = percent + '%';
+    
+    if (listenedSeconds >= requiredSeconds) {
+      clearInterval(uploadListenInterval);
+      uploadListenInterval = null;
+      
+      // Award 50 coins to main balance!
+      addCoins(50);
+      rewardedSongs.push(song.name);
+      try { localStorage.setItem('rewardedSongs', JSON.stringify(rewardedSongs)); } catch(e) {}
+      
+      if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins earned for "' + song.name.replace(/</g,'&lt;') + '"!</span>';
+      if (timerEl) timerEl.innerText = '✅ Complete!';
+      if (barEl) { barEl.style.width = '100%'; barEl.style.background = 'linear-gradient(90deg,#51cf66,#00ffcc)'; }
+      
+      currentUploadSongIndex = -1;
+      renderUploadedSongs();
+      
+      setTimeout(function(){ if(barEl) barEl.style.background = 'linear-gradient(90deg,#9b59b6,#e74c3c)'; }, 3000);
+    }
+  }, 1000);
+  
+  // Handle song ending before 60 seconds
+  audio.onended = function() {
+    if (uploadListenInterval) {
+      clearInterval(uploadListenInterval);
+      uploadListenInterval = null;
+    }
+    if (listenedSeconds < requiredSeconds && rewardedSongs.indexOf(song.name) === -1) {
+      if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⏹ Song ended early (' + listenedSeconds + 's/' + requiredSeconds + 's). Press Play again to continue!</span>';
+      currentUploadSongIndex = -1;
+      renderUploadedSongs();
+    }
+  };
+  
+  // Handle audio error
+  audio.onerror = function() {
+    if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; }
+    if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">❌ Error playing this file. Try another.</span>';
+    currentUploadSongIndex = -1;
+    renderUploadedSongs();
+  };
+}
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -736,6 +1001,7 @@ setTimeout(function(){
   el = document.getElementById("navGames"); if (el) el.onclick = function() { showPage('games'); };
   el = document.getElementById("navBoard"); if (el) el.onclick = function() { showPage('leaderboard'); };
   el = document.getElementById("navWatch"); if (el) el.onclick = function() { showPage('watch'); };
+  el = document.getElementById("navListen"); if (el) el.onclick = function() { showPage('listen'); };
   el = document.getElementById("navInbox"); if (el) el.onclick = function() { showPage('inbox'); };
   el = document.getElementById("saveBtn"); if (el) el.onclick = saveDetails;
   el = document.getElementById("dailyBtn"); if (el) el.onclick = claimDailyBonus;
@@ -744,6 +1010,11 @@ setTimeout(function(){
   if (el) el.onclick = function() { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } var txt = document.getElementById('playerReply').value.trim(); if (!txt ||!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').push({from:u, to:'Admin_Mada', text:txt, timestamp:Date.now(), status:'sent'}).then(function() { document.getElementById('playerReply').value = ''; document.getElementById('replyStatus').innerHTML = '<span style="color:#51cf66">✓ Sent</span>'; setTimeout(function() { document.getElementById('replyStatus').innerHTML = ''; }, 1500); }); };
   el = document.getElementById("manualClaimBtn");
   if (el) el.onclick = function() { giveReward(); };
+
+  var musicInput = document.getElementById('musicFileInput');
+  if (musicInput) {
+    musicInput.addEventListener('change', handleMusicUpload);
+  }
 
   try { 
     var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } 
@@ -799,4 +1070,4 @@ setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
 </script>
 </body>
-</html>
+                                                                                                                       </html>
