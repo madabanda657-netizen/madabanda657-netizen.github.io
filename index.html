@@ -17,6 +17,10 @@
 .hide-ad{display:none !important}
 .ro-wall-container {width: 100%;min-height: 600px;margin-top: 15px;border-radius: 10px;overflow: hidden;background: #fff;}
 .ro-wall-container iframe {width: 100%;height: 700px;border: none;display: block;}
+
+/* Added animation for when postback updates balance */
+@keyframes coinDrop { 0% { transform: scale(1); } 50% { transform: scale(1.2); color: #ffd700; } 100% { transform: scale(1); } }
+.coin-update { animation: coinDrop 0.5s ease; }
 </style>
 
 <script type="text/javascript">
@@ -70,83 +74,109 @@ window.SDK_OPTIONS = {
 
 <script>
 const OFFERMARU_URL = "https://wall.offermaru.com/19741"; 
-function loadCpaGripLocker(onReady){
-  var user = localStorage.getItem('user') || 'guest';
-  var url = OFFERMARU_URL + '?user_id=' + encodeURIComponent(user);
-  window.location.href = url;
-  if(onReady) setTimeout(onReady, 500);
-}
-
 const ADMAVEN_URL = "https://speedy-links.com/s?o1jdfpmR";
 const CPAGRIP_URL = "https://singingfiles.com/1895839";
 const AFFMINE_URL = "https://hubverify.com/cl/?o=6a0727f72fe16";
 const ZEYDOO_URL = "https://ldl1.com/link?z=11012941";
 
+var currentOfferType = "";
+
 function watchAdMaven(){
   var user = localStorage.getItem('user') || 'guest';
   var url = ADMAVEN_URL + '&subid=' + encodeURIComponent(user);
-  window.location.href = url;
-  var claimBtn = document.getElementById('claimAdMavenBtn');
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '⏳ Complete offer (wait 60s)...'; claimBtn.style.background = '#333'; claimBtn.style.color = '#666'; claimBtn.style.cursor = 'not-allowed'; }
-  setTimeout(function(){ if(claimBtn){ claimBtn.disabled = false; claimBtn.innerText = '💰 Claim AdMaven +500'; claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)'; claimBtn.style.color = '#000'; claimBtn.style.cursor = 'pointer'; } }, 60000);
+  openOfferIframe(url, 'AdMaven');
 }
-function claimAdMaven(){ var claimBtn = document.getElementById('claimAdMavenBtn'); if(claimBtn && claimBtn.disabled) return; addCoins(500); var msg = document.getElementById('watchMsg'); if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins from AdMaven!</span>'; showBalance(); var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1; localStorage.setItem('watchCount', daily); updateWatchUI(); if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } }
+function claimAdMaven(){ 
+  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
+  var claimBtn = document.getElementById('claimAdMavenBtn'); 
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+}
 
 function watchCPAgrip(){
   var user = localStorage.getItem('user') || 'guest';
   var url = CPAGRIP_URL + '?subid=' + encodeURIComponent(user);
-  window.location.href = url;
-  var claimBtn = document.getElementById('claimCPAgripBtn');
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '⏳ Complete offer (wait 60s)...'; claimBtn.style.background = '#333'; claimBtn.style.color = '#666'; claimBtn.style.cursor = 'not-allowed'; }
-  setTimeout(function(){ if(claimBtn){ claimBtn.disabled = false; claimBtn.innerText = '💰 Claim CPAgrip +500'; claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)'; claimBtn.style.color = '#000'; claimBtn.style.cursor = 'pointer'; } }, 60000);
+  openOfferIframe(url, 'CPAgrip');
 }
-function claimCPAgrip(){ var claimBtn = document.getElementById('claimCPAgripBtn'); if(claimBtn && claimBtn.disabled) return; addCoins(500); var msg = document.getElementById('watchMsg'); if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins from CPAgrip!</span>'; showBalance(); var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1; localStorage.setItem('watchCount', daily); updateWatchUI(); if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } }
+function claimCPAgrip(){ 
+  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
+  var claimBtn = document.getElementById('claimCPAgripBtn'); 
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+}
 
 function watchAffmine(){
   var user = localStorage.getItem('user') || 'guest';
   var url = AFFMINE_URL + '&subid=' + encodeURIComponent(user);
-  window.location.href = url;
-  var claimBtn = document.getElementById('claimAffmineBtn');
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '⏳ Complete offer (wait 60s)...'; claimBtn.style.background = '#333'; claimBtn.style.color = '#666'; claimBtn.style.cursor = 'not-allowed'; }
-  setTimeout(function(){ if(claimBtn){ claimBtn.disabled = false; claimBtn.innerText = '💰 Claim Affmine +500'; claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)'; claimBtn.style.color = '#000'; claimBtn.style.cursor = 'pointer'; } }, 60000);
+  openOfferIframe(url, 'Affmine');
 }
-function claimAffmine(){ var claimBtn = document.getElementById('claimAffmineBtn'); if(claimBtn && claimBtn.disabled) return; addCoins(500); var msg = document.getElementById('watchMsg'); if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins from Affmine!</span>'; showBalance(); var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1; localStorage.setItem('watchCount', daily); updateWatchUI(); if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } }
+function claimAffmine(){ 
+  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
+  var claimBtn = document.getElementById('claimAffmineBtn'); 
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+}
 
 function watchZeydoo(){
   var user = localStorage.getItem('user') || 'guest';
   var clickId = Date.now();
   var url = ZEYDOO_URL + '&var=' + encodeURIComponent(user) + '&ymid=' + clickId;
+  openOfferIframe(url, 'Zeydoo');
+}
+
+function claimZeydoo(){ 
+  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
+  var claimBtn = document.getElementById('claimZeydooBtn'); 
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+}
+
+function openOfferIframe(url, type) {
+  currentOfferType = type;
   
-  // FIX: Open securely inside the app using an iframe overlay instead of window.location.href
+  var btns = document.querySelectorAll('.claim-btn-offer');
+  for(var i=0; i<btns.length; i++) {
+    btns[i].style.display = 'none';
+  }
+  
   var overlay = document.getElementById('offerIframeOverlay');
   if(!overlay){
     overlay = document.createElement('div');
     overlay.id = 'offerIframeOverlay';
     overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:none;flex-direction:column;';
-    overlay.innerHTML = '<div style="padding:10px;background:#111;text-align:center;z-index:100000;"><button onclick="closeOfferIframe()" style="background:linear-gradient(45deg,#ff6b6b,#c92a2a);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:bold;font-size:16px;">✕ Close Offer & Return to App</button></div><iframe id="offerFrame" src="" style="flex:1;width:100%;border:none;margin:0;padding:0;"></iframe>';
+    overlay.innerHTML = '<div style="padding:15px;background:#111;text-align:center;z-index:100000;flex-shrink:0;"><p style="color:#00ffcc;font-weight:bold;margin-bottom:10px;">Complete the offer. Coins are added automatically!</p><button onclick="closeOfferIframe()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;font-size:16px;width:100%;">✅ Complete offer and back to Mada Game</button></div><iframe id="offerFrame" src="" style="flex:1;width:100%;border:none;margin:0;padding:0;"></iframe>';
     document.body.appendChild(overlay);
   }
   document.getElementById('offerFrame').src = url;
   overlay.style.display = 'flex';
   
-  var claimBtn = document.getElementById('claimZeydooBtn');
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '⏳ Complete offer (wait 60s)...'; claimBtn.style.background = '#333'; claimBtn.style.color = '#666'; claimBtn.style.cursor = 'not-allowed'; }
-  setTimeout(function(){ if(claimBtn){ claimBtn.disabled = false; claimBtn.innerText = '💰 Claim Zeydoo +500'; claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)'; claimBtn.style.color = '#000'; claimBtn.style.cursor = 'pointer'; } }, 60000);
+  history.pushState({iframeOpen: true}, "Offer");
 }
 
-// FIX: Added function to close the in-app iframe safely
 function closeOfferIframe(){
   var overlay = document.getElementById('offerIframeOverlay');
   if(overlay) overlay.style.display = 'none';
   document.getElementById('offerFrame').src = 'about:blank';
+  
+  var claimBtnId = 'claim' + currentOfferType + 'Btn';
+  var claimBtn = document.getElementById(claimBtnId);
+  if(claimBtn) {
+    claimBtn.style.display = 'block';
+    claimBtn.disabled = false;
+    claimBtn.innerText = '💰 Claim ' + currentOfferType + ' +500 (Server Verify)';
+    claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)';
+    claimBtn.style.color = '#000';
+  }
 }
 
-function claimZeydoo(){ var claimBtn = document.getElementById('claimZeydooBtn'); if(claimBtn && claimBtn.disabled) return; addCoins(500); var msg = document.getElementById('watchMsg'); if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins from Zeydoo!</span>'; showBalance(); var daily = parseInt(localStorage.getItem('watchCount')||'0') + 1; localStorage.setItem('watchCount', daily); updateWatchUI(); if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } }
+window.addEventListener('popstate', function(event) {
+  var overlay = document.getElementById('offerIframeOverlay');
+  if (overlay && overlay.style.display === 'flex') {
+    closeOfferIframe();
+    history.pushState(null, null, window.location.href);
+  }
+});
+
 </script>
 </head>
 <body>
 
-<!-- SPLASH SCREEN WITH YOUR PERMANENT LOGO -->
 <div id="splashScreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;overflow:hidden;transition:opacity 0.5s">
   <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0">
 </div>
@@ -163,7 +193,6 @@ function claimZeydoo(){ var claimBtn = document.getElementById('claimZeydooBtn')
 <div id="topAd" class="ad-slot-top"></div>
 
 <div id="loginPage" class="page active">
-  <!-- ADDED YOUR LOGO HERE -->
   <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:120px;height:auto;border-radius:15px;margin-bottom:10px;box-shadow:0 0 20px #00ffcc55">
   <h1>Mada Game Earn</h1>
   <div class="card"><h3>👤 Create Account</h3><input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20"><input type="email" id="emailInput" placeholder="Email address"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and email to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div><div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div><button id="loginBtn" type="button" onclick="register()" style="position:relative;z-index:10">Create Account & Play</button><p id="loginMsg" style="margin-top:10px;"></p><p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a> • <a href="#" onclick="showForgot();return false" style="color:#00ffcc">Forgot Password?</a></p><div id="forgotBox" style="display:none;margin-top:15px;padding:15px;background:#0a0a0a;border-radius:10px;border:1px solid #00ffcc33"><input type="email" id="forgotEmail" placeholder="Enter your email" style="margin-bottom:10px"><input type="password" id="newPass" placeholder="New password (min 6 chars)" style="margin-bottom:10px"><button onclick="resetPassword()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000">Reset Password</button><p id="forgotMsg" style="margin-top:8px;font-size:12px"></p></div></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p></div>
@@ -202,21 +231,35 @@ function claimZeydoo(){ var claimBtn = document.getElementById('claimZeydooBtn')
   <h1>📺 Offers & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc">
     <h3>Complete Offer = +500 to 5000 Coins</h3>
-    <p style="color:#ccc;margin:10px 0">Complete offers to earn instantly. Powered by Offermaru, AdMaven, CPAgrip, Affmine & Zeydoo</p>
+    <p style="color:#51cf66;margin:10px 0;font-weight:bold;">✅ Coins are added automatically by our server when you finish!</p>
     <div class="progress-container" style="height:12px"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
     <p id="watchText" style="margin:8px 0;color:#00ccff">0 / 10 offers today</p>
+    
     <button id="watchBtn" onclick="watchToEarn()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);font-size:18px;padding:15px">▶ Open Offers Wall (Offermaru)</button>
-    <button id="watchBtn2" onclick="watchAdMaven()" style="background:linear-gradient(45deg,#ffaa00,#ff6600);font-size:16px;padding:12px;margin-top:15px">▶ Open AdMaven Locker</button>
-    <button id="claimAdMavenBtn" onclick="claimAdMaven()" disabled style="background:#333;color:#666;cursor:not-allowed;margin-top:8px;font-size:14px;padding:10px">⏳ Complete AdMaven to Claim +500</button>
-    <button id="watchBtn3" onclick="watchCPAgrip()" style="background:linear-gradient(45deg,#9b59b6,#8e44ad);font-size:16px;padding:12px;margin-top:15px;color:#fff">▶ Open CPAgrip Locker</button>
-    <button id="claimCPAgripBtn" onclick="claimCPAgrip()" disabled style="background:#333;color:#666;cursor:not-allowed;margin-top:8px;font-size:14px;padding:10px">⏳ Complete CPAgrip to Claim +500</button>
-    <button id="watchBtn5" onclick="watchAffmine()" style="background:linear-gradient(45deg,#00b894,#00cec9);font-size:16px;padding:12px;margin-top:15px;color:#fff">▶ Open Affmine Locker</button>
-    <button id="claimAffmineBtn" onclick="claimAffmine()" disabled style="background:#333;color:#666;cursor:not-allowed;margin-top:8px;font-size:14px;padding:10px">⏳ Complete Affmine to Claim +500</button>
-    <button id="watchBtn6" onclick="watchZeydoo()" style="background:linear-gradient(45deg,#e74c3c,#c0392b);font-size:16px;padding:12px;margin-top:15px;color:#fff">🎡 Open Zeydoo Fortune Wheel</button>
-    <button id="claimZeydooBtn" onclick="claimZeydoo()" disabled style="background:#333;color:#666;cursor:not-allowed;margin-top:8px;font-size:14px;padding:10px">⏳ Complete Zeydoo to Claim +500</button>
+    
+    <div style="margin-top:20px; border-top:1px solid #222; padding-top:15px;">
+      <button id="watchBtn2" onclick="watchAdMaven()" style="background:linear-gradient(45deg,#ffaa00,#ff6600);font-size:16px;padding:12px;">▶ Open AdMaven Locker</button>
+      <button id="claimAdMavenBtn" class="claim-btn-offer" onclick="claimAdMaven()" style="display:none;margin-top:8px;font-size:14px;padding:10px;background:#333;color:#666;cursor:not-allowed">⏳ Complete AdMaven to Claim +500</button>
+    </div>
+    
+    <div style="margin-top:15px; border-top:1px solid #222; padding-top:15px;">
+      <button id="watchBtn3" onclick="watchCPAgrip()" style="background:linear-gradient(45deg,#9b59b6,#8e44ad);font-size:16px;padding:12px;color:#fff">▶ Open CPAgrip Locker</button>
+      <button id="claimCPAgripBtn" class="claim-btn-offer" onclick="claimCPAgrip()" style="display:none;margin-top:8px;font-size:14px;padding:10px;background:#333;color:#666;cursor:not-allowed">⏳ Complete CPAgrip to Claim +500</button>
+    </div>
+    
+    <div style="margin-top:15px; border-top:1px solid #222; padding-top:15px;">
+      <button id="watchBtn5" onclick="watchAffmine()" style="background:linear-gradient(45deg,#00b894,#00cec9);font-size:16px;padding:12px;color:#fff">▶ Open Affmine Locker</button>
+      <button id="claimAffmineBtn" class="claim-btn-offer" onclick="claimAffmine()" style="display:none;margin-top:8px;font-size:14px;padding:10px;background:#333;color:#666;cursor:not-allowed">⏳ Complete Affmine to Claim +500</button>
+    </div>
+    
+    <div style="margin-top:15px; border-top:1px solid #222; padding-top:15px;">
+      <button id="watchBtn6" onclick="watchZeydoo()" style="background:linear-gradient(45deg,#e74c3c,#c0392b);font-size:16px;padding:12px;color:#fff">🎡 Open Zeydoo Fortune Wheel</button>
+      <button id="claimZeydooBtn" class="claim-btn-offer" onclick="claimZeydoo()" style="display:none;margin-top:8px;font-size:14px;padding:10px;background:#333;color:#666;cursor:not-allowed">⏳ Complete Zeydoo to Claim +500</button>
+    </div>
+    
     <p id="watchMsg" style="margin-top:15px;font-size:13px;height:18px"></p>
   </div>
-  <div class="card"><h3>💡 How it works</h3><p style="text-align:left;color:#ccc;line-height:1.8">1. Click Open Locker/Offer<br>2. Complete any offer (press back to return)<br>3. Wait 60 seconds for the Claim button to unlock<br>4. Tap the unlocked Claim button to get coins!</p></div>
+  <div class="card"><h3>💡 How it works</h3><p style="text-align:left;color:#ccc;line-height:1.8">1. Click Open Locker/Offer<br>2. Complete the offer fully inside the window<br>3. Click "Complete offer and back to Mada Game"<br>4. Your coins will be added to your wallet automatically by our server within a few minutes!</p></div>
 </div>
 
 <div id="inboxPage" class="page">
@@ -343,7 +386,6 @@ function login() {
     var pass = document.getElementById("passwordInput").value;
     var msgEl = document.getElementById("loginMsg");
     
-    // FIX: Added Captcha Validation to Login to prevent bypassing
     var captcha = parseInt(document.getElementById("captchaA").value);
     if(captcha !== captchaAnswer){ msgEl.innerHTML = '<span class="error">Wrong captcha</span>'; generateCaptcha(); return; }
     
@@ -397,6 +439,33 @@ function startCountdown() {
   update(); countdownInterval = setInterval(update, 1000);
 }
 
+// REAL-TIME BALANCE LISTENER: Updates wallet instantly when postback hits Firebase!
+var lastKnownBalance = -1;
+function startRealtimeBalance() {
+  var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; }
+  if (!user || !db) return;
+  db.ref('leaderboard_all/' + user + '/coins').on('value', function(snap) {
+    var coins = snap.val() || 0;
+    if (lastKnownBalance !== -1 && coins > lastKnownBalance) {
+      // Postback added coins! Animate the wallet!
+      var coinsEl = document.getElementById("coins");
+      if (coinsEl) {
+        coinsEl.innerHTML = "🪙 " + coins + " Coins";
+        coinsEl.classList.remove('coin-update');
+        void coinsEl.offsetWidth; // trigger reflow
+        coinsEl.classList.add('coin-update');
+      }
+      var moneyEl = document.getElementById("money");
+      if (moneyEl) moneyEl.innerHTML = "💵 MWK " + Math.floor(coins * 0.02);
+      
+      var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
+      document.getElementById("dailyLimitText").innerText = daily + "/12000"; 
+      document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%";
+    }
+    lastKnownBalance = coins;
+  });
+}
+
 function showBalance() {
   try {
     var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; }
@@ -404,6 +473,7 @@ function showBalance() {
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
       var d = snap.val() || {}; var coins = d.coins || 0; var gp = d.gamesPlayed || 0;
       try { localStorage.setItem("coins", coins); } catch(e) {}
+      lastKnownBalance = coins; // Update tracking variable
       document.getElementById("coins").innerHTML = "🪙 " + coins + " Coins"; document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.02);
       document.getElementById("gamesPlayed").innerHTML = gp; document.getElementById("totalEarned").innerHTML = coins;
       var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
@@ -511,7 +581,6 @@ function startTempleRun() {
   loop();
 }
 
-// LEADERBOARD JAVASCRIPT INTEGRATION
 var currentLeaderboardView = 'daily';
 const lb_flags = {MW:"🇲🇼",ZM:"🇿🇲",TZ:"🇹🇿",KE:"🇰🇪",ZA:"🇿🇦",NG:"🇳🇬",US:"🇺🇸",GB:"🇬🇧",IN:"🇮🇳"};
 const HIDE_USERS = ["Admin_Mada","Mada_Banda"];
@@ -666,7 +735,7 @@ setTimeout(function(){
       document.getElementById("loginPage").classList.remove("active"); 
       document.getElementById("mainNav").style.display = "flex"; 
       showPage('wallet'); 
-      if (db) { setupPresence(u); checkInboxBadge(); } 
+      if (db) { setupPresence(u); checkInboxBadge(); startRealtimeBalance(); } 
     } 
   } catch(e) {}
 });
@@ -714,4 +783,4 @@ setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
 </script>
 </body>
-  </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </html>
