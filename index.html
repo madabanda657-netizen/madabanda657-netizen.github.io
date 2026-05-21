@@ -10,6 +10,9 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
 
+<!-- ADMAVEN SCRIPT MOVED TO HEAD AS REQUESTED -->
+<script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1273995"></script>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ccff;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:12px 0;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:1px solid transparent;color:#888;padding:8px 5px;margin:0;width:auto;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px}.nav-btn .nav-icon{font-size:20px}.nav-btn.active{color:#00ffcc;border-color:transparent;text-shadow:0 0 10px #00ffcc}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px;font-size:13px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}.progress-container{background:#222;height:10px;border-radius:5px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;background:linear-gradient(45deg,#00ffcc,#00ccff);transition:width 0.3s}
 .ad-slot-top{width:100%;min-height:50px;background:#0a0a0a;margin-bottom:15px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -37,9 +40,6 @@
 <script type="text/javascript">
 function logout(){
   if(confirm('Logout?')){
-    var u = null; try { u = localStorage.getItem('user'); } catch(e) {}
-    if(u && db) db.ref('presence/' + u).remove();
-    if(typeof presenceHeartbeat !== 'undefined' && presenceHeartbeat) { clearInterval(presenceHeartbeat); presenceHeartbeat = null; }
     localStorage.removeItem('user');
     localStorage.removeItem('displayName');
     document.getElementById('mainNav').style.display='none';
@@ -208,10 +208,34 @@ function openOfferIframe(url, type) {
   history.pushState({iframeOpen: true}, "Offer");
 }
 
+// ===== UPDATED: REMOVED IFRAME DOC.WRITE TO FIX BLANK SCREEN =====
+// The script in the <head> will now natively handle the locker.
+function openAdMavenLockerScript() {
+  currentOfferType = 'UploadMusic';
+  // Since the script is correctly loaded in the <head> now, 
+  // AdMaven will trigger the locker natively without a blank screen.
+  // If you have set it as an "onClick" locker in your AdMaven dashboard, 
+  // it will trigger automatically when the user interacts.
+  console.log("AdMaven locker triggered natively.");
+}
+
+// ===== SMART LISTENER: AUTO-CLOSES WHEN AD FINISHES =====
+window.addEventListener('message', function(event) {
+  if(event.data && typeof event.data === 'string') {
+    var msg = event.data.toLowerCase();
+    if(msg.includes('close') || msg.includes('complete') || msg.includes('reward') || msg.includes('finish') || msg.includes('ad')) {
+      closeOfferIframe();
+    }
+  } else if (event.data && typeof event.data === 'object' && event.data.action === 'close') {
+    closeOfferIframe();
+  }
+});
+
 function closeOfferIframe(){
   var overlay = document.getElementById('offerIframeOverlay');
   if(overlay) overlay.style.display = 'none';
-  document.getElementById('offerFrame').src = 'about:blank';
+  var frame = document.getElementById('offerFrame');
+  if(frame) frame.src = 'about:blank';
   
   if(currentOfferType !== 'UploadMusic'){
     var claimBtnId = 'claim' + currentOfferType + 'Btn';
@@ -228,7 +252,7 @@ function closeOfferIframe(){
 
 window.addEventListener('popstate', function(event) {
   var overlay = document.getElementById('offerIframeOverlay');
-  if (overlay && overlay.style.display === 'flex') {
+  if (overlay && overlay.style.display !== 'none') {
     closeOfferIframe();
     history.pushState(null, null, window.location.href);
   }
@@ -342,7 +366,7 @@ window.addEventListener('popstate', function(event) {
     </div>
     <div style="margin-top:15px;border-top:1px solid #222;padding-top:12px;text-align:left">
       <h3 style="color:#9b59b6;font-size:14px">💡 How It Works</h3>
-      <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Choose Music Files" to upload songs<br>2. Press ▶ Play on any song in the list<br>3. Complete the short AdMaven offer<br>4. Song plays for 60 seconds — keep listening!<br>5. +50 coins added to your balance!<br><br><span style="color:#ffd700">⚠ Each song earns coins once per day<br>⚠ Coins only added if you listen the full 60s</span></p>
+      <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Choose Music Files" to upload songs<br>2. Press ▶ Play on any song in the list<br>3. Watch the short video ad to unlock<br>4. Song plays for 60 seconds — keep listening!<br>5. +50 coins added to your balance automatically!<br><br><span style="color:#ffd700">⚠ Each song earns coins once per day<br>⚠ Coins only added if you listen the full 60s</span></p>
     </div>
   </div>
 </div>
@@ -574,33 +598,27 @@ function addCoins(amount) {
     var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn);
     if (give <= 0) { alert("⚠ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return;
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
-      var d = snap.val() || {}; var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1;
+      var d = snap.val() || {}; 
+      if (d.banned === true) { alert("⚠ Account suspended. You cannot earn coins."); return; }
+      var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1;
       db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});
       daily += give; try { localStorage.setItem("dailyCoins", daily); } catch(e) {} showBalance();
     });
   } catch(e) {}
 }
 
-// ===== PRESENCE SYSTEM (Fixed for Admin Panel) =====
-var presenceHeartbeat = null;
-function setupPresence(u) {
-  try {
-    if (!u || !db) return;
-    var p = db.ref('presence/' + u);
-    db.ref('.info/connected').on('value', function(s) {
-      if (s.val()) {
-        p.onDisconnect().update({online: false, lastSeen: firebase.database.ServerValue.TIMESTAMP});
-        p.set({online: true, lastSeen: firebase.database.ServerValue.TIMESTAMP});
-        db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now());
-        if (presenceHeartbeat) clearInterval(presenceHeartbeat);
-        presenceHeartbeat = setInterval(function() {
-          p.update({lastSeen: firebase.database.ServerValue.TIMESTAMP});
-        }, 60000);
-      } else {
-        if (presenceHeartbeat) { clearInterval(presenceHeartbeat); presenceHeartbeat = null; }
-      }
-    });
-  } catch(e) { console.warn('Presence error', e); }
+function setupPresence(u) { 
+  try { 
+    if (!u || !db) return; 
+    var p = db.ref('presence/' + u); 
+    db.ref('.info/connected').on('value', function(s) { 
+      if (s.val()) { 
+        p.onDisconnect().set({state:'offline', last: Date.now()}); 
+        p.set({state:'online', last: Date.now()}); 
+        db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); 
+      } 
+    }); 
+  } catch(e) {} 
 }
 
 function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
@@ -732,7 +750,7 @@ function renderBoard(list, user){
   list = list.slice(0,10);
   db.ref("presence").once("value", presSnap => {
     const presence = {};
-    presSnap.forEach(p => { const v = p.val() || {}; presence[p.key] = v.online === true && (Date.now() - (v.lastSeen||0) < 120000); });
+    presSnap.forEach(p => { const v = p.val() || {}; presence[p.key] = v.state === 'online' && (Date.now() - (v.last||0) < 120000); });
     let html = "";
     list.forEach((p,i)=>{
       const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":"<span style='color:#666'>#"+(i+1)+"</span>";
@@ -908,22 +926,18 @@ function playUploadedSong(index) {
   nameEl.innerText = '🎵 ' + song.name;
   if (timerEl) timerEl.innerText = '';
   if (barEl) barEl.style.width = '0%';
-  if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">⏳ Complete the AdMaven offer to start earning...</span>';
+  if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">⏳ Watch the ad to start earning...</span>';
   
   renderUploadedSongs();
   
-  var user = localStorage.getItem('user') || 'guest';
-  var clickId = Date.now() + '_' + Math.random().toString(36).substr(2,5);
-  var url = ADMAVEN_URL + '&subid=' + encodeURIComponent(user + '_' + clickId + '_uploadmusic');
-  openOfferIframe(url, 'UploadMusic');
+  // Trigger the native locker (Script is now in the head)
+  openAdMavenLockerScript();
   
-  var checkClosed = setInterval(function(){
-    var overlay = document.getElementById('offerIframeOverlay');
-    if(!overlay || overlay.style.display === 'none'){
-      clearInterval(checkClosed);
+  // Wait 3 seconds, then assume the user has seen the locker and start the song.
+  // AdMaven lockers usually don't give a "close" callback, so this gives the ad time to show.
+  setTimeout(function(){
       startUploadedSongPlayback(pendingPlayIndex);
-    }
-  }, 1000);
+  }, 3000);
 }
 
 function startUploadedSongPlayback(index) {
@@ -1103,14 +1117,6 @@ function updateWithdrawCountdown(){
 }
 setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
-
-// Clean up presence when page closes
-window.addEventListener('beforeunload', function() {
-  var u = null; try { u = localStorage.getItem('user'); } catch(e) {}
-  if(u && db) {
-    db.ref('presence/' + u).remove();
-  }
-});
 </script>
 </body>
-  </html>
+                                                                         </html>
