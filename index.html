@@ -37,6 +37,9 @@
 <script type="text/javascript">
 function logout(){
   if(confirm('Logout?')){
+    var u = null; try { u = localStorage.getItem('user'); } catch(e) {}
+    if(u && db) db.ref('presence/' + u).remove();
+    if(typeof presenceHeartbeat !== 'undefined' && presenceHeartbeat) { clearInterval(presenceHeartbeat); presenceHeartbeat = null; }
     localStorage.removeItem('user');
     localStorage.removeItem('displayName');
     document.getElementById('mainNav').style.display='none';
@@ -98,9 +101,17 @@ function watchAdMaven(){
   openOfferIframe(url, 'AdMaven');
 }
 function claimAdMaven(){ 
-  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
   var claimBtn = document.getElementById('claimAdMavenBtn'); 
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+  if(claimBtn && claimBtn.disabled) return;
+  var daily = parseInt(localStorage.getItem('watchCount')||'0');
+  if(daily >= 10){ alert("⚠ Daily offer limit reached (10/day)"); return; }
+  addCoins(500);
+  daily++;
+  localStorage.setItem('watchCount', daily);
+  alert("✅ +500 coins added! Check your wallet.");
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; }
+  updateWatchUI();
+  showBalance();
 }
 
 function watchCPAgrip(){
@@ -110,9 +121,17 @@ function watchCPAgrip(){
   openOfferIframe(url, 'CPAgrip');
 }
 function claimCPAgrip(){ 
-  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
   var claimBtn = document.getElementById('claimCPAgripBtn'); 
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+  if(claimBtn && claimBtn.disabled) return;
+  var daily = parseInt(localStorage.getItem('watchCount')||'0');
+  if(daily >= 10){ alert("⚠ Daily offer limit reached (10/day)"); return; }
+  addCoins(500);
+  daily++;
+  localStorage.setItem('watchCount', daily);
+  alert("✅ +500 coins added! Check your wallet.");
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; }
+  updateWatchUI();
+  showBalance();
 }
 
 function watchAffmine(){
@@ -122,9 +141,17 @@ function watchAffmine(){
   openOfferIframe(url, 'Affmine');
 }
 function claimAffmine(){ 
-  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
   var claimBtn = document.getElementById('claimAffmineBtn'); 
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+  if(claimBtn && claimBtn.disabled) return;
+  var daily = parseInt(localStorage.getItem('watchCount')||'0');
+  if(daily >= 10){ alert("⚠ Daily offer limit reached (10/day)"); return; }
+  addCoins(500);
+  daily++;
+  localStorage.setItem('watchCount', daily);
+  alert("✅ +500 coins added! Check your wallet.");
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; }
+  updateWatchUI();
+  showBalance();
 }
 
 function watchZeydoo(){
@@ -135,9 +162,17 @@ function watchZeydoo(){
 }
 
 function claimZeydoo(){ 
-  alert("✅ If you completed the offer, your coins will be added automatically by our server! Check your wallet.");
   var claimBtn = document.getElementById('claimZeydooBtn'); 
-  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Check Wallet'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; } 
+  if(claimBtn && claimBtn.disabled) return;
+  var daily = parseInt(localStorage.getItem('watchCount')||'0');
+  if(daily >= 10){ alert("⚠ Daily offer limit reached (10/day)"); return; }
+  addCoins(500);
+  daily++;
+  localStorage.setItem('watchCount', daily);
+  alert("✅ +500 coins added! Check your wallet.");
+  if(claimBtn){ claimBtn.disabled = true; claimBtn.innerText = '✅ Claimed!'; claimBtn.style.background = '#333'; claimBtn.style.color = '#51cf66'; }
+  updateWatchUI();
+  showBalance();
 }
 
 function openOfferIframe(url, type) {
@@ -221,7 +256,7 @@ window.addEventListener('popstate', function(event) {
 <div id="loginPage" class="page active">
   <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:120px;height:auto;border-radius:15px;margin-bottom:10px;box-shadow:0 0 20px #00ffcc55">
   <h1>Mada Game Earn</h1>
-  <div class="card"><h3>👤 Create Account</h3><input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20"><input type="email" id="emailInput" placeholder="Email address"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and email to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div><div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div><button id="loginBtn" type="button" onclick="register()" style="position:relative;z-index:10">Create Account & Play</button><p id="loginMsg" style="margin-top:10px;"></p><p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a> • <a href="#" onclick="showForgot();return false" style="color:#00ffcc">Forgot Password?</a></p><div id="forgotBox" style="display:none;margin-top:15px;padding:15px;background:#0a0a0a;border-radius:10px;border:1px solid #00ffcc33"><input type="email" id="forgotEmail" placeholder="Enter your email" style="margin-bottom:10px"><input type="password" id="newPass" placeholder="New password (min 6 chars)" style="margin-bottom:10px"><button onclick="resetPassword()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000">Reset Password</button><p id="forgotMsg" style="margin-top:8px;font-size:12px"></p></div></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p></div>
+  <div class="card"><h3>👤 Create Account</h3><input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20"><input type="email" id="emailInput" placeholder="Email address"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and email to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div><div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div><button id="loginBtn" type="button" style="position:relative;z-index:10">Create Account & Play</button><p id="loginMsg" style="margin-top:10px;"></p><p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a> • <a href="#" onclick="showForgot();return false" style="color:#00ffcc">Forgot Password?</a></p><div id="forgotBox" style="display:none;margin-top:15px;padding:15px;background:#0a0a0a;border-radius:10px;border:1px solid #00ffcc33"><input type="email" id="forgotEmail" placeholder="Enter your email" style="margin-bottom:10px"><input type="password" id="newPass" placeholder="New password (min 6 chars)" style="margin-bottom:10px"><button onclick="resetPassword()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000">Reset Password</button><p id="forgotMsg" style="margin-top:8px;font-size:12px"></p></div></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p></div>
 
 <div id="walletPage" class="page">
   <div style="text-align:right;margin-bottom:10px"><button onclick="logout()" style="width:auto;padding:8px 15px;background:#333;color:#00ffcc;border:1px solid #00ffcc55">🚪 Logout</button></div>
@@ -347,26 +382,18 @@ window.addEventListener('popstate', function(event) {
 <script>
 window.pendingReward = 0;
 
-function watchToEarn(){
-  var btn = document.getElementById('watchBtn');
+function giveReward(){
+  addCoins(500);
+  document.getElementById('rewardedOverlay').style.display = 'none';
+  showBalance();
   var msg = document.getElementById('watchMsg');
-  var user = localStorage.getItem('user') || 'guest_' + Math.random().toString(36).substr(2,6);
-  if(btn){ btn.disabled=true; btn.innerText='Opening...'; }
-  if(msg) msg.innerText='Opening Offermaru...';
-  var overlay = document.getElementById('rewardedOverlay');
-  var statusText = document.getElementById('adStatusText');
-  if(overlay) overlay.style.display='flex';
-  if(statusText){ statusText.innerText = '⏳ Opening Offermaru...'; statusText.style.color='#ffd700'; }
-  var url = OFFERMARU_URL + '?user_id=' + encodeURIComponent(user);
-  window.location.href = url;
-  if(btn) btn.innerText='Offers opened';
-  if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ Complete offer, then press back to return</span>';
-  if(statusText){ statusText.innerText = '✅ Offermaru opened! Complete offer and return'; statusText.style.color='#51cf66'; }
-  setTimeout(function(){
-    if(btn){ btn.disabled=false; btn.innerText='▶ Open Offers Wall (Offermaru)'; }
-    if(overlay) overlay.style.display='none';
-    setTimeout(function(){ showBalance(); }, 30000);
-  }, 3000);
+  if(msg) msg.innerHTML = '<span style="color:#51cf66">✅ +500 coins added!</span>';
+  updateWatchUI();
+}
+
+function watchToEarn(){
+  var msg = document.getElementById('watchMsg');
+  if(msg) msg.innerHTML = '<span style="color:#ff6b6b">Offer wall currently unavailable. Use the offer buttons below.</span>';
 }
 
 function updateWatchUI(){
@@ -481,7 +508,7 @@ function showPage(page) {
     else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); }
     else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); updateWatchUI(); }
     else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); }
-    else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
+    else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[5]) btns[5].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
   } catch(e) { console.error('showPage error', e); }
 }
 
@@ -554,7 +581,28 @@ function addCoins(amount) {
   } catch(e) {}
 }
 
-function setupPresence(u) { try { if (!u ||!db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline',last:Date.now()}); p.set({state:'online',last:Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {} }
+// ===== PRESENCE SYSTEM (Fixed for Admin Panel) =====
+var presenceHeartbeat = null;
+function setupPresence(u) {
+  try {
+    if (!u || !db) return;
+    var p = db.ref('presence/' + u);
+    db.ref('.info/connected').on('value', function(s) {
+      if (s.val()) {
+        p.onDisconnect().update({online: false, lastSeen: firebase.database.ServerValue.TIMESTAMP});
+        p.set({online: true, lastSeen: firebase.database.ServerValue.TIMESTAMP});
+        db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now());
+        if (presenceHeartbeat) clearInterval(presenceHeartbeat);
+        presenceHeartbeat = setInterval(function() {
+          p.update({lastSeen: firebase.database.ServerValue.TIMESTAMP});
+        }, 60000);
+      } else {
+        if (presenceHeartbeat) { clearInterval(presenceHeartbeat); presenceHeartbeat = null; }
+      }
+    });
+  } catch(e) { console.warn('Presence error', e); }
+}
+
 function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
@@ -606,8 +654,8 @@ function startCheckers() { document.getElementById('gameArea').innerHTML = '<h3>
 function initCheckers(d) { gameState = {board:[], turn:1, selected:null, validMoves:[], difficulty:d}; for (var r = 0; r < 8; r++) { gameState.board[r] = []; for (var c = 0; c < 8; c++) gameState.board[r][c] = (r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0; } renderCheckers(); }
 function renderCheckers() { var h = '<div class="timer">' + gameState.difficulty + ' | ' + (gameState.turn===1?'Your turn':'CPU') + '</div><div style="display:grid;grid-template-columns:repeat(8,1fr);max-width:360px;margin:10px auto;border:3px solid #00ffcc;aspect-ratio:1">'; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) { var dark = (r+c)%2; var p = gameState.board[r][c]; var bg = dark? '#1a1a1a' : '#e0e0e0'; var sel = ''; if (gameState.selected && gameState.selected[0]===r && gameState.selected[1]===c) sel = 'outline:3px solid #00ffcc;outline-offset:-3px'; var vm = gameState.validMoves; var isVM = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { isVM = true; break; } } if (isVM) bg = '#00ffcc88'; h += '<div data-r="'+r+'" data-c="'+c+'" style="aspect-ratio:1;background:'+bg+';'+sel+';display:flex;align-items:center;justify-content:center;cursor:pointer" class="sq">'; if (p!== 0) { var red = p>0; var king = Math.abs(p)===2; h += '<div style="width:70%;height:70%;border-radius:50%;background:'+(red?'radial-gradient(circle,#ff6b6b,#c92a2a)':'radial-gradient(circle,#444,#000)')+';border:2px solid #888;display:flex;align-items:center;justify-content:center;color:#ffd700">'+(king?'♔':'')+'</div>'; } h += '</div>'; } h += '</div>'; document.getElementById('gameArea').innerHTML = h; var squares = document.querySelectorAll('.sq'); for (var j = 0; j < squares.length; j++) { (function(sq) { sq.onclick = function() { clickSquare(parseInt(sq.getAttribute('data-r')), parseInt(sq.getAttribute('data-c'))); }; })(squares[j]); } }
 function clickSquare(r, c) { if (gameState.turn!== 1) return; var p = gameState.board[r][c]; var all = getAllMoves(1); var must = false; for (var i = 0; i < all.length; i++) { if (Math.abs(all[i].from[0]-all[i].to[0])===2) { must = true; break; } } if (gameState.selected) { var vm = gameState.validMoves; var found = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { found = true; break; } } if (found) { var cont = makeMove(gameState.selected[0], gameState.selected[1], r, c); if (!cont) { gameState.selected = null; gameState.validMoves = []; renderCheckers(); setTimeout(cpuMove, 300); } return; } gameState.selected = null; gameState.validMoves = []; } if (p > 0) { if (must) { var can = false; for (var m = 0; m < all.length; m++) { if (all[m].from[0]===r && all[m].from[1]===c && Math.abs(all[m].from[0]-all[m].to[0])===2) { can = true; break; } } if (!can) return; } gameState.selected = [r, c]; gameState.validMoves = getMoves(r, c, 1); renderCheckers(); } }
-function getMoves(r, c, pl) { var b = gameState.board; var pc = b[r][c]; var m = []; var cap = []; var md = Math.abs(pc)===2? [-1,1] : (pl===1? [-1] : [1]); for (var di = 0; di < md.length; di++) { for (var ci = 0; ci < 2; ci++) { var dc = ci===0?-1:1; var nr=r+md[di], nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0) m.push([nr,nc]); } } for (var di2 = 0; di2 < 2; di2++) { for (var ci2 = 0; ci2 < 2; ci2++) { var dr=di2===0?-1:1; var dc2=ci2===0?-1:1; var nr2=r+dr,nc2=c+dc2,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0) cap.push([jr,jc]); } } return cap.length? cap : m; }
-function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc2*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
+function getMoves(r, c, pl) { var b = gameState.board; var pc = b[r][c]; var m = []; var cap = []; var md = Math.abs(pc)===2? [-1,1] : (pl===1? [-1] : [1]); for (var di = 0; di < md.length; di++) { for (var ci = 0; ci < 2; ci++) { var dc = ci===0?-1:1; var nr=r+md[di], nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0) m.push([nr,nc]); } } for (var di2 = 0; di2 < 2; di2++) { for (var ci2 = 0; ci2 < 2; ci2++) { var dr=di2===0?-1:1; var dc=ci2===0?-1:1; var nr2=r+dr,nc2=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0) cap.push([jr,jc]); } } return cap.length? cap : m; }
+function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
 function makeMove(r1, c1, r2, c2) { var b = gameState.board; b[r2][c2] = b[r1][c1]; b[r1][c1] = 0; var cap = false; if (Math.abs(r2-r1)===2) { b[(r1+r2)/2][(c1+c2)/2] = 0; cap = true; } if (r2===0 && b[r2][c2]===1) b[r2][c2] = 2; if (r2===7 && b[r2][c2]===-1) b[r2][c2] = -2; if (cap) { var fm = getMoves(r2, c2, b[r2][c2]>0?1:-1); var fCaps = []; for (var i = 0; i < fm.length; i++) { if (Math.abs(fm[i][0]-r2)===2) fCaps.push(fm[i]); } if (fCaps.length) { gameState.selected=[r2,c2]; gameState.validMoves=fCaps; renderCheckers(); return true; } } gameState.turn *= -1; gameState.selected = null; gameState.validMoves = []; checkWin(); return false; }
 function cpuMove() { if (gameState.turn!== -1) return; var moves = getAllMoves(-1); if (!moves.length) { endCheckers(true); return; } var choice; var caps = []; for (var i = 0; i < moves.length; i++) { if (Math.abs(moves[i].from[0]-moves[i].to[0])===2) caps.push(moves[i]); } if (gameState.difficulty === 'easy') { choice = moves[Math.random()*moves.length|0]; } else if (gameState.difficulty === 'medium') { var pool = caps.length? caps : moves; choice = pool[Math.random()*pool.length|0]; } else { var best = -1e9; for (var j = 0; j < moves.length; j++) { var v = Math.random()*100; if (v > best) { best = v; choice = moves[j]; } } } var cont = makeMove(choice.from[0], choice.from[1], choice.to[0], choice.to[1]); renderCheckers(); if (cont) setTimeout(cpuMove, 300); }
 function checkWin() { var f = gameState.board.flat? gameState.board.flat() : [].concat.apply([], gameState.board); var pCount = 0, cCount = 0; for (var i = 0; i < f.length; i++) { if (f[i] > 0) pCount++; if (f[i] < 0) cCount++; } if (cCount === 0) endCheckers(true); else if (pCount === 0) endCheckers(false); else if (getAllMoves(gameState.turn).length === 0) endCheckers(gameState.turn === -1); }
@@ -684,7 +732,7 @@ function renderBoard(list, user){
   list = list.slice(0,10);
   db.ref("presence").once("value", presSnap => {
     const presence = {};
-    presSnap.forEach(p => { const v = p.val() || {}; presence[p.key] = v.state === 'online' && (Date.now() - (v.last||0) < 120000); });
+    presSnap.forEach(p => { const v = p.val() || {}; presence[p.key] = v.online === true && (Date.now() - (v.lastSeen||0) < 120000); });
     let html = "";
     list.forEach((p,i)=>{
       const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":"<span style='color:#666'>#"+(i+1)+"</span>";
@@ -696,7 +744,7 @@ function renderBoard(list, user){
         <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
           <span style="width:30px;text-align:center;font-weight:bold">${medal}</span>
           <span style="font-size:20px">${flag}</span>
-          <span style="font-weight:${isMe?'bold':'normal'};white-space:nowrap;overflow:hidden;overflow-ellipsis">${p.displayName}${online}</span>
+          <span style="font-weight:${isMe?'bold':'normal'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.displayName}${online}</span>
         </div>
         <div style="text-align:right">
           <div style="color:#ffd700;font-weight:bold">${p.coins.toLocaleString()} 🪙</div>
@@ -968,10 +1016,10 @@ setTimeout(function(){
 }, 1000);
 
   var loginBtn = document.getElementById("loginBtn");
-  if (loginBtn) { loginBtn.addEventListener('click', function(e){ e.preventDefault(); login(); }); }
+  if (loginBtn) { loginBtn.addEventListener('click', function(e){ e.preventDefault(); register(); }); }
   var usernameInput = document.getElementById("usernameInput");
   if (usernameInput) {
-    usernameInput.addEventListener('keypress', function(e){ if(e.key === 'Enter'){ e.preventDefault(); login(); }});
+    usernameInput.addEventListener('keypress', function(e){ if(e.key === 'Enter'){ e.preventDefault(); register(); }});
     setTimeout(function(){ usernameInput.focus(); generateCaptcha(); }, 300);
   }
 
@@ -1055,6 +1103,14 @@ function updateWithdrawCountdown(){
 }
 setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
+
+// Clean up presence when page closes
+window.addEventListener('beforeunload', function() {
+  var u = null; try { u = localStorage.getItem('user'); } catch(e) {}
+  if(u && db) {
+    db.ref('presence/' + u).remove();
+  }
+});
 </script>
 </body>
-                                                                                                                                                  </html>
+  </html>
