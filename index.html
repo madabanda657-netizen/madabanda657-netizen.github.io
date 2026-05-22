@@ -13,7 +13,7 @@
 <!-- ADSTERRA SOCIAL BAR (Passive Earnings) -->
 <script src="https://pl29281398.effectivecpmnetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js"></script>
 
-<!-- CPAGRIP CONTENT LOCKER (Video Locker for Music) -->
+<!-- CPAGRIP CONTENT LOCKER -->
 <script type="text/javascript" src="https://singingfiles.com/script_include.php?id=189705"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -37,6 +37,11 @@
 .upload-listen-bar{height:8px;border-radius:4px;overflow:hidden;margin-top:10px;background:#222}
 .upload-listen-fill{height:100%;background:linear-gradient(90deg,#9b59b6,#e74c3c);transition:width 1s linear;border-radius:4px}
 .upload-count-badge{display:inline-block;background:#9b59b6;color:#fff;font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:10px}
+
+/* ONCLICKA VIDEO MODAL STYLES */
+.onclicka-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);z-index:99999;display:none;align-items:center;justify-content:center;padding:20px}
+.onclicka-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%;text-align:center}
+#onClickaContainer{width:100%;height:250px;background:#000;margin:10px 0;border-radius:8px;overflow:hidden}
 </style>
 
 <script type="text/javascript">
@@ -77,96 +82,6 @@ function openOfferIframe(url, type) {
   history.pushState({iframeOpen: true}, "Offer");
 }
 
-// ===== CPAGRIP CONTENT LOCKER FOR MUSIC =====
-var lockerCheckInterval = null;
-var lockerFallbackTimer = null;
-var lockerStarted = false;
-
-function openAdMavenLockerScript() {
-  currentOfferType = 'UploadMusic';
-  lockerStarted = false;
-
-  // Method 1: CPAgrip Content Locker (BEST - has real offers + auto-close)
-  if (typeof call_locker === 'function') {
-    console.log('CPAgrip locker found, calling call_locker()');
-    call_locker();
-    
-    // Poll every 500ms to detect when the locker closes (offer completed)
-    if (lockerCheckInterval) clearInterval(lockerCheckInterval);
-    if (lockerFallbackTimer) clearTimeout(lockerFallbackTimer);
-    
-    lockerCheckInterval = setInterval(function() {
-      // CPAgrip locker creates overlay elements. When they disappear = offer completed
-      var lockerVisible = false;
-      
-      // Check for common CPAgrip overlay elements
-      var overlays = document.querySelectorAll('[id*="locker"], [class*="locker"], [id*="cpagrip"], [class*="cpagrip"], [id*="overlay"]');
-      for (var i = 0; i < overlays.length; i++) {
-        var el = overlays[i];
-        if (el && el.offsetWidth > 0 && el.offsetHeight > 50) {
-          lockerVisible = true;
-          break;
-        }
-      }
-      
-      // Also check for iframes from CPAgrip
-      var iframes = document.querySelectorAll('iframe');
-      for (var j = 0; j < iframes.length; j++) {
-        var src = iframes[j].src || '';
-        if ((src.indexOf('singingfiles') !== -1 || src.indexOf('cpagrip') !== -1) && iframes[j].offsetWidth > 0) {
-          lockerVisible = true;
-          break;
-        }
-      }
-      
-      // If locker is no longer visible AND it was visible before = user completed offer
-      if (!lockerVisible && lockerStarted) {
-        clearInterval(lockerCheckInterval);
-        lockerCheckInterval = null;
-        if (lockerFallbackTimer) clearTimeout(lockerFallbackTimer);
-        onLockerComplete();
-      }
-    }, 500);
-    
-    // Mark that locker has been shown after 1 second
-    setTimeout(function() { lockerStarted = true; }, 1000);
-    
-    // Fallback: if locker doesn't close within 60 seconds, start song anyway
-    lockerFallbackTimer = setTimeout(function() {
-      if (lockerCheckInterval) clearInterval(lockerCheckInterval);
-      lockerCheckInterval = null;
-      onLockerComplete();
-    }, 60000);
-    
-    return;
-  }
-
-  // Method 2: Fallback - Adsterra Smartlink in iframe
-  var user = localStorage.getItem('user') || 'guest';
-  var subid = encodeURIComponent(user + '_' + Date.now());
-  var smartlinkUrl = ADSTERRA_SMARTLINK + '&subid=' + subid;
-  openOfferIframe(smartlinkUrl, 'UploadMusic');
-  
-  // 15 second countdown for fallback
-  var timeLeft = 15;
-  if (lockerCheckInterval) clearInterval(lockerCheckInterval);
-  lockerCheckInterval = setInterval(function() {
-    timeLeft--;
-    if (timeLeft <= 0) {
-      clearInterval(lockerCheckInterval);
-      lockerCheckInterval = null;
-      closeOfferIframe();
-      onLockerComplete();
-    }
-  }, 1000);
-}
-
-function onLockerComplete() {
-  var msgEl = document.getElementById('uploadListenMsg');
-  if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ Ad completed! Starting song...</span>';
-  startUploadedSongPlayback(pendingPlayIndex);
-}
-
 window.addEventListener('message', function(event) {
   if(event.data && typeof event.data === 'string') { var msg = event.data.toLowerCase(); if(msg.includes('close') || msg.includes('complete') || msg.includes('reward') || msg.includes('finish')) closeOfferIframe(); }
   else if (event.data && typeof event.data === 'object' && event.data.action === 'close') closeOfferIframe();
@@ -175,6 +90,60 @@ window.addEventListener('message', function(event) {
 function closeOfferIframe(){ var overlay = document.getElementById('offerIframeOverlay'); if(overlay) overlay.style.display = 'none'; var frame = document.getElementById('offerFrame'); if(frame) frame.src = 'about:blank'; if(currentOfferType !== 'UploadMusic'){ var claimBtnId = 'claim' + currentOfferType + 'Btn'; var claimBtn = document.getElementById(claimBtnId); if(claimBtn) { claimBtn.style.display = 'block'; claimBtn.disabled = false; claimBtn.innerText = '💰 Claim ' + currentOfferType + ' +500'; claimBtn.style.background = 'linear-gradient(45deg,#ffd700,#ffaa00)'; claimBtn.style.color = '#000'; } } }
 
 window.addEventListener('popstate', function(event) { var overlay = document.getElementById('offerIframeOverlay'); if (overlay && overlay.style.display !== 'none') { closeOfferIframe(); history.pushState(null, null, window.location.href); } });
+
+
+/* ===== ONCLICKA VIDEO REWARD SYSTEM FOR LISTEN MENU ===== */
+var videoRewardTimer = null;
+
+function openOnClickaVideo() {
+    var modal = document.getElementById('onclickaModal');
+    var container = document.getElementById('onClickaContainer');
+    var claimBtn = document.getElementById('videoClaimBtn');
+    var countdownText = document.getElementById('videoCountdown');
+
+    // Reset UI
+    claimBtn.style.display = 'none';
+    countdownText.style.display = 'block';
+    countdownText.innerText = '⏳ Watch the video for 15 seconds...';
+    
+    // Show the modal
+    modal.style.display = 'flex';
+
+    // CLEAR the container and INJECT the OnClicka script directly into it
+    // This forces the in-stream video to load inside our box!
+    container.innerHTML = '';
+    var script = document.createElement('script');
+    script.src = 'https://js.onclckmn.com/static/onclicka.js';
+    script.setAttribute('data-admpid', '441905');
+    container.appendChild(script);
+
+    // Start 15 second countdown to simulate a rewarded video
+    var timeLeft = 15;
+    videoRewardTimer = setInterval(function() {
+        timeLeft--;
+        countdownText.innerText = '⏳ Please wait ' + timeLeft + 's...';
+        
+        if (timeLeft <= 0) {
+            clearInterval(videoRewardTimer);
+            countdownText.style.display = 'none';
+            claimBtn.style.display = 'inline-block'; // Show claim button
+        }
+    }, 1000);
+}
+
+function claimOnClickaVideo() {
+    closeOnClickaVideo();
+    // Start the song playback after watching the ad
+    var msgEl = document.getElementById('uploadListenMsg');
+    if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ Video watched! Starting song...</span>';
+    startUploadedSongPlayback(pendingPlayIndex);
+}
+
+function closeOnClickaVideo() {
+    if(videoRewardTimer) clearInterval(videoRewardTimer);
+    document.getElementById('onclickaModal').style.display = 'none';
+    document.getElementById('onClickaContainer').innerHTML = ''; // Stop the video from playing in background
+}
 </script>
 </head>
 <body>
@@ -229,6 +198,18 @@ window.addEventListener('popstate', function(event) { var overlay = document.get
 
 <div id="listenPage" class="page">
   <h1>🎵 Listen & Earn</h1>
+  
+  <!-- ONCLICKA VIDEO REWARD MODAL -->
+  <div id="onclickaModal" class="onclicka-modal">
+    <div class="onclicka-box">
+      <h3 style="color:#00ffcc">📺 Watch Video to Unlock Song</h3>
+      <div id="onClickaContainer"></div>
+      <p id="videoCountdown" style="color:#ffd700;font-size:16px">⏳ Watch the video for 15 seconds...</p>
+      <button id="videoClaimBtn" style="display:none;background:linear-gradient(45deg,#ffd700,#ffaa00);font-size:18px;padding:12px" onclick="claimOnClickaVideo()">💰 Unlock Song & Earn</button>
+      <button onclick="closeOnClickaVideo()" style="background:#333;color:#fff;margin-top:10px;padding:10px 15px;width:auto">✖ Cancel</button>
+    </div>
+  </div>
+
   <div class="card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #9b59b6">
     <h3 style="color:#9b59b6">📁 Upload Your Music</h3>
     <p style="color:#ccc;margin:10px 0;">Upload songs, listen for 60s, earn <span style="color:#ffd700;font-weight:bold">50 coins</span> each!</p>
@@ -245,7 +226,7 @@ window.addEventListener('popstate', function(event) { var overlay = document.get
     </div>
     <div style="margin-top:15px;border-top:1px solid #222;padding-top:12px;text-align:left">
       <h3 style="color:#9b59b6;font-size:14px">💡 How It Works</h3>
-      <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Choose Music Files" to upload songs<br>2. Press ▶ Play on any song<br>3. Complete the offer/quiz to unlock<br>4. Song plays for 60 seconds — keep listening!<br>5. +50 coins added automatically!<br><br><span style="color:#ffd700">⚠ Each song earns coins once per day<br>⚠ Coins only added if you listen the full 60s</span></p>
+      <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Choose Music Files" to upload songs<br>2. Press ▶ Play on any song<br>3. Watch the 15s Video Ad to unlock<br>4. Song plays for 60 seconds — keep listening!<br>5. +50 coins added automatically!<br><br><span style="color:#ffd700">⚠ Each song earns coins once per day<br>⚠ Coins only added if you listen the full 60s</span></p>
     </div>
   </div>
 </div>
@@ -349,7 +330,7 @@ function renderBoard(list, user){ list.sort((a,b)=>b.coins-a.coins); list = list
 function shareRank(){ const user = localStorage.getItem("user") || "Player"; const data = window.myRankData || {rank:"#?", coins:0, view:"daily"}; const text = `🎮 I'm ranked ${data.rank} on Mada Game Earn with ${data.coins.toLocaleString()} coins! 🇲🇼`; if(navigator.share){ navigator.share({title:"Mada Game Earn", text:text}).catch(()=>{}); } else { navigator.clipboard.writeText(text).then(()=> alert("Copied!")); } }
 setInterval(function(){ if(document.getElementById('leaderboardPage').classList.contains('active')) updateLeaderboard(); }, 10000);
 
-/* ===== UPLOAD MUSIC WITH CPAGRIP LOCKER ===== */
+/* ===== UPLOAD MUSIC WITH ONCLICKA VIDEO ===== */
 var uploadedSongs = []; var rewardedSongs = []; var uploadListenInterval = null; var currentUploadSongIndex = -1; var pendingPlayIndex = -1;
 try { var savedRewarded = localStorage.getItem('rewardedSongs'); if (savedRewarded) rewardedSongs = JSON.parse(savedRewarded); } catch(e) { rewardedSongs = []; }
 
@@ -364,9 +345,10 @@ function playUploadedSong(index) {
   if (currentUploadSongIndex === index && !audio.paused) { audio.pause(); audio.currentTime = 0; if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } currentUploadSongIndex = -1; if (timerEl) timerEl.innerText = ''; if (msgEl) msgEl.innerHTML = ''; if (barEl) barEl.style.width = '0%'; renderUploadedSongs(); return; }
   if (rewardedSongs.indexOf(song.name) !== -1) { if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⚠ Already earned!</span>'; player.style.display = 'block'; nameEl.innerText = '🎵 ' + song.name; audio.src = song.url; audio.play(); currentUploadSongIndex = index; if (timerEl) timerEl.innerText = 'No reward - already earned'; if (barEl) barEl.style.width = '100%'; renderUploadedSongs(); return; }
   if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; }
-  pendingPlayIndex = index; player.style.display = 'block'; nameEl.innerText = '🎵 ' + song.name; if (timerEl) timerEl.innerText = ''; if (barEl) barEl.style.width = '0%'; if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">⏳ Complete the offer to unlock your song...</span>'; renderUploadedSongs();
-  // Trigger CPAgrip Content Locker
-  openAdMavenLockerScript();
+  pendingPlayIndex = index; player.style.display = 'block'; nameEl.innerText = '🎵 ' + song.name; if (timerEl) timerEl.innerText = ''; if (barEl) barEl.style.width = '0%'; if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">⏳ Watch the video ad to unlock your song...</span>'; renderUploadedSongs();
+  
+  // Trigger OnClickA Video Ad
+  openOnClickaVideo();
 }
 
 function startUploadedSongPlayback(index) {
@@ -408,7 +390,7 @@ setTimeout(function(){ var savedNum = localStorage.getItem('number'); if(savedNu
   <a href="#" onclick="alert('18+. One account only.')" style="margin:0 10px">Terms</a> |
   <a href="#" onclick="alert('We do not sell data.')" style="margin:0 10px">Privacy</a> |
   <a href="#" onclick="alert('WhatsApp +265 999 123 456')" style="margin:0 10px">Contact</a>
-  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Powered by CPAgrip + Adsterra + AdMaven</p>
+  <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Powered by CPAgrip + Adsterra + AdMaven + OnClickA</p>
 </div>
 
 <script>
