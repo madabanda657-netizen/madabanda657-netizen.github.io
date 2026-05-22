@@ -10,7 +10,7 @@
 <!-- ADMAVEN SCRIPT -->
 <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1273995"></script>
 
-<!-- ADSTERRA SOCIAL BAR (Passive Earnings) -->
+<!-- ADSTERRA SOCIAL BAR -->
 <script src="https://pl29281398.effectivecpmnetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js"></script>
 
 <!-- CPAGRIP CONTENT LOCKER -->
@@ -41,7 +41,7 @@
 /* ONCLICKA VIDEO MODAL STYLES */
 .onclicka-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);z-index:99999;display:none;align-items:center;justify-content:center;padding:20px}
 .onclicka-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%;text-align:center}
-#onClickaContainer{width:100%;height:250px;background:#000;margin:10px 0;border-radius:8px;overflow:hidden}
+#onClickaContainer{width:100%;height:280px;background:#000;margin:10px 0;border-radius:8px;overflow:hidden}
 </style>
 
 <script type="text/javascript">
@@ -109,13 +109,19 @@ function openOnClickaVideo() {
     // Show the modal
     modal.style.display = 'flex';
 
-    // CLEAR the container and INJECT the OnClicka script directly into it
-    // This forces the in-stream video to load inside our box!
+    // CLEAR the container and INJECT the OnClickA In-Stream Video Tag using Spot ID 6119827
     container.innerHTML = '';
-    var script = document.createElement('script');
-    script.src = 'https://js.onclckmn.com/static/onclicka.js';
-    script.setAttribute('data-admpid', '441905');
-    container.appendChild(script);
+    
+    var sp = document.createElement('script');
+    sp.type = 'text/javascript';
+    sp.innerHTML = 'var Onclicka = Onclicka || {}; Onclicka.spots = Onclicka.spots || []; Onclicka.spots.push({spotId: "6119827", containerId: "onClickaContainer"});';
+    container.appendChild(sp);
+
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = '//js.onclckmn.com/static/onclicka.js';
+    container.appendChild(s);
 
     // Start 15 second countdown to simulate a rewarded video
     var timeLeft = 15;
