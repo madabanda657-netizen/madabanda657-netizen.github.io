@@ -7,6 +7,9 @@
 <meta name="ff564c0857f774bad41282e2433586268cdeb186" content="ff564c0857f774bad41282e2433586268cdeb186" />
 <meta name="admaven-placement" content="Bqjs5pdn5">
 
+<!-- PROFITON DOMAIN VERIFICATION -->
+<meta name="profiton-domain-verification" content="e113bf383dfee0213940d32008d37159a5934a3c5aa7e3cf91e2e887f977c2f7" />
+
 <!-- CLICKIO CONSENT MAIN TAG (Must load before ad scripts) -->
 <script async type="text/javascript" src="//clickiocmp.com/t/consent_248966.js"></script>
 
@@ -711,7 +714,7 @@ function startGame(type) {
   document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); 
   document.getElementById('topAd').classList.add('hide-ad');
   document.getElementById('bottomAd').classList.add('hide-ad');
-  if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); 
+  if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble; else if (type === 'checkers') startCheckers(); 
 }
 
 function startMemoryMatch() { var emojis = ['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺']; var cards = emojis.concat(emojis).sort(function() { return Math.random() - 0.5; }); gameState = {cards:cards, flipped:[], matched:0, moves:0, startTime:Date.now()}; var html = '<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">'; for (var i = 0; i < cards.length; i++) { html += '<div class="memory-card" id="card' + i + '" data-idx="' + i + '"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'; } html += '</div>'; document.getElementById('gameArea').innerHTML = html; var allCards = document.querySelectorAll('.memory-card'); for (var j = 0; j < allCards.length; j++) { (function(card) { card.onclick = function() { flipCard(parseInt(card.getAttribute('data-idx'))); }; })(allCards[j]); } gameState.timerInterval = setInterval(function() { var t = Math.floor((Date.now() - gameState.startTime) / 1000); var el = document.getElementById('timer'); if (el) el.innerHTML = 'Time: ' + t + 's | Moves: ' + gameState.moves; }, 200); }
@@ -1171,5 +1174,9 @@ function updateWithdrawCountdown(){
 setInterval(updateWithdrawCountdown, 1000);
 setTimeout(updateWithdrawCountdown, 500);
 </script>
+
+<!-- EFFECTIVE CPM NETWORK (SOCIAL BAR) -->
+<script src="https://pl29281398.effectivecpmnetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js"></script>
+
 </body>
   </html>
