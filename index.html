@@ -8,11 +8,14 @@
 <!-- HILLTOPADS VERIFICATION CODE -->
 <meta name="1b0828fe02a6ae6bde09b9dbc690f6792450a114" content="1b0828fe02a6ae6bde09b9dbc690f6792450a114" />
 
-<!-- ONCLICKA AD SCRIPT — WATCH MENU ONLY -->
-<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="441905"></script>
-
 <!-- MONETAG REWARDED INTERSTITIAL SDK — MUSIC & DOUBLE COINS ONLY -->
 <script src='//libtl.com/sdk.js' data-zone='9816593' data-sdk='show_9816593'></script>
+
+<!-- EFFECTIVE CPM TOP BANNER SCRIPT -->
+<script async="async" data-cfasync="false" src="https://pl29315230.effectivecpmnetwork.com/8dd30229fd7b7e3f3aeef1a7af787161/invoke.js"></script>
+
+<!-- GOOGLE IMA SDK — VAST VIDEO ADS -->
+<script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -72,6 +75,20 @@
 .watch-btn:disabled{background:#333!important;color:#888!important;cursor:not-allowed!important}
 .watch-btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(transparent,rgba(255,255,255,0.1),transparent);transform:rotate(45deg);animation:watchBtnShine 3s ease-in-out infinite}
 @keyframes watchBtnShine{0%{transform:translateX(-100%) rotate(45deg)}100%{transform:translateX(100%) rotate(45deg)}}
+
+/* VAST VIDEO PLAYER */
+.vast-video-wrapper{position:relative;width:100%;max-width:340px;margin:0 auto 15px;background:#000;border-radius:12px;overflow:hidden;border:1px solid #51cf6644}
+.vast-video-wrapper video{width:100%;height:180px;object-fit:cover;display:block;background:#000}
+#vastAdContainer{position:absolute;top:0;left:0;width:100%;height:100%}
+.vast-loading-spinner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#51cf66;font-size:14px;z-index:1;pointer-events:none}
+
+/* HIDE ADSTERRA SOCIAL BAR DURING GAMEPLAY */
+body.playing-game #id-custom-social-bar,
+body.playing-game [id^="adsterra"],
+body.playing-game [class*="social-bar"],
+body.playing-game div[id^="bb"],
+body.playing-game iframe[src*="effectivecpmnetwork"],
+body.playing-game div[data-adid] { display: none !important; visibility: hidden !important; }
 </style>
 
 <script type="text/javascript">
@@ -105,6 +122,153 @@ function resetPassword(){
 </script>
 
 <script>
+// =====================================================================
+// ===== VAST VIDEO AD — WATCH MENU =====
+// =====================================================================
+var vastAdsLoader = null;
+var vastAdsManager = null;
+
+function destroyVastAd() {
+  try {
+    if (vastAdsManager) {
+      vastAdsManager.destroy();
+      vastAdsManager = null;
+    }
+  } catch(e) { console.log('VAST destroy error:', e); }
+  vastAdsLoader = null;
+}
+
+function initVastAd() {
+  destroyVastAd();
+
+  var videoEl = document.getElementById('vastVideo');
+  var adContainer = document.getElementById('vastAdContainer');
+
+  if (!videoEl || !adContainer) {
+    window.vastAdCompleted = true;
+    checkVastAndCountdown();
+    return;
+  }
+
+  try {
+    if (typeof google === 'undefined' || !google.ima) {
+      console.log('IMA SDK not available');
+      window.vastAdCompleted = true;
+      checkVastAndCountdown();
+      return;
+    }
+
+    vastAdsLoader = new google.ima.AdsLoader(adContainer);
+    vastAdsLoader.addEventListener(
+      google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+      onVastAdsManagerLoaded,
+      false
+    );
+    vastAdsLoader.addEventListener(
+      google.ima.AdErrorEvent.Type.AD_ERROR,
+      onVastAdError,
+      false
+    );
+
+    videoEl.load();
+
+    var adsRequest = new google.ima.AdsRequest();
+    adsRequest.adTagUrl = 'https://mellow-habit.com/dpmNFnz.d_GaNbvnZGGxUW/Ie/mC9Mu/ZUUxlPkgPDTrcBwoN/zQcHzkMODLU/tQNWzjAk3VNvztMgwXOFQk';
+
+    var containerWidth = adContainer.offsetWidth || 320;
+    var containerHeight = adContainer.offsetHeight || 180;
+    adsRequest.linearAdSlotWidth = containerWidth;
+    adsRequest.linearAdSlotHeight = containerHeight;
+    adsRequest.nonLinearAdSlotWidth = containerWidth;
+    adsRequest.nonLinearAdSlotHeight = Math.floor(containerHeight / 3);
+
+    vastAdsLoader.requestAds(adsRequest);
+  } catch(e) {
+    console.log('VAST init error:', e);
+    window.vastAdCompleted = true;
+    checkVastAndCountdown();
+  }
+}
+
+function onVastAdsManagerLoaded(adsManagerLoadedEvent) {
+  var videoEl = document.getElementById('vastVideo');
+  var adContainer = document.getElementById('vastAdContainer');
+
+  if (!videoEl || !adContainer) {
+    window.vastAdCompleted = true;
+    checkVastAndCountdown();
+    return;
+  }
+
+  try {
+    var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+    adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+
+    vastAdsManager = adsManagerLoadedEvent.getAdsManager(videoEl, adsRenderingSettings);
+
+    var containerWidth = adContainer.offsetWidth || 320;
+    var containerHeight = adContainer.offsetHeight || 180;
+
+    vastAdsManager.init(containerWidth, containerHeight, google.ima.ViewMode.NORMAL);
+    vastAdsManager.start();
+
+    vastAdsManager.addEventListener(google.ima.AdEvent.Type.LOADED, function() {
+      var statusEl = document.getElementById('onclickaAdStatus');
+      var spinnerEl = document.getElementById('vastSpinner');
+      if (spinnerEl) spinnerEl.style.display = 'none';
+      if (statusEl) { statusEl.className = 'ad-status watching'; statusEl.innerText = '⏳ Video ad is playing...'; }
+    });
+
+    vastAdsManager.addEventListener(google.ima.AdEvent.Type.STARTED, function() {
+      var statusEl = document.getElementById('onclickaAdStatus');
+      var spinnerEl = document.getElementById('vastSpinner');
+      if (spinnerEl) spinnerEl.style.display = 'none';
+      if (statusEl) { statusEl.className = 'ad-status watching'; statusEl.innerText = '⏳ Video ad is playing...'; }
+    });
+
+    vastAdsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, function() {
+      window.vastAdCompleted = true;
+      checkVastAndCountdown();
+    });
+
+    vastAdsManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, function() {
+      window.vastAdCompleted = true;
+      checkVastAndCountdown();
+    });
+
+    vastAdsManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, function() {
+      window.vastAdCompleted = true;
+      checkVastAndCountdown();
+    });
+
+    vastAdsManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, function() {
+      window.vastAdCompleted = true;
+      checkVastAndCountdown();
+    });
+  } catch(e) {
+    console.log('VAST manager error:', e);
+    window.vastAdCompleted = true;
+    checkVastAndCountdown();
+  }
+}
+
+function onVastAdError() {
+  console.log('VAST ad error event');
+  window.vastAdCompleted = true;
+  checkVastAndCountdown();
+}
+
+function checkVastAndCountdown() {
+  if (window.vastAdCompleted && window.vastCountdownDone) {
+    var numEl = document.getElementById('onclickaCountNum');
+    var statusEl = document.getElementById('onclickaAdStatus');
+    var claimBtn = document.getElementById('onclickaClaimBtn');
+    if (numEl) numEl.innerText = '✅';
+    if (statusEl) { statusEl.className = 'ad-status complete'; statusEl.innerText = '🎉 Video complete! Claim your reward!'; }
+    if (claimBtn) claimBtn.style.display = 'block';
+  }
+}
+
 // =====================================================================
 // ===== MONETAG — MUSIC LISTENING & DOUBLE COINS ONLY =====
 // =====================================================================
@@ -210,7 +374,7 @@ function monetagAdComplete() {
 }
 
 // =====================================================================
-// ===== ONCLICKA VIDEO — WATCH MENU ONLY =====
+// ===== WATCH VIDEO — VAST ONLY =====
 // =====================================================================
 var onclickaCountInterval = null;
 var ONCLICKA_DAILY_LIMIT = 20;
@@ -279,29 +443,35 @@ function watchOnclickaVideo() {
     return;
   }
 
-  // Disable button
   var btnEl = document.getElementById('watchVideoBtn');
   if (btnEl) { btnEl.disabled = true; btnEl.innerText = '⏳ Loading ad...'; }
 
-  // Create or show overlay — ONCLICKA ONLY
+  window.vastAdCompleted = false;
+  window.vastCountdownDone = false;
+
   var overlay = document.getElementById('onclickaAdOverlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'onclickaAdOverlay';
     overlay.className = 'ad-overlay';
-    overlay.innerHTML = 
-      '<div class="ad-box onclicka-style">' +
-        '<div class="ad-icon">🎬</div>' +
-        '<p class="ad-title">Watch Video — Earn 50 Coins</p>' +
-        '<div class="ad-number green" id="onclickaCountNum">10</div>' +
-        '<p class="ad-text">Claim your reward in <span id="onclickaCountSec" style="color:#ffd700;font-weight:bold">10</span> seconds</p>' +
-        '<p class="ad-subtext">💰 +50 Coins after watching</p>' +
-        '<div class="ad-bar"><div class="ad-fill-green" id="onclickaCountFill" style="width:0%"></div></div>' +
-        '<div class="ad-status watching" id="onclickaAdStatus">⏳ Video ad is playing...</div>' +
-        '<button class="ad-claim" id="onclickaClaimBtn" onclick="claimOnclickaReward()">💰 Claim +50 Coins!</button>' +
-      '</div>';
     document.body.appendChild(overlay);
   }
+
+  overlay.innerHTML = 
+    '<div class="ad-box onclicka-style">' +
+      '<div class="vast-video-wrapper">' +
+        '<video id="vastVideo" playsinline></video>' +
+        '<div id="vastAdContainer"></div>' +
+        '<div class="vast-loading-spinner" id="vastSpinner">⏳ Loading video...</div>' +
+      '</div>' +
+      '<p class="ad-title">Watch Video — Earn 50 Coins</p>' +
+      '<div class="ad-number green" id="onclickaCountNum">10</div>' +
+      '<p class="ad-text">Claim your reward in <span id="onclickaCountSec" style="color:#ffd700;font-weight:bold">10</span> seconds</p>' +
+      '<p class="ad-subtext">💰 +50 Coins after watching</p>' +
+      '<div class="ad-bar"><div class="ad-fill-green" id="onclickaCountFill" style="width:0%"></div></div>' +
+      '<div class="ad-status watching" id="onclickaAdStatus">⏳ Loading video ad...</div>' +
+      '<button class="ad-claim" id="onclickaClaimBtn" onclick="claimOnclickaReward()">💰 Claim +50 Coins!</button>' +
+    '</div>';
 
   var numEl = document.getElementById('onclickaCountNum');
   var secEl = document.getElementById('onclickaCountSec');
@@ -313,24 +483,27 @@ function watchOnclickaVideo() {
   if (secEl) secEl.innerText = '10';
   if (fillEl) fillEl.style.width = '0%';
   if (claimBtn) claimBtn.style.display = 'none';
-  if (statusEl) { statusEl.className = 'ad-status watching'; statusEl.innerText = '⏳ Video ad is playing...'; statusEl.style.display = 'block'; }
+  if (statusEl) { statusEl.className = 'ad-status watching'; statusEl.innerText = '⏳ Loading video ad...'; statusEl.style.display = 'block'; }
   overlay.style.display = 'flex';
 
-  // ===== TRIGGER ONCLICKA AD ONLY =====
+  // Trigger VAST video ad
   try {
-    if (typeof OnclickA !== 'undefined' && OnclickA.push) {
-      OnclickA.push(441905);
+    if (typeof google !== 'undefined' && google.ima) {
+      setTimeout(function() { initVastAd(); }, 300);
     } else {
-      // Retry after 2 seconds if script not loaded yet
+      // IMA SDK not loaded, fallback: mark complete after delay
       setTimeout(function() {
-        if (typeof OnclickA !== 'undefined' && OnclickA.push) {
-          OnclickA.push(441905);
-        }
+        var spinnerEl = document.getElementById('vastSpinner');
+        if (spinnerEl) spinnerEl.style.display = 'none';
+        window.vastAdCompleted = true;
+        checkVastAndCountdown();
       }, 2000);
     }
-  } catch(e) { console.log('Onclicka error:', e); }
+  } catch(e) {
+    window.vastAdCompleted = true;
+    checkVastAndCountdown();
+  }
 
-  // Start countdown — NO Monetag here
   var timeLeft = 10;
   if (onclickaCountInterval) clearInterval(onclickaCountInterval);
   onclickaCountInterval = setInterval(function() {
@@ -341,33 +514,23 @@ function watchOnclickaVideo() {
     if (timeLeft <= 0) {
       clearInterval(onclickaCountInterval);
       onclickaCountInterval = null;
-      if (numEl) numEl.innerText = '✅';
-      if (statusEl) { statusEl.className = 'ad-status complete'; statusEl.innerText = '🎉 Video complete! Claim your reward!'; }
-      if (claimBtn) claimBtn.style.display = 'block';
+      window.vastCountdownDone = true;
+      checkVastAndCountdown();
     }
   }, 1000);
 }
 
 function claimOnclickaReward() {
-  // Close overlay
+  destroyVastAd();
   var overlay = document.getElementById('onclickaAdOverlay');
   if (overlay) overlay.style.display = 'none';
   if (onclickaCountInterval) { clearInterval(onclickaCountInterval); onclickaCountInterval = null; }
-
-  // Add coins
   addCoins(ONCLICKA_REWARD);
-
-  // Increment daily count
   var newCount = incrementOnclickaCount();
-
-  // Success message
   var msgEl = document.getElementById('watchMsg');
   if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ +' + ONCLICKA_REWARD + ' coins earned! Video #' + newCount + ' today.</span>';
-
-  // Update UI
   updateWatchUI();
   showBalance();
-
   setTimeout(function() { if (msgEl) msgEl.innerHTML = ''; }, 3000);
 }
 
@@ -395,13 +558,10 @@ function doubleCoinsWithAd() {
         doubleBtn.style.background = '#333';
         doubleBtn.style.color = '#51cf66';
         doubleBtn.style.borderColor = '#51cf66';
-        
         var totalEl = document.getElementById('gameTotalCoins');
         if (totalEl) totalEl.innerHTML = '🎉 Total: +' + (lastBaseReward * 2) + ' Coins! (DOUBLED!)';
-        
         var rewardEl = document.getElementById('gameRewardDisplay');
         if (rewardEl) rewardEl.innerHTML = '<span style="color:#51cf66;font-size:20px">+' + (lastBaseReward * 2) + ' Coins! 🎉 DOUBLED!</span>';
-        
         showBalance();
       }).catch(function(err) {
         doubleBtn.innerText = '❌ Ad not completed. Try again!';
@@ -447,6 +607,19 @@ function doubleCoinsWithAd() {
     doubleBtn.style.color = '#fff';
   }
 }
+
+// ===== GAME AD VISIBILITY CONTROL =====
+function setGameAdsVisible(visible) {
+  var nativeBannerAd = document.getElementById('nativeBannerAd');
+  var topBannerAd = document.getElementById('topBannerAd');
+  if (nativeBannerAd) nativeBannerAd.style.display = visible ? 'block' : 'none';
+  if (topBannerAd) topBannerAd.style.display = visible ? 'block' : 'none';
+  if (visible) {
+    document.body.classList.remove('playing-game');
+  } else {
+    document.body.classList.add('playing-game');
+  }
+}
 </script>
 </head>
 <body>
@@ -458,7 +631,15 @@ function doubleCoinsWithAd() {
   setTimeout(function(){ var splash = document.getElementById('splashScreen'); splash.style.opacity = '0'; setTimeout(function(){ splash.style.display = 'none'; }, 500); }, 2500);
 </script>
 
+<!-- ===== ADSTERRA SOCIAL BAR ===== -->
+<script src="https://pl29281398.effectivecpmnetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js"></script>
+
 <div class="container">
+
+<!-- ===== TOP BANNER AD — SHOWS ON TOP OF EVERY PAGE EXCEPT DURING GAMEPLAY ===== -->
+<div id="topBannerAd" style="text-align:center; margin-bottom:15px;">
+  <div id="container-8dd30229fd7b7e3f3aeef1a7af787161"></div>
+</div>
 
 <div id="loginPage" class="page active">
   <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:120px;height:auto;border-radius:15px;margin-bottom:10px;box-shadow:0 0 20px #00ffcc55">
@@ -495,10 +676,9 @@ function doubleCoinsWithAd() {
   <p style="color:#555;margin-top:20px;font-size:11px">🔄 Auto-updates every 10s • Online = green dot</p>
 </div>
 
-<!-- ===== WATCH PAGE — ONCLICKA ONLY ===== -->
+<!-- ===== WATCH PAGE — VAST ONLY ===== -->
 <div id="watchPage" class="page">
   <h1>📺 Watch & Earn</h1>
-
   <div class="watch-hero">
     <div class="watch-hero-icon">🎬</div>
     <h2 style="color:#fff;margin-bottom:5px">Watch Video Ads</h2>
@@ -507,37 +687,22 @@ function doubleCoinsWithAd() {
     <button id="watchVideoBtn" class="watch-btn" onclick="watchOnclickaVideo()">▶ Watch Video — Earn 50 Coins (20 left today)</button>
     <p id="watchMsg" style="margin-top:10px;font-size:14px;height:20px"></p>
   </div>
-
   <div class="card">
     <h3>📊 Today's Progress</h3>
     <div class="progress-container" style="height:14px;margin:15px 0"><div class="progress-fill" id="watchBar" style="width:0%"></div></div>
     <p id="watchText" style="margin:8px 0;color:#00ccff;font-size:15px">0 / 20 videos today</p>
-    
     <div style="margin-top:15px">
-      <div class="watch-stat-row">
-        <span style="color:#ccc">🎬 Videos Watched</span>
-        <span style="color:#51cf66;font-weight:bold" id="watchVideoCount">0</span>
-      </div>
-      <div class="watch-stat-row">
-        <span style="color:#ccc">📺 Remaining Today</span>
-        <span style="color:#ffd700;font-weight:bold" id="watchVideoRemaining">20</span>
-      </div>
-      <div class="watch-stat-row">
-        <span style="color:#ccc">💰 Coins Earned</span>
-        <span style="color:#51cf66;font-weight:bold" id="watchVideoEarned">0</span>
-      </div>
-      <div class="watch-stat-row">
-        <span style="color:#ccc">💵 Estimated MWK</span>
-        <span style="color:#00ccff;font-weight:bold" id="watchVideoMWK">0</span>
-      </div>
+      <div class="watch-stat-row"><span style="color:#ccc">🎬 Videos Watched</span><span style="color:#51cf66;font-weight:bold" id="watchVideoCount">0</span></div>
+      <div class="watch-stat-row"><span style="color:#ccc">📺 Remaining Today</span><span style="color:#ffd700;font-weight:bold" id="watchVideoRemaining">20</span></div>
+      <div class="watch-stat-row"><span style="color:#ccc">💰 Coins Earned</span><span style="color:#51cf66;font-weight:bold" id="watchVideoEarned">0</span></div>
+      <div class="watch-stat-row"><span style="color:#ccc">💵 Estimated MWK</span><span style="color:#00ccff;font-weight:bold" id="watchVideoMWK">0</span></div>
     </div>
   </div>
-
   <div class="card">
     <h3>💡 How It Works</h3>
     <p style="text-align:left;color:#ccc;line-height:1.8;font-size:14px">
       1. Tap the <strong style="color:#51cf66">"Watch Video"</strong> button<br>
-      2. A short video ad will play (~10 seconds)<br>
+      2. A video ad will play in the player<br>
       3. Wait for the countdown to finish<br>
       4. Tap <strong style="color:#ffd700">"Claim +50 Coins"</strong><br>
       5. Coins are added to your wallet instantly! ✅<br><br>
@@ -579,6 +744,21 @@ function doubleCoinsWithAd() {
 </div>
 
 <div id="playPage" class="page"><button class="back-btn" id="backBtn">← Back to Games</button><h2 id="gameTitle"></h2><div class="card"><div id="gameArea" class="game-area"></div></div></div>
+
+<!-- ===== NATIVE BANNER AD — SHOWS UNDER EVERY PAGE EXCEPT DURING GAMEPLAY ===== -->
+<div id="nativeBannerAd" style="text-align:center; margin:15px 0; padding-bottom:10px;">
+  <script>
+    atOptions = {
+      'key' : 'ad1f2717ce15725e76c4ffc1d25e948e',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+  </script>
+  <script src="https://www.highperformanceformat.com/ad1f2717ce15725e76c4ffc1d25e948e/invoke.js"></script>
+</div>
+
 </div>
 
 <div class="nav" id="mainNav">
@@ -690,6 +870,9 @@ function showPage(page) {
     var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
     var mainNav = document.getElementById('mainNav');
     if (mainNav) mainNav.style.display = 'flex';
+    
+    setGameAdsVisible(page !== 'play');
+
     if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); }
     else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
     else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); }
@@ -771,7 +954,57 @@ function setupPresence(u) {
 function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
-function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) return; var today = new Date().toDateString(); var lastRef = db.ref('users/' + user + '/lastDaily'); lastRef.once('value').then(function(s) { if (s.val() === today) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } return lastRef.set(today).then(function() { return db.ref('leaderboard_all/' + user).once('value'); }).then(function(snap) { var data = snap.val() || {}; var coins = (data.coins || 0) + 50; return db.ref('leaderboard_all/' + user).update({coins:coins, score:coins, lastPlayed:Date.now()}); }).then(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }).catch(function() { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) {} }
+
+function claimDailyBonus() {
+  try {
+    var user;
+    try { user = localStorage.getItem("user"); } catch(e) { user = null; }
+    if (!user) { alert("Login first"); return; }
+    if (!db) {
+      document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Database not ready</span>';
+      return;
+    }
+    var today = new Date().toDateString();
+    var msgEl = document.getElementById("dailyMsg");
+    msgEl.innerHTML = '<span style="color:#ffd700">Checking...</span>';
+
+    db.ref('users/' + user + '/lastDaily').once('value', function(snap) {
+      if (snap.val() === today) {
+        msgEl.innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>';
+        return;
+      }
+
+      db.ref('users/' + user).update({lastDaily: today}, function(error) {
+        if (error) {
+          console.error('Daily save error:', error);
+          msgEl.innerHTML = '<span style="color:#ff6b6b">Error saving. Try again.</span>';
+          return;
+        }
+
+        db.ref('leaderboard_all/' + user).once('value', function(leaderSnap) {
+          var data = leaderSnap.val() || {};
+          var coins = (data.coins || 0) + 50;
+          db.ref('leaderboard_all/' + user).update({coins: coins, score: coins, lastPlayed: Date.now()}, function(error2) {
+            if (error2) {
+              console.error('Coins update error:', error2);
+              msgEl.innerHTML = '<span style="color:#ff6b6b">Error adding coins</span>';
+              return;
+            }
+            msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>';
+            showBalance();
+          });
+        });
+      });
+    }, function(err) {
+      console.error('Daily read error:', err);
+      msgEl.innerHTML = '<span style="color:#ff6b6b">Error checking status</span>';
+    });
+  } catch(e) {
+    console.error('Daily bonus exception:', e);
+    document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error: ' + e.message + '</span>';
+  }
+}
+
 try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("watchCount", "0"); localStorage.setItem("rewardedSongs", "[]"); } catch(e) {} } } catch(e) {}
 function withdraw() { try { 
   var now = new Date(); var malawiOffset = 2*60; var utc = now.getTime() + (now.getTimezoneOffset()*60000); var malawiTime = new Date(utc + (malawiOffset*60000)); var day = malawiTime.getDay(); var hour = malawiTime.getHours();
@@ -788,6 +1021,9 @@ function startGame(type) {
   currentGame = type; 
   document.getElementById('playPage').classList.add('active'); 
   var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } 
+  
+  setGameAdsVisible(false);
+
   document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); 
   if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); 
 }
