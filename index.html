@@ -21,7 +21,7 @@
 <!-- FIREBASE SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check-compat.js"></script> <!-- ADDED APP CHECK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check-compat.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
 
@@ -339,7 +339,7 @@ function setGameAdsVisible(visible) {
   <div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div>
   <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><div id="withdrawCountdown" style="text-align:center;margin-top:8px;font-size:12px;color:#aaa"></div><p id="msg" style="margin-top:10px;"></p></div>
   <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
-  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours</p></div>
+  <div class="card"><h3="📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours</p></div>
 </div>
 
 <div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:10px;">Play games to earn coins!</p><p style="color:#9b59b6;margin-bottom:20px;font-size:14px;">📺 Watch ad after game to <strong>DOUBLE</strong> your reward!</p><div class="games-grid" id="gamesGrid"></div></div></div>
@@ -796,9 +796,10 @@ function startUploadedSongPlayback(index) { if (index < 0 || index >= uploadedSo
   audio.onended = function() { if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } if (listenedSeconds < requiredSeconds && rewardedSongs.indexOf(song.name) === -1) { if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⏹ Song ended early (' + listenedSeconds + 's/' + requiredSeconds + 's). Press Play again!</span>'; currentUploadSongIndex = -1; renderUploadedSongs(); } };
   audio.onerror = function() { if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">❌ Error playing this file.</span>'; currentUploadSongIndex = -1; renderUploadedSongs(); }; }
 
-/* ===== HILLTOPADS VAST WATCH & EARN ===== */
+/* ===== HILLTOPADS VAST WATCH & EARN — FIXED ===== */
 var hilltopPlayerInstance = null;
 var watchAdCooldown = false;
+var watchAdActuallyStarted = false; // Flag to ensure an ad really played
 
 function initHilltopPlayer() {
   if(hilltopPlayerInstance || document.getElementById('hilltopVideoPlayer').dataset.init === 'true') return;
@@ -823,11 +824,19 @@ function initHilltopPlayer() {
 
   document.getElementById('hilltopVideoPlayer').dataset.init = 'true';
 
+  // 1. Ad Started - An ad is actually playing!
+  hilltopPlayerInstance.on('adStarted', function(){
+    watchAdActuallyStarted = true;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700;font-weight:bold">📺 Ad is playing... Do not close or skip!</span>';
+  });
+
+  // 2. Ad Ended - Reward only if an ad actually started and wasn't skipped
   hilltopPlayerInstance.on('adEnded', function(){
-    if(!watchAdCooldown) {
+    if(!watchAdCooldown && watchAdActuallyStarted) {
       addCoins(10);
       document.getElementById('watchStatus').innerHTML = '<span style="color:#51cf66;font-weight:bold">✅ +10 Coins Added! Wait 60s to watch another.</span>';
       watchAdCooldown = true;
+      watchAdActuallyStarted = false; // reset
       
       var timeLeft = 60;
       var cooldownInterval = setInterval(function() {
@@ -843,8 +852,22 @@ function initHilltopPlayer() {
     }
   });
 
-  hilltopPlayerInstance.on('adStarted', function(){
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700">📺 Ad is playing... Do not close!</span>';
+  // 3. Ad Skipped - No reward!
+  hilltopPlayerInstance.on('adSkipped', function(){
+    watchAdActuallyStarted = false;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ Ad skipped! You must watch the full ad to earn coins.</span>';
+  });
+
+  // 4. No Ad Available - HilltopAds didn't return an ad
+  hilltopPlayerInstance.on('noAdLoaded', function(){
+    watchAdActuallyStarted = false;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ No ad available right now. Try again in a few minutes.</span>';
+  });
+
+  // 5. Ad Error - Ad failed to load
+  hilltopPlayerInstance.on('adError', function(){
+    watchAdActuallyStarted = false;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ Ad failed to load. Please try again later.</span>';
   });
 }
 
