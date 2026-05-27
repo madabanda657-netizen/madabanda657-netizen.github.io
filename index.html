@@ -631,6 +631,7 @@ function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user")
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
 
+// ===== FIXED DAILY BONUS =====
 function claimDailyBonus() {
   try {
     var user;
@@ -644,31 +645,31 @@ function claimDailyBonus() {
     var msgEl = document.getElementById("dailyMsg");
     msgEl.innerHTML = '<span style="color:#ffd700">Checking...</span>';
 
-    db.ref('users/' + user + '/lastDaily').once('value', function(snap) {
+    // Read lastDaily from leaderboard_all (where game updates already work perfectly)
+    db.ref('leaderboard_all/' + user + '/lastDaily').once('value', function(snap) {
       if (snap.val() === today) {
         msgEl.innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>';
         return;
       }
 
-      db.ref('users/' + user).update({lastDaily: today}, function(error) {
-        if (error) {
-          console.error('Daily save error:', error);
-          msgEl.innerHTML = '<span style="color:#ff6b6b">Error saving. Try again.</span>';
-          return;
-        }
-
-        db.ref('leaderboard_all/' + user).once('value', function(leaderSnap) {
-          var data = leaderSnap.val() || {};
-          var coins = (data.coins || 0) + 50;
-          db.ref('leaderboard_all/' + user).update({coins: coins, score: coins, lastPlayed: Date.now()}, function(error2) {
-            if (error2) {
-              console.error('Coins update error:', error2);
-              msgEl.innerHTML = '<span style="color:#ff6b6b">Error adding coins</span>';
-              return;
-            }
-            msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>';
-            showBalance();
-          });
+      db.ref('leaderboard_all/' + user).once('value', function(leaderSnap) {
+        var data = leaderSnap.val() || {};
+        var coins = (data.coins || 0) + 50;
+        
+        // Save everything together in one update to leaderboard_all
+        db.ref('leaderboard_all/' + user).update({
+          coins: coins, 
+          score: coins, 
+          lastPlayed: Date.now(),
+          lastDaily: today // Save lastDaily here now!
+        }, function(error2) {
+          if (error2) {
+            console.error('Daily update error:', error2);
+            msgEl.innerHTML = '<span style="color:#ff6b6b">Error adding coins. Try again.</span>';
+            return;
+          }
+          msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>';
+          showBalance();
         });
       });
     }, function(err) {
@@ -874,4 +875,4 @@ function updateWithdrawCountdown(){
 setInterval(updateWithdrawCountdown, 1000); setTimeout(updateWithdrawCountdown, 500);
 </script>
 </body>
-                      </html>
+  </html>
