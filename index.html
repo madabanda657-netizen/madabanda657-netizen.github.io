@@ -14,6 +14,11 @@
 <!-- EFFECTIVE CPM TOP BANNER SCRIPT -->
 <script async="async" data-cfasync="false" src="https://pl29315230.effectivecpmnetwork.com/8dd30229fd7b7e3f3aeef1a7af787161/invoke.js"></script>
 
+<!-- Video.js and VAST plugin for HillTopAds -->
+<link href="https://vjs.zencdn.net/7.21.5/video-js.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/7.21.5/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-vast-plugin@2.1.0/dist/videojs.vast.min.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
@@ -66,6 +71,9 @@ body.playing-game [class*="social-bar"],
 body.playing-game div[id^="bb"],
 body.playing-game iframe[src*="effectivecpmnetwork"],
 body.playing-game div[data-adid] { display: none !important; visibility: hidden !important; }
+
+/* Hide video.js controls during ad countdown */
+.vjs-control-bar { display: none; }
 </style>
 
 <script type="text/javascript">
@@ -345,19 +353,35 @@ function startHilltopAd() {
   var overlay = document.getElementById('hilltopAdOverlay');
   overlay.style.display = 'flex';
 
-  var iframe = document.getElementById('hilltopIframe');
-  iframe.src = 'https://mellow-habit.com/d/m/F.z/dvGNNVvMZHGVUZ/jeFm/9muCZyUHlRkgPvT/cMwsNizucZzlM/D/U_t/NgzAAw3DN/zAMFwHOKQl,,';
-
+  // Reset countdown UI
   var countEl = document.getElementById('hilltopCountdown');
   var fillEl = document.getElementById('hilltopFill');
   var claimBtn = document.getElementById('hilltopClaimBtn');
   var msgEl = document.getElementById('hilltopAdMsg');
+  var videoContainer = document.getElementById('hilltopVideoPlayer');
   countEl.innerText = '15';
   fillEl.style.width = '0%';
   claimBtn.style.display = 'none';
   msgEl.innerText = '⏳ Ad loading...';
   hilltopAdReady = false;
 
+  // Destroy any existing video player instance
+  if (videoContainer && videoContainer.player) {
+    videoContainer.player.dispose();
+  }
+
+  // Create video player and set VAST source
+  var player = videojs('hilltopVideoPlayer', {
+    autoplay: true,
+    muted: true,
+    controls: false
+  });
+
+  player.vast({
+    url: 'https://mellow-habit.com/d/m/F.z/dvGNNVvMZHGVUZ/jeFm/9muCZyUHlRkgPvT/cMwsNizucZzlM/D/U_t/NgzAAw3DN/zAMFwHOKQl,,'
+  });
+
+  // Start countdown
   var timeLeft = 15;
   if (hilltopCountdownInterval) clearInterval(hilltopCountdownInterval);
   hilltopCountdownInterval = setInterval(function() {
@@ -373,10 +397,12 @@ function startHilltopAd() {
       fillEl.style.width = '100%';
       msgEl.innerText = 'Ad complete! Claim your reward.';
       claimBtn.style.display = 'block';
+      // Stop the video
+      player.pause();
     }
   }, 1000);
 
-  // Safety fallback after 20 sec
+  // Safety fallback after 25 seconds (some VAST ads are longer)
   setTimeout(function() {
     if (!hilltopAdReady) {
       clearInterval(hilltopCountdownInterval);
@@ -386,8 +412,9 @@ function startHilltopAd() {
       fillEl.style.width = '100%';
       msgEl.innerText = 'Ad complete! Claim your reward.';
       claimBtn.style.display = 'block';
+      player.pause();
     }
-  }, 20000);
+  }, 25000);
 }
 
 function claimHilltopReward() {
@@ -509,7 +536,7 @@ function watchAd() {
   </div>
   <div class="card" style="text-align:left">
     <h3 style="color:#00ffcc;font-size:14px">💡 How It Works</h3>
-    <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Watch HillTopAds Video"<br>2. A video ad overlay appears with a countdown<br>3. Wait 15 seconds (ad plays in background)<br>4. Tap "Claim 50 Coins"<br>5. +50 coins added automatically!<br>6. Maximum 10 videos per day (500 coins daily)</p>
+    <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Watch HillTopAds Video"<br>2. A video ad appears with a countdown<br>3. Wait 15 seconds (ad plays in background)<br>4. Tap "Claim 50 Coins"<br>5. +50 coins added automatically!<br>6. Maximum 10 videos per day (500 coins daily)</p>
   </div>
 </div>
 
@@ -521,16 +548,18 @@ function watchAd() {
 
 <div id="playPage" class="page"><button class="back-btn" id="backBtn">← Back to Games</button><h2 id="gameTitle"></h2><div class="card"><div id="gameArea" class="game-area"></div></div></div>
 
-<!-- ===== HILLTOPADS AD OVERLAY ===== -->
+<!-- ===== HILLTOPADS AD OVERLAY with video.js player ===== -->
 <div id="hilltopAdOverlay" class="ad-overlay" style="display:none;">
-  <div class="ad-box monetag-style" style="max-width:450px;">
+  <div class="ad-box monetag-style" style="max-width:500px;">
     <div class="ad-icon" style="font-size:32px;margin-bottom:5px;">📺</div>
     <p class="ad-title" style="font-size:15px;">HillTopAds Video Ad</p>
     <div id="hilltopCountdown" class="ad-number purple" style="font-size:70px;">15</div>
     <p class="ad-text">Please wait while the ad plays...</p>
     <div class="ad-bar"><div class="ad-fill-purple" id="hilltopFill" style="width:0%"></div></div>
+    <!-- Video.js VAST player container -->
     <div style="position:relative;width:100%;height:0;padding-bottom:56%;margin:10px 0;border-radius:10px;overflow:hidden;background:#000;">
-      <iframe id="hilltopIframe" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+      <video id="hilltopVideoPlayer" class="video-js vjs-default-skin" style="position:absolute;top:0;left:0;width:100%;height:100%;" controls preload="auto">
+      </video>
     </div>
     <button id="hilltopClaimBtn" class="ad-claim" style="display:none;margin-top:8px;">Claim 50 Coins</button>
     <p id="hilltopAdMsg" style="margin-top:6px;font-size:12px;color:#ccc;height:16px;"></p>
