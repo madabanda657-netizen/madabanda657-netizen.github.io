@@ -42,7 +42,21 @@
 .upload-listen-fill{height:100%;background:linear-gradient(90deg,#9b59b6,#e74c3c);transition:width 1s linear;border-radius:4px}
 .upload-count-badge{display:inline-block;background:#9b59b6;color:#fff;font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:10px}
 
-/* AD OVERLAY — SHARED (MONETAG ONLY) */
+/* MALAWI PHONE INPUT STYLES */
+.phone-input-group{display:flex;gap:0;margin:8px 0}
+.phone-prefix{background:#1a1a1a;color:#00ffcc;padding:12px;border-radius:10px 0 0 10px;font-size:16px;font-weight:bold;white-space:nowrap;display:flex;align-items:center;border:1px solid #00ffcc33;border-right:none;min-width:60px;justify-content:center}
+.phone-input-group input{border-radius:0 10px 10px 0!important;margin:0!important}
+.payment-locked-box{background:linear-gradient(135deg,#0a1a1a,#0a1a2e);padding:18px;border-radius:12px;border:2px solid #00ffcc44;margin:10px 0}
+.payment-locked-row{display:flex;justify-content:space-between;align-items:center}
+.payment-locked-label{font-size:12px;color:#888}
+.payment-locked-phone{font-size:22px;font-weight:bold;color:#00ffcc}
+.payment-locked-flag{font-size:36px}
+.payment-locked-secure{margin-top:10px;font-size:11px;color:#51cf66;display:flex;align-items:center;justify-content:center;gap:5px}
+.payment-locked-divider{height:1px;background:#00ffcc33;margin:10px 0}
+.payment-locked-network{font-size:14px;color:#ccc;margin-top:5px}
+.payment-locked-title{font-size:13px;color:#00ffcc;font-weight:bold;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* AD OVERLAY */
 .ad-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.94);z-index:99998;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px;backdrop-filter:blur(6px)}
 .ad-box{border-radius:22px;padding:30px 25px;text-align:center;max-width:340px;width:95%}
 .ad-box.monetag-style{background:linear-gradient(145deg,#0d0d1a,#1a0a2e);border:2px solid #9b59b6;box-shadow:0 0 50px #9b59b633,0 0 100px #9b59b611}
@@ -71,8 +85,6 @@
 .watch-vid-wrapper{position:relative;width:100%;border-radius:12px;overflow:hidden;border:2px solid #ff6b6b;box-shadow:0 0 15px #ff6b6b33}
 .watch-status{margin-top:15px;font-size:16px;min-height:24px}
 .watch-cooldown{color:#ff6b6b;font-size:13px;margin-top:8px}
-
-/* WATCH DAILY LIMIT */
 .watch-limit-section{margin:15px 0;padding:12px;background:#0a0a0a;border-radius:10px;border:1px solid #ff6b6b44}
 .watch-limit-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .watch-limit-header span{font-size:14px;color:#ccc}
@@ -80,15 +92,12 @@
 .watch-limit-bar{height:8px;border-radius:4px;overflow:hidden;background:#222;margin-top:4px}
 .watch-limit-fill{height:100%;background:linear-gradient(90deg,#ff6b6b,#ffd700);border-radius:4px;transition:width 0.4s}
 .watch-limit-msg{font-size:12px;color:#888;margin-top:6px}
-
-/* WATCH AUTO-REWARD BANNER */
 .watch-reward-banner{display:none;margin-top:15px;padding:18px;background:linear-gradient(135deg,#0a2a1a,#0a1a2e);border:2px solid #51cf66;border-radius:12px;text-align:center;animation:rewardPop 0.5s ease}
 .watch-reward-banner.show{display:block}
 @keyframes rewardPop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
 .watch-reward-amount{font-size:28px;font-weight:bold;color:#51cf66;margin:8px 0}
 .watch-reward-check{font-size:40px;margin-bottom:5px}
 
-/* HIDE ADSTERRA SOCIAL BAR DURING GAMEPLAY */
 body.playing-game #id-custom-social-bar,
 body.playing-game [id^="adsterra"],
 body.playing-game [class*="social-bar"],
@@ -114,7 +123,8 @@ function resetPassword(){
   var email = document.getElementById('forgotEmail').value.trim();
   var newPass = document.getElementById('newPass').value;
   var msg = document.getElementById('forgotMsg');
-  if(!email || newPass.length<6){ msg.innerHTML='<span style="color:#ff6b6b">Enter valid email and password</span>'; return; }
+  if(!email || newPass.length<6){ msg.innerHTML='<span style="color:#ff6b6b">Enter valid email and new password (min 6 chars)</span>'; return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.innerHTML='<span style="color:#ff6b6b">📧 Invalid email format</span>'; return; }
   if(!db){ msg.innerHTML='<span style="color:#ff6b6b">Database not ready</span>'; return; }
   db.ref('users').orderByChild('email').equalTo(email).once('value', function(snap){
     if(!snap.exists()){ msg.innerHTML='<span style="color:#ff6b6b">Email not found</span>'; return; }
@@ -128,9 +138,6 @@ function resetPassword(){
 </script>
 
 <script>
-// =====================================================================
-// ===== MONETAG — MUSIC LISTENING & DOUBLE COINS ONLY =====
-// =====================================================================
 var monetagCountdownInterval = null;
 var monetagAdWatched = false;
 var monetagCountdownDone = false;
@@ -138,64 +145,32 @@ var monetagCountdownDone = false;
 function triggerMonetagRewardedAd() {
   monetagAdWatched = false;
   monetagCountdownDone = false;
-
   var overlay = document.getElementById('monetagAdOverlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'monetagAdOverlay';
     overlay.className = 'ad-overlay';
-    overlay.innerHTML =
-      '<div class="ad-box monetag-style">' +
-        '<div class="ad-icon">📺</div>' +
-        '<p class="ad-title">Watch the ad to unlock your song</p>' +
-        '<div class="ad-number purple" id="monetagCountNum">15</div>' +
-        '<p class="ad-text">Your song starts in <span id="monetagCountSec" style="color:#ffd700;font-weight:bold">15</span> seconds</p>' +
-        '<p class="ad-subtext">🎧 Please watch the full ad</p>' +
-        '<div class="ad-bar"><div class="ad-fill-purple" id="monetagCountFill" style="width:0%"></div></div>' +
-        '<div class="ad-status watching" id="monetagAdStatus">⏳ Video ad is playing...</div>' +
-        '<button class="ad-claim" id="monetagSkipBtn" onclick="monetagAdComplete()" style="background:linear-gradient(45deg,#9b59b6,#e74c3c)">▶ Play Song Now</button>' +
-      '</div>';
+    overlay.innerHTML = '<div class="ad-box monetag-style"><div class="ad-icon">📺</div><p class="ad-title">Watch the ad to unlock your song</p><div class="ad-number purple" id="monetagCountNum">15</div><p class="ad-text">Your song starts in <span id="monetagCountSec" style="color:#ffd700;font-weight:bold">15</span> seconds</p><p class="ad-subtext">🎧 Please watch the full ad</p><div class="ad-bar"><div class="ad-fill-purple" id="monetagCountFill" style="width:0%"></div></div><div class="ad-status watching" id="monetagAdStatus">⏳ Video ad is playing...</div><button class="ad-claim" id="monetagSkipBtn" onclick="monetagAdComplete()" style="background:linear-gradient(45deg,#9b59b6,#e74c3c)">▶ Play Song Now</button></div>';
     document.body.appendChild(overlay);
   }
-
   var numEl = document.getElementById('monetagCountNum');
   var secEl = document.getElementById('monetagCountSec');
   var fillEl = document.getElementById('monetagCountFill');
   var statusEl = document.getElementById('monetagAdStatus');
   var skipBtn = document.getElementById('monetagSkipBtn');
-
   if (numEl) numEl.innerText = '15';
   if (secEl) secEl.innerText = '15';
   if (fillEl) fillEl.style.width = '0%';
   if (skipBtn) skipBtn.style.display = 'none';
   if (statusEl) { statusEl.className = 'ad-status watching'; statusEl.innerText = '⏳ Video ad is playing...'; statusEl.style.display = 'block'; }
   overlay.style.display = 'flex';
-
   try {
     if (typeof show_9816593 === 'function') {
-      show_9816593().then(function() {
-        monetagAdWatched = true;
-        var sEl = document.getElementById('monetagAdStatus');
-        if (sEl) { sEl.className = 'ad-status complete'; sEl.innerText = '✅ Ad watched! Waiting for countdown...'; }
-        if (monetagCountdownDone) monetagStartMusic();
-      }).catch(function(err) {
-        monetagAdWatched = true;
-        if (monetagCountdownDone) monetagStartMusic();
-      });
+      show_9816593().then(function() { monetagAdWatched = true; var sEl = document.getElementById('monetagAdStatus'); if (sEl) { sEl.className = 'ad-status complete'; sEl.innerText = '✅ Ad watched! Waiting for countdown...'; } if (monetagCountdownDone) monetagStartMusic(); }).catch(function(err) { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); });
     } else {
-      setTimeout(function() {
-        if (typeof show_9816593 === 'function') {
-          show_9816593().then(function() {
-            monetagAdWatched = true;
-            var sEl = document.getElementById('monetagAdStatus');
-            if (sEl) { sEl.className = 'ad-status complete'; sEl.innerText = '✅ Ad watched! Waiting for countdown...'; }
-            if (monetagCountdownDone) monetagStartMusic();
-          }).catch(function() { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); });
-        } else { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); }
-      }, 1000);
+      setTimeout(function() { if (typeof show_9816593 === 'function') { show_9816593().then(function() { monetagAdWatched = true; var sEl = document.getElementById('monetagAdStatus'); if (sEl) { sEl.className = 'ad-status complete'; sEl.innerText = '✅ Ad watched!'; } if (monetagCountdownDone) monetagStartMusic(); }).catch(function() { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); }); } else { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); } }, 1000);
     }
   } catch(e) { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); }
-
   var timeLeft = 15;
   if (monetagCountdownInterval) clearInterval(monetagCountdownInterval);
   monetagCountdownInterval = setInterval(function() {
@@ -203,17 +178,7 @@ function triggerMonetagRewardedAd() {
     if (numEl) numEl.innerText = timeLeft;
     if (secEl) secEl.innerText = timeLeft;
     if (fillEl) fillEl.style.width = ((15 - timeLeft) / 15 * 100) + '%';
-    if (timeLeft <= 0) {
-      clearInterval(monetagCountdownInterval);
-      monetagCountdownInterval = null;
-      monetagCountdownDone = true;
-      if (monetagAdWatched) { monetagStartMusic(); }
-      else {
-        var sEl2 = document.getElementById('monetagAdStatus');
-        if (sEl2) { sEl2.className = 'ad-status watching'; sEl2.innerText = '⏳ Countdown done. Waiting for ad to finish...'; }
-        if (numEl) numEl.innerText = '⏳';
-      }
-    }
+    if (timeLeft <= 0) { clearInterval(monetagCountdownInterval); monetagCountdownInterval = null; monetagCountdownDone = true; if (monetagAdWatched) { monetagStartMusic(); } else { var sEl2 = document.getElementById('monetagAdStatus'); if (sEl2) { sEl2.className = 'ad-status watching'; sEl2.innerText = '⏳ Countdown done. Waiting for ad...'; } if (numEl) numEl.innerText = '⏳'; } }
   }, 1000);
 }
 
@@ -226,104 +191,33 @@ function monetagStartMusic() {
   startUploadedSongPlayback(pendingPlayIndex);
 }
 
-function monetagAdComplete() {
-  monetagAdWatched = true;
-  monetagCountdownDone = true;
-  monetagStartMusic();
-}
+function monetagAdComplete() { monetagAdWatched = true; monetagCountdownDone = true; monetagStartMusic(); }
 
-// =====================================================================
-// ===== DOUBLE COINS — MONETAG ONLY =====
-// =====================================================================
 var lastBaseReward = 0;
 var doubleCoinsUsed = false;
 
 function doubleCoinsWithAd() {
   var doubleBtn = document.getElementById('doubleCoinsBtn');
   if (!doubleBtn || doubleBtn.disabled) return;
-
   doubleBtn.disabled = true;
   doubleBtn.innerText = '⏳ Loading ad...';
   doubleBtn.style.background = '#333';
   doubleBtn.style.color = '#ffd700';
-
   try {
     if (typeof show_9816593 === 'function') {
-      show_9816593().then(function() {
-        addCoins(lastBaseReward);
-        doubleCoinsUsed = true;
-        doubleBtn.innerText = '✅ Coins Doubled! +' + lastBaseReward + ' more!';
-        doubleBtn.style.background = '#333';
-        doubleBtn.style.color = '#51cf66';
-        doubleBtn.style.borderColor = '#51cf66';
-        var totalEl = document.getElementById('gameTotalCoins');
-        if (totalEl) totalEl.innerHTML = '🎉 Total: +' + (lastBaseReward * 2) + ' Coins! (DOUBLED!)';
-        var rewardEl = document.getElementById('gameRewardDisplay');
-        if (rewardEl) rewardEl.innerHTML = '<span style="color:#51cf66;font-size:20px">+' + (lastBaseReward * 2) + ' Coins! 🎉 DOUBLED!</span>';
-        showBalance();
-      }).catch(function(err) {
-        doubleBtn.innerText = '❌ Ad not completed. Try again!';
-        doubleBtn.disabled = false;
-        doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)';
-        doubleBtn.style.color = '#fff';
-        setTimeout(function(){
-          if(doubleBtn && !doubleCoinsUsed){
-            doubleBtn.innerText = '📺 Watch Ad to Double Coins (+' + lastBaseReward + ' more!)';
-          }
-        }, 2000);
-      });
-    } else {
-      setTimeout(function() {
-        if (typeof show_9816593 === 'function') {
-          show_9816593().then(function() {
-            addCoins(lastBaseReward);
-            doubleCoinsUsed = true;
-            doubleBtn.innerText = '✅ Coins Doubled! +' + lastBaseReward + ' more!';
-            doubleBtn.style.background = '#333';
-            doubleBtn.style.color = '#51cf66';
-            var rewardEl = document.getElementById('gameRewardDisplay');
-            if (rewardEl) rewardEl.innerHTML = '<span style="color:#51cf66;font-size:20px">+' + (lastBaseReward * 2) + ' Coins! 🎉 DOUBLED!</span>';
-            showBalance();
-          }).catch(function() {
-            doubleBtn.innerText = '❌ Ad not completed';
-            doubleBtn.disabled = false;
-            doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)';
-            doubleBtn.style.color = '#fff';
-          });
-        } else {
-          doubleBtn.innerText = '❌ Ad not available right now';
-          doubleBtn.disabled = false;
-          doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)';
-          doubleBtn.style.color = '#fff';
-        }
-      }, 1000);
-    }
-  } catch(e) {
-    doubleBtn.innerText = '❌ Ad error. Try again.';
-    doubleBtn.disabled = false;
-    doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)';
-    doubleBtn.style.color = '#fff';
-  }
+      show_9816593().then(function() { addCoins(lastBaseReward); doubleCoinsUsed = true; doubleBtn.innerText = '✅ Coins Doubled! +' + lastBaseReward + ' more!'; doubleBtn.style.background = '#333'; doubleBtn.style.color = '#51cf66'; doubleBtn.style.borderColor = '#51cf66'; var totalEl = document.getElementById('gameTotalCoins'); if (totalEl) totalEl.innerHTML = '🎉 Total: +' + (lastBaseReward * 2) + ' Coins! (DOUBLED!)'; var rewardEl = document.getElementById('gameRewardDisplay'); if (rewardEl) rewardEl.innerHTML = '<span style="color:#51cf66;font-size:20px">+' + (lastBaseReward * 2) + ' Coins! 🎉 DOUBLED!</span>'; showBalance(); }).catch(function(err) { doubleBtn.innerText = '❌ Ad not completed. Try again!'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; setTimeout(function(){ if(doubleBtn && !doubleCoinsUsed) doubleBtn.innerText = '📺 Watch Ad to Double Coins (+' + lastBaseReward + ' more!)'; }, 2000); });
+    } else { setTimeout(function() { if (typeof show_9816593 === 'function') { show_9816593().then(function() { addCoins(lastBaseReward); doubleCoinsUsed = true; doubleBtn.innerText = '✅ Coins Doubled! +' + lastBaseReward + ' more!'; doubleBtn.style.background = '#333'; doubleBtn.style.color = '#51cf66'; showBalance(); }).catch(function() { doubleBtn.innerText = '❌ Ad not completed'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; }); } else { doubleBtn.innerText = '❌ Ad not available'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; } }, 1000); }
+  } catch(e) { doubleBtn.innerText = '❌ Ad error'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; }
 }
 
-// ===== GAME AD VISIBILITY CONTROL =====
 function setGameAdsVisible(visible) {
   var nativeBannerAd = document.getElementById('nativeBannerAd');
   var topBannerAd = document.getElementById('topBannerAd');
   if (nativeBannerAd) nativeBannerAd.style.display = visible ? 'block' : 'none';
   if (topBannerAd) topBannerAd.style.display = visible ? 'block' : 'none';
-  if (visible) {
-    document.body.classList.remove('playing-game');
-  } else {
-    document.body.classList.add('playing-game');
-  }
+  if (visible) document.body.classList.remove('playing-game'); else document.body.classList.add('playing-game');
 }
 
-// =====================================================================
-// ===== WATCH & EARN — AUTO REWARD ONLY WHEN VIDEO REALLY ENDS =====
-// FluidPlayer fires FAKE "ended" events during ad-to-content transitions.
-// We MUST verify currentTime is near duration before rewarding.
-// =====================================================================
 var WATCH_DAILY_LIMIT = 20;
 var watchVideosToday = 0;
 var watchRewardGiven = false;
@@ -331,168 +225,35 @@ var watchCooldownActive = false;
 var watchVideoIsPlaying = false;
 var watchPlayedSeconds = 0;
 var watchFallbackTimer = null;
-var watchKnownDuration = 0; // Track the real video duration
+var watchKnownDuration = 0;
 
-// Load and reset daily watch count at midnight
-(function(){
-  try {
-    var todayStr = new Date().toDateString();
-    var savedDate = localStorage.getItem('watchLimitDate') || '';
-    if (savedDate === todayStr) {
-      watchVideosToday = parseInt(localStorage.getItem('watchVideosToday') || '0');
-    } else {
-      watchVideosToday = 0;
-      localStorage.setItem('watchVideosToday', '0');
-      localStorage.setItem('watchLimitDate', todayStr);
-    }
-  } catch(e) { watchVideosToday = 0; }
-})();
+(function(){ try { var todayStr = new Date().toDateString(); var savedDate = localStorage.getItem('watchLimitDate') || ''; if (savedDate === todayStr) { watchVideosToday = parseInt(localStorage.getItem('watchVideosToday') || '0'); } else { watchVideosToday = 0; localStorage.setItem('watchVideosToday', '0'); localStorage.setItem('watchLimitDate', todayStr); } } catch(e) { watchVideosToday = 0; } })();
 
-function saveWatchCount() {
-  try {
-    localStorage.setItem('watchVideosToday', String(watchVideosToday));
-  } catch(e) {}
-}
+function saveWatchCount() { try { localStorage.setItem('watchVideosToday', String(watchVideosToday)); } catch(e) {} }
 
 function updateWatchLimitUI() {
-  var countEl = document.getElementById('watchLimitCount');
-  var barEl = document.getElementById('watchLimitFill');
-  var msgEl = document.getElementById('watchLimitMsg');
-  var videoEl = document.getElementById('hilltopVideoPlayer');
-
+  var countEl = document.getElementById('watchLimitCount'); var barEl = document.getElementById('watchLimitFill'); var msgEl = document.getElementById('watchLimitMsg'); var videoEl = document.getElementById('hilltopVideoPlayer');
   if (countEl) countEl.innerHTML = '<strong>' + watchVideosToday + '</strong> / ' + WATCH_DAILY_LIMIT;
   if (barEl) barEl.style.width = Math.min(100, (watchVideosToday / WATCH_DAILY_LIMIT) * 100) + '%';
-
   var limitReached = watchVideosToday >= WATCH_DAILY_LIMIT;
-
-  if (msgEl) {
-    if (limitReached) {
-      msgEl.innerHTML = '🚫 Daily limit reached! Come back tomorrow.';
-      msgEl.style.color = '#ff6b6b';
-    } else {
-      msgEl.innerHTML = '📺 Watch ' + (WATCH_DAILY_LIMIT - watchVideosToday) + ' more video(s) today';
-      msgEl.style.color = '#888';
-    }
-  }
-
-  if (videoEl && limitReached) {
-    videoEl.style.pointerEvents = 'none';
-    videoEl.style.opacity = '0.3';
-    var wrapper = document.getElementById('hilltopVideoWrapper');
-    if (wrapper && !document.getElementById('watchLimitOverlay')) {
-      var overlay = document.createElement('div');
-      overlay.id = 'watchLimitOverlay';
-      overlay.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10;border-radius:12px;';
-      overlay.innerHTML = '<span style="font-size:40px">🔒</span><span style="color:#ff6b6b;font-weight:bold;margin-top:8px">Daily Limit Reached</span><span style="color:#888;font-size:12px;margin-top:4px">Come back tomorrow</span>';
-      wrapper.style.position = 'relative';
-      wrapper.appendChild(overlay);
-    }
-  } else if (videoEl && !limitReached) {
-    videoEl.style.pointerEvents = 'auto';
-    videoEl.style.opacity = '1';
-    var existingOverlay = document.getElementById('watchLimitOverlay');
-    if (existingOverlay) existingOverlay.remove();
-  }
+  if (msgEl) { if (limitReached) { msgEl.innerHTML = '🚫 Daily limit reached! Come back tomorrow.'; msgEl.style.color = '#ff6b6b'; } else { msgEl.innerHTML = '📺 Watch ' + (WATCH_DAILY_LIMIT - watchVideosToday) + ' more video(s) today'; msgEl.style.color = '#888'; } }
+  if (videoEl && limitReached) { videoEl.style.pointerEvents = 'none'; videoEl.style.opacity = '0.3'; var wrapper = document.getElementById('hilltopVideoWrapper'); if (wrapper && !document.getElementById('watchLimitOverlay')) { var overlay = document.createElement('div'); overlay.id = 'watchLimitOverlay'; overlay.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10;border-radius:12px;'; overlay.innerHTML = '<span style="font-size:40px">🔒</span><span style="color:#ff6b6b;font-weight:bold;margin-top:8px">Daily Limit Reached</span>'; wrapper.style.position = 'relative'; wrapper.appendChild(overlay); } } else if (videoEl && !limitReached) { videoEl.style.pointerEvents = 'auto'; videoEl.style.opacity = '1'; var existingOverlay = document.getElementById('watchLimitOverlay'); if (existingOverlay) existingOverlay.remove(); }
 }
 
-// ===== AUTO-REWARD: Only when video ACTUALLY reached the end =====
 function autoRewardWatch() {
   if (watchRewardGiven || watchCooldownActive || watchVideosToday >= WATCH_DAILY_LIMIT) return;
-
-  watchRewardGiven = true;
-  watchVideoIsPlaying = false;
-  stopWatchFallback();
-
-  watchVideosToday++;
-  saveWatchCount();
-
-  addCoins(10);
-
-  var banner = document.getElementById('watchRewardBanner');
-  if (banner) banner.classList.add('show');
-
-  var statusEl = document.getElementById('watchStatus');
-  if (statusEl) statusEl.innerHTML = '<span style="color:#51cf66;font-weight:bold">🎉 +10 Coins added automatically!</span>';
-
+  watchRewardGiven = true; watchVideoIsPlaying = false; stopWatchFallback();
+  watchVideosToday++; saveWatchCount(); addCoins(10);
+  var banner = document.getElementById('watchRewardBanner'); if (banner) banner.classList.add('show');
+  var statusEl = document.getElementById('watchStatus'); if (statusEl) statusEl.innerHTML = '<span style="color:#51cf66;font-weight:bold">🎉 +10 Coins added automatically!</span>';
   updateWatchLimitUI();
-
-  // Start 60 second cooldown
-  watchCooldownActive = true;
-  var timeLeft = 60;
-  var cooldownEl = document.getElementById('watchCooldown');
-  var cooldownInterval = setInterval(function() {
-    timeLeft--;
-    if (cooldownEl) cooldownEl.innerText = '⏳ Next video in: ' + timeLeft + 's';
-    if (timeLeft <= 0) {
-      clearInterval(cooldownInterval);
-      watchCooldownActive = false;
-      watchRewardGiven = false;
-      watchVideoIsPlaying = false;
-      watchPlayedSeconds = 0;
-      watchKnownDuration = 0;
-      if (cooldownEl) cooldownEl.innerText = '';
-      if (banner) banner.classList.remove('show');
-      if (statusEl) {
-        if (watchVideosToday >= WATCH_DAILY_LIMIT) {
-          statusEl.innerHTML = '<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit of ' + WATCH_DAILY_LIMIT + ' videos reached!</span>';
-        } else {
-          statusEl.innerHTML = '📺 Ready! Press play to watch another video.';
-        }
-      }
-    }
-  }, 1000);
+  watchCooldownActive = true; var timeLeft = 60; var cooldownEl = document.getElementById('watchCooldown');
+  var cooldownInterval = setInterval(function() { timeLeft--; if (cooldownEl) cooldownEl.innerText = '⏳ Next video in: ' + timeLeft + 's'; if (timeLeft <= 0) { clearInterval(cooldownInterval); watchCooldownActive = false; watchRewardGiven = false; watchVideoIsPlaying = false; watchPlayedSeconds = 0; watchKnownDuration = 0; if (cooldownEl) cooldownEl.innerText = ''; if (banner) banner.classList.remove('show'); if (statusEl) { if (watchVideosToday >= WATCH_DAILY_LIMIT) statusEl.innerHTML = '<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>'; else statusEl.innerHTML = '📺 Ready! Press play to watch another video.'; } } }, 1000);
 }
 
-// ===== FALLBACK TIMER: UI status only, NEVER triggers reward =====
-function startWatchFallback() {
-  stopWatchFallback();
-  watchPlayedSeconds = 0;
+function startWatchFallback() { stopWatchFallback(); watchPlayedSeconds = 0; watchFallbackTimer = setInterval(function() { var videoEl = document.getElementById('hilltopVideoPlayer'); if (!videoEl) return; var isPlaying = !videoEl.paused && !videoEl.ended; watchVideoIsPlaying = isPlaying; if (isPlaying) watchPlayedSeconds += 0.5; if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 1) watchKnownDuration = videoEl.duration; var statusEl = document.getElementById('watchStatus'); if (statusEl && !watchRewardGiven && !watchCooldownActive) { if (isPlaying) { var cur = videoEl.currentTime || 0; var dur = watchKnownDuration || videoEl.duration || 0; if (dur > 1) { var remaining = Math.max(0, Math.ceil(dur - cur)); statusEl.innerHTML = '<span style="color:#ffd700">Watching video... <span style="color:#fff;font-weight:bold">' + remaining + 's remaining</span></span>'; } else statusEl.innerHTML = '<span style="color:#ffd700">Watching video... Keep watching!</span>'; } else if (watchPlayedSeconds > 0) statusEl.innerHTML = '<span style="color:#ff6b6b">Video paused! Press play to continue watching</span>'; } }, 500); }
 
-  watchFallbackTimer = setInterval(function() {
-    var videoEl = document.getElementById('hilltopVideoPlayer');
-    if (!videoEl) return;
-
-    var isPlaying = !videoEl.paused && !videoEl.ended;
-    watchVideoIsPlaying = isPlaying;
-
-    if (isPlaying) {
-      watchPlayedSeconds += 0.5;
-    }
-
-    // Remember the real duration when available
-    if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 1) {
-      watchKnownDuration = videoEl.duration;
-    }
-
-    // Update status only — NEVER call autoRewardWatch here
-    var statusEl = document.getElementById('watchStatus');
-    if (statusEl && !watchRewardGiven && !watchCooldownActive) {
-      if (isPlaying) {
-        var cur = videoEl.currentTime || 0;
-        var dur = watchKnownDuration || videoEl.duration || 0;
-        if (dur > 1) {
-          var remaining = Math.max(0, Math.ceil(dur - cur));
-          statusEl.innerHTML = '<span style="color:#ffd700">📺 Watching video... <span style="color:#fff;font-weight:bold">' + remaining + 's remaining</span></span>';
-        } else {
-          statusEl.innerHTML = '<span style="color:#ffd700">📺 Watching video... Keep watching to earn coins!</span>';
-        }
-      } else if (watchPlayedSeconds > 0) {
-        statusEl.innerHTML = '<span style="color:#ff6b6b">⏸ Video paused! Press play to continue watching</span>';
-      }
-    }
-    // NOTE: We deliberately do NOT check videoEl.ended here.
-    // FluidPlayer makes videoEl.ended=true during ad transitions.
-    // The ONLY place that triggers reward is the 'ended' event
-    // with the currentTime >= duration verification.
-  }, 500);
-}
-
-function stopWatchFallback() {
-  if (watchFallbackTimer) {
-    clearInterval(watchFallbackTimer);
-    watchFallbackTimer = null;
-  }
-}
+function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFallbackTimer); watchFallbackTimer = null; } }
 </script>
 </head>
 <body>
@@ -500,25 +261,53 @@ function stopWatchFallback() {
 <div id="splashScreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;overflow:hidden;transition:opacity 0.5s">
   <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0">
 </div>
-<script>
-  setTimeout(function(){ var splash = document.getElementById('splashScreen'); splash.style.opacity = '0'; setTimeout(function(){ splash.style.display = 'none'; }, 500); }, 2500);
-</script>
+<script>setTimeout(function(){var s=document.getElementById('splashScreen');s.style.opacity='0';setTimeout(function(){s.style.display='none'},500)},2500);</script>
 
-<!-- ===== ADSTERRA SOCIAL BAR ===== -->
 <script src="https://pl29281398.effectivecpmnetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js"></script>
 
 <div class="container">
 
-<!-- ===== TOP BANNER AD ===== -->
-<div id="topBannerAd" style="text-align:center; margin-bottom:15px;">
+<div id="topBannerAd" style="text-align:center;margin-bottom:15px">
   <div id="container-8dd30229fd7b7e3f3aeef1a7af787161"></div>
 </div>
 
+<!-- ===== REGISTER / LOGIN PAGE ===== -->
 <div id="loginPage" class="page active">
   <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:120px;height:auto;border-radius:15px;margin-bottom:10px;box-shadow:0 0 20px #00ffcc55">
   <h1>Mada Game Earn</h1>
-  <div class="card"><h3>👤 Create Account</h3><input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20"><input type="email" id="emailInput" placeholder="Email address"><input type="password" id="passwordInput" placeholder="Password (min 6 chars)"><div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and email to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div><div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div><button id="loginBtn" type="button" style="position:relative;z-index:10">Create Account & Play</button><p id="loginMsg" style="margin-top:10px;"></p><p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a> • <a href="#" onclick="showForgot();return false" style="color:#00ffcc">Forgot Password?</a></p><div id="forgotBox" style="display:none;margin-top:15px;padding:15px;background:#0a0a0a;border-radius:10px;border:1px solid #00ffcc33"><input type="email" id="forgotEmail" placeholder="Enter your email" style="margin-bottom:10px"><input type="password" id="newPass" placeholder="New password (min 6 chars)" style="margin-bottom:10px"><button onclick="resetPassword()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000">Reset Password</button><p id="forgotMsg" style="margin-top:8px;font-size:12px"></p></div></div><p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p></div>
+  <div class="card">
+    <h3>👤 Create Account</h3>
+    <input type="text" id="usernameInput" placeholder="Username (min 3 chars)" maxlength="20">
+    <select id="networkRegInput">
+      <option value="">📱 Select Mobile Network</option>
+      <option value="Airtel Money">🟴 Airtel Money</option>
+      <option value="TNM Mpamba">🟣 TNM Mpamba</option>
+    </select>
+    <div class="phone-input-group" id="regPhoneGroup">
+      <span class="phone-prefix">🇲🇼 +265</span>
+      <input type="tel" id="phoneInput" placeholder="0882XXXXXX" maxlength="10" pattern="[0-9]*" inputmode="numeric">
+    </div>
+    <input type="email" id="emailInput" placeholder="📧 Email (for password reset)">
+    <input type="password" id="passwordInput" placeholder="Password (min 6 chars)">
+    <div style="text-align:left;margin:10px 0;font-size:13px"><label><input type="checkbox" id="agreeCheck" style="width:auto;margin-right:8px">I agree to the <a href="#" onclick="alert('Privacy Policy: We collect username and phone to reward you. No data sold.');return false" style="color:#00ffcc">Privacy Policy</a> and <a href="#" onclick="alert('Terms: 18+, one account only, no VPN');return false" style="color:#00ffcc">Terms</a></label></div>
+    <div style="background:#222;padding:10px;border-radius:8px;margin:10px 0"><span id="captchaQ" style="color:#ffd700"></span> = <input type="number" id="captchaA" placeholder="?" style="width:80px;display:inline-block;margin:0"></div>
+    <button id="loginBtn" type="button" style="position:relative;z-index:10">Create Account & Play</button>
+    <p id="loginMsg" style="margin-top:10px;"></p>
+    <p style="margin-top:8px;font-size:11px;color:#666">📱 Your phone number = your withdrawal payment method</p>
+    <p style="margin-top:15px;font-size:12px;color:#888">Already have account? <a href="#" onclick="showLogin();return false" style="color:#00ffcc">Login</a> • <a href="#" onclick="showForgot();return false" style="color:#00ffcc">Forgot Password?</a></p>
+    <div id="forgotBox" style="display:none;margin-top:15px;padding:15px;background:#0a0a0a;border-radius:10px;border:1px solid #00ffcc33">
+      <h3 style="font-size:14px;margin-bottom:10px">🔑 Reset Password</h3>
+      <p style="color:#888;font-size:12px;margin-bottom:8px">Enter the email address you registered with</p>
+      <input type="email" id="forgotEmail" placeholder="📧 Your email address">
+      <input type="password" id="newPass" placeholder="New password (min 6 chars)" style="margin-bottom:10px">
+      <button onclick="resetPassword()" style="background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000">Reset Password</button>
+      <p id="forgotMsg" style="margin-top:8px;font-size:12px"></p>
+    </div>
+  </div>
+  <p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p>
+</div>
 
+<!-- ===== WALLET PAGE ===== -->
 <div id="walletPage" class="page">
   <div style="text-align:right;margin-bottom:10px"><button onclick="logout()" style="width:auto;padding:8px 15px;background:#333;color:#00ffcc;border:1px solid #00ffcc55">🚪 Logout</button></div>
   <h1>💳 Wallet</h1>
@@ -527,100 +316,79 @@ function stopWatchFallback() {
   <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ccff;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
-  <div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div>
+
+  <div class="card">
+    <h3>📱 Payment Method</h3>
+    <div id="paymentLockedBox" class="payment-locked-box" style="display:none">
+      <div class="payment-locked-title">💳 Withdrawal Account</div>
+      <div class="payment-locked-row">
+        <div style="text-align:left">
+          <div class="payment-locked-label" id="payNetworkLabel">Network</div>
+          <div class="payment-locked-phone" id="payPhoneLabel">---</div>
+          <div class="payment-locked-network" id="payFullLabel">---</div>
+        </div>
+        <div class="payment-locked-flag">🇲🇼</div>
+      </div>
+      <div class="payment-locked-divider"></div>
+      <div class="payment-locked-secure">🔒 Locked — Contact support to change</div>
+    </div>
+    <div id="paymentNoPhone" style="display:none;padding:15px;background:#1a1a0a;border-radius:10px;border:1px solid #ffaa00">
+      <p style="color:#ffaa00;font-size:14px">⚠ No payment phone on file</p>
+      <p style="color:#888;font-size:12px;margin-top:5px">Contact support to add your number</p>
+    </div>
+    <select id="network" style="display:none"><option>Airtel Money</option><option>TNM Mpamba</option></select>
+    <input type="text" id="number" style="display:none">
+    <button id="saveBtn" style="display:none">Save Details (One-Time)</button>
+    <p id="saved" style="margin-top:10px;"></p>
+  </div>
+
   <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><div id="withdrawCountdown" style="text-align:center;margin-top:8px;font-size:12px;color:#aaa"></div><p id="msg" style="margin-top:10px;"></p></div>
   <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
-  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours</p></div>
+  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours<br><br>📱 <strong style='color:#00ffcc'>Withdrawals sent to your registered phone number</strong></p></div>
 </div>
 
 <div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:10px;">Play games to earn coins!</p><p style="color:#9b59b6;margin-bottom:20px;font-size:14px;">📺 Watch ad after game to <strong>DOUBLE</strong> your reward!</p><div class="games-grid" id="gamesGrid"></div></div></div>
 
-<!-- ===== WATCH & EARN PAGE ===== -->
 <div id="watchPage" class="page">
   <h1>📺 Watch & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #ff6b6b">
     <h3 style="color:#ff6b6b">🎥 Video Rewards</h3>
     <p style="color:#ccc;margin:10px 0;">Watch the full video to earn <span style="color:#ffd700;font-weight:bold">10 Coins</span> automatically!</p>
-
-    <div class="watch-limit-section">
-      <div class="watch-limit-header">
-        <span>📺 Videos Watched Today</span>
-        <span id="watchLimitCount"><strong>0</strong> / 20</span>
-      </div>
-      <div class="watch-limit-bar">
-        <div class="watch-limit-fill" id="watchLimitFill" style="width:0%"></div>
-      </div>
-      <p class="watch-limit-msg" id="watchLimitMsg">📺 Watch 20 more video(s) today</p>
-    </div>
-
-    <div class="watch-container">
-      <div class="watch-vid-wrapper" id="hilltopVideoWrapper">
-        <video id="hilltopVideoPlayer" playsinline style="width:100%;height:auto;">
-          <source src="https://cdn.fluidplayer.com/videos/valerian-720p.mp4" type="video/mp4"/>
-        </video>
-      </div>
-
-      <p class="watch-status" id="watchStatus" style="color:#aaa;">⏳ Press Play to start the video</p>
-      <p class="watch-cooldown" id="watchCooldown"></p>
-
-      <div class="watch-reward-banner" id="watchRewardBanner">
-        <div class="watch-reward-check">✅</div>
-        <div class="watch-reward-amount">+10 Coins Added!</div>
-        <p style="color:#51cf66;font-size:14px">Reward added automatically</p>
-      </div>
-    </div>
-
+    <div class="watch-limit-section"><div class="watch-limit-header"><span>📺 Videos watched Today</span><span id="watchLimitCount"><strong>0</strong> / 20</span></div><div class="watch-limit-bar"><div class="watch-limit-fill" id="watchLimitFill" style="width:0%"></div></div><p class="watch-limit-msg" id="watchLimitMsg">📺 Watch 20 more video(s) today</p></div>
+    <div class="watch-container"><div class="watch-vid-wrapper" id="hilltopVideoWrapper"><video id="hilltopVideoPlayer" playsinline style="width:100%;height:auto;"><source src="https://cdn.fluidplayer.com/videos/valerian-720p.mp4" type="video/mp4"/></video></div><p class="watch-status" id="watchStatus" style="color:#aaa;">⏳ Press Play to start</p><p class="watch-cooldown" id="watchCooldown"></p><div class="watch-reward-banner" id="watchRewardBanner"><div class="watch-reward-check">✅</div><div class="watch-reward-amount">+10 Coins Added!</div><p style="color:#51cf66;font-size:14px">Reward added automatically</p></div></div>
     <div style="margin-top:15px;border-top:1px solid #222;padding-top:12px;text-align:left">
       <h3 style="color:#ff6b6b;font-size:14px">💡 How It Works</h3>
-      <p style="color:#ccc;line-height:1.8;font-size:13px">
-        1. Tap the Play button on the video<br>
+      <p style="color:#ccc;line-height:2;font-size:13px">
+        1. Tap the play button<br>
         2. Watch the video <strong style="color:#ffd700">until it finishes completely</strong><br>
-        3. <strong style="color:#51cf66">+10 Coins</strong> will be added <strong style="color:#51cf66">automatically</strong>!<br>
-        4. Wait 60 seconds to watch another video<br>
-        5. <strong style="color:#ff6b6b">Limit: 20 videos per day</strong> — resets at midnight
+        3. <strong style="color:#51cf66">+10 Coins</strong> added automatically<br>
+        4. Wait <strong style="color:#fff">60 seconds</strong> to watch another<br>
+        5. <strong style="color:#ff6b6b">Limit: 20 videos/day</strong> (resets at midnight)
       </p>
     </div>
   </div>
 </div>
 
-<!-- ===== LISTEN & EARN PAGE ===== -->
 <div id="listenPage" class="page">
   <h1>🎵 Listen & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #9b59b6">
     <h3 style="color:#9b59b6">📁 Upload Your Music</h3>
-    <p style="color:#ccc;margin:10px 0;">Upload songs from your device, listen for 60s, earn <span style="color:#ffd700;font-weight:bold">50 coins</span> each!</p>
+    <p style="color:#ccc;margin:10px 0;">Upload songs, listen 60s, earn <span style="color:#ffd700;font-weight:bold">50 coins</span> each!</p>
     <span class="upload-count-badge" id="uploadCountBadge">🎵 0 songs earned today</span>
     <label for="musicFileInput" class="upload-label">📂 Choose Music Files</label>
     <input type="file" id="musicFileInput" accept="audio/*" multiple style="display:none">
-    <div id="uploadedMusicList" style="margin:10px 0;max-height:260px;overflow-y:auto">
-      <p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p>
-    </div>
-    <div id="customAudioPlayer" style="display:none" class="upload-player-box">
-      <p id="uploadedSongName" style="color:#9b59b6;font-weight:bold;margin-bottom:10px;font-size:15px"></p>
-      <audio id="uploadedAudio" controls></audio>
-      <div class="upload-listen-bar"><div class="upload-listen-fill" id="uploadListenBar" style="width:0%"></div></div>
-      <p id="uploadListenTimer" style="margin-top:8px;font-size:15px;color:#ffd700;height:20px"></p>
-      <p id="uploadListenMsg" style="margin-top:6px;font-size:13px;height:18px"></p>
-    </div>
-    <div style="margin-top:15px;border-top:1px solid #222;padding-top:12px;text-align:left">
-      <h3 style="color:#9b59b6;font-size:14px">💡 How It Works</h3>
-      <p style="color:#ccc;line-height:1.8;font-size:13px">1. Tap "Choose Music Files" to upload songs<br>2. Press ▶ Play on any song in the list<br>3. 📺 A video ad will play first<br>4. ⏱ Wait for the countdown to finish<br>5. Song starts playing — listen for 60 seconds!<br>6. +50 coins added to your balance automatically!</p>
-    </div>
+    <div id="uploadedMusicList" style="margin:10px 0;max-height:260px;overflow-y:auto"><p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p></div>
+    <div id="customAudioPlayer" style="display:none" class="upload-player-box"><p id="uploadedSongName" style="color:#9b59b6;font-weight:bold;margin-bottom:10px;font-size:15px"></p><audio id="uploadedAudio" controls></audio><div class="upload-listen-bar"><div class="upload-listen-fill" id="uploadListenBar" style="width:0%"></div></div><p id="uploadListenTimer" style="margin-top:8px;font-size:15px;color:#ffd700;height:20px"></p><p id="uploadListenMsg" style="margin-top:6px;font-size:13px;height:18px"></p></div>
+    <div style="margin-top:15px;border-top:1px solid #222;padding-top:12px;text-align:left"><h3 style="color:#9b59b6;font-size:14px">💡 How It Works</h3><p style="color:#ccc;line-height:1.8;font-size:13px">1. Upload songs from your device<br>2. Press ▶ Play on any song<br>3. 📺 Watch the ad first<br>4. Listen for 60 seconds!<br>5. +50 coins added automatically!</p></div>
   </div>
 </div>
 
 <div id="leaderboardPage" class="page">
-  <h1 style="color:#00ffcc;margin:5px 0">🏆 Leaderboard</h1>
-  <p style="color:#999;margin-bottom:15px;font-size:14px">Malawi's Top Earners</p>
-  <div style="display:flex;gap:8px;margin-bottom:15px">
-    <button onclick="setView('daily')" id="btnDaily" style="flex:1;padding:10px;background:#00ffcc;color:#000;border:none;border-radius:8px;font-weight:bold">Daily</button>
-    <button onclick="setView('weekly')" id="btnWeekly" style="flex:1;padding:10px;background:#333;color:#00ffcc;border:2px solid #00ffcc;border-radius:8px">Weekly</button>
-    <button onclick="setView('all')" id="btnAll" style="flex:1;padding:10px;background:#333;color:#00ffcc;border:2px solid #00ffcc;border-radius:8px">All-Time</button>
-  </div>
+  <h1 style="color:#00ffcc;margin:5px 0">🏆 Leaderboard</h1><p style="color:#999;margin-bottom:15px;font-size:14px">Malawi's Top Earners</p>
+  <div style="display:flex;gap:8px;margin-bottom:15px"><button onclick="setView('daily')" id="btnDaily" style="flex:1;padding:10px;background:#00ffcc;color:#000;border:none;border-radius:8px;font-weight:bold">Daily</button><button onclick="setView('weekly')" id="btnWeekly" style="flex:1;padding:10px;background:#333;color:#00ffcc;border:2px solid #00ffcc;border-radius:8px">Weekly</button><button onclick="setView('all')" id="btnAll" style="flex:1;padding:10px;background:#333;color:#00ffcc;border:2px solid #00ffcc;border-radius:8px">All-Time</button></div>
   <div id="myRank" style="background:linear-gradient(135deg,#111,#1a1a2e);border:1px solid #00ffcc55;padding:14px;border-radius:12px;margin-bottom:15px"></div>
   <button onclick="shareRank()" style="width:100%;padding:12px;background:linear-gradient(45deg,#ffd700,#ffaa00);color:#000;border:none;border-radius:10px;font-weight:bold;margin-bottom:15px">📤 Share My Rank</button>
-  <div id="board" style="text-align:left"></div>
-  <p style="color:#555;margin-top:20px;font-size:11px">🔄 Auto-updates every 10s • Online = green dot</p>
+  <div id="board" style="text-align:left"></div><p style="color:#555;margin-top:20px;font-size:11px">🔄 Auto-updates every 10s</p>
 </div>
 
 <div id="inboxPage" class="page">
@@ -631,23 +399,13 @@ function stopWatchFallback() {
 
 <div id="playPage" class="page"><button class="back-btn" id="backBtn">← Back to Games</button><h2 id="gameTitle"></h2><div class="card"><div id="gameArea" class="game-area"></div></div></div>
 
-<!-- ===== NATIVE BANNER AD ===== -->
-<div id="nativeBannerAd" style="text-align:center; margin:15px 0; padding-bottom:10px;">
-  <script>
-    atOptions = {
-      'key' : 'ad1f2717ce15725e76c4ffc1d25e948e',
-      'format' : 'iframe',
-      'height' : 250,
-      'width' : 300,
-      'params' : {}
-    };
-  </script>
+<div id="nativeBannerAd" style="text-align:center;margin:15px 0;padding-bottom:10px">
+  <script>atOptions={'key':'ad1f2717ce15725e76c4ffc1d25e948e','format':'iframe','height':250,'width':300,'params':{}};</script>
   <script src="https://www.highperformanceformat.com/ad1f2717ce15725e76c4ffc1d25e948e/invoke.js"></script>
 </div>
 
 </div>
 
-<!-- ===== 6-TAB NAVIGATION ===== -->
 <div class="nav" id="mainNav">
   <button class="nav-btn active" id="navWallet"><span class="nav-icon">💳</span>Wallet</button>
   <button class="nav-btn" id="navGames"><span class="nav-icon">🎮</span>Games</button>
@@ -658,61 +416,94 @@ function stopWatchFallback() {
 </div>
 
 <script>
-
 var db = null;
 try {
   if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) {
     firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});
-
     const appCheck = firebase.appCheck();
-    appCheck.activate('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q', true);
-
+    appCheck.activate(
+      new firebase.appCheck.ReCaptchaV3Provider('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q'),
+      true
+    );
     db = firebase.database();
   }
-} catch(e) { db = null; console.warn('Firebase init failed', e); }
+} catch(e) { db = null; }
 
 var DAILY_LIMIT = 12000; var currentGame = null; var gameState = {}; var countdownInterval = null;
-
 var captchaAnswer = 0;
-function generateCaptcha(){
-  var a = Math.floor(Math.random()*10)+1;
-  var b = Math.floor(Math.random()*10)+1;
-  captchaAnswer = a+b;
-  var el = document.getElementById('captchaQ');
-  if(el) el.innerText = a + ' + ' + b;
+function generateCaptcha(){ var a = Math.floor(Math.random()*10)+1; var b = Math.floor(Math.random()*10)+1; captchaAnswer = a+b; var el = document.getElementById('captchaQ'); if(el) el.innerText = a + ' + ' + b; }
+
+function formatMalawiPhone(input) {
+  var digits = input.replace(/[^0-9]/g, '');
+  if (digits.length === 10 && /^0[89]/.test(digits)) return digits;
+  if (digits.length === 9 && /^[89]/.test(digits)) return '0' + digits;
+  return digits;
+}
+function isValidMalawiPhone(phone) { return /^0[89][0-9]{8}$/.test(phone); }
+
+function lockPaymentMethod(phone, network) {
+  var lockedBox = document.getElementById('paymentLockedBox');
+  var noPhone = document.getElementById('paymentNoPhone');
+  var payPhoneLabel = document.getElementById('payPhoneLabel');
+  var payNetworkLabel = document.getElementById('payNetworkLabel');
+  var payFullLabel = document.getElementById('payFullLabel');
+  var numEl = document.getElementById('number');
+  var netEl = document.getElementById('network');
+  if (numEl) { numEl.value = phone; }
+  if (netEl) { netEl.value = network; }
+  if (phone && network) {
+    if (lockedBox) lockedBox.style.display = 'block';
+    if (noPhone) noPhone.style.display = 'none';
+    if (payPhoneLabel) payPhoneLabel.innerText = phone;
+    if (payNetworkLabel) payNetworkLabel.innerText = network;
+    if (payFullLabel) payFullLabel.innerText = '🇲🇼 +265 ' + phone.substring(1);
+    document.getElementById('saved').innerHTML = '<span style="color:#51cf66">✅ Withdrawals go to: ' + network + ' - ' + phone + '</span>';
+    try { localStorage.setItem('number', phone); localStorage.setItem('network', network); localStorage.setItem('userPhone', phone); } catch(e) {}
+  } else {
+    if (lockedBox) lockedBox.style.display = 'none';
+    if (noPhone) noPhone.style.display = 'block';
+  }
 }
 
 function register() {
   try {
     var user = (document.getElementById("usernameInput").value || "").trim();
+    var networkReg = document.getElementById("networkRegInput").value;
+    var phoneDigits = (document.getElementById("phoneInput").value || "").trim();
     var email = (document.getElementById("emailInput").value || "").trim();
     var pass = document.getElementById("passwordInput").value || "";
     var agree = document.getElementById("agreeCheck").checked;
     var captcha = parseInt(document.getElementById("captchaA").value);
     var msgEl = document.getElementById("loginMsg");
     if(user.length < 3){ msgEl.innerHTML = '<span class="error">Username min 3 chars</span>'; return; }
-    if(!email.includes('@')){ msgEl.innerHTML = '<span class="error">Valid email required</span>'; return; }
+    if(!networkReg){ msgEl.innerHTML = '<span class="error">📱 Select your mobile network</span>'; return; }
+    if(phoneDigits.length < 9 || !/^[0-9]+$/.test(phoneDigits)){ msgEl.innerHTML = '<span class="error">📱 Enter valid Malawi number (10 digits)</span>'; return; }
+    var fullPhone = formatMalawiPhone(phoneDigits);
+    if(!isValidMalawiPhone(fullPhone)){ msgEl.innerHTML = '<span class="error">📱 Invalid Malawi number (must start with 08 or 09)</span>'; return; }
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msgEl.innerHTML = '<span class="error">📧 Enter valid email address</span>'; return; }
     if(pass.length < 6){ msgEl.innerHTML = '<span class="error">Password min 6 chars</span>'; return; }
     if(!agree){ msgEl.innerHTML = '<span class="error">You must agree to Privacy Policy</span>'; return; }
     if(captcha !== captchaAnswer){ msgEl.innerHTML = '<span class="error">Wrong captcha</span>'; generateCaptcha(); return; }
     msgEl.innerHTML = '<span class="success">Creating account...</span>';
     var name = user.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, '');
-    try { localStorage.setItem("user", name); localStorage.setItem("displayName", user); localStorage.setItem("userEmail", email); } catch(e){}
+    try { localStorage.setItem("user", name); localStorage.setItem("displayName", user); localStorage.setItem("userPhone", fullPhone); localStorage.setItem("network", networkReg); localStorage.setItem("number", fullPhone); localStorage.setItem("userEmail", email); } catch(e){}
     document.getElementById("loginPage").classList.remove("active");
     document.getElementById("mainNav").style.display = "flex";
     showPage('wallet');
     setTimeout(function(){
       if (!db) return;
-      db.ref('users/' + name).set({email: email, created: Date.now(), country: "MW", agreed: true, password: md5(pass)});
-      db.ref('leaderboard_all/' + name).once('value').then(function(snap){
-        if(!snap.exists()){ db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,email:email}); }
-      });
+      db.ref('users/' + name).set({phone: fullPhone, network: networkReg, email: email, created: Date.now(), country: "MW", agreed: true, password: md5(pass)});
+      db.ref('leaderboard_all/' + name).once('value').then(function(snap){ if(!snap.exists()) db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg}); });
       setupPresence(name); checkInboxBadge();
+      lockPaymentMethod(fullPhone, networkReg);
     }, 200);
   } catch(e){ alert("Error: " + e.message); }
 }
 
 function showLogin(){
+  document.getElementById("phoneInput").style.display = "none";
+  var pg = document.getElementById('regPhoneGroup'); if(pg) pg.style.display = 'none';
+  document.getElementById("networkRegInput").style.display = "none";
   document.getElementById("emailInput").style.display = "none";
   document.getElementById("passwordInput").placeholder = "Password";
   document.getElementById("loginBtn").innerText = "Login";
@@ -722,375 +513,129 @@ function showLogin(){
 
 function login() {
   try {
-    var input = document.getElementById("usernameInput");
-    var rawName = (input && input.value || "").trim();
-    var pass = document.getElementById("passwordInput").value;
-    var msgEl = document.getElementById("loginMsg");
-    var captcha = parseInt(document.getElementById("captchaA").value);
+    var input = document.getElementById("usernameInput"); var rawName = (input && input.value || "").trim(); var pass = document.getElementById("passwordInput").value; var msgEl = document.getElementById("loginMsg"); var captcha = parseInt(document.getElementById("captchaA").value);
     if(captcha !== captchaAnswer){ msgEl.innerHTML = '<span class="error">Wrong captcha</span>'; generateCaptcha(); return; }
     if (!rawName || !pass) { msgEl.innerHTML = '<span class="error">Enter username and password</span>'; return; }
     var name = rawName.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, '');
     msgEl.innerHTML = '<span class="success">Checking...</span>';
     if(!db){ msgEl.innerHTML = '<span class="error">Database error</span>'; return; }
     db.ref('users/' + name).once('value', function(snap){
-      var data = snap.val();
-      if(!data){ msgEl.innerHTML = '<span class="error">User not found</span>'; return; }
+      var data = snap.val(); if(!data){ msgEl.innerHTML = '<span class="error">User not found</span>'; return; }
       if(data.password !== md5(pass)){ msgEl.innerHTML = '<span class="error">Wrong password</span>'; return; }
+      var phone = data.phone || ''; var network = data.network || '';
+      if(phone){ try { localStorage.setItem("userPhone", phone); localStorage.setItem("number", phone); } catch(e){} }
+      if(network){ try { localStorage.setItem("network", network); } catch(e){} }
+      if(data.email){ try { localStorage.setItem("userEmail", data.email); } catch(e){} }
       localStorage.setItem("user", name); localStorage.setItem("displayName", rawName);
       document.getElementById("loginPage").classList.remove("active");
       document.getElementById("mainNav").style.display = "flex";
       showPage('wallet');
+      if(phone && network) lockPaymentMethod(phone, network);
+      else lockPaymentMethod('', '');
       setupPresence(name); checkInboxBadge();
     });
   } catch(e){ alert(e.message); }
 }
 
-function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
-  addCoins(baseCoins);
-  lastBaseReward = baseCoins;
-  doubleCoinsUsed = false;
-  document.getElementById('gameArea').innerHTML =
-    '<div class="score-display">' +
-      '<h2>' + title + '</h2>' +
-      detailsHtml +
-      '<p id="gameRewardDisplay" style="font-size:24px;color:#ffd700;margin:10px 0;">+' + baseCoins + ' Coins!</p>' +
-      '<button id="doubleCoinsBtn" class="double-coins-btn" onclick="doubleCoinsWithAd()">📺 Watch Ad to Double Coins (+' + baseCoins + ' more!)</button>' +
-      '<p id="gameTotalCoins" style="font-size:13px;color:#999;margin:5px 0"></p>' +
-      '<button id="replayBtn">Play Again</button>' +
-    '</div>';
-  var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); };
-}
+function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) { addCoins(baseCoins); lastBaseReward = baseCoins; doubleCoinsUsed = false; document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>'+title+'</h2>'+detailsHtml+'<p id="gameRewardDisplay" style="font-size:24px;color:#ffd700;margin:10px 0;">+'+baseCoins+' Coins!</p><button id="doubleCoinsBtn" class="double-coins-btn" onclick="doubleCoinsWithAd()">📺 Watch Ad to Double Coins (+'+baseCoins+' more!)</button><p id="gameTotalCoins" style="font-size:13px;color:#999;margin:5px 0"></p><button id="replayBtn">Play Again</button></div>'; var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); }; }
 
-function showPage(page) {
-  try {
-    var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
-    var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
-    var mainNav = document.getElementById('mainNav');
-    if (mainNav) mainNav.style.display = 'flex';
+function showPage(page) { try { var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active'); var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active'); var mainNav = document.getElementById('mainNav'); if (mainNav) mainNav.style.display = 'flex'; setGameAdsVisible(page !== 'play'); if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); } else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); } else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); initHilltopPlayer(); updateWatchLimitUI(); } else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); } else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); } else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[5]) btns[5].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); } } catch(e) {} }
 
-    setGameAdsVisible(page !== 'play');
-
-    if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); }
-    else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
-    else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); initHilltopPlayer(); updateWatchLimitUI(); }
-    else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); }
-    else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); }
-    else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[5]) btns[5].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
-  } catch(e) { console.error('showPage error', e); }
-}
-
-function startCountdown() {
-  if(countdownInterval) clearInterval(countdownInterval);
-  function update() { var now = new Date(); var midnight = new Date(now); midnight.setHours(24,0,0,0); var diff = midnight - now; var h = Math.floor(diff / 3600000); var m = Math.floor((diff % 3600000) / 60000); var s = Math.floor((diff % 60000) / 1000); var el = document.getElementById("dailyCountdown"); if(el) el.innerText = String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0'); }
-  update(); countdownInterval = setInterval(update, 1000);
-}
+function startCountdown() { if(countdownInterval) clearInterval(countdownInterval); function update() { var now = new Date(); var midnight = new Date(now); midnight.setHours(24,0,0,0); var diff = midnight - now; var h = Math.floor(diff / 3600000); var m = Math.floor((diff % 3600000) / 60000); var s = Math.floor((diff % 60000) / 1000); var el = document.getElementById("dailyCountdown"); if(el) el.innerText = String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0'); } update(); countdownInterval = setInterval(update, 1000); }
 
 var lastKnownBalance = -1;
-function startRealtimeBalance() {
-  var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; }
-  if (!user || !db) return;
-  db.ref('leaderboard_all/' + user + '/coins').on('value', function(snap) {
-    var coins = snap.val() || 0;
-    if (lastKnownBalance !== -1 && coins > lastKnownBalance) {
-      var coinsEl = document.getElementById("coins");
-      if (coinsEl) { coinsEl.innerHTML = "🪙 " + coins + " Coins"; coinsEl.classList.remove('coin-update'); void coinsEl.offsetWidth; coinsEl.classList.add('coin-update'); }
-      var moneyEl = document.getElementById("money");
-      if (moneyEl) moneyEl.innerHTML = "💵 MWK " + Math.floor(coins * 0.02);
-      var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
-      document.getElementById("dailyLimitText").innerText = daily + "/12000";
-      document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%";
-    }
-    lastKnownBalance = coins;
-  });
-}
+function startRealtimeBalance() { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user || !db) return; db.ref('leaderboard_all/' + user + '/coins').on('value', function(snap) { var coins = snap.val() || 0; if (lastKnownBalance !== -1 && coins > lastKnownBalance) { var coinsEl = document.getElementById("coins"); if (coinsEl) { coinsEl.innerHTML = "🪙 " + coins + " Coins"; coinsEl.classList.remove('coin-update'); void coinsEl.offsetWidth; coinsEl.classList.add('coin-update'); } var moneyEl = document.getElementById("money"); if (moneyEl) moneyEl.innerHTML = "💵 MWK " + Math.floor(coins * 0.02); var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {} document.getElementById("dailyLimitText").innerText = daily + "/12000"; document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%"; } lastKnownBalance = coins; }); }
 
-function showBalance() {
-  try {
-    var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; }
-    if (!db) { document.getElementById("coins").innerHTML = "🪙 0 Coins"; document.getElementById("money").innerHTML = "💵 MWK 0"; return; }
-    db.ref('leaderboard_all/' + user).once('value', function(snap) {
-      var d = snap.val() || {}; var coins = d.coins || 0; var gp = d.gamesPlayed || 0;
-      try { localStorage.setItem("coins", coins); } catch(e) {}
-      lastKnownBalance = coins;
-      document.getElementById("coins").innerHTML = "🪙 " + coins + " Coins"; document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.02);
-      document.getElementById("gamesPlayed").innerHTML = gp; document.getElementById("totalEarned").innerHTML = coins;
-      var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
-      document.getElementById("dailyLimitText").innerText = daily + "/12000"; document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%";
-      var tiers = [5000, 10000, 25000, 50000]; var rewards = [100, 200, 500, 1000];
-      var nextIdx = tiers.findIndex(t => coins < t); if(nextIdx === -1) nextIdx = tiers.length - 1;
-      var goalTarget = tiers[nextIdx]; var prevTarget = nextIdx > 0 ? tiers[nextIdx - 1] : 0;
-      var progressInTier = coins - prevTarget; var tierSize = goalTarget - prevTarget;
-      var percent = Math.min(100, (progressInTier / tierSize) * 100);
-      document.getElementById("nextGoalText").innerText = coins + " / " + goalTarget + " coins";
-      document.getElementById("nextGoalBar").style.width = percent + "%";
-      document.getElementById("nextGoalReward").innerText = "Reach " + goalTarget + " to withdraw " + rewards[nextIdx] + " MWK";
-    }); loadMyWithdrawals();
-  } catch(e) {}
-}
+function showBalance() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) { document.getElementById("coins").innerHTML = "🪙 0 Coins"; document.getElementById("money").innerHTML = "💵 MWK 0"; return; } db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; var coins = d.coins || 0; var gp = d.gamesPlayed || 0; try { localStorage.setItem("coins", coins); } catch(e) {} lastKnownBalance = coins; document.getElementById("coins").innerHTML = "🪙 " + coins + " Coins"; document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.02); document.getElementById("gamesPlayed").innerHTML = gp; document.getElementById("totalEarned").innerHTML = coins; var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {} document.getElementById("dailyLimitText").innerText = daily + "/12000"; document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%"; var tiers = [5000, 10000, 25000, 50000]; var rewards = [100, 200, 500, 1000]; var nextIdx = tiers.findIndex(t => coins < t); if(nextIdx === -1) nextIdx = tiers.length - 1; var goalTarget = tiers[nextIdx]; var prevTarget = nextIdx > 0 ? tiers[nextIdx - 1] : 0; var progressInTier = coins - prevTarget; var tierSize = goalTarget - prevTarget; var percent = Math.min(100, (progressInTier / tierSize) * 100); document.getElementById("nextGoalText").innerText = coins + " / " + goalTarget + " coins"; document.getElementById("nextGoalBar").style.width = percent + "%"; document.getElementById("nextGoalReward").innerText = "Reach " + goalTarget + " to withdraw " + rewards[nextIdx] + " MWK"; }); loadMyWithdrawals(); } catch(e) {} }
 
-function addCoins(amount) {
-  try {
-    var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; }
-    var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
-    var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn);
-    if (give <= 0) { alert("⚠ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return;
-    db.ref('leaderboard_all/' + user).once('value', function(snap) {
-      var d = snap.val() || {};
-      if (d.banned === true) { alert("⚠ Account suspended. You cannot earn coins."); return; }
-      var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1;
-      db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});
-      daily += give; try { localStorage.setItem("dailyCoins", daily); } catch(e) {} showBalance();
-    });
-  } catch(e) {}
-}
+function addCoins(amount) { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {} var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn); if (give <= 0) { alert("⚠ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { alert("⚠ Account suspended."); return; } var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1; db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"}); daily += give; try { localStorage.setItem("dailyCoins", daily); } catch(e) {} showBalance(); }); } catch(e) {} }
 
-function setupPresence(u) {
-  try { if (!u || !db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline', last: Date.now()}); p.set({state:'online', last: Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {}
-}
+function setupPresence(u) { try { if (!u || !db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline', last: Date.now()}); p.set({state:'online', last: Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {} }
 
-function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
+function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
-function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
 
-function claimDailyBonus() {
-  try {
-    var user;
-    try { user = localStorage.getItem("user"); } catch(e) { user = null; }
-    if (!user) { alert("Login first"); return; }
-    if (!db) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Database not ready</span>'; return; }
-    var today = new Date().toDateString();
-    var msgEl = document.getElementById("dailyMsg");
-    msgEl.innerHTML = '<span style="color:#ffd700">Checking...</span>';
-    db.ref('leaderboard_all/' + user + '/lastDaily').once('value', function(snap) {
-      if (snap.val() === today) { msgEl.innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; }
-      db.ref('leaderboard_all/' + user).once('value', function(leaderSnap) {
-        var data = leaderSnap.val() || {};
-        var coins = (data.coins || 0) + 50;
-        db.ref('leaderboard_all/' + user).update({coins: coins, score: coins, lastPlayed: Date.now(), lastDaily: today}, function(error2) {
-          if (error2) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error adding coins.</span>'; return; }
-          msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>';
-          showBalance();
-        });
-      });
-    }, function(err) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error checking status</span>'; });
-  } catch(e) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }
-}
+function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { lockPaymentMethod(s.val(), localStorage.getItem("network") || "Airtel Money"); return; } var num = localStorage.getItem("number") || ""; var net = localStorage.getItem("network") || "Airtel Money"; if(num) { db.ref('users/' + user).update({phone:num, network:net}); lockPaymentMethod(num, net); } }); } catch(e) {} }
+
+function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Database not ready</span>'; return; } var today = new Date().toDateString(); var msgEl = document.getElementById("dailyMsg"); msgEl.innerHTML = '<span style="color:#ffd700">Checking...</span>'; db.ref('leaderboard_all/' + user + '/lastDaily').once('value', function(snap) { if (snap.val() === today) { msgEl.innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } db.ref('leaderboard_all/' + user).once('value', function(leaderSnap) { var data = leaderSnap.val() || {}; var coins = (data.coins || 0) + 50; db.ref('leaderboard_all/' + user).update({coins: coins, score: coins, lastPlayed: Date.now(), lastDaily: today}, function(error2) { if (error2) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error</span>'; return; } msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }); }, function(err) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; } }
 
 try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("rewardedSongs", "[]"); localStorage.setItem("watchVideosToday", "0"); localStorage.setItem("watchLimitDate", todayStr); } catch(e) {} } } catch(e) {}
-function withdraw() { try {
-  var now = new Date(); var malawiOffset = 2*60; var utc = now.getTime() + (now.getTimezoneOffset()*60000); var malawiTime = new Date(utc + (malawiOffset*60000)); var day = malawiTime.getDay(); var hour = malawiTime.getHours();
-  if(day !== 5 || hour < 18 || hour >= 21){ document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⏰ Withdrawals only Fridays 6PM-9PM (Malawi time).</span>'; return; }
-  var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
-function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
 
-(function() {
-  var games = [{id:'temple',icon:'🏃',name:'Temple Run',reward:'+5 coins'},{id:'memory',icon:'🧠',name:'Memory Match',reward:'+5 coins'},{id:'number',icon:'🔢',name:'Number Guess',reward:'+5 coins'},{id:'reaction',icon:'⚡',name:'Reaction Test',reward:'+5 coins'},{id:'color',icon:'🎨',name:'Color Match',reward:'+5 coins'},{id:'math',icon:'➕',name:'Math Challenge',reward:'+5 coins'},{id:'word',icon:'📝',name:'Word Scramble',reward:'+5 coins'},{id:'checkers',icon:'⚫',name:'Checkers',reward:'+5-25 coins'}];
-  var grid = document.getElementById("gamesGrid"); if (grid) { var html = ''; for (var i = 0; i < games.length; i++) { var g = games[i]; html += '<div class="game-card" data-game="' + g.id + '"><div class="game-icon">' + g.icon + '</div><h4>' + g.name + '</h4><div class="game-reward">' + g.reward + '</div></div>'; } grid.innerHTML = html; var cards = grid.querySelectorAll('.game-card'); for (var j = 0; j < cards.length; j++) { (function(card) { card.onclick = function() { startGame(card.getAttribute('data-game')); }; })(cards[j]); } }
-})();
+function withdraw() { try { var now = new Date(); var malawiOffset = 2*60; var utc = now.getTime() + (now.getTimezoneOffset()*60000); var malawiTime = new Date(utc + (malawiOffset*60000)); var day = malawiTime.getDay(); var hour = malawiTime.getHours(); if(day !== 5 || hour < 18 || hour >= 21){ document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⏰ Withdrawals only Fridays 6PM-9PM (Malawi time).</span>'; return; } var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('users/' + user).once('value', function(userSnap) { var userData = userSnap.val() || {}; var phone = userData.phone || localStorage.getItem("number") || ""; var network = userData.network || localStorage.getItem("network") || ""; if(!phone){ document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ No phone number on account. Contact support.</span>'; return; } db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:network, phone:phone, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + ' to ' + network + ' (' + phone + ')</span>'; showBalance(); }); }); }); } catch(e) {} }
 
-function startGame(type) {
-  currentGame = type;
-  document.getElementById('playPage').classList.add('active');
-  var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); }
-  setGameAdsVisible(false);
-  document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1);
-  if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers();
-}
+function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - ' + (w.network||'') + ' ' + (w.phone||'') + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
 
-function startMemoryMatch() { var emojis = ['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺']; var cards = emojis.concat(emojis).sort(function() { return Math.random() - 0.5; }); gameState = {cards:cards, flipped:[], matched:0, moves:0, startTime:Date.now()}; var html = '<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">'; for (var i = 0; i < cards.length; i++) { html += '<div class="memory-card" id="card' + i + '" data-idx="' + i + '"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'; } html += '</div>'; document.getElementById('gameArea').innerHTML = html; var allCards = document.querySelectorAll('.memory-card'); for (var j = 0; j < allCards.length; j++) { (function(card) { card.onclick = function() { flipCard(parseInt(card.getAttribute('data-idx'))); }; })(allCards[j]); } gameState.timerInterval = setInterval(function() { var t = Math.floor((Date.now() - gameState.startTime) / 1000); var el = document.getElementById('timer'); if (el) el.innerHTML = 'Time: ' + t + 's | Moves: ' + gameState.moves; }, 200); }
-function flipCard(i) { if (gameState.flipped.length >= 2 || gameState.flipped.indexOf(i)!== -1) return; var c = document.getElementById('card' + i); if (!c || c.classList.contains('matched')) return; c.innerHTML = gameState.cards[i]; c.style.background = 'linear-gradient(135deg,#00ffcc,#00ccff)'; gameState.flipped.push(i); if (gameState.flipped.length === 2) { gameState.moves++; var f = gameState.flipped[0], s = gameState.flipped[1]; if (gameState.cards[f] === gameState.cards[s]) { document.getElementById('card' + f).classList.add('matched'); document.getElementById('card' + s).classList.add('matched'); gameState.matched += 2; gameState.flipped = []; if (gameState.matched === gameState.cards.length) { clearInterval(gameState.timerInterval); handleGameEnd(5, '🎉 Complete!', '<p>Well done!</p>', 'startMemoryMatch'); } } else { setTimeout(function() { var cf = document.getElementById('card' + f); var cs = document.getElementById('card' + s); if (cf) cf.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; if (cs) cs.innerHTML = '<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>'; gameState.flipped = []; }, 800); } } }
-function startNumberGuess() { gameState = {target: Math.floor(Math.random() * 100) + 1, attempts: 0}; document.getElementById('gameArea').innerHTML = '<h3>Guess 1-100</h3><div class="timer" id="gTimer">Attempts: 0/7</div><input type="number" id="guessInput" placeholder="Enter guess"><button id="guessBtn">Submit</button><p id="guessHint"></p>'; document.getElementById('guessBtn').onclick = makeGuess; }
-function makeGuess() { var g = parseInt(document.getElementById('guessInput').value); if (!g) return; gameState.attempts++; document.getElementById('gTimer').innerText = 'Attempts: ' + gameState.attempts + '/7'; if (g === gameState.target) { handleGameEnd(5, '🎉 Correct!', '', 'startNumberGuess'); } else if (gameState.attempts >= 7) { handleGameEnd(5, 'Game Over', '<p>Answer: ' + gameState.target + '</p>', 'startNumberGuess'); } else { document.getElementById('guessHint').innerHTML = g < gameState.target? '📈 Higher!' : '📉 Lower!'; document.getElementById('guessInput').value = ''; } }
-function startReactionTest() { gameState = {round: 0, scores: [], waiting: false}; document.getElementById('gameArea').innerHTML = '<h3>Click when GREEN</h3><div class="timer" id="rTimer">Round 0/5</div><div id="reactionBox" style="height:200px;background:#ff6b6b;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer"><span id="reactionText">START</span></div><button id="rStartBtn">START</button>'; document.getElementById('rStartBtn').onclick = startReactionRound; document.getElementById('reactionBox').onclick = reactionClick; }
-function startReactionRound() { var box = document.getElementById('reactionBox'); box.style.background = '#ff6b6b'; document.getElementById('reactionText').innerText = 'Wait...'; gameState.waiting = true; setTimeout(function() { var b = document.getElementById('reactionBox'); if (b) b.style.background = '#51cf66'; var t = document.getElementById('reactionText'); if (t) t.innerText = 'CLICK!'; gameState.start = Date.now(); gameState.waiting = false; }, 1000 + Math.random() * 3000); }
-function reactionClick() { if (gameState.waiting) return; var box = document.getElementById('reactionBox'); if (!box || box.style.background!== 'rgb(81, 207, 102)') return; var t = Date.now() - gameState.start; gameState.scores.push(t); gameState.round++; if (gameState.round === 5) { handleGameEnd(5, '⚡ Done!', '<p>Test complete</p>', 'startReactionTest'); } else { var rt = document.getElementById('reactionText'); if (rt) rt.innerText = 'START'; } }
-function startColorMatch() { gameState = {round: 0, score: 0}; nextColor(); }
-function nextColor() { if (gameState.round >= 10) { handleGameEnd(5, '🎨 Done!', '<p>Score ' + gameState.score + '/10</p>', 'startColorMatch'); return; } var colors = ['Red','Blue','Green','Yellow']; var map = {Red:'#ff6b6b',Blue:'#4dabf7',Green:'#51cf66',Yellow:'#ffd700'}; var word = colors[Math.floor(Math.random() * 4)]; var ink; do { ink = colors[Math.floor(Math.random() * 4)]; } while (ink === word); gameState.correct = ink; gameState.round++; var btns = ''; for (var i = 0; i < colors.length; i++) { btns += '<button class="color-btn" style="background:' + map[colors[i]] + ';color:#000" data-color="' + colors[i] + '">' + colors[i] + '</button>'; } document.getElementById('gameArea').innerHTML = '<h3>What color is the WORD?</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;color:' + map[ink] + '">' + word + '</div><div class="color-options">' + btns + '</div>'; var allBtns = document.querySelectorAll('.color-btn'); for (var j = 0; j < allBtns.length; j++) { (function(btn) { btn.onclick = function() { if(btn.getAttribute('data-color') === gameState.correct) gameState.score++; nextColor(); }; })(allBtns[j]); } }
-function startMathChallenge() { gameState = {round: 0, score: 0}; nextMath(); }
-function nextMath() { if (gameState.round >= 10) { handleGameEnd(5, '➕ Done!', '<p>Score ' + gameState.score + '/10</p>', 'startMathChallenge'); return; } var a = Math.floor(Math.random() * 20) + 1; var b = Math.floor(Math.random() * 20) + 1; gameState.answer = a + b; gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Solve quickly!</h3><div class="timer">' + gameState.round + '/10 | Score: ' + gameState.score + '</div><div style="font-size:48px;margin:30px;">' + a + ' + ' + b + ' =?</div><input type="number" id="mathAns" style="text-align:center;font-size:24px;"><button id="mathBtn">Submit</button>'; document.getElementById('mathBtn').onclick = function(){ if(parseInt(document.getElementById('mathAns').value) === gameState.answer) gameState.score++; nextMath(); }; }
-function startWordScramble() { gameState = {words: ['GAME','COIN','PLAY','WIN','MONEY','MALAWI','PHONE','PRIZE'].sort(function() { return Math.random() - 0.5; }), round: 0, score: 0}; nextWord(); }
-function nextWord() { if (gameState.round >= 8) { handleGameEnd(5, '📝 Done!', '<p>Score ' + gameState.score + '/8</p>', 'startWordScramble'); return; } var w = gameState.words[gameState.round]; gameState.answer = w; var s = w.split('').sort(function() { return Math.random() - 0.5; }).join(''); gameState.round++; document.getElementById('gameArea').innerHTML = '<h3>Unscramble!</h3><div class="timer">' + gameState.round + '/8 | Score: ' + gameState.score + '</div><div style="font-size:48px;letter-spacing:8px;margin:30px;">' + s + '</div><input type="text" id="wordAns" style="text-align:center;font-size:24px;text-transform:uppercase;"><button id="wordBtn">Submit</button>'; document.getElementById('wordBtn').onclick = function(){ var el=document.getElementById('wordAns'); if(el && el.value.toUpperCase() === gameState.answer) gameState.score++; nextWord(); }; }
-function startCheckers() { document.getElementById('gameArea').innerHTML = '<h3>Checkers - Malawi Rules</h3><p style="color:#ccc">Must capture if possible</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:400px;margin:20px auto"><button id="cEasy">Easy</button><button id="cMed">Medium</button><button id="cHard">HARD</button></div>'; document.getElementById('cEasy').onclick = function() { initCheckers('easy'); }; document.getElementById('cMed').onclick = function() { initCheckers('medium'); }; document.getElementById('cHard').onclick = function() { initCheckers('hard'); }; }
-function initCheckers(d) { gameState = {board:[], turn:1, selected:null, validMoves:[], difficulty:d}; for (var r = 0; r < 8; r++) { gameState.board[r] = []; for (var c = 0; c < 8; c++) gameState.board[r][c] = (r+c)%2 && r<3? -1 : (r+c)%2 && r>4? 1 : 0; } renderCheckers(); }
-function renderCheckers() { var h = '<div class="timer">' + gameState.difficulty + ' | ' + (gameState.turn===1?'Your turn':'CPU') + '</div><div style="display:grid;grid-template-columns:repeat(8,1fr);max-width:360px;margin:10px auto;border:3px solid #00ffcc;aspect-ratio:1">'; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) { var dark = (r+c)%2; var p = gameState.board[r][c]; var bg = dark? '#1a1a1a' : '#e0e0e0'; var sel = ''; if (gameState.selected && gameState.selected[0]===r && gameState.selected[1]===c) sel = 'outline:3px solid #00ffcc;outline-offset:-3px'; var vm = gameState.validMoves; var isVM = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { isVM = true; break; } } if (isVM) bg = '#00ffcc88'; h += '<div data-r="'+r+'" data-c="'+c+'" style="aspect-ratio:1;background:'+bg+';'+sel+';display:flex;align-items:center;justify-content:center;cursor:pointer" class="sq">'; if (p!== 0) { var red = p>0; var king = Math.abs(p)===2; h += '<div style="width:70%;height:70%;border-radius:50%;background:'+(red?'radial-gradient(circle,#ff6b6b,#c92a2a)':'radial-gradient(circle,#444,#000)')+';border:2px solid #888;display:flex;align-items:center;justify-content:center;color:#ffd700">'+(king?'♔':'')+'</div>'; } h += '</div>'; } h += '</div>'; document.getElementById('gameArea').innerHTML = h; var squares = document.querySelectorAll('.sq'); for (var j = 0; j < squares.length; j++) { (function(sq) { sq.onclick = function() { clickSquare(parseInt(sq.getAttribute('data-r')), parseInt(sq.getAttribute('data-c'))); }; })(squares[j]); } }
-function clickSquare(r, c) { if (gameState.turn!== 1) return; var p = gameState.board[r][c]; var all = getAllMoves(1); var must = false; for (var i = 0; i < all.length; i++) { if (Math.abs(all[i].from[0]-all[i].to[0])===2) { must = true; break; } } if (gameState.selected) { var vm = gameState.validMoves; var found = false; for (var k = 0; k < vm.length; k++) { if (vm[k][0]===r && vm[k][1]===c) { found = true; break; } } if (found) { var cont = makeMove(gameState.selected[0], gameState.selected[1], r, c); if (!cont) { gameState.selected = null; gameState.validMoves = []; renderCheckers(); setTimeout(cpuMove, 300); } return; } gameState.selected = null; gameState.validMoves = []; } if (p > 0) { if (must) { var can = false; for (var m = 0; m < all.length; m++) { if (all[m].from[0]===r && all[m].from[1]===c && Math.abs(all[m].from[0]-all[m].to[0])===2) { can = true; break; } } if (!can) return; } gameState.selected = [r, c]; gameState.validMoves = getMoves(r, c, 1); renderCheckers(); } }
-function getMoves(r, c, pl) { var b = gameState.board; var pc = b[r][c]; var m = []; var cap = []; var md = Math.abs(pc)===2? [-1,1] : (pl===1? [-1] : [1]); for (var di = 0; di < md.length; di++) { for (var ci = 0; ci < 2; ci++) { var dc = ci===0?-1:1; var nr=r+md[di], nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0) m.push([nr,nc]); } } for (var di2 = 0; di2 < 2; di2++) { for (var ci2 = 0; ci2 < 2; ci2++) { var dr=di2===0?-1:1; var dc=ci2===0?-1:1; var nr2=r+dr,nc2=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0) cap.push([jr,jc]); } } return cap.length? cap : m; }
-function getAllMoves(pl) { var all = []; var has = false; for (var r = 0; r < 8; r++) for (var c = 0; c < 8; c++) if (gameState.board[r][c]*pl > 0) { var caps = []; for (var di = 0; di < 2; di++) for (var ci = 0; ci < 2; ci++) { var dr=di===0?-1:1; var dc=ci===0?-1:1; var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2; if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0) { has=true; caps.push([jr,jc]); } } var ms = caps.length? caps : getMoves(r, c, pl); for (var k = 0; k < ms.length; k++) all.push({from:[r,c], to:ms[k]}); } if (has) { var filtered = []; for (var f = 0; f < all.length; f++) { if (Math.abs(all[f].from[0]-all[f].to[0])===2) filtered.push(all[f]); } return filtered; } return all; }
-function makeMove(r1, c1, r2, c2) { var b = gameState.board; b[r2][c2] = b[r1][c1]; b[r1][c1] = 0; var cap = false; if (Math.abs(r2-r1)===2) { b[(r1+r2)/2][(c1+c2)/2] = 0; cap = true; } if (r2===0 && b[r2][c2]===1) b[r2][c2] = 2; if (r2===7 && b[r2][c2]===-1) b[r2][c2] = -2; if (cap) { var fm = getMoves(r2, c2, b[r2][c2]>0?1:-1); var fCaps = []; for (var i = 0; i < fm.length; i++) { if (Math.abs(fm[i][0]-r2)===2) fCaps.push(fm[i]); } if (fCaps.length) { gameState.selected=[r2,c2]; gameState.validMoves=fCaps; renderCheckers(); return true; } } gameState.turn *= -1; gameState.selected = null; gameState.validMoves = []; checkWin(); return false; }
-function cpuMove() { if (gameState.turn!== -1) return; var moves = getAllMoves(-1); if (!moves.length) { endCheckers(true); return; } var choice; var caps = []; for (var i = 0; i < moves.length; i++) { if (Math.abs(moves[i].from[0]-moves[i].to[0])===2) caps.push(moves[i]); } if (gameState.difficulty === 'easy') { choice = moves[Math.random()*moves.length|0]; } else if (gameState.difficulty === 'medium') { var pool = caps.length? caps : moves; choice = pool[Math.random()*pool.length|0]; } else { var best = -1e9; for (var j = 0; j < moves.length; j++) { var v = Math.random()*100; if (v > best) { best = v; choice = moves[j]; } } } var cont = makeMove(choice.from[0], choice.from[1], choice.to[0], choice.to[1]); renderCheckers(); if (cont) setTimeout(cpuMove, 300); }
-function checkWin() { var f = gameState.board.flat? gameState.board.flat() : [].concat.apply([], gameState.board); var pCount = 0, cCount = 0; for (var i = 0; i < f.length; i++) { if (f[i] > 0) pCount++; if (f[i] < 0) cCount++; } if (cCount === 0) endCheckers(true); else if (pCount === 0) endCheckers(false); else if (getAllMoves(gameState.turn).length === 0) endCheckers(gameState.turn === -1); }
-function endCheckers(w) { handleGameEnd(w? 25 : 5, w? 'You Win!' : 'CPU Wins', '', 'startCheckers'); }
+(function() { var games = [{id:'temple',icon:'🏃',name:'Temple Run',reward:'+5 coins'},{id:'memory',icon:'🧠',name:'Memory Match',reward:'+5 coins'},{id:'number',icon:'🔢',name:'Number Guess',reward:'+5 coins'},{id:'reaction',icon:'⚡',name:'Reaction Test',reward:'+5 coins'},{id:'color',icon:'🎨',name:'Color Match',reward:'+5 coins'},{id:'math',icon:'➕',name:'Math Challenge',reward:'+5 coins'},{id:'word',icon:'📝',name:'Word Scramble',reward:'+5 coins'},{id:'checkers',icon:'⚫',name:'Checkers',reward:'+5-25 coins'}]; var grid = document.getElementById("gamesGrid"); if (grid) { var html = ''; for (var i = 0; i < games.length; i++) { var g = games[i]; html += '<div class="game-card" data-game="' + g.id + '"><div class="game-icon">' + g.icon + '</div><h4>' + g.name + '</h4><div class="game-reward">' + g.reward + '</div></div>'; } grid.innerHTML = html; var cards = grid.querySelectorAll('.game-card'); for (var j = 0; j < cards.length; j++) { (function(card) { card.onclick = function() { startGame(card.getAttribute('data-game')); }; })(cards[j]); } } })();
 
-function startTempleRun() {
-  document.getElementById('gameArea').innerHTML = '<h3>🏃 Temple Run - Ancient Escape</h3><div class="timer" id="templeHUD">0m | 🪙 0</div><canvas id="templeCanvas" width="360" height="480" style="width:100%;max-width:400px;background:#000;border-radius:15px;border:2px solid #00ffcc;touch-action:none"></canvas><p style="color:#999;font-size:12px;margin-top:8px">Swipe ← → to move, ↑ to jump, ↓ to slide</p>';
-  var c = document.getElementById('templeCanvas'), ctx = c.getContext('2d'); var W=360, H=480, lanes=[75,180,285];
-  gameState = {lane:1, y:380, vy:0, onGround:true, sliding:false, slideT:0, speed:5, dist:0, coins:0, obs:[], coinObjs:[], t:0, alive:true, bg:0, particles:[]};
-  function spawn(){ var lane = Math.floor(Math.random()*3); var type = Math.random()<0.6? 'jump' : 'slide'; gameState.obs.push({lane:lane, y:-70, type:type, w:50, h:type==='jump'?45:22}); if(Math.random()<0.5) gameState.coinObjs.push({lane:Math.floor(Math.random()*3), y:-40}); }
-  function update(){ if(!gameState.alive) return; gameState.t++; gameState.dist += gameState.speed*0.12; gameState.speed += 0.002; gameState.bg = (gameState.bg + gameState.speed) % 40; if(gameState.t % Math.max(45, 80-Math.floor(gameState.speed)) ===0) spawn(); if(!gameState.onGround){ gameState.vy+=0.85; gameState.y+=gameState.vy; if(gameState.y>=380){gameState.y=380; gameState.onGround=true; gameState.vy=0;} } if(gameState.sliding){ gameState.slideT--; if(gameState.slideT<=0) gameState.sliding=false; } for(var i=gameState.obs.length-1;i>=0;i--){ var o=gameState.obs[i]; o.y+=gameState.speed; if(o.y>H+60) gameState.obs.splice(i,1); else if(o.y>320 && o.y<410 && o.lane===gameState.lane &&!o.hit){ var hit=false; if(o.type==='jump' && gameState.onGround &&!gameState.sliding) hit=true; if(o.type==='slide' &&!gameState.sliding && gameState.onGround) hit=true; if(o.type==='slide' && gameState.y<370) hit=true; if(hit){ o.hit=true; gameState.alive=false; setTimeout(endRun,200); return; } } } for(var j=gameState.coinObjs.length-1;j>=0;j--){ var co=gameState.coinObjs[j]; co.y+=gameState.speed; if(co.y>H) gameState.coinObjs.splice(j,1); else if(Math.abs(co.y-gameState.y)<35 && co.lane===gameState.lane){ gameState.coins++; gameState.coinObjs.splice(j,1); gameState.particles.push({x:lanes[gameState.lane], y:gameState.y-20, t:15}); } } for(var p=gameState.particles.length-1;p>=0;p--){ gameState.particles[p].t--; if(gameState.particles[p].t<=0) gameState.particles.splice(p,1); } document.getElementById('templeHUD').innerText = Math.floor(gameState.dist)+'m | 🪙 '+gameState.coins; }
-  function draw(){ var grad = ctx.createLinearGradient(0,0,0,H); grad.addColorStop(0,'#001a1f'); grad.addColorStop(0.4,'#00333d'); grad.addColorStop(1,'#000'); ctx.fillStyle=grad; ctx.fillRect(0,0,W,H); ctx.fillStyle='rgba(0,255,204,0.08)'; for(var i=0;i<6;i++){ var x=i*70-10; ctx.fillRect(x,140,40,180); ctx.fillRect(x+30,110,20,30); } ctx.fillStyle='rgba(0,255,204,0.15)'; ctx.beginPath(); ctx.arc(300,80,35,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#0d0d0d'; ctx.fillRect(30,0,300,H); ctx.strokeStyle='rgba(0,255,204,0.25)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(30,0); ctx.lineTo(30,H); ctx.moveTo(330,0); ctx.lineTo(330,H); ctx.stroke(); for(var l=1;l<3;l++){ ctx.strokeStyle='rgba(0,255,204,0.15)'; ctx.setLineDash([20,20]); ctx.beginPath(); ctx.moveTo(30+l*100,0); ctx.lineTo(30+l*100,H); ctx.stroke(); } ctx.setLineDash([]); ctx.strokeStyle='rgba(0,204,255,0.2)'; for(var y=-40;y<H;y+=40){ ctx.beginPath(); ctx.moveTo(30,y+gameState.bg); ctx.lineTo(330,y+gameState.bg); ctx.stroke(); } gameState.coinObjs.forEach(function(co){ var x=lanes[co.lane]; ctx.save(); ctx.translate(x,co.y); ctx.rotate(gameState.t*0.1); ctx.fillStyle='#ffd700'; ctx.shadowColor='#ffaa00'; ctx.shadowBlur=15; ctx.beginPath(); ctx.arc(0,0,14,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#ffef99'; ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.fill(); ctx.restore(); }); gameState.obs.forEach(function(o){ var x=lanes[o.lane]; ctx.save(); ctx.translate(x,o.y); if(o.type==='jump'){ var grd=ctx.createLinearGradient(-25,-20,25,25); grd.addColorStop(0,'#8B5A2B'); grd.addColorStop(1,'#5C4033'); ctx.fillStyle=grd; ctx.shadowColor='#000'; ctx.shadowBlur=10; ctx.fillRect(-25,-20,50,40,40); ctx.fillStyle='#654321'; for(var b=0;b<3;b++) ctx.fillRect(-22+b*16,-18,12,36); } else { ctx.fillStyle='rgba(0,255,255,0.3)'; ctx.fillRect(-35,-10,70,8); ctx.fillStyle='#00ffcc'; ctx.shadowColor='#00ffff'; ctx.shadowBlur=20; ctx.fillRect(-30,-8,60,4); ctx.fillStyle='#0088aa'; ctx.fillRect(-32,10,12,25); ctx.fillRect(20,10,12,25); } ctx.restore(); }); var px=lanes[gameState.lane], py=gameState.y; ctx.save(); ctx.translate(px,py); if(gameState.sliding) ctx.scale(1,0.55); ctx.shadowColor='#00ffcc'; ctx.shadowBlur=25; ctx.fillStyle='#00ffcc'; ctx.beginPath(); ctx.arc(0,-28,12,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=15; ctx.fillStyle='#00ccff'; ctx.fillRect(-14,-18,28,32); ctx.fillStyle='#001a1a'; ctx.fillRect(-10,-12,8,6); ctx.fillRect(2,-12,8,6); if(!gameState.sliding){ ctx.fillStyle='#00ffcc'; ctx.fillRect(-16,14,8,18); ctx.fillRect(8,14,8,18); } ctx.restore(); gameState.particles.forEach(function(pt){ ctx.fillStyle='rgba(255,215,0,'+(pt.t/15)+')'; ctx.beginPath(); ctx.arc(pt.x,pt.y-pt.t,3,0,Math.PI*2); ctx.fill(); }); }
-  function loop(){ update(); draw(); if(gameState.alive) requestAnimationFrame(loop); }
-  function endRun(){ var d=Math.floor(gameState.dist); handleGameEnd(5, '🏃 Temple Complete!', '<p>Distance: '+d+'m</p><p>Coins: '+gameState.coins+'</p>', 'startTempleRun'); }
-  var sx=0, sy=0;
-  c.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; e.preventDefault(); },{passive:false});
-  c.addEventListener('touchend',function(e){ var dx=e.changedTouches[0].clientX-sx; var dy=e.changedTouches[0].clientY-sy; if(Math.abs(dx)>Math.abs(dy)){ if(dx>25 && gameState.lane<2) gameState.lane++; else if(dx<-25 && gameState.lane>0) gameState.lane--; } else { if(dy<-25 && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; } else if(dy>25 &&!gameState.sliding){ gameState.sliding=true; gameState.slideT=28; } } e.preventDefault(); },{passive:false});
-  var keyHandler=function(e){ if(!gameState.alive) return; if(e.key==='ArrowLeft' && gameState.lane>0){ gameState.lane--; e.preventDefault(); } if(e.key==='ArrowRight' && gameState.lane<2){ gameState.lane++; e.preventDefault(); } if((e.key==='ArrowUp'||e.key===' ') && gameState.onGround){ gameState.onGround=false; gameState.vy=-15; e.preventDefault(); } if(e.key==='ArrowDown' &&!gameState.sliding){ gameState.sliding=true; gameState.slideT=28; e.preventDefault(); } };
-  window.addEventListener('keydown', keyHandler);
-  gameState.cleanup=function(){ window.removeEventListener('keydown', keyHandler); };
-  loop();
-}
+function startGame(type) { currentGame = type; document.getElementById('playPage').classList.add('active'); var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } setGameAdsVisible(false); document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); }
 
-var currentLeaderboardView = 'daily';
-const lb_flags = {MW:"🇲🇼",ZM:"🇿🇲",TZ:"🇹🇿",KE:"🇰🇪",ZA:"🇿🇦",NG:"🇳🇬",US:"🇺🇸",GB:"🇬🇧",IN:"🇮🇳"};
-const HIDE_USERS = ["Admin_Mada","Mada_Banda"];
-function getToday(){ return new Date().toISOString().split('T')[0]; }
-function getWeek(){ const d=new Date(); const y=d.getFullYear(); const o=new Date(y,0,1); return y+"-W"+Math.ceil((((d-o)/86400000)+o.getDay()+1)/7); }
-function setView(view){ currentLeaderboardView = view; ['Daily','Weekly','All'].forEach(v=>{ const btn = document.getElementById('btn'+v); if(!btn) return; const active = v.toLowerCase()===view; btn.style.background = active?'#00ffcc':'#333'; btn.style.color = active?'#000':'#00ffcc'; btn.style.border = active?'none':'2px solid #00ffcc'; }); updateLeaderboard(); }
-function updateLeaderboard(){ const user = localStorage.getItem("user") || "Guest"; let path = currentLeaderboardView==='daily' ? "leaderboard_daily/"+getToday() : currentLeaderboardView==='weekly' ? "leaderboard_weekly/"+getWeek() : "leaderboard_all"; db.ref(path).orderByChild("coins").limitToLast(50).once("value", snap => { let list = []; snap.forEach(c => { const v = c.val() || {}; if(v.banned === true || HIDE_USERS.includes(c.key) || !v.coins) return; list.push({name: c.key, coins: v.coins || 0, country: v.country || "MW", displayName: v.displayName || c.key, lastPlayed: v.lastPlayed || 0, gamesPlayed: v.gamesPlayed || 0}); }); if(list.length === 0 && currentLeaderboardView !== 'all'){ db.ref("leaderboard_all").orderByChild("lastPlayed").limitToLast(50).once("value", s2 => { const now = Date.now(); const cutoff = currentLeaderboardView==='daily' ? now - 86400000 : now - 604800000; s2.forEach(c => { const v=c.val()||{}; if((v.lastPlayed||0) > cutoff && !v.banned && !HIDE_USERS.includes(c.key)){ list.push({name:c.key, coins:v.coins||0, country:v.country||"MW", displayName:v.displayName||c.key, lastPlayed:v.lastPlayed, gamesPlayed:v.gamesPlayed||0}); } }); renderBoard(list, user); }); return; } renderBoard(list, user); }); }
-function renderBoard(list, user){ list.sort((a,b)=>b.coins-a.coins); list = list.slice(0,10); db.ref("presence").once("value", presSnap => { const presence = {}; presSnap.forEach(p => { const v = p.val() || {}; presence[p.key] = v.state === 'online' && (Date.now() - (v.last||0) < 120000); }); let html = ""; list.forEach((p,i)=>{ const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":"<span style='color:#666'>#"+(i+1)+"</span>"; const flag = lb_flags[p.country] || "🌍"; const isMe = p.name===user; const online = presence[p.name] ? '<span style="display:inline-block;width:8px;height:8px;background:#00ff66;border-radius:50%;margin-left:6px;box-shadow:0 0 6px #00ff66"></span>' : ''; const bg = isMe ? "background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc" : "background:#111;border:1px solid #222"; html += '<div style="'+bg+';padding:12px;margin:6px 0;border-radius:10px;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><span style="width:30px;text-align:center;font-weight:bold">'+medal+'</span><span style="font-size:20px">'+flag+'</span><span style="font-weight:'+(isMe?'bold':'normal')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.displayName+online+'</span></div><div style="text-align:right"><div style="color:#ffd700;font-weight:bold">'+p.coins.toLocaleString()+' 🪙</div><div style="font-size:10px;color:#666">'+p.gamesPlayed+' games</div></div></div>'; }); document.getElementById("board").innerHTML = html || "<p style='color:#666;text-align:center;padding:20px'>No players yet. Be first!</p>"; const myData = list.find(p=>p.name===user); const myPos = list.findIndex(p=>p.name===user); const myCoins = myData ? myData.coins : parseInt(localStorage.getItem("coins")||0); const country = localStorage.getItem("country") || "MW"; const flag = lb_flags[country] || "🇲🇼"; const rankText = myPos>=0 ? '#'+(myPos+1) : "Unranked"; document.getElementById("myRank").innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center"><div style="text-align:left"><div style="font-size:12px;color:#999">YOUR RANK ('+currentLeaderboardView.toUpperCase()+')</div><div style="font-size:18px;font-weight:bold;margin-top:4px">'+flag+' '+user+' <span style="color:#00ffcc">'+rankText+'</span></div></div><div style="text-align:right"><div style="font-size:12px;color:#999">COINS</div><div style="font-size:22px;color:#ffd700;font-weight:bold">'+myCoins.toLocaleString()+'</div></div></div>'; window.myRankData = {rank:rankText, coins:myCoins, view:currentLeaderboardView}; }); }
-function shareRank(){ const user = localStorage.getItem("user") || "Player"; const data = window.myRankData || {rank:"#?", coins:0, view:"daily"}; const text = "🎮 I'm ranked "+data.rank+" on Mada Game Earn ("+data.view+") with "+data.coins.toLocaleString()+" coins! 🇲🇼\n\nPlay & earn real MWK - join now!"; if(navigator.share){ navigator.share({title:"Mada Game Earn", text:text}).catch(()=>{}); } else { navigator.clipboard.writeText(text).then(()=> alert("Rank copied! Share on WhatsApp")); } }
-var leaderboardInterval; setInterval(function(){ if(document.getElementById('leaderboardPage').classList.contains('active')) updateLeaderboard(); }, 10000);
+function startMemoryMatch(){var emojis=['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺'];var cards=emojis.concat(emojis).sort(function(){return Math.random()-0.5});gameState={cards:cards,flipped:[],matched:0,moves:0,startTime:Date.now()};var html='<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">';for(var i=0;i<cards.length;i++){html+='<div class="memory-card" id="card'+i+'" data-idx="'+i+'"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'}html+='</div>';document.getElementById('gameArea').innerHTML=html;var allCards=document.querySelectorAll('.memory-card');for(var j=0;j<allCards.length;j++){(function(card){card.onclick=function(){flipCard(parseInt(card.getAttribute('data-idx')))}})(allCards[j])}gameState.timerInterval=setInterval(function(){var t=Math.floor((Date.now()-gameState.startTime)/1000);var el=document.getElementById('timer');if(el)el.innerHTML='Time: '+t+'s | Moves: '+gameState.moves},200)}
+function flipCard(i){if(gameState.flipped.length>=2||gameState.flipped.indexOf(i)!==-1)return;var c=document.getElementById('card'+i);if(!c||c.classList.contains('matched'))return;c.innerHTML=gameState.cards[i];c.style.background='linear-gradient(135deg,#00ffcc,#00ccff)';gameState.flipped.push(i);if(gameState.flipped.length===2){gameState.moves++;var f=gameState.flipped[0],s=gameState.flipped[1];if(gameState.cards[f]===gameState.cards[s]){document.getElementById('card'+f).classList.add('matched');document.getElementById('card'+s).classList.add('matched');gameState.matched+=2;gameState.flipped=[];if(gameState.matched===gameState.cards.length){clearInterval(gameState.timerInterval);handleGameEnd(5,'🎉 Complete!','<p>Well done!</p>','startMemoryMatch')}}else{setTimeout(function(){var cf=document.getElementById('card'+f);var cs=document.getElementById('card'+s);if(cf)cf.innerHTML='<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>';if(cs)cs.innerHTML='<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>';gameState.flipped=[]},800)}}}
+function startNumberGuess(){gameState={target:Math.floor(Math.random()*100)+1,attempts:0};document.getElementById('gameArea').innerHTML='<h3>Guess 1-100</h3><div class="timer" id="gTimer">Attempts: 0/7</div><input type="number" id="guessInput" placeholder="Enter guess"><button id="guessBtn">Submit</button><p id="guessHint"></p>';document.getElementById('guessBtn').onclick=makeGuess}
+function makeGuess(){var g=parseInt(document.getElementById('guessInput').value);if(!g)return;gameState.attempts++;document.getElementById('gTimer').innerText='Attempts: '+gameState.attempts+'/7';if(g===gameState.target){handleGameEnd(5,'🎉 Correct!','','startNumberGuess')}else if(gameState.attempts>=7){handleGameEnd(5,'Game Over','<p>Answer: '+gameState.target+'</p>','startNumberGuess')}else{document.getElementById('guessHint').innerHTML=g<gameState.target?'📈 Higher!':'📉 Lower!';document.getElementById('guessInput').value=''}}
+function startReactionTest(){gameState={round:0,scores:[],waiting:false};document.getElementById('gameArea').innerHTML='<h3>Click when GREEN</h3><div class="timer" id="rTimer">Round 0/5</div><div id="reactionBox" style="height:200px;background:#ff6b6b;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer"><span id="reactionText">START</span></div><button id="rStartBtn">START</button>';document.getElementById('rStartBtn').onclick=startReactionRound;document.getElementById('reactionBox').onclick=reactionClick}
+function startReactionRound(){var box=document.getElementById('reactionBox');box.style.background='#ff6b6b';document.getElementById('reactionText').innerText='Wait...';gameState.waiting=true;setTimeout(function(){var b=document.getElementById('reactionBox');if(b)b.style.background='#51cf66';var t=document.getElementById('reactionText');if(t)t.innerText='CLICK!';gameState.start=Date.now();gameState.waiting=false},1000+Math.random()*3000)}
+function reactionClick(){if(gameState.waiting)return;var box=document.getElementById('reactionBox');if(!box||box.style.background!=='rgb(81, 207, 102)')return;var t=Date.now()-gameState.start;gameState.scores.push(t);gameState.round++;if(gameState.round===5){handleGameEnd(5,'⚡ Done!','<p>Test complete</p>','startReactionTest')}else{var rt=document.getElementById('reactionText');if(rt)rt.innerText='START'}}
+function startColorMatch(){gameState={round:0,score:0};nextColor()}
+function nextColor(){if(gameState.round>=10){handleGameEnd(5,'🎨 Done!','<p>Score '+gameState.score+'/10</p>','startColorMatch');return}var colors=['Red','Blue','Green','Yellow'];var map={Red:'#ff6b6b',Blue:'#4dabf7',Green:'#51cf66',Yellow:'#ffd700'};var word=colors[Math.floor(Math.random()*4)];var ink;do{ink=colors[Math.floor(Math.random()*4)]}while(ink===word);gameState.correct=ink;gameState.round++;var btns='';for(var i=0;i<colors.length;i++){btns+='<button class="color-btn" style="background:'+map[colors[i]]+';color:#000" data-color="'+colors[i]+'">'+colors[i]+'</button>'}document.getElementById('gameArea').innerHTML='<h3>What color is the WORD?</h3><div class="timer">'+gameState.round+'/10 | Score: '+gameState.score+'</div><div style="font-size:48px;margin:30px;color:'+map[ink]+'">'+word+'</div><div class="color-options">'+btns+'</div>';var allBtns=document.querySelectorAll('.color-btn');for(var j=0;j<allBtns.length;j++){(function(btn){btn.onclick=function(){if(btn.getAttribute('data-color')===gameState.correct)gameState.score++;nextColor()}})(allBtns[j])}}
+function startMathChallenge(){gameState={round:0,score:0};nextMath()}
+function nextMath(){if(gameState.round>=10){handleGameEnd(5,'➕ Done!','<p>Score '+gameState.score+'/10</p>','startMathChallenge');return}var a=Math.floor(Math.random()*20)+1;var b=Math.floor(Math.random()*20)+1;gameState.answer=a+b;gameState.round++;document.getElementById('gameArea').innerHTML='<h3>Solve quickly!</h3><div class="timer">'+gameState.round+'/10 | Score: '+gameState.score+'</div><div style="font-size:48px;margin:30px;">'+a+' + '+b+' =?</div><input type="number" id="mathAns" style="text-align:center;font-size:24px;"><button id="mathBtn">Submit</button>';document.getElementById('mathBtn').onclick=function(){if(parseInt(document.getElementById('mathAns').value)===gameState.answer)gameState.score++;nextMath()}}
+function startWordScramble(){gameState={words:['GAME','COIN','PLAY','WIN','MONEY','MALAWI','PHONE','PRIZE'].sort(function(){return Math.random()-0.5}),round:0,score:0};nextWord()}
+function nextWord(){if(gameState.round>=8){handleGameEnd(5,'📝 Done!','<p>Score '+gameState.score+'/8</p>','startWordScramble');return}var w=gameState.words[gameState.round];gameState.answer=w;var s=w.split('').sort(function(){return Math.random()-0.5}).join('');gameState.round++;document.getElementById('gameArea').innerHTML='<h3>Unscramble!</h3><div class="timer">'+gameState.round+'/8 | Score: '+gameState.score+'</div><div style="font-size:48px;letter-spacing:8px;margin:30px;">'+s+'</div><input type="text" id="wordAns" style="text-align:center;font-size:24px;text-transform:uppercase;"><button id="wordBtn">Submit</button>';document.getElementById('wordBtn').onclick=function(){var el=document.getElementById('wordAns');if(el&&el.value.toUpperCase()===gameState.answer)gameState.score++;nextWord()}}
+function startCheckers(){document.getElementById('gameArea').innerHTML='<h3>Checkers - Malawi Rules</h3><p style="color:#ccc">Must capture if possible</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:400px;margin:20px auto"><button id="cEasy">Easy</button><button id="cMed">Medium</button><button id="cHard">HARD</button></div>';document.getElementById('cEasy').onclick=function(){initCheckers('easy')};document.getElementById('cMed').onclick=function(){initCheckers('medium')};document.getElementById('cHard').onclick=function(){initCheckers('hard')}}
+function initCheckers(d){gameState={board:[],turn:1,selected:null,validMoves:[],difficulty:d};for(var r=0;r<8;r++){gameState.board[r]=[];for(var c=0;c<8;c++)gameState.board[r][c]=(r+c)%2&&r<3?-1:(r+c)%2&&r>4?1:0}renderCheckers()}
+function renderCheckers(){var h='<div class="timer">'+gameState.difficulty+' | '+(gameState.turn===1?'Your turn':'CPU')+'</div><div style="display:grid;grid-template-columns:repeat(8,1fr);max-width:360px;margin:10px auto;border:3px solid #00ffcc;aspect-ratio:1">';for(var r=0;r<8;r++)for(var c=0;c<8;c++){var dark=(r+c)%2;var p=gameState.board[r][c];var bg=dark?'#1a1a1a':'#e0e0e0';var sel='';if(gameState.selected&&gameState.selected[0]===r&&gameState.selected[1]===c)sel='outline:3px solid #00ffcc;outline-offset:-3px';var vm=gameState.validMoves;var isVM=false;for(var k=0;k<vm.length;k++){if(vm[k][0]===r&&vm[k][1]===c){isVM=true;break}}if(isVM)bg='#00ffcc88';h+='<div data-r="'+r+'" data-c="'+c+'" style="aspect-ratio:1;background:'+bg+';'+sel+';display:flex;align-items:center;justify-content:center;cursor:pointer" class="sq">';if(p!==0){var red=p>0;var king=Math.abs(p)===2;h+='<div style="width:70%;height:70%;border-radius:50%;background:'+(red?'radial-gradient(circle,#ff6b6b,#c92a2a)':'radial-gradient(circle,#444,#000)')+';border:2px solid #888;display:flex;align-items:center;justify-content:center;color:#ffd700">'+(king?'♔':'')+'</div>'}h+='</div>'}h+='</div>';document.getElementById('gameArea').innerHTML=h;var squares=document.querySelectorAll('.sq');for(var j=0;j<squares.length;j++){(function(sq){sq.onclick=function(){clickSquare(parseInt(sq.getAttribute('data-r')),parseInt(sq.getAttribute('data-c')))}})(squares[j])}}
+function clickSquare(r,c){if(gameState.turn!==1)return;var p=gameState.board[r][c];var all=getAllMoves(1);var must=false;for(var i=0;i<all.length;i++){if(Math.abs(all[i].from[0]-all[i].to[0])===2){must=true;break}}if(gameState.selected){var vm=gameState.validMoves;var found=false;for(var k=0;k<vm.length;k++){if(vm[k][0]===r&&vm[k][1]===c){found=true;break}}if(found){var cont=makeMove(gameState.selected[0],gameState.selected[1],r,c);if(!cont){gameState.selected=null;gameState.validMoves=[];renderCheckers();setTimeout(cpuMove,300)}return}gameState.selected=null;gameState.validMoves=[]}if(p>0){if(must){var can=false;for(var m=0;m<all.length;m++){if(all[m].from[0]===r&&all[m].from[1]===c&&Math.abs(all[m].from[0]-all[m].to[0])===2){can=true;break}}if(!can)return}gameState.selected=[r,c];gameState.validMoves=getMoves(r,c,1);renderCheckers()}}
+function getMoves(r,c,pl){var b=gameState.board;var pc=b[r][c];var m=[];var cap=[];var md=Math.abs(pc)===2?[-1,1]:(pl===1?[-1]:[1]);for(var di=0;di<md.length;di++){for(var ci=0;ci<2;ci++){var dc=ci===0?-1:1;var nr=r+md[di],nc=c+dc;if(nr>=0&&nr<8&&nc>=0&&nc<8&&b[nr][nc]===0)m.push([nr,nc])}}for(var di2=0;di2<2;di2++){for(var ci2=0;ci2<2;ci2++){var dr=di2===0?-1:1;var dc=ci2===0?-1:1;var nr2=r+dr,nc2=c+dc,jr=r+dr*2,jc=c+dc*2;if(jr>=0&&jr<8&&jc>=0&&jc<8&&b[nr2][nc2]*pl<0&&b[jr][jc]===0)cap.push([jr,jc])}}return cap.length?cap:m}
+function getAllMoves(pl){var all=[];var has=false;for(var r=0;r<8;r++)for(var c=0;c<8;c++)if(gameState.board[r][c]*pl>0){var caps=[];for(var di=0;di<2;di++)for(var ci=0;ci<2;ci++){var dr=di===0?-1:1;var dc=ci===0?-1:1;var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2;if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0){has=true;caps.push([jr,jc])}}var ms=caps.length?caps:getMoves(r,c,pl);for(var k=0;k<ms.length;k++)all.push({from:[r,c],to:ms[k]})}if(has){var filtered=[];for(var f=0;f<all.length;f++){if(Math.abs(all[f].from[0]-all[f].to[0])===2)filtered.push(all[f])}return filtered}return all}
+function makeMove(r1,c1,r2,c2){var b=gameState.board;b[r2][c2]=b[r1][c1];b[r1][c1]=0;var cap=false;if(Math.abs(r2-r1)===2){b[(r1+r2)/2][(c1+c2)/2]=0;cap=true}if(r2===0&&b[r2][c2]===1)b[r2][c2]=2;if(r2===7&&b[r2][c2]===-1)b[r2][c2]=-2;if(cap){var fm=getMoves(r2,c2,b[r2][c2]>0?1:-1);var fCaps=[];for(var i=0;i<fm.length;i++){if(Math.abs(fm[i][0]-r2)===2)fCaps.push(fm[i])}if(fCaps.length){gameState.selected=[r2,c2];gameState.validMoves=fCaps;renderCheckers();return true}}gameState.turn*=-1;gameState.selected=null;gameState.validMoves=[];checkWin();return false}
+function cpuMove(){if(gameState.turn!==-1)return;var moves=getAllMoves(-1);if(!moves.length){endCheckers(true);return}var choice;var caps=[];for(var i=0;i<moves.length;i++){if(Math.abs(moves[i].from[0]-moves[i].to[0])===2)caps.push(moves[i])}if(gameState.difficulty==='easy'){choice=moves[Math.random()*moves.length|0]}else if(gameState.difficulty==='medium'){var pool=caps.length?caps:moves;choice=pool[Math.random()*pool.length|0]}else{var best=-1e9;for(var j=0;j<moves.length;j++){var v=Math.random()*100;if(v>best){best=v;choice=moves[j]}}}var cont=makeMove(choice.from[0],choice.from[1],choice.to[0],choice.to[1]);renderCheckers();if(cont)setTimeout(cpuMove,300)}
+function checkWin(){var f=gameState.board.flat?gameState.board.flat():[].concat.apply([],gameState.board);var pCount=0,cCount=0;for(var i=0;i<f.length;i++){if(f[i]>0)pCount++;if(f[i]<0)cCount++}if(cCount===0)endCheckers(true);else if(pCount===0)endCheckers(false);else if(getAllMoves(gameState.turn).length===0)endCheckers(gameState.turn===-1)}
+function endCheckers(w){handleGameEnd(w?25:5,w?'You Win!':'CPU Wins','','startCheckers')}
 
-/* ===== UPLOAD MUSIC WITH MONETAG ===== */
-var uploadedSongs = []; var rewardedSongs = []; var uploadListenInterval = null; var currentUploadSongIndex = -1; var pendingPlayIndex = -1;
-try { var savedRewarded = localStorage.getItem('rewardedSongs'); if (savedRewarded) rewardedSongs = JSON.parse(savedRewarded); } catch(e) { rewardedSongs = []; }
+function startTempleRun(){document.getElementById('gameArea').innerHTML='<h3>🏃 Temple Run - Ancient Escape</h3><div class="timer" id="templeHUD">0m | 🪙 0</div><canvas id="templeCanvas" width="360" height="480" style="width:100%;max-width:400px;background:#000;border-radius:15px;border:2px solid #00ffcc;touch-action:none"></canvas><p style="color:#999;font-size:12px;margin-top:8px">Swipe ← → to move, ↑ jump, ↓ slide</p>';var c=document.getElementById('templeCanvas'),ctx=c.getContext('2d');var W=360,H=480,lanes=[75,180,285];gameState={lane:1,y:380,vy:0,onGround:true,sliding:false,slideT:0,speed:5,dist:0,coins:0,obs:[],coinObjs:[],t:0,alive:true,bg:0,particles:[]};function spawn(){var lane=Math.floor(Math.random()*3);var type=Math.random()<0.6?'jump':'slide';gameState.obs.push({lane:lane,y:-70,type:type,w:50,h:type==='jump'?45:22});if(Math.random()<0.5)gameState.coinObjs.push({lane:Math.floor(Math.random()*3),y:-40})}function update(){if(!gameState.alive)return;gameState.t++;gameState.dist+=gameState.speed*0.12;gameState.speed+=0.002;gameState.bg=(gameState.bg+gameState.speed)%40;if(gameState.t%Math.max(45,80-Math.floor(gameState.speed))===0)spawn();if(!gameState.onGround){gameState.vy+=0.85;gameState.y+=gameState.vy;if(gameState.y>=380){gameState.y=380;gameState.onGround=true;gameState.vy=0}}if(gameState.sliding){gameState.slideT--;if(gameState.slideT<=0)gameState.sliding=false}for(var i=gameState.obs.length-1;i>=0;i--){var o=gameState.obs[i];o.y+=gameState.speed;if(o.y>H+60)gameState.obs.splice(i,1);else if(o.y>320&&o.y<410&&o.lane===gameState.lane&&!o.hit){var hit=false;if(o.type==='jump'&&gameState.onGround&&!gameState.sliding)hit=true;if(o.type==='slide'&&!gameState.sliding&&gameState.onGround)hit=true;if(o.type==='slide'&&gameState.y<370)hit=true;if(hit){o.hit=true;gameState.alive=false;setTimeout(endRun,200);return}}}for(var j=gameState.coinObjs.length-1;j>=0;j--){var co=gameState.coinObjs[j];co.y+=gameState.speed;if(co.y>H)gameState.coinObjs.splice(j,1);else if(Math.abs(co.y-gameState.y)<35&&co.lane===gameState.lane){gameState.coins++;gameState.coinObjs.splice(j,1);gameState.particles.push({x:lanes[gameState.lane],y:gameState.y-20,t:15})}}for(var p=gameState.particles.length-1;p>=0;p--){gameState.particles[p].t--;if(gameState.particles[p].t<=0)gameState.particles.splice(p,1)}document.getElementById('templeHUD').innerText=Math.floor(gameState.dist)+'m | 🪙 '+gameState.coins}function draw(){var grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#001a1f');grad.addColorStop(0.4,'#00333d');grad.addColorStop(1,'#000');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);ctx.fillStyle='#0d0d0d';ctx.fillRect(30,0,300,H);ctx.strokeStyle='rgba(0,255,204,0.25)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(30,0);ctx.lineTo(30,H);ctx.moveTo(330,0);ctx.lineTo(330,H);ctx.stroke();gameState.obs.forEach(function(o){var x=lanes[o.lane];ctx.save();ctx.translate(x,o.y);if(o.type==='jump'){ctx.fillStyle='#8B5A2B';ctx.fillRect(-25,-20,50,40)}else{ctx.fillStyle='#00ffcc';ctx.fillRect(-30,-8,60,4);ctx.fillStyle='#0088aa';ctx.fillRect(-32,10,12,25);ctx.fillRect(20,10,12,25)}ctx.restore()});gameState.coinObjs.forEach(function(co){var x=lanes[co.lane];ctx.save();ctx.translate(x,co.y);ctx.rotate(gameState.t*0.1);ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(0,0,14,0,Math.PI*2);ctx.fill();ctx.restore()});var px=lanes[gameState.lane],py=gameState.y;ctx.save();ctx.translate(px,py);if(gameState.sliding)ctx.scale(1,0.55);ctx.fillStyle='#00ffcc';ctx.beginPath();ctx.arc(0,-28,12,0,Math.PI*2);ctx.fill();ctx.fillStyle='#00ccff';ctx.fillRect(-14,-18,28,32);if(!gameState.sliding){ctx.fillStyle='#00ffcc';ctx.fillRect(-16,14,8,18);ctx.fillRect(8,14,8,18)}ctx.restore();gameState.particles.forEach(function(pt){ctx.fillStyle='rgba(255,215,0,'+(pt.t/15)+')';ctx.beginPath();ctx.arc(pt.x,pt.y-pt.t,3,0,Math.PI*2);ctx.fill()})}function loop(){update();draw();if(gameState.alive)requestAnimationFrame(loop)}function endRun(){var d=Math.floor(gameState.dist);handleGameEnd(5,'🏃 Temple Complete!','<p>Distance: '+d+'m</p><p>Coins: '+gameState.coins+'</p>','startTempleRun')}var sx=0,sy=0;c.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;e.preventDefault()},{passive:false});c.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;var dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)){if(dx>25&&gameState.lane<2)gameState.lane++;else if(dx<-25&&gameState.lane>0)gameState.lane--}else{if(dy<-25&&gameState.onGround){gameState.onGround=false;gameState.vy=-15}else if(dy>25&&!gameState.sliding){gameState.sliding=true;gameState.slideT=28}}e.preventDefault()},{passive:false});var keyHandler=function(e){if(!gameState.alive)return;if(e.key==='ArrowLeft'&&gameState.lane>0){gameState.lane--;e.preventDefault()}if(e.key==='ArrowRight'&&gameState.lane<2){gameState.lane++;e.preventDefault()}if((e.key==='ArrowUp'||e.key===' ')&&gameState.onGround){gameState.onGround=false;gameState.vy=-15;e.preventDefault()}if(e.key==='ArrowDown'&&!gameState.sliding){gameState.sliding=true;gameState.slideT=28;e.preventDefault()}};window.addEventListener('keydown',keyHandler);gameState.cleanup=function(){window.removeEventListener('keydown',keyHandler)};loop()}
 
-function handleMusicUpload() { var input = document.getElementById('musicFileInput'); if (!input || !input.files || input.files.length === 0) return; var addedCount = 0; for (var i = 0; i < input.files.length; i++) { var file = input.files[i]; if (!file.type.startsWith('audio/')) continue; var isDuplicate = false; for (var d = 0; d < uploadedSongs.length; d++) { if (uploadedSongs[d].name === file.name) { isDuplicate = true; break; } } if (isDuplicate) continue; var url = URL.createObjectURL(file); uploadedSongs.push({name: file.name, url: url, size: file.size}); addedCount++; } if (addedCount > 0) { var msgEl = document.getElementById('uploadListenMsg'); if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ ' + addedCount + ' song(s) added!</span>'; setTimeout(function(){ if(msgEl) msgEl.innerHTML = ''; }, 3000); } renderUploadedSongs(); input.value = ''; }
-function renderUploadedSongs() { var list = document.getElementById('uploadedMusicList'); if (!list) return; if (uploadedSongs.length === 0) { list.innerHTML = '<p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p>'; updateUploadCountBadge(); return; } var html = ''; for (var i = 0; i < uploadedSongs.length; i++) { var song = uploadedSongs[i]; var isRewarded = rewardedSongs.indexOf(song.name) !== -1; var isPlaying = (currentUploadSongIndex === i); html += '<div class="upload-song-item">'; html += '<span class="upload-song-name">🎵 ' + song.name.replace(/</g,'&lt;') + '</span>'; if (isRewarded) { html += '<span class="upload-song-earned">✅ Earned</span>'; } else { html += '<button class="upload-song-btn" onclick="playUploadedSong(' + i + ')" style="background:' + (isPlaying ? 'linear-gradient(45deg,#e74c3c,#c0392b)' : 'linear-gradient(45deg,#9b59b6,#8e44ad)') + ';color:#fff">' + (isPlaying ? '⏹ Stop' : '▶ Play') + '</button>'; } html += '</div>'; } list.innerHTML = html; updateUploadCountBadge(); }
-function updateUploadCountBadge() { var badge = document.getElementById('uploadCountBadge'); if (badge) { var todayEarned = rewardedSongs.length; badge.innerText = '🎵 ' + todayEarned + ' song' + (todayEarned !== 1 ? 's' : '') + ' earned today'; } }
+var currentLeaderboardView='daily';const lb_flags={MW:"🇲🇼",ZM:"🇿🇲",TZ:"🇹🇿",KE:"🇰🇪",ZA:"🇿🇦",NG:"🇳🇬",US:"🇺🇸",GB:"🇬🇧",IN:"🇮🇳"};const HIDE_USERS=["Admin_Mada","Mada_Banda"];function getToday(){return new Date().toISOString().split('T')[0]}function getWeek(){const d=new Date();const y=d.getFullYear();const o=new Date(y,0,1);return y+"-W"+Math.ceil((((d-o)/86400000)+o.getDay()+1)/7)}function setView(view){currentLeaderboardView=view;['Daily','Weekly','All'].forEach(v=>{const btn=document.getElementById('btn'+v);if(!btn)return;const active=v.toLowerCase()===view;btn.style.background=active?'#00ffcc':'#333';btn.style.color=active?'#000':'#00ffcc';btn.style.border=active?'none':'2px solid #00ffcc'});updateLeaderboard()}
+function updateLeaderboard(){const user=localStorage.getItem("user")||"Guest";let path=currentLeaderboardView==='daily'?"leaderboard_daily/"+getToday():currentLeaderboardView==='weekly'?"leaderboard_weekly/"+getWeek():"leaderboard_all";db.ref(path).orderByChild("coins").limitToLast(50).once("value",snap=>{let list=[];snap.forEach(c=>{const v=c.val()||{};if(v.banned===true||HIDE_USERS.includes(c.key)||!v.coins)return;list.push({name:c.key,coins:v.coins||0,country:v.country||"MW",displayName:v.displayName||c.key,lastPlayed:v.lastPlayed||0,gamesPlayed:v.gamesPlayed||0})});if(list.length===0&&currentLeaderboardView!=='all'){db.ref("leaderboard_all").orderByChild("lastPlayed").limitToLast(50).once("value",s2=>{const now=Date.now();const cutoff=currentLeaderboardView==='daily'?now-86400000:now-604800000;s2.forEach(c=>{const v=c.val()||{};if((v.lastPlayed||0)>cutoff&&!v.banned&&!HIDE_USERS.includes(c.key)){list.push({name:c.key,coins:v.coins||0,country:v.country||"MW",displayName:v.displayName||c.key,lastPlayed:v.lastPlayed,gamesPlayed:v.gamesPlayed||0})}});renderBoard(list,user)});return}renderBoard(list,user)})}
+function renderBoard(list,user){list.sort((a,b)=>b.coins-a.coins);list=list.slice(0,10);db.ref("presence").once("value",presSnap=>{const presence={};presSnap.forEach(p=>{const v=p.val()||{};presence[p.key]=v.state==='online'&&(Date.now()-(v.last||0)<120000)});let html="";list.forEach((p,i)=>{const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"<span style='color:#666'>#"+(i+1)+"</span>";const flag=lb_flags[p.country]||"🌍";const isMe=p.name===user;const online=presence[p.name]?'<span style="display:inline-block;width:8px;height:8px;background:#00ff66;border-radius:50%;margin-left:6px;box-shadow:0 0 6px #00ff66"></span>':'';const bg=isMe?"background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc":"background:#111;border:1px solid #222";html+='<div style="'+bg+';padding:12px;margin:6px 0;border-radius:10px;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><span style="width:30px;text-align:center;font-weight:bold">'+medal+'</span><span style="font-size:20px">'+flag+'</span><span style="font-weight:'+(isMe?'bold':'normal')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.displayName+online+'</span></div><div style="text-align:right"><div style="color:#ffd700;font-weight:bold">'+p.coins.toLocaleString()+' 🪙</div><div style="font-size:10px;color:#666">'+p.gamesPlayed+' games</div></div></div>'});document.getElementById("board").innerHTML=html||"<p style='color:#666;text-align:center;padding:20px'>No players yet!</p>";const myData=list.find(p=>p.name===user);const myPos=list.findIndex(p=>p.name===user);const myCoins=myData?myData.coins:parseInt(localStorage.getItem("coins")||0);const country=localStorage.getItem("country")||"MW";const flag=lb_flags[country]||"🇲🇼";const rankText=myPos>=0?'#'+(myPos+1):"Unranked";document.getElementById("myRank").innerHTML='<div style="display:flex;justify-content:space-between;align-items:center"><div style="text-align:left"><div style="font-size:12px;color:#999">YOUR RANK ('+currentLeaderboardView.toUpperCase()+')</div><div style="font-size:18px;font-weight:bold;margin-top:4px">'+flag+' '+user+' <span style="color:#00ffcc">'+rankText+'</span></div></div><div style="text-align:right"><div style="font-size:12px;color:#999">COINS</div><div style="font-size:22px;color:#ffd700;font-weight:bold">'+myCoins.toLocaleString()+'</div></div></div>';window.myRankData={rank:rankText,coins:myCoins,view:currentLeaderboardView}})}
+function shareRank(){const user=localStorage.getItem("user")||"Player";const data=window.myRankData||{rank:"#?",coins:0,view:"daily"};const text="🎮 I'm ranked "+data.rank+" on Mada Game Earn ("+data.view+") with "+data.coins.toLocaleString()+" coins! 🇲🇼\n\nPlay & earn real MWK!";if(navigator.share){navigator.share({title:"Mada Game Earn",text:text}).catch(()=>{})}else{navigator.clipboard.writeText(text).then(()=>alert("Rank copied! Share on WhatsApp"))}}
+setInterval(function(){if(document.getElementById('leaderboardPage').classList.contains('active'))updateLeaderboard()},10000);
 
-function playUploadedSong(index) { if (index < 0 || index >= uploadedSongs.length) return; var song = uploadedSongs[index]; var audio = document.getElementById('uploadedAudio'); var player = document.getElementById('customAudioPlayer'); var nameEl = document.getElementById('uploadedSongName'); var timerEl = document.getElementById('uploadListenTimer'); var msgEl = document.getElementById('uploadListenMsg'); var barEl = document.getElementById('uploadListenBar');
-  if (currentUploadSongIndex === index && !audio.paused) { audio.pause(); audio.currentTime = 0; if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } currentUploadSongIndex = -1; if (timerEl) timerEl.innerText = ''; if (msgEl) msgEl.innerHTML = ''; if (barEl) barEl.style.width = '0%'; renderUploadedSongs(); return; }
-  if (rewardedSongs.indexOf(song.name) !== -1) { if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⚠ Already earned coins for this song today!</span>'; player.style.display = 'block'; nameEl.innerText = '🎵 ' + song.name; audio.src = song.url; audio.play(); currentUploadSongIndex = index; if (timerEl) timerEl.innerText = 'Listening (no reward - already earned)'; if (barEl) barEl.style.width = '100%'; renderUploadedSongs(); return; }
-  if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; }
-  pendingPlayIndex = index; player.style.display = 'block'; nameEl.innerText = '🎵 ' + song.name; if (timerEl) timerEl.innerText = ''; if (barEl) barEl.style.width = '0%'; if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">⏳ Loading video ad... Please wait</span>'; renderUploadedSongs(); triggerMonetagRewardedAd(); }
+var uploadedSongs=[];var rewardedSongs=[];var uploadListenInterval=null;var currentUploadSongIndex=-1;var pendingPlayIndex=-1;
+try{var savedRewarded=localStorage.getItem('rewardedSongs');if(savedRewarded)rewardedSongs=JSON.parse(savedRewarded)}catch(e){rewardedSongs=[]}
+function handleMusicUpload(){var input=document.getElementById('musicFileInput');if(!input||!input.files||input.files.length===0)return;var addedCount=0;for(var i=0;i<input.files.length;i++){var file=input.files[i];if(!file.type.startsWith('audio/'))continue;var isDuplicate=false;for(var d=0;d<uploadedSongs.length;d++){if(uploadedSongs[d].name===file.name){isDuplicate=true;break}}if(isDuplicate)continue;var url=URL.createObjectURL(file);uploadedSongs.push({name:file.name,url:url,size:file.size});addedCount++}if(addedCount>0){var msgEl=document.getElementById('uploadListenMsg');if(msgEl)msgEl.innerHTML='<span style="color:#51cf66">✅ '+addedCount+' song(s) added!</span>';setTimeout(function(){if(msgEl)msgEl.innerHTML=''},3000)}renderUploadedSongs();input.value=''}
+function renderUploadedSongs(){var list=document.getElementById('uploadedMusicList');if(!list)return;if(uploadedSongs.length===0){list.innerHTML='<p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p>';updateUploadCountBadge();return}var html='';for(var i=0;i<uploadedSongs.length;i++){var song=uploadedSongs[i];var isRewarded=rewardedSongs.indexOf(song.name)!==-1;var isPlaying=(currentUploadSongIndex===i);html+='<div class="upload-song-item">';html+='<span class="upload-song-name">🎵 '+song.name.replace(/</g,'&lt;')+'</span>';if(isRewarded){html+='<span class="upload-song-earned">✅ Earned</span>'}else{html+='<button class="upload-song-btn" onclick="playUploadedSong('+i+')" style="background:'+(isPlaying?'linear-gradient(45deg,#e74c3c,#c0392b)':'linear-gradient(45deg,#9b59b6,#8e44ad)')+';color:#fff">'+(isPlaying?'⏹ Stop':'▶ Play')+'</button>'}html+='</div>'}list.innerHTML=html;updateUploadCountBadge()}
+function updateUploadCountBadge(){var badge=document.getElementById('uploadCountBadge');if(badge){var todayEarned=rewardedSongs.length;badge.innerText='🎵 '+todayEarned+' song'+(todayEarned!==1?'s':'')+' earned today'}}
 
-function startUploadedSongPlayback(index) { if (index < 0 || index >= uploadedSongs.length) return; var song = uploadedSongs[index]; var audio = document.getElementById('uploadedAudio'); var player = document.getElementById('customAudioPlayer'); var nameEl = document.getElementById('uploadedSongName'); var timerEl = document.getElementById('uploadListenTimer'); var msgEl = document.getElementById('uploadListenMsg'); var barEl = document.getElementById('uploadListenBar');
-  audio.src = song.url; audio.play(); currentUploadSongIndex = index;
-  var listenedSeconds = 0; var requiredSeconds = 60;
-  if (timerEl) timerEl.innerText = '0s / ' + requiredSeconds + 's';
-  if (msgEl) msgEl.innerHTML = '<span style="color:#ffd700">🎧 Listening... Keep the song playing to earn +50 coins!</span>';
-  if (barEl) { barEl.style.width = '0%'; barEl.style.background = 'linear-gradient(90deg,#9b59b6,#e74c3c)'; }
-  renderUploadedSongs();
-  if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; }
-  uploadListenInterval = setInterval(function() { if (audio.paused) { if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⏸ Song paused! Press play to continue earning...</span>'; return; } listenedSeconds++; var percent = Math.min(100, (listenedSeconds / requiredSeconds) * 100); if (timerEl) timerEl.innerText = listenedSeconds + 's / ' + requiredSeconds + 's'; if (barEl) barEl.style.width = percent + '%'; if (listenedSeconds >= requiredSeconds) { clearInterval(uploadListenInterval); uploadListenInterval = null; addCoins(50); rewardedSongs.push(song.name); try { localStorage.setItem('rewardedSongs', JSON.stringify(rewardedSongs)); } catch(e) {} if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins earned for "' + song.name.replace(/</g,'&lt;') + '"!</span>'; if (timerEl) timerEl.innerText = '✅ Complete!'; if (barEl) { barEl.style.width = '100%'; barEl.style.background = 'linear-gradient(90deg,#51cf66,#00ffcc)'; } currentUploadSongIndex = -1; renderUploadedSongs(); setTimeout(function(){ if(barEl) barEl.style.background = 'linear-gradient(90deg,#9b59b6,#e74c3c)'; }, 3000); } }, 1000);
-  audio.onended = function() { if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } if (listenedSeconds < requiredSeconds && rewardedSongs.indexOf(song.name) === -1) { if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⏹ Song ended early (' + listenedSeconds + 's/' + requiredSeconds + 's). Press Play again!</span>'; currentUploadSongIndex = -1; renderUploadedSongs(); } };
-  audio.onerror = function() { if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">❌ Error playing this file.</span>'; currentUploadSongIndex = -1; renderUploadedSongs(); }; }
+function playUploadedSong(index){if(index<0||index>=uploadedSongs.length)return;var song=uploadedSongs[index];var audio=document.getElementById('uploadedAudio');var player=document.getElementById('customAudioPlayer');var nameEl=document.getElementById('uploadedSongName');var timerEl=document.getElementById('uploadListenTimer');var msgEl=document.getElementById('uploadListenMsg');var barEl=document.getElementById('uploadListenBar');if(currentUploadSongIndex===index&&!audio.paused){audio.pause();audio.currentTime=0;if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}currentUploadSongIndex=-1;if(timerEl)timerEl.innerText='';if(msgEl)msgEl.innerHTML='';if(barEl)barEl.style.width='0%';renderUploadedSongs();return}if(rewardedSongs.indexOf(song.name)!==-1){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⚠ Already earned coins for this song today!</span>';player.style.display='block';nameEl.innerText='🎵 '+song.name;audio.src=song.url;audio.play();currentUploadSongIndex=index;if(timerEl)timerEl.innerText='Listening (no reward - already earned)';if(barEl)barEl.style.width='100%';renderUploadedSongs();return}if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}pendingPlayIndex=index;player.style.display='block';nameEl.innerText='🎵 '+song.name;if(timerEl)timerEl.innerText='';if(barEl)barEl.style.width='0%';if(msgEl)msgEl.innerHTML='<span style="color:#ffd700">⏳ Loading video ad... Please wait</span>';renderUploadedSongs();triggerMonetagRewardedAd()}
 
-/* ===== HILLTOPADS VAST WATCH & EARN =====
-   CRITICAL FIX: FluidPlayer fires FAKE "ended" events when transitioning
-   from VAST ad to main video content. We MUST verify that currentTime
-   is actually near the duration before rewarding. */
-var hilltopPlayerInstance = null;
-var watchAdIsPlaying = false; // Track if we're in an ad
+function startUploadedSongPlayback(index){if(index<0||index>=uploadedSongs.length)return;var song=uploadedSongs[index];var audio=document.getElementById('uploadedAudio');var player=document.getElementById('customAudioPlayer');var nameEl=document.getElementById('uploadedSongName');var timerEl=document.getElementById('uploadListenTimer');var msgEl=document.getElementById('uploadListenMsg');var barEl=document.getElementById('uploadListenBar');audio.src=song.url;audio.play();currentUploadSongIndex=index;var listenedSeconds=0;var requiredSeconds=60;if(timerEl)timerEl.innerText='0s / '+requiredSeconds+'s';if(msgEl)msgEl.innerHTML='<span style="color:#ffd700">🎧 Listening... Keep playing to earn +50 coins!</span>';if(barEl){barEl.style.width='0%';barEl.style.background='linear-gradient(90deg,#9b59b6,#e74c3c)'}renderUploadedSongs();if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}uploadListenInterval=setInterval(function(){if(audio.paused){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⏸ Song paused! Press play to continue earning...</span>';return}listenedSeconds++;var percent=Math.min(100,(listenedSeconds/requiredSeconds)*100);if(timerEl)timerEl.innerText=listenedSeconds+'s / '+requiredSeconds+'s';if(barEl)barEl.style.width=percent+'%';if(listenedSeconds>=requiredSeconds){clearInterval(uploadListenInterval);uploadListenInterval=null;addCoins(50);rewardedSongs.push(song.name);try{localStorage.setItem('rewardedSongs',JSON.stringify(rewardedSongs))}catch(e){}if(msgEl)msgEl.innerHTML='<span style="color:#51cf66">✅ +50 coins earned for "'+song.name.replace(/</g,'&lt;')+'"!</span>';if(timerEl)timerEl.innerText='✅ Complete!';if(barEl){barEl.style.width='100%';barEl.style.background='linear-gradient(90deg,#51cf66,#00ffcc)'}currentUploadSongIndex=-1;renderUploadedSongs();setTimeout(function(){if(barEl)barEl.style.background='linear-gradient(90deg,#9b59b6,#e74c3c)'},3000)}},1000);audio.onended=function(){if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}if(listenedSeconds<requiredSeconds&&rewardedSongs.indexOf(song.name)===-1){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⏹ Song ended early ('+listenedSeconds+'s/'+requiredSeconds+'s). Press Play again!</span>';currentUploadSongIndex=-1;renderUploadedSongs()}};audio.onerror=function(){if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">❌ Error playing this file.</span>';currentUploadSongIndex=-1;renderUploadedSongs()}}
 
-function initHilltopPlayer() {
-  if(hilltopPlayerInstance || document.getElementById('hilltopVideoPlayer').dataset.init === 'true') return;
-
-  if(watchVideosToday >= WATCH_DAILY_LIMIT) return;
-
-  var vastTagUrl = "https://mellow-habit.com/dmmHFnzEd.GtNmvbZuGxUy/IezmW9_ulZKUPlrkqPnTbcHwFNMz/cBzuMBD/Uxt-Nvz/AC3ON/zTMcwMONQx";
-
-  hilltopPlayerInstance = fluidPlayer('hilltopVideoPlayer', {
-    vastOptions: {
-      adList: [{ roll: 'preRoll', vastTag: vastTagUrl }],
-      adClickable: true,
-      adCTAText: 'Visit Sponsor',
-      skipButtonCaption: 'Skip in [seconds]',
-      skipButtonClickCaption: 'Skip Ad',
-      skip: 10
-    }
-  });
-
-  document.getElementById('hilltopVideoPlayer').dataset.init = 'true';
-
-  // === VAST Ad Events — just show status, DO NOT reward ===
-  hilltopPlayerInstance.on('adStarted', function(){
-    watchAdIsPlaying = true;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700;font-weight:bold">📺 Ad is playing... Do not close!</span>';
-    // Do NOT start fallback timer during ad — FluidPlayer corrupts video state
-  });
-
-  hilltopPlayerInstance.on('adEnded', function(){
-    watchAdIsPlaying = false;
-    if(watchVideosToday >= WATCH_DAILY_LIMIT) {
-      document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>';
-      return;
-    }
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700;font-weight:bold">📺 Ad finished! Keep watching the video to earn coins.</span>';
-    // Start fallback timer AFTER ad — now we're in real content
-    startWatchFallback();
-  });
-
-  hilltopPlayerInstance.on('adSkipped', function(){
-    watchAdIsPlaying = false;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ Ad skipped! Keep watching to earn coins.</span>';
-    startWatchFallback();
-  });
-
-  hilltopPlayerInstance.on('noAdLoaded', function(){
-    watchAdIsPlaying = false;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700">📺 No ad available. Watch the full video to earn coins!</span>';
-    startWatchFallback();
-  });
-
-  hilltopPlayerInstance.on('adError', function(){
-    watchAdIsPlaying = false;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700">📺 Ad error. Watch the full video to earn coins!</span>';
-    startWatchFallback();
-  });
-
-  // === DIRECT VIDEO EVENTS ===
-  var videoEl = document.getElementById('hilltopVideoPlayer');
-
-  videoEl.addEventListener('play', function(){
-    if (watchCooldownActive || watchRewardGiven || watchVideosToday >= WATCH_DAILY_LIMIT) return;
-    // Ignore play events during ad playback
-    if (watchAdIsPlaying) return;
-    watchVideoIsPlaying = true;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700">📺 Video playing... Watch to the end to earn +10 coins!</span>';
-    startWatchFallback();
-  });
-
-  videoEl.addEventListener('pause', function(){
-    watchVideoIsPlaying = false;
-    if (!watchRewardGiven && !watchCooldownActive && watchVideosToday < WATCH_DAILY_LIMIT && !watchAdIsPlaying) {
-      document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b">⏸ Video paused! Press play to continue watching</span>';
-    }
-  });
-
-  // ===== THE ONLY PLACE THAT TRIGGERS REWARD: video ended =====
-  // BUT: FluidPlayer fires fake "ended" during ad transitions.
-  // So we VERIFY that currentTime is actually near duration.
-  videoEl.addEventListener('ended', function(){
-    watchVideoIsPlaying = false;
-
-    // Ignore ended events during ad playback
-    if (watchAdIsPlaying) return;
-
-    // VERIFICATION: Only reward if video truly reached the end
-    // FluidPlayer's fake "ended" has currentTime near 0, not near duration
-    var cur = videoEl.currentTime || 0;
-    var dur = videoEl.duration || 0;
-
-    // If duration is valid and currentTime is within 3 seconds of the end → real end
-    if (dur > 1 && cur >= dur - 3) {
-      autoRewardWatch();
-    }
-    // Otherwise it's a FluidPlayer fake ended event — ignore it
-  });
-
-  // Track when the video loads its real duration
-  videoEl.addEventListener('loadedmetadata', function(){
-    if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 1) {
-      watchKnownDuration = videoEl.duration;
-    }
-  });
-}
+// ===== HILLTOPADS VAST WATCH & EARN =====
+var hilltopPlayerInstance=null;var watchAdIsPlaying=false;
+function initHilltopPlayer(){if(hilltopPlayerInstance||document.getElementById('hilltopVideoPlayer').dataset.init==='true')return;if(watchVideosToday>=WATCH_DAILY_LIMIT)return;var vastTagUrl="https://mellow-habit.com/dmmHFnzEd.GtNmvbZuGxUy/IezmW9_ulZKUPlrkqPnTbcHwFNMz/cBzuMBD/Uxt-Nvz/AC3ON/zTMcwMONQx";hilltopPlayerInstance=fluidPlayer('hilltopVideoPlayer',{vastOptions:{adList:[{roll:'preRoll',vastTag:vastTagUrl}],adClickable:true,adCTAText:'Visit Sponsor',skipButtonCaption:'Skip in [seconds]',skipButtonClickCaption:'Skip Ad',skip:10}});document.getElementById('hilltopVideoPlayer').dataset.init='true';hilltopPlayerInstance.on('adStarted',function(){watchAdIsPlaying=true;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700;font-weight:bold">📺 Ad is playing... Do not close!</span>'});hilltopPlayerInstance.on('adEnded',function(){watchAdIsPlaying=false;if(watchVideosToday>=WATCH_DAILY_LIMIT){document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>';return}document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700;font-weight:bold">📺 Ad finished! Keep watching to earn coins.</span>';startWatchFallback()});hilltopPlayerInstance.on('adSkipped',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b;font-weight:bold">⚠ Ad skipped! Keep watching.</span>';startWatchFallback()});hilltopPlayerInstance.on('noAdLoaded',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">📺 No ad available. Watch the full video to earn!</span>';startWatchFallback()});hilltopPlayerInstance.on('adError',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">📺 Ad error. Watch the full video to earn!</span>';startWatchFallback()});var videoEl=document.getElementById('hilltopVideoPlayer');videoEl.addEventListener('play',function(){if(watchCooldownActive||watchRewardGiven||watchVideosToday>=WATCH_DAILY_LIMIT)return;if(watchAdIsPlaying)return;watchVideoIsPlaying=true;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">Video playing... Watch to the end to earn +10 coins!</span>';startWatchFallback()});videoEl.addEventListener('pause',function(){watchVideoIsPlaying=false;if(!watchRewardGiven&&!watchCooldownActive&&watchVideosToday<WATCH_DAILY_LIMIT&&!watchAdIsPlaying){document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b">Video paused! Press play to continue watching</span>'}});videoEl.addEventListener('ended',function(){watchVideoIsPlaying=false;if(watchAdIsPlaying)return;var cur=videoEl.currentTime||0;var dur=videoEl.duration||0;if(dur>1&&cur>=dur-3){autoRewardWatch()}});videoEl.addEventListener('loadedmetadata',function(){if(videoEl.duration&&isFinite(videoEl.duration)&&videoEl.duration>1){watchKnownDuration=videoEl.duration}})}
 
 document.addEventListener('DOMContentLoaded', function() {
-setTimeout(function(){ var savedNum = localStorage.getItem('number'); if(savedNum){ var numEl = document.getElementById('number'); var netEl = document.getElementById('network'); var btn = document.getElementById('saveBtn'); if(numEl){ numEl.value = savedNum; numEl.disabled = true; } if(netEl){ netEl.value = localStorage.getItem('network')||'Airtel Money'; netEl.disabled = true; } if(btn){ btn.disabled = true; btn.innerText = 'Locked'; } document.getElementById('saved').innerHTML = '<span style="color:#51cf66">✅ Saved and locked</span>'; } }, 1000);
+
+setTimeout(function(){
+  var savedNum = localStorage.getItem('number');
+  var savedNet = localStorage.getItem('network');
+  if(savedNum && savedNet){
+    lockPaymentMethod(savedNum, savedNet);
+  } else if(savedNum || savedNet) {
+    lockPaymentMethod(savedNum || '', savedNet || '');
+  }
+}, 300);
+
   var loginBtn = document.getElementById("loginBtn"); if (loginBtn) { loginBtn.addEventListener('click', function(e){ e.preventDefault(); register(); }); }
   var usernameInput = document.getElementById("usernameInput"); if (usernameInput) { usernameInput.addEventListener('keypress', function(e){ if(e.key === 'Enter'){ e.preventDefault(); register(); }}); setTimeout(function(){ usernameInput.focus(); generateCaptcha(); }, 300); }
+
+  var phoneInput = document.getElementById("phoneInput");
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function(e){ this.value = this.value.replace(/[^0-9]/g, ''); });
+    phoneInput.addEventListener('keypress', function(e){ if(!/[0-9]/.test(e.key)) e.preventDefault(); });
+  }
+
   var el;
   el = document.getElementById("backBtn"); if (el) el.onclick = function() { if(gameState && gameState.cleanup) gameState.cleanup(); currentGame = null; gameState = {}; showPage('games'); };
   el = document.getElementById("navWallet"); if (el) el.onclick = function() { showPage('wallet'); };
@@ -1104,6 +649,21 @@ setTimeout(function(){ var savedNum = localStorage.getItem('number'); if(savedNu
   el = document.getElementById("withdrawBtn"); if (el) el.onclick = withdraw;
   el = document.getElementById("replyBtn"); if (el) el.onclick = function() { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } var txt = document.getElementById('playerReply').value.trim(); if (!txt ||!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').push({from:u, to:'Admin_Mada', text:txt, timestamp:Date.now(), status:'sent'}).then(function() { document.getElementById('playerReply').value = ''; document.getElementById('replyStatus').innerHTML = '<span style="color:#51cf66">✓ Sent</span>'; setTimeout(function() { document.getElementById('replyStatus').innerHTML = ''; }, 1500); }); };
   var musicInput = document.getElementById('musicFileInput'); if (musicInput) { musicInput.addEventListener('change', handleMusicUpload); }
+
+  try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; }
+    if (u && db) {
+      db.ref('users/' + u).once('value', function(snap){
+        var data = snap.val() || {};
+        if(data.phone && data.network){
+          lockPaymentMethod(data.phone, data.network);
+        } else {
+          lockPaymentMethod(data.phone || localStorage.getItem("number") || '', data.network || localStorage.getItem("network") || '');
+        }
+        if(data.email){ try { localStorage.setItem("userEmail", data.email); } catch(e){} }
+      });
+    }
+  } catch(e) {}
+
   try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (u) { document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if (db) { setupPresence(u); checkInboxBadge(); startRealtimeBalance(); } } } catch(e) {}
 });
 </script>
@@ -1111,19 +671,19 @@ setTimeout(function(){ var savedNum = localStorage.getItem('number'); if(savedNu
 <div style="margin-top:40px;padding:20px;background:#f5f5f5;border-radius:10px;text-align:center;font-size:12px;color:#666">
   <a href="#" onclick="alert('Mada Game Earn - Rewards platform for Malawian users. Contact: support@madagameearn.com')" style="margin:0 10px">About Us</a> |
   <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Fraud = ban.')" style="margin:0 10px">Terms</a> |
-  <a href="#" onclick="alert('Privacy: We collect email only for rewards. No data sold.')" style="margin:0 10px">Privacy</a> |
-  <a href="#" onclick="alert('Contact: WhatsApp +265 999 123 456')" style="margin:0 10px">Contact</a>
+  <a href="#" onclick="alert('Privacy: We collect phone number only for rewards. No data sold.')" style="margin:0 10px">Privacy</a> |
+  <a href="#" onclick="alert('Contact: WhatsApp +265 0882 96 83 84')" style="margin:0 10px">Contact</a>
   <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi</p>
 </div>
 
 <script>
 function updateWithdrawCountdown(){
-  var el = document.getElementById('withdrawCountdown'); if(!el) return;
-  var now = new Date(); var malawiOffset = 2*60; var utc = now.getTime() + (now.getTimezoneOffset()*60000); var malawiTime = new Date(utc + (malawiOffset*60000)); var day = malawiTime.getDay(); var hour = malawiTime.getHours();
-  if(day === 5 && hour >= 18 && hour < 21){ var end = new Date(malawiTime); end.setHours(21,0,0,0); var diff = end - malawiTime; var h = Math.floor(diff/3600000); var m = Math.floor((diff%3600000)/60000); var s = Math.floor((diff%60000)/1000); el.innerHTML = '<span style="color:#51cf66">🟢 OPEN! Closes in '+h+'h '+m+'m '+s+'s</span>'; return; }
-  var next = new Date(malawiTime); var daysUntilFri = (5 - day + 7) % 7; if(daysUntilFri === 0) daysUntilFri = 7; if(day === 5 && hour < 18) daysUntilFri = 0; next.setDate(malawiTime.getDate() + daysUntilFri); next.setHours(18,0,0,0); var diff = next - malawiTime; var days = Math.floor(diff/86400000); var h = Math.floor((diff%86400000)/3600000); var m = Math.floor((diff%3600000)/60000); var s = Math.floor((diff%60000)/1000); var text = ''; if(days > 0) text += days + 'd '; text += h + 'h ' + m + 'm ' + s + 's'; el.innerHTML = '⏰ Next: Friday 6PM<br><span style="color:#ffd700">'+text+'</span>';
+  var el=document.getElementById('withdrawCountdown');if(!el)return;
+  var now=new Date();var malawiOffset=2*60;var utc=now.getTime()+(now.getTimezoneOffset()*60000);var malawiTime=new Date(utc+(malawiOffset*60000));var day=malawiTime.getDay();var hour=malawiTime.getHours();
+  if(day===5&&hour>=18&&hour<21){var end=new Date(malawiTime);end.setHours(21,0,0,0);var diff=end-malawiTime;var h=Math.floor(diff/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);el.innerHTML='<span style="color:#51cf66">🟢 OPEN! Closes in '+h+'h '+m+'m '+s+'s</span>';return}
+  var next=new Date(malawiTime);var daysUntilFri=(5-day+7)%7;if(daysUntilFri===0)daysUntilFri=7;if(day===5&&hour<18)daysUntilFri=0;next.setDate(malawiTime.getDate()+daysUntilFri);next.setHours(18,0,0,0);var diff=next-malawiTime;var days=Math.floor(diff/86400000);var h=Math.floor((diff%86400000)/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);var text='';if(days>0)text+=days+'d ';text+=h+'h '+m+'m '+s+'s';el.innerHTML='⏰ Next: Friday 6PM<br><span style="color:#ffd700">'+text+'</span>';
 }
-setInterval(updateWithdrawCountdown, 1000); setTimeout(updateWithdrawCountdown, 500);
+setInterval(updateWithdrawCountdown,1000);setTimeout(updateWithdrawCountdown,500);
 </script>
 </body>
-  </html>
+      </html>
