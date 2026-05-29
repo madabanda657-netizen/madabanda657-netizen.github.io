@@ -661,15 +661,28 @@ function stopWatchFallback() {
 
 var db = null;
 try {
-  if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) {
-    firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});
-
+  if (typeof firebase !== 'undefined') {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",
+        authDomain:"apple-green-ded09.firebaseapp.com",
+        databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",
+        projectId:"apple-green-ded09",
+        storageBucket:"apple-green-ded09.firebasestorage.app",
+        messagingSenderId:"1093712798003",
+        appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"
+      });
+    }
     const appCheck = firebase.appCheck();
-    appCheck.activate('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q', true);
-
+    // FIXED for compat SDK: pass the site key string directly
+    appCheck.activate(
+      '6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q',
+      true
+    );
+    console.log('✅ App Check activated');
     db = firebase.database();
   }
-} catch(e) { db = null; console.warn('Firebase init failed', e); }
+} catch(e) { console.error('Firebase/AppCheck init failed', e); db = null; }
 
 var DAILY_LIMIT = 12000; var currentGame = null; var gameState = {}; var countdownInterval = null;
 
@@ -1119,11 +1132,4 @@ setTimeout(function(){ var savedNum = localStorage.getItem('number'); if(savedNu
 <script>
 function updateWithdrawCountdown(){
   var el = document.getElementById('withdrawCountdown'); if(!el) return;
-  var now = new Date(); var malawiOffset = 2*60; var utc = now.getTime() + (now.getTimezoneOffset()*60000); var malawiTime = new Date(utc + (malawiOffset*60000)); var day = malawiTime.getDay(); var hour = malawiTime.getHours();
-  if(day === 5 && hour >= 18 && hour < 21){ var end = new Date(malawiTime); end.setHours(21,0,0,0); var diff = end - malawiTime; var h = Math.floor(diff/3600000); var m = Math.floor((diff%3600000)/60000); var s = Math.floor((diff%60000)/1000); el.innerHTML = '<span style="color:#51cf66">🟢 OPEN! Closes in '+h+'h '+m+'m '+s+'s</span>'; return; }
-  var next = new Date(malawiTime); var daysUntilFri = (5 - day + 7) % 7; if(daysUntilFri === 0) daysUntilFri = 7; if(day === 5 && hour < 18) daysUntilFri = 0; next.setDate(malawiTime.getDate() + daysUntilFri); next.setHours(18,0,0,0); var diff = next - malawiTime; var days = Math.floor(diff/86400000); var h = Math.floor((diff%86400000)/3600000); var m = Math.floor((diff%3600000)/60000); var s = Math.floor((diff%60000)/1000); var text = ''; if(days > 0) text += days + 'd '; text += h + 'h ' + m + 'm ' + s + 's'; el.innerHTML = '⏰ Next: Friday 6PM<br><span style="color:#ffd700">'+text+'</span>';
-}
-setInterval(updateWithdrawCountdown, 1000); setTimeout(updateWithdrawCountdown, 500);
-</script>
-</body>
-  </html>
+  var now = new Date();
