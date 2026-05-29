@@ -304,7 +304,9 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
       <p id="forgotMsg" style="margin-top:8px;font-size:12px"></p>
     </div>
   </div>
-  <p style="color:#999;margin-top:20px;">Malawi's #1 Play & Earn App • 18+ Only</p>
+  <!-- ★ NEW: WhatsApp Group button on Login page ★ -->
+  <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:linear-gradient(45deg,#25D366,#128C7E);color:#fff;padding:14px;border-radius:12px;font-weight:bold;font-size:16px;margin:15px 0;text-decoration:none;box-shadow:0 0 15px #25D36644">💬 Join Mada WhatsApp Group</a>
+  <p style="color:#999;margin-top:10px;">Malawi's #1 Play & Earn App • 18+ Only</p>
 </div>
 
 <!-- ===== WALLET PAGE ===== -->
@@ -316,6 +318,13 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
   <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ccff;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
+
+  <!-- ★ NEW: WhatsApp Community Card ★ -->
+  <div class="card" style="background:linear-gradient(135deg,#0a2a1a,#0a1a0e);border:2px solid #25D366">
+    <h3 style="color:#25D366">💬 Join Our Community</h3>
+    <p style="color:#ccc;margin:10px 0;">Get tips, updates & support from other players!</p>
+    <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:linear-gradient(45deg,#25D366,#128C7E);color:#fff;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;text-decoration:none">💬 Join WhatsApp Group</a>
+  </div>
 
   <div class="card">
     <h3>📱 Payment Method</h3>
@@ -668,11 +677,13 @@ setTimeout(function(){
 });
 </script>
 
+<!-- ★ UPDATED: Footer with WhatsApp Group link ★ -->
 <div style="margin-top:40px;padding:20px;background:#f5f5f5;border-radius:10px;text-align:center;font-size:12px;color:#666">
-  <a href="#" onclick="alert('Mada Game Earn - Rewards platform for Malawian users. Contact: support@madagameearn.com')" style="margin:0 10px">About Us</a> |
-  <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Fraud = ban.')" style="margin:0 10px">Terms</a> |
-  <a href="#" onclick="alert('Privacy: We collect phone number only for rewards. No data sold.')" style="margin:0 10px">Privacy</a> |
-  <a href="#" onclick="alert('Contact: WhatsApp +265 0882 96 83 84')" style="margin:0 10px">Contact</a>
+  <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="margin:0 10px">💬 Join Group</a> |
+  <a href="#" onclick="alert('About Us: Mada Game Earn - Rewards platform for Malawian users.');return false" style="margin:0 10px">About Us</a> |
+  <a href="#" onclick="alert('Terms: Users must be 18+. One account per person. Fraud = ban.');return false" style="margin:0 10px">Terms</a> |
+  <a href="#" onclick="alert('Privacy: We collect phone number only for rewards. No data sold.');return false" style="margin:0 10px">Privacy</a> |
+  <a href="#" onclick="alert('Contact: WhatsApp +265 0882 96 83 84');return false" style="margin:0 10px">Contact</a>
   <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi</p>
 </div>
 
@@ -686,4 +697,4 @@ function updateWithdrawCountdown(){
 setInterval(updateWithdrawCountdown,1000);setTimeout(updateWithdrawCountdown,500);
 </script>
 </body>
-      </html>
+                                                                                                                                                                                                                                                                                                                                           </html>
