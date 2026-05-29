@@ -72,6 +72,22 @@
 .watch-status{margin-top:15px;font-size:16px;min-height:24px}
 .watch-cooldown{color:#ff6b6b;font-size:13px;margin-top:8px}
 
+/* WATCH DAILY LIMIT */
+.watch-limit-section{margin:15px 0;padding:12px;background:#0a0a0a;border-radius:10px;border:1px solid #ff6b6b44}
+.watch-limit-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.watch-limit-header span{font-size:14px;color:#ccc}
+.watch-limit-header strong{color:#ff6b6b;font-size:16px}
+.watch-limit-bar{height:8px;border-radius:4px;overflow:hidden;background:#222;margin-top:4px}
+.watch-limit-fill{height:100%;background:linear-gradient(90deg,#ff6b6b,#ffd700);border-radius:4px;transition:width 0.4s}
+.watch-limit-msg{font-size:12px;color:#888;margin-top:6px}
+
+/* WATCH AUTO-REWARD BANNER */
+.watch-reward-banner{display:none;margin-top:15px;padding:18px;background:linear-gradient(135deg,#0a2a1a,#0a1a2e);border:2px solid #51cf66;border-radius:12px;text-align:center;animation:rewardPop 0.5s ease}
+.watch-reward-banner.show{display:block}
+@keyframes rewardPop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
+.watch-reward-amount{font-size:28px;font-weight:bold;color:#51cf66;margin:8px 0}
+.watch-reward-check{font-size:40px;margin-bottom:5px}
+
 /* HIDE ADSTERRA SOCIAL BAR DURING GAMEPLAY */
 body.playing-game #id-custom-social-bar,
 body.playing-game [id^="adsterra"],
@@ -128,7 +144,7 @@ function triggerMonetagRewardedAd() {
     overlay = document.createElement('div');
     overlay.id = 'monetagAdOverlay';
     overlay.className = 'ad-overlay';
-    overlay.innerHTML = 
+    overlay.innerHTML =
       '<div class="ad-box monetag-style">' +
         '<div class="ad-icon">📺</div>' +
         '<p class="ad-title">Watch the ad to unlock your song</p>' +
@@ -147,7 +163,7 @@ function triggerMonetagRewardedAd() {
   var fillEl = document.getElementById('monetagCountFill');
   var statusEl = document.getElementById('monetagAdStatus');
   var skipBtn = document.getElementById('monetagSkipBtn');
-  
+
   if (numEl) numEl.innerText = '15';
   if (secEl) secEl.innerText = '15';
   if (fillEl) fillEl.style.width = '0%';
@@ -225,7 +241,7 @@ var doubleCoinsUsed = false;
 function doubleCoinsWithAd() {
   var doubleBtn = document.getElementById('doubleCoinsBtn');
   if (!doubleBtn || doubleBtn.disabled) return;
-  
+
   doubleBtn.disabled = true;
   doubleBtn.innerText = '⏳ Loading ad...';
   doubleBtn.style.background = '#333';
@@ -250,7 +266,7 @@ function doubleCoinsWithAd() {
         doubleBtn.disabled = false;
         doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)';
         doubleBtn.style.color = '#fff';
-        setTimeout(function(){ 
+        setTimeout(function(){
           if(doubleBtn && !doubleCoinsUsed){
             doubleBtn.innerText = '📺 Watch Ad to Double Coins (+' + lastBaseReward + ' more!)';
           }
@@ -302,6 +318,181 @@ function setGameAdsVisible(visible) {
     document.body.classList.add('playing-game');
   }
 }
+
+// =====================================================================
+// ===== WATCH & EARN — AUTO REWARD ONLY WHEN VIDEO REALLY ENDS =====
+// FluidPlayer fires FAKE "ended" events during ad-to-content transitions.
+// We MUST verify currentTime is near duration before rewarding.
+// =====================================================================
+var WATCH_DAILY_LIMIT = 20;
+var watchVideosToday = 0;
+var watchRewardGiven = false;
+var watchCooldownActive = false;
+var watchVideoIsPlaying = false;
+var watchPlayedSeconds = 0;
+var watchFallbackTimer = null;
+var watchKnownDuration = 0; // Track the real video duration
+
+// Load and reset daily watch count at midnight
+(function(){
+  try {
+    var todayStr = new Date().toDateString();
+    var savedDate = localStorage.getItem('watchLimitDate') || '';
+    if (savedDate === todayStr) {
+      watchVideosToday = parseInt(localStorage.getItem('watchVideosToday') || '0');
+    } else {
+      watchVideosToday = 0;
+      localStorage.setItem('watchVideosToday', '0');
+      localStorage.setItem('watchLimitDate', todayStr);
+    }
+  } catch(e) { watchVideosToday = 0; }
+})();
+
+function saveWatchCount() {
+  try {
+    localStorage.setItem('watchVideosToday', String(watchVideosToday));
+  } catch(e) {}
+}
+
+function updateWatchLimitUI() {
+  var countEl = document.getElementById('watchLimitCount');
+  var barEl = document.getElementById('watchLimitFill');
+  var msgEl = document.getElementById('watchLimitMsg');
+  var videoEl = document.getElementById('hilltopVideoPlayer');
+
+  if (countEl) countEl.innerHTML = '<strong>' + watchVideosToday + '</strong> / ' + WATCH_DAILY_LIMIT;
+  if (barEl) barEl.style.width = Math.min(100, (watchVideosToday / WATCH_DAILY_LIMIT) * 100) + '%';
+
+  var limitReached = watchVideosToday >= WATCH_DAILY_LIMIT;
+
+  if (msgEl) {
+    if (limitReached) {
+      msgEl.innerHTML = '🚫 Daily limit reached! Come back tomorrow.';
+      msgEl.style.color = '#ff6b6b';
+    } else {
+      msgEl.innerHTML = '📺 Watch ' + (WATCH_DAILY_LIMIT - watchVideosToday) + ' more video(s) today';
+      msgEl.style.color = '#888';
+    }
+  }
+
+  if (videoEl && limitReached) {
+    videoEl.style.pointerEvents = 'none';
+    videoEl.style.opacity = '0.3';
+    var wrapper = document.getElementById('hilltopVideoWrapper');
+    if (wrapper && !document.getElementById('watchLimitOverlay')) {
+      var overlay = document.createElement('div');
+      overlay.id = 'watchLimitOverlay';
+      overlay.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10;border-radius:12px;';
+      overlay.innerHTML = '<span style="font-size:40px">🔒</span><span style="color:#ff6b6b;font-weight:bold;margin-top:8px">Daily Limit Reached</span><span style="color:#888;font-size:12px;margin-top:4px">Come back tomorrow</span>';
+      wrapper.style.position = 'relative';
+      wrapper.appendChild(overlay);
+    }
+  } else if (videoEl && !limitReached) {
+    videoEl.style.pointerEvents = 'auto';
+    videoEl.style.opacity = '1';
+    var existingOverlay = document.getElementById('watchLimitOverlay');
+    if (existingOverlay) existingOverlay.remove();
+  }
+}
+
+// ===== AUTO-REWARD: Only when video ACTUALLY reached the end =====
+function autoRewardWatch() {
+  if (watchRewardGiven || watchCooldownActive || watchVideosToday >= WATCH_DAILY_LIMIT) return;
+
+  watchRewardGiven = true;
+  watchVideoIsPlaying = false;
+  stopWatchFallback();
+
+  watchVideosToday++;
+  saveWatchCount();
+
+  addCoins(10);
+
+  var banner = document.getElementById('watchRewardBanner');
+  if (banner) banner.classList.add('show');
+
+  var statusEl = document.getElementById('watchStatus');
+  if (statusEl) statusEl.innerHTML = '<span style="color:#51cf66;font-weight:bold">🎉 +10 Coins added automatically!</span>';
+
+  updateWatchLimitUI();
+
+  // Start 60 second cooldown
+  watchCooldownActive = true;
+  var timeLeft = 60;
+  var cooldownEl = document.getElementById('watchCooldown');
+  var cooldownInterval = setInterval(function() {
+    timeLeft--;
+    if (cooldownEl) cooldownEl.innerText = '⏳ Next video in: ' + timeLeft + 's';
+    if (timeLeft <= 0) {
+      clearInterval(cooldownInterval);
+      watchCooldownActive = false;
+      watchRewardGiven = false;
+      watchVideoIsPlaying = false;
+      watchPlayedSeconds = 0;
+      watchKnownDuration = 0;
+      if (cooldownEl) cooldownEl.innerText = '';
+      if (banner) banner.classList.remove('show');
+      if (statusEl) {
+        if (watchVideosToday >= WATCH_DAILY_LIMIT) {
+          statusEl.innerHTML = '<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit of ' + WATCH_DAILY_LIMIT + ' videos reached!</span>';
+        } else {
+          statusEl.innerHTML = '📺 Ready! Press play to watch another video.';
+        }
+      }
+    }
+  }, 1000);
+}
+
+// ===== FALLBACK TIMER: UI status only, NEVER triggers reward =====
+function startWatchFallback() {
+  stopWatchFallback();
+  watchPlayedSeconds = 0;
+
+  watchFallbackTimer = setInterval(function() {
+    var videoEl = document.getElementById('hilltopVideoPlayer');
+    if (!videoEl) return;
+
+    var isPlaying = !videoEl.paused && !videoEl.ended;
+    watchVideoIsPlaying = isPlaying;
+
+    if (isPlaying) {
+      watchPlayedSeconds += 0.5;
+    }
+
+    // Remember the real duration when available
+    if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 1) {
+      watchKnownDuration = videoEl.duration;
+    }
+
+    // Update status only — NEVER call autoRewardWatch here
+    var statusEl = document.getElementById('watchStatus');
+    if (statusEl && !watchRewardGiven && !watchCooldownActive) {
+      if (isPlaying) {
+        var cur = videoEl.currentTime || 0;
+        var dur = watchKnownDuration || videoEl.duration || 0;
+        if (dur > 1) {
+          var remaining = Math.max(0, Math.ceil(dur - cur));
+          statusEl.innerHTML = '<span style="color:#ffd700">📺 Watching video... <span style="color:#fff;font-weight:bold">' + remaining + 's remaining</span></span>';
+        } else {
+          statusEl.innerHTML = '<span style="color:#ffd700">📺 Watching video... Keep watching to earn coins!</span>';
+        }
+      } else if (watchPlayedSeconds > 0) {
+        statusEl.innerHTML = '<span style="color:#ff6b6b">⏸ Video paused! Press play to continue watching</span>';
+      }
+    }
+    // NOTE: We deliberately do NOT check videoEl.ended here.
+    // FluidPlayer makes videoEl.ended=true during ad transitions.
+    // The ONLY place that triggers reward is the 'ended' event
+    // with the currentTime >= duration verification.
+  }, 500);
+}
+
+function stopWatchFallback() {
+  if (watchFallbackTimer) {
+    clearInterval(watchFallbackTimer);
+    watchFallbackTimer = null;
+  }
+}
 </script>
 </head>
 <body>
@@ -339,7 +530,7 @@ function setGameAdsVisible(visible) {
   <div class="card"><h3>📱 Payment Method</h3><select id="network"><option>Airtel Money</option><option>TNM Mpamba</option></select><input type="text" id="number" placeholder="Enter phone number (099XXXXXXX)"><button id="saveBtn">Save Details (One-Time)</button><p id="saved" style="margin-top:10px;"></p></div>
   <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><div id="withdrawCountdown" style="text-align:center;margin-top:8px;font-size:12px;color:#aaa"></div><p id="msg" style="margin-top:10px;"></p></div>
   <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
-  <div class="card"><h3="📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours</p></div>
+  <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours</p></div>
 </div>
 
 <div id="gamesPage" class="page"><h1>🎮 Play & Earn</h1><div class="card"><p style="color:#00ffcc;margin-bottom:10px;">Play games to earn coins!</p><p style="color:#9b59b6;margin-bottom:20px;font-size:14px;">📺 Watch ad after game to <strong>DOUBLE</strong> your reward!</p><div class="games-grid" id="gamesGrid"></div></div></div>
@@ -349,27 +540,44 @@ function setGameAdsVisible(visible) {
   <h1>📺 Watch & Earn</h1>
   <div class="card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #ff6b6b">
     <h3 style="color:#ff6b6b">🎥 Video Rewards</h3>
-    <p style="color:#ccc;margin:10px 0;">Watch the full video ad to earn <span style="color:#ffd700;font-weight:bold">10 Coins</span>!</p>
-    
+    <p style="color:#ccc;margin:10px 0;">Watch the full video to earn <span style="color:#ffd700;font-weight:bold">10 Coins</span> automatically!</p>
+
+    <div class="watch-limit-section">
+      <div class="watch-limit-header">
+        <span>📺 Videos Watched Today</span>
+        <span id="watchLimitCount"><strong>0</strong> / 20</span>
+      </div>
+      <div class="watch-limit-bar">
+        <div class="watch-limit-fill" id="watchLimitFill" style="width:0%"></div>
+      </div>
+      <p class="watch-limit-msg" id="watchLimitMsg">📺 Watch 20 more video(s) today</p>
+    </div>
+
     <div class="watch-container">
-      <div class="watch-vid-wrapper">
-        <video id="hilltopVideoPlayer" style="width:100%;height:auto;">
+      <div class="watch-vid-wrapper" id="hilltopVideoWrapper">
+        <video id="hilltopVideoPlayer" playsinline style="width:100%;height:auto;">
           <source src="https://cdn.fluidplayer.com/videos/valerian-720p.mp4" type="video/mp4"/>
         </video>
       </div>
-      
-      <p class="watch-status" id="watchStatus" style="color:#aaa;">⏳ Press Play to start the video ad</p>
+
+      <p class="watch-status" id="watchStatus" style="color:#aaa;">⏳ Press Play to start the video</p>
       <p class="watch-cooldown" id="watchCooldown"></p>
+
+      <div class="watch-reward-banner" id="watchRewardBanner">
+        <div class="watch-reward-check">✅</div>
+        <div class="watch-reward-amount">+10 Coins Added!</div>
+        <p style="color:#51cf66;font-size:14px">Reward added automatically</p>
+      </div>
     </div>
-    
+
     <div style="margin-top:15px;border-top:1px solid #222;padding-top:12px;text-align:left">
       <h3 style="color:#ff6b6b;font-size:14px">💡 How It Works</h3>
       <p style="color:#ccc;line-height:1.8;font-size:13px">
         1. Tap the Play button on the video<br>
-        2. A video ad from our sponsor will play<br>
-        3. Watch the FULL ad without skipping<br>
-        4. +10 coins added to your balance automatically!<br>
-        5. Wait 60 seconds to watch another video
+        2. Watch the video <strong style="color:#ffd700">until it finishes completely</strong><br>
+        3. <strong style="color:#51cf66">+10 Coins</strong> will be added <strong style="color:#51cf66">automatically</strong>!<br>
+        4. Wait 60 seconds to watch another video<br>
+        5. <strong style="color:#ff6b6b">Limit: 20 videos per day</strong> — resets at midnight
       </p>
     </div>
   </div>
@@ -452,16 +660,15 @@ function setGameAdsVisible(visible) {
 <script>
 
 var db = null;
-try { 
-  if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) { 
-    firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"}); 
-    
-    // ===== FIREBASE APP CHECK ACTIVATION =====
+try {
+  if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) {
+    firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});
+
     const appCheck = firebase.appCheck();
     appCheck.activate('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q', true);
-    
-    db = firebase.database(); 
-  } 
+
+    db = firebase.database();
+  }
 } catch(e) { db = null; console.warn('Firebase init failed', e); }
 
 var DAILY_LIMIT = 12000; var currentGame = null; var gameState = {}; var countdownInterval = null;
@@ -500,7 +707,7 @@ function register() {
       db.ref('leaderboard_all/' + name).once('value').then(function(snap){
         if(!snap.exists()){ db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,email:email}); }
       });
-      setupPresence(name); checkInboxBadge(); 
+      setupPresence(name); checkInboxBadge();
     }, 200);
   } catch(e){ alert("Error: " + e.message); }
 }
@@ -542,7 +749,7 @@ function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) {
   addCoins(baseCoins);
   lastBaseReward = baseCoins;
   doubleCoinsUsed = false;
-  document.getElementById('gameArea').innerHTML = 
+  document.getElementById('gameArea').innerHTML =
     '<div class="score-display">' +
       '<h2>' + title + '</h2>' +
       detailsHtml +
@@ -560,12 +767,12 @@ function showPage(page) {
     var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
     var mainNav = document.getElementById('mainNav');
     if (mainNav) mainNav.style.display = 'flex';
-    
+
     setGameAdsVisible(page !== 'play');
 
     if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); }
     else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); }
-    else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); initHilltopPlayer(); }
+    else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); initHilltopPlayer(); updateWatchLimitUI(); }
     else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); }
     else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); }
     else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[5]) btns[5].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); }
@@ -590,7 +797,7 @@ function startRealtimeBalance() {
       var moneyEl = document.getElementById("money");
       if (moneyEl) moneyEl.innerHTML = "💵 MWK " + Math.floor(coins * 0.02);
       var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {}
-      document.getElementById("dailyLimitText").innerText = daily + "/12000"; 
+      document.getElementById("dailyLimitText").innerText = daily + "/12000";
       document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%";
     }
     lastKnownBalance = coins;
@@ -628,7 +835,7 @@ function addCoins(amount) {
     var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn);
     if (give <= 0) { alert("⚠ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return;
     db.ref('leaderboard_all/' + user).once('value', function(snap) {
-      var d = snap.val() || {}; 
+      var d = snap.val() || {};
       if (d.banned === true) { alert("⚠ Account suspended. You cannot earn coins."); return; }
       var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1;
       db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});
@@ -637,65 +844,40 @@ function addCoins(amount) {
   } catch(e) {}
 }
 
-function setupPresence(u) { 
-  try { if (!u || !db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline', last: Date.now()}); p.set({state:'online', last: Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {} 
+function setupPresence(u) {
+  try { if (!u || !db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline', last: Date.now()}); p.set({state:'online', last: Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {}
 }
 
 function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
 function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
 function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var net = document.getElementById("network").value; var num = document.getElementById("number").value; if (!num) { alert("Please enter your phone number"); return; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { alert("Phone already saved"); document.getElementById("number").value = s.val(); document.getElementById("number").disabled = true; return; } db.ref('users/' + user).update({phone:num, network:net}); try { localStorage.setItem("network", net); localStorage.setItem("number", num); } catch(e) {} document.getElementById("saved").innerHTML = '<span style="color:#51cf66">✅ Saved: ' + net + ' - ' + num + ' (Locked)</span>'; document.getElementById("number").disabled = true; document.getElementById("network").disabled = true; document.getElementById("saveBtn").disabled = true; document.getElementById("saveBtn").innerText = "Locked"; }); } catch(e) {} }
 
-// ===== FIXED DAILY BONUS =====
 function claimDailyBonus() {
   try {
     var user;
     try { user = localStorage.getItem("user"); } catch(e) { user = null; }
     if (!user) { alert("Login first"); return; }
-    if (!db) {
-      document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Database not ready</span>';
-      return;
-    }
+    if (!db) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Database not ready</span>'; return; }
     var today = new Date().toDateString();
     var msgEl = document.getElementById("dailyMsg");
     msgEl.innerHTML = '<span style="color:#ffd700">Checking...</span>';
-
     db.ref('leaderboard_all/' + user + '/lastDaily').once('value', function(snap) {
-      if (snap.val() === today) {
-        msgEl.innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>';
-        return;
-      }
-
+      if (snap.val() === today) { msgEl.innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; }
       db.ref('leaderboard_all/' + user).once('value', function(leaderSnap) {
         var data = leaderSnap.val() || {};
         var coins = (data.coins || 0) + 50;
-        
-        db.ref('leaderboard_all/' + user).update({
-          coins: coins, 
-          score: coins, 
-          lastPlayed: Date.now(),
-          lastDaily: today
-        }, function(error2) {
-          if (error2) {
-            console.error('Daily update error:', error2);
-            msgEl.innerHTML = '<span style="color:#ff6b6b">Error adding coins. Try again.</span>';
-            return;
-          }
+        db.ref('leaderboard_all/' + user).update({coins: coins, score: coins, lastPlayed: Date.now(), lastDaily: today}, function(error2) {
+          if (error2) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error adding coins.</span>'; return; }
           msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>';
           showBalance();
         });
       });
-    }, function(err) {
-      console.error('Daily read error:', err);
-      msgEl.innerHTML = '<span style="color:#ff6b6b">Error checking status</span>';
-    });
-  } catch(e) {
-    console.error('Daily bonus exception:', e);
-    document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error: ' + e.message + '</span>';
-  }
+    }, function(err) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error checking status</span>'; });
+  } catch(e) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; }
 }
 
-try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("rewardedSongs", "[]"); } catch(e) {} } } catch(e) {}
-function withdraw() { try { 
+try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("rewardedSongs", "[]"); localStorage.setItem("watchVideosToday", "0"); localStorage.setItem("watchLimitDate", todayStr); } catch(e) {} } } catch(e) {}
+function withdraw() { try {
   var now = new Date(); var malawiOffset = 2*60; var utc = now.getTime() + (now.getTimezoneOffset()*60000); var malawiTime = new Date(utc + (malawiOffset*60000)); var day = malawiTime.getDay(); var hour = malawiTime.getHours();
   if(day !== 5 || hour < 18 || hour >= 21){ document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⏰ Withdrawals only Fridays 6PM-9PM (Malawi time).</span>'; return; }
   var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); var net = ""; try { net = localStorage.getItem("network"); } catch(e) {} var num = ""; try { num = localStorage.getItem("number"); } catch(e) {} if (!net ||!num) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Save payment details first</span>'; return; } if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:net, phone:num, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + '</span>'; showBalance(); }); }); } catch(e) {} }
@@ -706,15 +888,13 @@ function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem
   var grid = document.getElementById("gamesGrid"); if (grid) { var html = ''; for (var i = 0; i < games.length; i++) { var g = games[i]; html += '<div class="game-card" data-game="' + g.id + '"><div class="game-icon">' + g.icon + '</div><h4>' + g.name + '</h4><div class="game-reward">' + g.reward + '</div></div>'; } grid.innerHTML = html; var cards = grid.querySelectorAll('.game-card'); for (var j = 0; j < cards.length; j++) { (function(card) { card.onclick = function() { startGame(card.getAttribute('data-game')); }; })(cards[j]); } }
 })();
 
-function startGame(type) { 
-  currentGame = type; 
-  document.getElementById('playPage').classList.add('active'); 
-  var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } 
-  
+function startGame(type) {
+  currentGame = type;
+  document.getElementById('playPage').classList.add('active');
+  var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); }
   setGameAdsVisible(false);
-
-  document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); 
-  if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers(); 
+  document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1);
+  if (type === 'temple') startTempleRun(); else if (type === 'memory') startMemoryMatch(); else if (type === 'number') startNumberGuess(); else if (type === 'reaction') startReactionTest(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'word') startWordScramble(); else if (type === 'checkers') startCheckers();
 }
 
 function startMemoryMatch() { var emojis = ['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺']; var cards = emojis.concat(emojis).sort(function() { return Math.random() - 0.5; }); gameState = {cards:cards, flipped:[], matched:0, moves:0, startTime:Date.now()}; var html = '<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">'; for (var i = 0; i < cards.length; i++) { html += '<div class="memory-card" id="card' + i + '" data-idx="' + i + '"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'; } html += '</div>'; document.getElementById('gameArea').innerHTML = html; var allCards = document.querySelectorAll('.memory-card'); for (var j = 0; j < allCards.length; j++) { (function(card) { card.onclick = function() { flipCard(parseInt(card.getAttribute('data-idx'))); }; })(allCards[j]); } gameState.timerInterval = setInterval(function() { var t = Math.floor((Date.now() - gameState.startTime) / 1000); var el = document.getElementById('timer'); if (el) el.innerHTML = 'Time: ' + t + 's | Moves: ' + gameState.moves; }, 200); }
@@ -796,24 +976,23 @@ function startUploadedSongPlayback(index) { if (index < 0 || index >= uploadedSo
   audio.onended = function() { if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } if (listenedSeconds < requiredSeconds && rewardedSongs.indexOf(song.name) === -1) { if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">⏹ Song ended early (' + listenedSeconds + 's/' + requiredSeconds + 's). Press Play again!</span>'; currentUploadSongIndex = -1; renderUploadedSongs(); } };
   audio.onerror = function() { if (uploadListenInterval) { clearInterval(uploadListenInterval); uploadListenInterval = null; } if (msgEl) msgEl.innerHTML = '<span style="color:#ff6b6b">❌ Error playing this file.</span>'; currentUploadSongIndex = -1; renderUploadedSongs(); }; }
 
-/* ===== HILLTOPADS VAST WATCH & EARN — FIXED ===== */
+/* ===== HILLTOPADS VAST WATCH & EARN =====
+   CRITICAL FIX: FluidPlayer fires FAKE "ended" events when transitioning
+   from VAST ad to main video content. We MUST verify that currentTime
+   is actually near the duration before rewarding. */
 var hilltopPlayerInstance = null;
-var watchAdCooldown = false;
-var watchAdActuallyStarted = false; // Flag to ensure an ad really played
+var watchAdIsPlaying = false; // Track if we're in an ad
 
 function initHilltopPlayer() {
   if(hilltopPlayerInstance || document.getElementById('hilltopVideoPlayer').dataset.init === 'true') return;
-  
+
+  if(watchVideosToday >= WATCH_DAILY_LIMIT) return;
+
   var vastTagUrl = "https://mellow-habit.com/dmmHFnzEd.GtNmvbZuGxUy/IezmW9_ulZKUPlrkqPnTbcHwFNMz/cBzuMBD/Uxt-Nvz/AC3ON/zTMcwMONQx";
 
   hilltopPlayerInstance = fluidPlayer('hilltopVideoPlayer', {
     vastOptions: {
-      adList: [
-        {
-          roll: 'preRoll',
-          vastTag: vastTagUrl
-        }
-      ],
+      adList: [{ roll: 'preRoll', vastTag: vastTagUrl }],
       adClickable: true,
       adCTAText: 'Visit Sponsor',
       skipButtonCaption: 'Skip in [seconds]',
@@ -824,50 +1003,87 @@ function initHilltopPlayer() {
 
   document.getElementById('hilltopVideoPlayer').dataset.init = 'true';
 
-  // 1. Ad Started - An ad is actually playing!
+  // === VAST Ad Events — just show status, DO NOT reward ===
   hilltopPlayerInstance.on('adStarted', function(){
-    watchAdActuallyStarted = true;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700;font-weight:bold">📺 Ad is playing... Do not close or skip!</span>';
+    watchAdIsPlaying = true;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700;font-weight:bold">📺 Ad is playing... Do not close!</span>';
+    // Do NOT start fallback timer during ad — FluidPlayer corrupts video state
   });
 
-  // 2. Ad Ended - Reward only if an ad actually started and wasn't skipped
   hilltopPlayerInstance.on('adEnded', function(){
-    if(!watchAdCooldown && watchAdActuallyStarted) {
-      addCoins(10);
-      document.getElementById('watchStatus').innerHTML = '<span style="color:#51cf66;font-weight:bold">✅ +10 Coins Added! Wait 60s to watch another.</span>';
-      watchAdCooldown = true;
-      watchAdActuallyStarted = false; // reset
-      
-      var timeLeft = 60;
-      var cooldownInterval = setInterval(function() {
-        timeLeft--;
-        document.getElementById('watchCooldown').innerText = '⏳ Next video in: ' + timeLeft + 's';
-        if(timeLeft <= 0) {
-          clearInterval(cooldownInterval);
-          watchAdCooldown = false;
-          document.getElementById('watchCooldown').innerText = '';
-          document.getElementById('watchStatus').innerHTML = '📺 Ready! Press play to watch another video.';
-        }
-      }, 1000);
+    watchAdIsPlaying = false;
+    if(watchVideosToday >= WATCH_DAILY_LIMIT) {
+      document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>';
+      return;
+    }
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700;font-weight:bold">📺 Ad finished! Keep watching the video to earn coins.</span>';
+    // Start fallback timer AFTER ad — now we're in real content
+    startWatchFallback();
+  });
+
+  hilltopPlayerInstance.on('adSkipped', function(){
+    watchAdIsPlaying = false;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ Ad skipped! Keep watching to earn coins.</span>';
+    startWatchFallback();
+  });
+
+  hilltopPlayerInstance.on('noAdLoaded', function(){
+    watchAdIsPlaying = false;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700">📺 No ad available. Watch the full video to earn coins!</span>';
+    startWatchFallback();
+  });
+
+  hilltopPlayerInstance.on('adError', function(){
+    watchAdIsPlaying = false;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700">📺 Ad error. Watch the full video to earn coins!</span>';
+    startWatchFallback();
+  });
+
+  // === DIRECT VIDEO EVENTS ===
+  var videoEl = document.getElementById('hilltopVideoPlayer');
+
+  videoEl.addEventListener('play', function(){
+    if (watchCooldownActive || watchRewardGiven || watchVideosToday >= WATCH_DAILY_LIMIT) return;
+    // Ignore play events during ad playback
+    if (watchAdIsPlaying) return;
+    watchVideoIsPlaying = true;
+    document.getElementById('watchStatus').innerHTML = '<span style="color:#ffd700">📺 Video playing... Watch to the end to earn +10 coins!</span>';
+    startWatchFallback();
+  });
+
+  videoEl.addEventListener('pause', function(){
+    watchVideoIsPlaying = false;
+    if (!watchRewardGiven && !watchCooldownActive && watchVideosToday < WATCH_DAILY_LIMIT && !watchAdIsPlaying) {
+      document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b">⏸ Video paused! Press play to continue watching</span>';
     }
   });
 
-  // 3. Ad Skipped - No reward!
-  hilltopPlayerInstance.on('adSkipped', function(){
-    watchAdActuallyStarted = false;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ Ad skipped! You must watch the full ad to earn coins.</span>';
+  // ===== THE ONLY PLACE THAT TRIGGERS REWARD: video ended =====
+  // BUT: FluidPlayer fires fake "ended" during ad transitions.
+  // So we VERIFY that currentTime is actually near duration.
+  videoEl.addEventListener('ended', function(){
+    watchVideoIsPlaying = false;
+
+    // Ignore ended events during ad playback
+    if (watchAdIsPlaying) return;
+
+    // VERIFICATION: Only reward if video truly reached the end
+    // FluidPlayer's fake "ended" has currentTime near 0, not near duration
+    var cur = videoEl.currentTime || 0;
+    var dur = videoEl.duration || 0;
+
+    // If duration is valid and currentTime is within 3 seconds of the end → real end
+    if (dur > 1 && cur >= dur - 3) {
+      autoRewardWatch();
+    }
+    // Otherwise it's a FluidPlayer fake ended event — ignore it
   });
 
-  // 4. No Ad Available - HilltopAds didn't return an ad
-  hilltopPlayerInstance.on('noAdLoaded', function(){
-    watchAdActuallyStarted = false;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ No ad available right now. Try again in a few minutes.</span>';
-  });
-
-  // 5. Ad Error - Ad failed to load
-  hilltopPlayerInstance.on('adError', function(){
-    watchAdActuallyStarted = false;
-    document.getElementById('watchStatus').innerHTML = '<span style="color:#ff6b6b;font-weight:bold">⚠ Ad failed to load. Please try again later.</span>';
+  // Track when the video loads its real duration
+  videoEl.addEventListener('loadedmetadata', function(){
+    if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 1) {
+      watchKnownDuration = videoEl.duration;
+    }
   });
 }
 
