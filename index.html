@@ -100,6 +100,13 @@ body.playing-game [class*="social-bar"],
 body.playing-game div[id^="bb"],
 body.playing-game iframe[src*="effectivecpmnetwork"],
 body.playing-game div[data-adid] { display: none !important; visibility: hidden !important; }
+
+/* REFERRAL SYSTEM CSS */
+.referral-card{background:linear-gradient(135deg,#1a1a2e,#0a2a1a);border:2px solid #ffd700}
+.referral-link-box{display:flex;gap:8px;margin-top:12px}
+.referral-link-box input{flex:1;background:#0a0a0a;color:#00ffcc;border:1px solid #ffd700;padding:10px;border-radius:8px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.copy-btn{width:auto!important;padding:10px 16px!important;background:linear-gradient(45deg,#ffd700,#ffaa00)!important;color:#000!important;font-weight:bold;border-radius:8px!important;cursor:pointer;border:none!important;margin:0!important}
+.copy-btn:active{transform:scale(0.95)}
 </style>
 
 <script type="text/javascript">
@@ -301,16 +308,31 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
   </div>
   <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:linear-gradient(45deg,#25D366,#128C7E);color:#fff;padding:14px;border-radius:12px;font-weight:bold;font-size:16px;margin:15px 0;text-decoration:none;box-shadow:0 0 15px #25D36644">💬 Join Mada WhatsApp Group</a>
   <p style="color:#999;margin-top:10px;">Malawi's #1 Play & Earn App • 18+ Only</p>
-</div>
-
+  </div>
 <div id="walletPage" class="page">
   <div style="text-align:right;margin-bottom:10px"><button onclick="logout()" style="width:auto;padding:8px 15px;background:#333;color:#00ffcc;border:1px solid #00ffcc55">🚪 Logout</button></div>
   <h1>💳 Wallet</h1>
   <div class="card"><h3>💰 Balance</h3><p id="coins" style="font-size:24px;color:#ffd700;margin:10px 0;">🪙 0 Coins</p><p id="money" style="font-size:20px;color:#00ccff;">💵 MWK 0</p></div>
-  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Watch Video</span><span style="color:#ff6b6b;font-weight:bold">+10 Coins</span></div><div class="flex-row"><span>🎵 Listen & Earn</span><span style="color:#9b59b6;font-weight:bold">+50 Coins</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/12000</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~240 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
+  <div class="card"><h3>📊 Earnings Dashboard</h3><div class="flex-row"><span>🎮 Play Game</span><span style="color:#00ffcc;font-weight:bold">+5-25 Coins</span></div><div class="flex-row"><span>📺 Watch Video</span><span style="color:#ff6b6b;font-weight:bold">+10 Coins</span></div><div class="flex-row"><span>🎵 Listen & Earn</span><span style="color:#9b59b6;font-weight:bold">+50 Coins</span></div><div class="flex-row"><span>🤝 Invite Friend</span><span style="color:#ffd700;font-weight:bold">+500 Coins</span></div><div class="flex-row"><span>⏳ Daily Limit</span><span id="dailyLimitText" style="color:#ff6b6b">0/12000</span></div><div class="progress-container"><div class="progress-fill" id="dailyLimitBar" style="width:0%;background:linear-gradient(90deg,#ff6b6b,#ffd700)"></div></div><p style="margin-top:10px;font-size:13px;color:#888">Estimated Daily Profit: <span style="color:#51cf66">~240 MWK</span></p><p style="font-size:12px;color:#888">Daily Reset in: <span id="dailyCountdown" style="color:#fff;font-weight:bold">00:00:00</span></p></div>
   <div class="card"><h3>🎯 Next Withdrawal Goal</h3><p id="nextGoalText" style="color:#00ccff;margin-bottom:10px;">0 / 5,000 coins</p><div class="progress-container" style="height:12px"><div class="progress-fill" id="nextGoalBar" style="width:0%"></div></div><p id="nextGoalReward" style="font-size:12px;color:#888;margin-top:5px">Reach 5,000 to withdraw 100 MWK</p></div>
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
+  
+  <!-- REFERRAL SYSTEM CARD -->
+  <div class="card referral-card">
+    <h3 style="color:#ffd700">🤝 Invite & Earn</h3>
+    <p style="color:#ccc;margin:8px 0">Share your link! Earn <span style="color:#ffd700;font-weight:bold">500 Coins</span> for every friend who registers!</p>
+    <div class="referral-link-box">
+      <input type="text" id="referralLinkInput" readonly value="Loading...">
+      <button class="copy-btn" onclick="copyReferralLink()">📋 Copy</button>
+    </div>
+    <p id="referralMsg" style="font-size:12px;margin-top:8px;height:16px;color:#51cf66"></p>
+    <div class="stats-grid" style="margin-top:12px">
+      <div class="stat-card"><div class="stat-label">👥 Total Invites</div><div class="stat-value" id="totalInvites">0</div></div>
+      <div class="stat-card"><div class="stat-label">💰 Referral Earned</div><div class="stat-value" id="referralEarnings">0</div></div>
+    </div>
+  </div>
+
   <div class="card" style="background:linear-gradient(135deg,#0a2a1a,#0a1a0e);border:2px solid #25D366">
     <h3 style="color:#25D366">💬 Join Our Community</h3>
     <p style="color:#ccc;margin:10px 0;">Get tips, updates & support from other players!</p>
@@ -431,13 +453,98 @@ function lockPaymentMethod(phone, network) {
   if (phone && network) { if (lockedBox) lockedBox.style.display = 'block'; if (noPhone) noPhone.style.display = 'none'; if (payPhoneLabel) payPhoneLabel.innerText = phone; if (payNetworkLabel) payNetworkLabel.innerText = network; if (payFullLabel) payFullLabel.innerText = '🇲🇼 +265 ' + phone.substring(1); document.getElementById('saved').innerHTML = '<span style="color:#51cf66">✅ Withdrawals go to: ' + network + ' - ' + phone + '</span>'; try { localStorage.setItem('number', phone); localStorage.setItem('network', network); localStorage.setItem('userPhone', phone); } catch(e) {} } else { if (lockedBox) lockedBox.style.display = 'none'; if (noPhone) noPhone.style.display = 'block'; }
 }
 
+/* ===== REFERRAL SYSTEM FUNCTIONS ===== */
+function getReferrerFromURL() {
+  try {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('ref');
+  } catch(e) { return null; }
+}
+
+function addReferralCoins(username, amount) {
+  if (!db) return;
+  db.ref('leaderboard_all/' + username).once('value', function(snap) {
+    var d = snap.val() || {};
+    if (d.banned === true) return;
+    var coins = (d.coins || 0) + amount;
+    db.ref('leaderboard_all/' + username).update({
+      coins: coins, 
+      score: coins, 
+      lastPlayed: Date.now()
+    });
+  });
+}
+
+function processReferral(referrer, newUser) {
+  if (!db || !referrer || referrer === newUser) return;
+  db.ref('referrals/' + referrer + '/' + newUser).once('value', function(snap) {
+    if (!snap.exists()) {
+      db.ref('referrals/' + referrer + '/' + newUser).set(true);
+      addReferralCoins(referrer, 500);
+    }
+  });
+}
+
+function initReferralUI() {
+  var user = null;
+  try { user = localStorage.getItem("user"); } catch(e) {}
+  if (!user) return;
+
+  var baseUrl = window.location.origin + window.location.pathname;
+  var refLink = baseUrl + "?ref=" + encodeURIComponent(user);
+  var inputEl = document.getElementById('referralLinkInput');
+  if (inputEl) inputEl.value = refLink;
+
+  if (db) {
+    db.ref('referrals/' + user).on('value', function(snap) {
+      var count = snap.numChildren();
+      var totalEl = document.getElementById('totalInvites');
+      var earnEl = document.getElementById('referralEarnings');
+      if (totalEl) totalEl.innerText = count;
+      if (earnEl) earnEl.innerText = (count * 500);
+    });
+  }
+}
+
+function copyReferralLink() {
+  var copyText = document.getElementById('referralLinkInput');
+  if (!copyText) return;
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  
+  try {
+    navigator.clipboard.writeText(copyText.value).then(function() {
+      showReferralMsg("✅ Link copied! Share it on WhatsApp!");
+    }).catch(function() {
+      document.execCommand("copy");
+      showReferralMsg("✅ Link copied!");
+    });
+  } catch(e) {
+    document.execCommand("copy");
+    showReferralMsg("✅ Link copied!");
+  }
+}
+
+function showReferralMsg(msg) {
+  var el = document.getElementById('referralMsg');
+  if (el) { 
+    el.innerText = msg; 
+    setTimeout(function() { el.innerText = ''; }, 3000); 
+  }
+}
+/* ===== END REFERRAL SYSTEM ===== */
+
 function register() {
   try { var user = (document.getElementById("usernameInput").value || "").trim(); var networkReg = document.getElementById("networkRegInput").value; var phoneDigits = (document.getElementById("phoneInput").value || "").trim(); var email = (document.getElementById("emailInput").value || "").trim(); var pass = document.getElementById("passwordInput").value || ""; var agree = document.getElementById("agreeCheck").checked; var captcha = parseInt(document.getElementById("captchaA").value); var msgEl = document.getElementById("loginMsg");
   if(user.length < 3){ msgEl.innerHTML = '<span class="error">Username min 3 chars</span>'; return; } if(!networkReg){ msgEl.innerHTML = '<span class="error">📱 Select your mobile network</span>'; return; } if(phoneDigits.length < 9 || !/^[0-9]+$/.test(phoneDigits)){ msgEl.innerHTML = '<span class="error">📱 Enter valid Malawi number</span>'; return; } var fullPhone = formatMalawiPhone(phoneDigits); if(!isValidMalawiPhone(fullPhone)){ msgEl.innerHTML = '<span class="error">📱 Invalid Malawi number</span>'; return; } if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msgEl.innerHTML = '<span class="error">📧 Enter valid email</span>'; return; } if(pass.length < 6){ msgEl.innerHTML = '<span class="error">Password min 6 chars</span>'; return; } if(!agree){ msgEl.innerHTML = '<span class="error">You must agree</span>'; return; } if(captcha !== captchaAnswer){ msgEl.innerHTML = '<span class="error">Wrong captcha</span>'; generateCaptcha(); return; }
   msgEl.innerHTML = '<span class="success">Creating account...</span>'; var name = user.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, '');
   try { localStorage.setItem("user", name); localStorage.setItem("displayName", user); localStorage.setItem("userPhone", fullPhone); localStorage.setItem("network", networkReg); localStorage.setItem("number", fullPhone); localStorage.setItem("userEmail", email); } catch(e){}
   document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet');
-  setTimeout(function(){ if (!db) return; db.ref('users/' + name).set({phone: fullPhone, network: networkReg, email: email, created: Date.now(), country: "MW", agreed: true, password: md5(pass)}); db.ref('leaderboard_all/' + name).once('value').then(function(snap){ if(!snap.exists()) db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg}); }); setupPresence(name); checkInboxBadge(); lockPaymentMethod(fullPhone, networkReg); }, 200);
+  setTimeout(function(){ if (!db) return; 
+    var referrer = getReferrerFromURL();
+    db.ref('users/' + name).set({phone: fullPhone, network: networkReg, email: email, created: Date.now(), country: "MW", agreed: true, password: md5(pass), referredBy: referrer || null}); 
+    if (referrer && referrer !== name) { processReferral(referrer, name); }
+    db.ref('leaderboard_all/' + name).once('value').then(function(snap){ if(!snap.exists()) db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg}); }); setupPresence(name); checkInboxBadge(); lockPaymentMethod(fullPhone, networkReg); }, 200);
   } catch(e){ alert("Error: " + e.message); }
 }
 
@@ -452,7 +559,7 @@ function login() {
 
 function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) { addCoins(baseCoins); lastBaseReward = baseCoins; doubleCoinsUsed = false; document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>'+title+'</h2>'+detailsHtml+'<p id="gameRewardDisplay" style="font-size:24px;color:#ffd700;margin:10px 0;">+'+baseCoins+' Coins!</p><button id="doubleCoinsBtn" class="double-coins-btn" onclick="doubleCoinsWithAd()">📺 Watch Ad to Double Coins (+'+baseCoins+' more!)</button><p id="gameTotalCoins" style="font-size:13px;color:#999;margin:5px 0"></p><button id="replayBtn">Play Again</button></div>'; var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); }; }
 
-function showPage(page) { try { var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active'); var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active'); var mainNav = document.getElementById('mainNav'); if (mainNav) mainNav.style.display = 'flex'; setGameAdsVisible(page !== 'play'); if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); } else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); } else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); initHilltopPlayer(); updateWatchLimitUI(); } else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); } else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); } else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[5]) btns[5].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); } } catch(e) {} }
+function showPage(page) { try { var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active'); var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active'); var mainNav = document.getElementById('mainNav'); if (mainNav) mainNav.style.display = 'flex'; setGameAdsVisible(page !== 'play'); if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); initReferralUI(); } else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); } else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); initHilltopPlayer(); updateWatchLimitUI(); } else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); } else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); } else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[5]) btns[5].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); } } catch(e) {} }
 
 function startCountdown() { if(countdownInterval) clearInterval(countdownInterval); function update() { var now = new Date(); var midnight = new Date(now); midnight.setHours(24,0,0,0); var diff = midnight - now; var h = Math.floor(diff / 3600000); var m = Math.floor((diff % 3600000) / 60000); var s = Math.floor((diff % 60000) / 1000); var el = document.getElementById("dailyCountdown"); if(el) el.innerText = String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0'); } update(); countdownInterval = setInterval(update, 1000); }
 
@@ -697,7 +804,6 @@ function startFlappyBirdExtreme(){
       return;
     }
 
-    /* PLAYING */
     gameState.birdVY+=gameState.gravity;
     gameState.birdY+=gameState.birdVY;
     gameState.birdAngle=Math.max(-0.55,Math.min(Math.PI/3.5,gameState.birdVY*0.065));
@@ -777,14 +883,12 @@ function startFlappyBirdExtreme(){
     ctx.save();
     ctx.translate(gameState.shakeX||0,gameState.shakeY||0);
 
-    /* Sky */
     var sky=ctx.createLinearGradient(0,0,0,H);
     sky.addColorStop(0,'#08001a');sky.addColorStop(0.25,'#120828');
     sky.addColorStop(0.6,'#180a22');sky.addColorStop(1,'#0a0a10');
     ctx.fillStyle=sky;
     ctx.fillRect(0,0,W,H);
 
-    /* Stars */
     for(var si=0;si<bgStars.length;si++){
       var s=bgStars[si];
       var alpha=0.25+s.b*0.65;
@@ -792,14 +896,12 @@ function startFlappyBirdExtreme(){
       ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
     }
 
-    /* Far buildings */
     for(var fi=0;fi<bldgsFar.length;fi++){
       var f=bldgsFar[fi];
       ctx.fillStyle='#0c0c1a';
       ctx.fillRect(f.x,gameState.groundY-f.h,f.w,f.h);
     }
 
-    /* Near buildings */
     for(var ni=0;ni<bldgsNear.length;ni++){
       var n=bldgsNear[ni];
       ctx.fillStyle='#10101f';
@@ -816,14 +918,12 @@ function startFlappyBirdExtreme(){
       }
     }
 
-    /* Trail */
     for(var ti=0;ti<gameState.trail.length;ti++){
       var tr=gameState.trail[ti];
       ctx.fillStyle='rgba(0,255,204,'+(tr.a*0.28).toFixed(2)+')';
       ctx.beginPath();ctx.arc(tr.x,tr.y,6*tr.a,0,Math.PI*2);ctx.fill();
     }
 
-    /* PIPES */
     var capH=20,capExtra=12;
     for(var pi=0;pi<gameState.pipes.length;pi++){
       var p=gameState.pipes[pi];
@@ -860,7 +960,6 @@ function startFlappyBirdExtreme(){
       ctx.shadowBlur=0;
     }
 
-    /* GROUND */
     var gGrad=ctx.createLinearGradient(0,gameState.groundY,0,H);
     gGrad.addColorStop(0,'#1a3322');gGrad.addColorStop(0.12,'#0d1a11');gGrad.addColorStop(1,'#040a06');
     ctx.fillStyle=gGrad;
@@ -875,7 +974,6 @@ function startFlappyBirdExtreme(){
       ctx.beginPath();ctx.moveTo(gx,gameState.groundY);ctx.lineTo(gx-14,H);ctx.stroke();
     }
 
-    /* BIRD */
     ctx.save();
     ctx.translate(gameState.birdX,gameState.birdY);
     ctx.rotate(gameState.birdAngle);
@@ -897,7 +995,6 @@ function startFlappyBirdExtreme(){
     ctx.beginPath();ctx.moveTo(-15,1);ctx.lineTo(-26,1);ctx.lineTo(-19,5);ctx.closePath();ctx.fill();
     ctx.restore();
 
-    /* PARTICLES */
     for(var pi2=0;pi2<gameState.particles.length;pi2++){
       var pt=gameState.particles[pi2];
       var pAlpha=pt.life/pt.maxLife;
@@ -906,7 +1003,6 @@ function startFlappyBirdExtreme(){
     }
     ctx.globalAlpha=1;
 
-    /* Star score particles */
     for(var spi=0;spi<gameState.starParts.length;spi++){
       var sp=gameState.starParts[spi];
       var spA=sp.life/sp.maxLife;
@@ -922,7 +1018,6 @@ function startFlappyBirdExtreme(){
       ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.globalAlpha=1;ctx.restore();
     }
 
-    /* Death particles */
     for(var di2=0;di2<gameState.deathParts.length;di2++){
       var dp=gameState.deathParts[di2];
       var dAlpha=dp.life/dp.maxLife;
@@ -931,7 +1026,6 @@ function startFlappyBirdExtreme(){
     }
     ctx.globalAlpha=1;
 
-    /* Close pass flash */
     if(gameState.closeFlash>0){
       var cf=gameState.closeFlash/14;
       ctx.strokeStyle='rgba(255,215,0,'+(cf*0.75).toFixed(2)+')';
@@ -943,20 +1037,17 @@ function startFlappyBirdExtreme(){
       ctx.fillText('CLOSE! +1',gameState.birdX,gameState.birdY-30);
     }
 
-    /* Death flash overlay */
     if(gameState.flashAlpha>0){
       ctx.fillStyle='rgba(255,40,40,'+gameState.flashAlpha.toFixed(2)+')';
       ctx.fillRect(0,0,W,H);
     }
 
-    /* Big score */
     if(gameState.phase==='playing'){
       ctx.save();ctx.shadowBlur=18;ctx.shadowColor='rgba(255,215,0,0.6)';
       ctx.fillStyle='rgba(255,215,0,0.8)';ctx.font='bold 52px Arial';ctx.textAlign='center';
       ctx.fillText(gameState.score,W/2,72);ctx.shadowBlur=0;ctx.restore();
     }
 
-    /* READY OVERLAY */
     if(gameState.phase==='ready'){
       ctx.fillStyle='rgba(0,0,0,0.3)';ctx.fillRect(0,0,W,H);
       ctx.shadowBlur=25;ctx.shadowColor='#00ffcc';
@@ -975,7 +1066,6 @@ function startFlappyBirdExtreme(){
       }
     }
 
-    /* DEAD OVERLAY */
     if(gameState.phase==='dead'&&gameState.deathParts.length<4){
       ctx.fillStyle='rgba(0,0,0,0.45)';ctx.fillRect(0,0,W,H);
       ctx.shadowBlur=20;ctx.shadowColor='#ff6b6b';
@@ -991,7 +1081,6 @@ function startFlappyBirdExtreme(){
     ctx.restore();
   }
 
-  /* INPUT */
   c.addEventListener('touchstart',function(e){e.preventDefault();if(gameState.phase!=='dead')flap();},{passive:false});
   c.addEventListener('mousedown',function(e){e.preventDefault();if(gameState.phase!=='dead')flap();});
   var keyHandler=function(e){
@@ -1000,7 +1089,6 @@ function startFlappyBirdExtreme(){
   window.addEventListener('keydown',keyHandler);
   gameState.cleanup=function(){window.removeEventListener('keydown',keyHandler);};
 
-  /* LOOP */
   function loop(){
     if(document.getElementById('flappyCanvas')){
        update();draw();requestAnimationFrame(loop);
@@ -1094,4 +1182,5 @@ function updateWithdrawCountdown(){
 setInterval(updateWithdrawCountdown,1000);setTimeout(updateWithdrawCountdown,500);
 </script>
 </body>
-      </html>
+</html>
+  
