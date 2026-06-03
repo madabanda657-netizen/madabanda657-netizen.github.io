@@ -27,10 +27,8 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#000;color:#fff;text-align:center;overflow-x:hidden}.container{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}.card{background:#111;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 20px #00ffcc55;border:1px solid #00ffcc33}input,select,button{padding:12px;margin:8px 0;border-radius:10px;border:none;width:100%;font-size:16px}button{background:linear-gradient(45deg,#00ffcc,#00ccff);font-weight:bold;color:#000;cursor:pointer}h1{color:#00ffcc;margin-bottom:10px;font-size:28px}h2{color:#00ccff;margin-bottom:15px}h3{color:#00ccff;margin-bottom:10px}.success{color:#51cf66}.error{color:#ff6b6b}.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:none;justify-content:space-around;padding:10px 0 12px;box-shadow:0 -2px 10px #00ffcc44;z-index:100}.nav-btn{background:transparent;border:1px solid transparent;color:#888;padding:6px 2px;margin:0;width:auto;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}.nav-btn .nav-icon{font-size:18px}.nav-btn.active{color:#00ffcc;border-color:transparent;text-shadow:0 0 10px #00ffcc}.page{display:none}.page.active{display:block}.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}.game-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-radius:15px;cursor:pointer;border:2px solid #00ffcc33}.game-icon{font-size:40px;margin-bottom:10px}.game-reward{color:#ffd700;font-weight:bold;margin-top:5px;font-size:13px}.game-area{min-height:300px;margin:20px 0}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:20px auto}.memory-card{aspect-ratio:1;background:linear-gradient(135deg,#00ffcc,#00ccff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer}.memory-card.matched{opacity:.5;cursor:not-allowed}.color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:20px auto}.color-btn{padding:40px;border-radius:15px;font-size:18px;font-weight:bold}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.stat-card{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:15px;border-radius:10px;border:1px solid #00ffcc33}.stat-value{font-size:28px;font-weight:bold;color:#00ffcc;margin:10px 0}.stat-label{font-size:14px;color:#999}.timer{font-size:24px;font-weight:bold;color:#ffd700;margin:15px 0}.score-display{background:linear-gradient(135deg,#00ffcc22,#00ccff22);padding:15px;border-radius:10px;margin:15px 0;border:2px solid #00ffcc}.back-btn{background:#333;color:#00ffcc;width:auto;padding:10px 20px;margin:10px auto;display:block}.reward-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}.reward-box{background:#111;border:2px solid #00ffcc;border-radius:15px;padding:20px;max-width:500px;width:100%}.flex-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;color:#ccc}.progress-container{background:#222;height:10px;border-radius:5px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;background:linear-gradient(45deg,#00ffcc,#00ccff);transition:width 0.3s}
-
 @keyframes coinDrop { 0% { transform: scale(1); } 50% { transform: scale(1.2); color: #ffd700; } 100% { transform: scale(1); } }
 .coin-update { animation: coinDrop 0.5s ease; }
-
 .upload-label{display:block;background:linear-gradient(45deg,#9b59b6,#8e44ad);color:#fff;padding:14px;border-radius:10px;cursor:pointer;font-weight:bold;font-size:16px;margin:10px 0;transition:opacity 0.2s}.upload-label:hover{opacity:0.9}.upload-label:active{opacity:0.8}
 .upload-song-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#1a1a1a;border-radius:8px;margin:5px 0;border:1px solid #333;gap:8px}
 .upload-song-name{color:#ccc;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:left}
@@ -41,7 +39,6 @@
 .upload-listen-bar{height:8px;border-radius:4px;overflow:hidden;margin-top:10px;background:#222}
 .upload-listen-fill{height:100%;background:linear-gradient(90deg,#9b59b6,#e74c3c);transition:width 1s linear;border-radius:4px}
 .upload-count-badge{display:inline-block;background:#9b59b6;color:#fff;font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:10px}
-
 .phone-input-group{display:flex;gap:0;margin:8px 0}
 .phone-prefix{background:#1a1a1a;color:#00ffcc;padding:12px;border-radius:10px 0 0 10px;font-size:16px;font-weight:bold;white-space:nowrap;display:flex;align-items:center;border:1px solid #00ffcc33;border-right:none;min-width:60px;justify-content:center}
 .phone-input-group input{border-radius:0 10px 10px 0!important;margin:0!important}
@@ -54,7 +51,6 @@
 .payment-locked-divider{height:1px;background:#00ffcc33;margin:10px 0}
 .payment-locked-network{font-size:14px;color:#ccc;margin-top:5px}
 .payment-locked-title{font-size:13px;color:#00ffcc;font-weight:bold;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-
 .ad-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.94);z-index:99998;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px;backdrop-filter:blur(6px)}
 .ad-box{border-radius:22px;padding:30px 25px;text-align:center;max-width:340px;width:95%}
 .ad-box.monetag-style{background:linear-gradient(145deg,#0d0d1a,#1a0a2e);border:2px solid #9b59b6;box-shadow:0 0 50px #9b59b633,0 0 100px #9b59b611}
@@ -72,11 +68,9 @@
 .ad-status.complete{display:block;background:#51cf6622;border:1px solid #51cf6644;color:#51cf66}
 .ad-claim{display:none;margin-top:15px;background:linear-gradient(45deg,#9b59b6,#e74c3c);color:#fff;border:none;padding:15px 24px;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer;width:100%;animation:claimGlow 1s ease-in-out infinite alternate}
 @keyframes claimGlow{from{box-shadow:0 0 8px #9b59b666}to{box-shadow:0 0 25px #e74c3c88}}
-
 .double-coins-btn{background:linear-gradient(45deg,#9b59b6,#e74c3c)!important;color:#fff!important;font-size:15px!important;padding:14px!important;margin:10px 0!important;border:2px solid #ffd700!important;animation:doubleGlow 1.5s ease-in-out infinite alternate}
 @keyframes doubleGlow{from{box-shadow:0 0 5px #9b59b666}to{box-shadow:0 0 20px #e74c3c88}}
 .double-coins-btn:disabled{background:#333!important;color:#51cf66!important;border-color:#51cf66!important;animation:none!important;box-shadow:none!important;cursor:not-allowed!important}
-
 .watch-container{margin:20px 0}
 .watch-vid-wrapper{position:relative;width:100%;border-radius:12px;overflow:hidden;border:2px solid #ff6b6b;box-shadow:0 0 15px #ff6b6b33}
 .watch-status{margin-top:15px;font-size:16px;min-height:24px}
@@ -93,178 +87,87 @@
 @keyframes rewardPop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
 .watch-reward-amount{font-size:28px;font-weight:bold;color:#51cf66;margin:8px 0}
 .watch-reward-check{font-size:40px;margin-bottom:5px}
-
-body.playing-game #id-custom-social-bar,
-body.playing-game [id^="adsterra"],
-body.playing-game [class*="social-bar"],
-body.playing-game div[id^="bb"],
-body.playing-game iframe[src*="effectivecpmnetwork"],
-body.playing-game div[data-adid] { display: none !important; visibility: hidden !important; }
-
-/* REFERRAL SYSTEM CSS */
+body.playing-game #id-custom-social-bar,body.playing-game [id^="adsterra"],body.playing-game [class*="social-bar"],body.playing-game div[id^="bb"],body.playing-game iframe[src*="effectivecpmnetwork"],body.playing-game div[data-adid]{display:none!important;visibility:hidden!important}
 .referral-card{background:linear-gradient(135deg,#1a1a2e,#0a2a1a);border:2px solid #ffd700}
 .referral-link-box{display:flex;gap:8px;margin-top:12px}
 .referral-link-box input{flex:1;background:#0a0a0a;color:#00ffcc;border:1px solid #ffd700;padding:10px;border-radius:8px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .copy-btn{width:auto!important;padding:10px 16px!important;background:linear-gradient(45deg,#ffd700,#ffaa00)!important;color:#000!important;font-weight:bold;border-radius:8px!important;cursor:pointer;border:none!important;margin:0!important}
 .copy-btn:active{transform:scale(0.95)}
+.notification-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:100000;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px;backdrop-filter:blur(8px)}
+.notification-box{background:linear-gradient(135deg,#111,#1a1a2e);border:2px solid #00ffcc;border-radius:20px;padding:25px;max-width:480px;width:100%;box-shadow:0 0 40px #00ffcc44,0 0 80px #00ffcc22;max-height:90vh;overflow-y:auto}
+.notification-title{color:#00ffcc;font-size:22px;font-weight:bold;margin-bottom:15px;text-align:center;text-shadow:0 0 10px #00ffcc88}
+.notification-message{color:#fff;font-size:15px;line-height:1.8;text-align:left;margin-bottom:20px}
+.notification-message strong{color:#ffd700}
+.notification-message em{color:#00ccff;font-style:normal}
+.notification-ok-btn{background:linear-gradient(45deg,#00ffcc,#00ccff);color:#000;border:none;padding:15px 30px;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer;width:100%;margin-top:10px;transition:transform 0.2s,box-shadow 0.2s}
+.notification-ok-btn:hover{transform:scale(1.02);box-shadow:0 0 20px #00ffcc66}
+.notification-ok-btn:active{transform:scale(0.98)}
+.notification-close{color:#888;font-size:12px;margin-top:15px;cursor:pointer}
 </style>
 
 <script type="text/javascript">
-function logout(){
-  if(confirm('Logout?')){
-    localStorage.removeItem('user');
-    localStorage.removeItem('displayName');
-    document.getElementById('mainNav').style.display='none';
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById('loginPage').classList.add('active');
-  }
-}
-function showForgot(){
-  document.getElementById('forgotBox').style.display = document.getElementById('forgotBox').style.display==='none'?'block':'none';
-}
-function resetPassword(){
-  var email = document.getElementById('forgotEmail').value.trim();
-  var newPass = document.getElementById('newPass').value;
-  var msg = document.getElementById('forgotMsg');
-  if(!email || newPass.length<6){ msg.innerHTML='<span style="color:#ff6b6b">Enter valid email and new password (min 6 chars)</span>'; return; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.innerHTML='<span style="color:#ff6b6b">📧 Invalid email format</span>'; return; }
-  if(!db){ msg.innerHTML='<span style="color:#ff6b6b">Database not ready</span>'; return; }
-  db.ref('users').orderByChild('email').equalTo(email).once('value', function(snap){
-    if(!snap.exists()){ msg.innerHTML='<span style="color:#ff6b6b">Email not found</span>'; return; }
-    snap.forEach(function(child){
-      var username = child.key;
-      db.ref('users/'+username).update({password: md5(newPass)});
-      msg.innerHTML='<span style="color:#51cf66">✅ Password reset! Login with new password</span>';
-    });
-  });
-}
+function logout(){if(confirm('Logout?')){localStorage.removeItem('user');localStorage.removeItem('displayName');document.getElementById('mainNav').style.display='none';document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('loginPage').classList.add('active');}}
+function showForgot(){document.getElementById('forgotBox').style.display=document.getElementById('forgotBox').style.display==='none'?'block':'none';}
+function resetPassword(){var email=document.getElementById('forgotEmail').value.trim();var newPass=document.getElementById('newPass').value;var msg=document.getElementById('forgotMsg');if(!email||newPass.length<6){msg.innerHTML='<span style="color:#ff6b6b">Enter valid email and new password (min 6 chars)</span>';return;}if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.innerHTML='<span style="color:#ff6b6b">📧 Invalid email format</span>';return;}if(!db){msg.innerHTML='<span style="color:#ff6b6b">Database not ready</span>';return;}db.ref('users').orderByChild('email').equalTo(email).once('value',function(snap){if(!snap.exists()){msg.innerHTML='<span style="color:#ff6b6b">Email not found</span>';return;}snap.forEach(function(child){var username=child.key;db.ref('users/'+username).update({password:md5(newPass)});msg.innerHTML='<span style="color:#51cf66">✅ Password reset! Login with new password</span>';});});}
 </script>
 
 <script>
-var monetagCountdownInterval = null;
-var monetagAdWatched = false;
-var monetagCountdownDone = false;
-
-function triggerMonetagRewardedAd() {
-  monetagAdWatched = false;
-  monetagCountdownDone = false;
-  var overlay = document.getElementById('monetagAdOverlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'monetagAdOverlay';
-    overlay.className = 'ad-overlay';
-    overlay.innerHTML = '<div class="ad-box monetag-style"><div class="ad-icon">📺</div><p class="ad-title">Watch the ad to unlock your song</p><div class="ad-number purple" id="monetagCountNum">15</div><p class="ad-text">Your song starts in <span id="monetagCountSec" style="color:#ffd700;font-weight:bold">15</span> seconds</p><p class="ad-subtext">🎧 Please watch the full ad</p><div class="ad-bar"><div class="ad-fill-purple" id="monetagCountFill" style="width:0%"></div></div><div class="ad-status watching" id="monetagAdStatus">⏳ Video ad is playing...</div><button class="ad-claim" id="monetagSkipBtn" onclick="monetagAdComplete()" style="background:linear-gradient(45deg,#9b59b6,#e74c3c)">▶ Play Song Now</button></div>';
-    document.body.appendChild(overlay);
-  }
-  var numEl = document.getElementById('monetagCountNum');
-  var secEl = document.getElementById('monetagCountSec');
-  var fillEl = document.getElementById('monetagCountFill');
-  var statusEl = document.getElementById('monetagAdStatus');
-  var skipBtn = document.getElementById('monetagSkipBtn');
-  if (numEl) numEl.innerText = '15';
-  if (secEl) secEl.innerText = '15';
-  if (fillEl) fillEl.style.width = '0%';
-  if (skipBtn) skipBtn.style.display = 'none';
-  if (statusEl) { statusEl.className = 'ad-status watching'; statusEl.innerText = '⏳ Video ad is playing...'; statusEl.style.display = 'block'; }
-  overlay.style.display = 'flex';
-  try {
-    if (typeof show_9816593 === 'function') {
-      show_9816593().then(function() { monetagAdWatched = true; var sEl = document.getElementById('monetagAdStatus'); if (sEl) { sEl.className = 'ad-status complete'; sEl.innerText = '✅ Ad watched! Waiting for countdown...'; } if (monetagCountdownDone) monetagStartMusic(); }).catch(function(err) { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); });
-    } else {
-      setTimeout(function() { if (typeof show_9816593 === 'function') { show_9816593().then(function() { monetagAdWatched = true; var sEl = document.getElementById('monetagAdStatus'); if (sEl) { sEl.className = 'ad-status complete'; sEl.innerText = '✅ Ad watched!'; } if (monetagCountdownDone) monetagStartMusic(); }).catch(function() { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); }); } else { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); } }, 1000);
-    }
-  } catch(e) { monetagAdWatched = true; if (monetagCountdownDone) monetagStartMusic(); }
-  var timeLeft = 15;
-  if (monetagCountdownInterval) clearInterval(monetagCountdownInterval);
-  monetagCountdownInterval = setInterval(function() {
-    timeLeft--;
-    if (numEl) numEl.innerText = timeLeft;
-    if (secEl) secEl.innerText = timeLeft;
-    if (fillEl) fillEl.style.width = ((15 - timeLeft) / 15 * 100) + '%';
-    if (timeLeft <= 0) { clearInterval(monetagCountdownInterval); monetagCountdownInterval = null; monetagCountdownDone = true; if (monetagAdWatched) { monetagStartMusic(); } else { var sEl2 = document.getElementById('monetagAdStatus'); if (sEl2) { sEl2.className = 'ad-status watching'; sEl2.innerText = '⏳ Countdown done. Waiting for ad...'; } if (numEl) numEl.innerText = '⏳'; } }
-  }, 1000);
-}
-
-function monetagStartMusic() {
-  var overlay = document.getElementById('monetagAdOverlay');
-  if (overlay) overlay.style.display = 'none';
-  if (monetagCountdownInterval) { clearInterval(monetagCountdownInterval); monetagCountdownInterval = null; }
-  var msgEl = document.getElementById('uploadListenMsg');
-  if (msgEl) msgEl.innerHTML = '<span style="color:#51cf66">✅ Ad watched! Starting song...</span>';
-  startUploadedSongPlayback(pendingPlayIndex);
-}
-
-function monetagAdComplete() { monetagAdWatched = true; monetagCountdownDone = true; monetagStartMusic(); }
-
-var lastBaseReward = 0;
-var doubleCoinsUsed = false;
-
-function doubleCoinsWithAd() {
-  var doubleBtn = document.getElementById('doubleCoinsBtn');
-  if (!doubleBtn || doubleBtn.disabled) return;
-  doubleBtn.disabled = true;
-  doubleBtn.innerText = '⏳ Loading ad...';
-  doubleBtn.style.background = '#333';
-  doubleBtn.style.color = '#ffd700';
-  try {
-    if (typeof show_9816593 === 'function') {
-      show_9816593().then(function() { addCoins(lastBaseReward); doubleCoinsUsed = true; doubleBtn.innerText = '✅ Coins Doubled! +' + lastBaseReward + ' more!'; doubleBtn.style.background = '#333'; doubleBtn.style.color = '#51cf66'; doubleBtn.style.borderColor = '#51cf66'; var totalEl = document.getElementById('gameTotalCoins'); if (totalEl) totalEl.innerHTML = '🎉 Total: +' + (lastBaseReward * 2) + ' Coins! (DOUBLED!)'; var rewardEl = document.getElementById('gameRewardDisplay'); if (rewardEl) rewardEl.innerHTML = '<span style="color:#51cf66;font-size:20px">+' + (lastBaseReward * 2) + ' Coins! 🎉 DOUBLED!</span>'; showBalance(); }).catch(function(err) { doubleBtn.innerText = '❌ Ad not completed. Try again!'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; setTimeout(function(){ if(doubleBtn && !doubleCoinsUsed) doubleBtn.innerText = '📺 Watch Ad to Double Coins (+' + lastBaseReward + ' more!)'; }, 2000); });
-    } else { setTimeout(function() { if (typeof show_9816593 === 'function') { show_9816593().then(function() { addCoins(lastBaseReward); doubleCoinsUsed = true; doubleBtn.innerText = '✅ Coins Doubled! +' + lastBaseReward + ' more!'; doubleBtn.style.background = '#333'; doubleBtn.style.color = '#51cf66'; showBalance(); }).catch(function() { doubleBtn.innerText = '❌ Ad not completed'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; }); } else { doubleBtn.innerText = '❌ Ad not available'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; } }, 1000); }
-  } catch(e) { doubleBtn.innerText = '❌ Ad error'; doubleBtn.disabled = false; doubleBtn.style.background = 'linear-gradient(45deg,#9b59b6,#e74c3c)'; doubleBtn.style.color = '#fff'; }
-}
-
-function setGameAdsVisible(visible) {
-  var nativeBannerAd = document.getElementById('nativeBannerAd');
-  var topBannerAd = document.getElementById('topBannerAd');
-  if (nativeBannerAd) nativeBannerAd.style.display = visible ? 'block' : 'none';
-  if (topBannerAd) topBannerAd.style.display = visible ? 'block' : 'none';
-  if (visible) document.body.classList.remove('playing-game'); else document.body.classList.add('playing-game');
-}
-
-var WATCH_DAILY_LIMIT = 20;
-var watchVideosToday = 0;
-var watchRewardGiven = false;
-var watchCooldownActive = false;
-var watchVideoIsPlaying = false;
-var watchPlayedSeconds = 0;
-var watchFallbackTimer = null;
-var watchKnownDuration = 0;
-
-(function(){ try { var todayStr = new Date().toDateString(); var savedDate = localStorage.getItem('watchLimitDate') || ''; if (savedDate === todayStr) { watchVideosToday = parseInt(localStorage.getItem('watchVideosToday') || '0'); } else { watchVideosToday = 0; localStorage.setItem('watchVideosToday', '0'); localStorage.setItem('watchLimitDate', todayStr); } } catch(e) { watchVideosToday = 0; } })();
-
-function saveWatchCount() { try { localStorage.setItem('watchVideosToday', String(watchVideosToday)); } catch(e) {} }
-
-function updateWatchLimitUI() {
-  var countEl = document.getElementById('watchLimitCount'); var barEl = document.getElementById('watchLimitFill'); var msgEl = document.getElementById('watchLimitMsg'); var videoEl = document.getElementById('hilltopVideoPlayer');
-  if (countEl) countEl.innerHTML = '<strong>' + watchVideosToday + '</strong> / ' + WATCH_DAILY_LIMIT;
-  if (barEl) barEl.style.width = Math.min(100, (watchVideosToday / WATCH_DAILY_LIMIT) * 100) + '%';
-  var limitReached = watchVideosToday >= WATCH_DAILY_LIMIT;
-  if (msgEl) { if (limitReached) { msgEl.innerHTML = '🚫 Daily limit reached! Come back tomorrow.'; msgEl.style.color = '#ff6b6b'; } else { msgEl.innerHTML = '📺 Watch ' + (WATCH_DAILY_LIMIT - watchVideosToday) + ' more video(s) today'; msgEl.style.color = '#888'; } }
-  if (videoEl && limitReached) { videoEl.style.pointerEvents = 'none'; videoEl.style.opacity = '0.3'; var wrapper = document.getElementById('hilltopVideoWrapper'); if (wrapper && !document.getElementById('watchLimitOverlay')) { var overlay = document.createElement('div'); overlay.id = 'watchLimitOverlay'; overlay.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10;border-radius:12px;'; overlay.innerHTML = '<span style="font-size:40px">🔒</span><span style="color:#ff6b6b;font-weight:bold;margin-top:8px">Daily Limit Reached</span>'; wrapper.style.position = 'relative'; wrapper.appendChild(overlay); } } else if (videoEl && !limitReached) { videoEl.style.pointerEvents = 'auto'; videoEl.style.opacity = '1'; var existingOverlay = document.getElementById('watchLimitOverlay'); if (existingOverlay) existingOverlay.remove(); }
-}
-
-function autoRewardWatch() {
-  if (watchRewardGiven || watchCooldownActive || watchVideosToday >= WATCH_DAILY_LIMIT) return;
-  watchRewardGiven = true; watchVideoIsPlaying = false; stopWatchFallback();
-  watchVideosToday++; saveWatchCount(); addCoins(10);
-  var banner = document.getElementById('watchRewardBanner'); if (banner) banner.classList.add('show');
-  var statusEl = document.getElementById('watchStatus'); if (statusEl) statusEl.innerHTML = '<span style="color:#51cf66;font-weight:bold">🎉 +10 Coins added automatically!</span>';
-  updateWatchLimitUI();
-  watchCooldownActive = true; var timeLeft = 60; var cooldownEl = document.getElementById('watchCooldown');
-  var cooldownInterval = setInterval(function() { timeLeft--; if (cooldownEl) cooldownEl.innerText = '⏳ Next video in: ' + timeLeft + 's'; if (timeLeft <= 0) { clearInterval(cooldownInterval); watchCooldownActive = false; watchRewardGiven = false; watchVideoIsPlaying = false; watchPlayedSeconds = 0; watchKnownDuration = 0; if (cooldownEl) cooldownEl.innerText = ''; if (banner) banner.classList.remove('show'); if (statusEl) { if (watchVideosToday >= WATCH_DAILY_LIMIT) statusEl.innerHTML = '<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>'; else statusEl.innerHTML = '📺 Ready! Press play to watch another video.'; } } }, 1000);
-}
-
-function startWatchFallback() { stopWatchFallback(); watchPlayedSeconds = 0; watchFallbackTimer = setInterval(function() { var videoEl = document.getElementById('hilltopVideoPlayer'); if (!videoEl) return; var isPlaying = !videoEl.paused && !videoEl.ended; watchVideoIsPlaying = isPlaying; if (isPlaying) watchPlayedSeconds += 0.5; if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 1) watchKnownDuration = videoEl.duration; var statusEl = document.getElementById('watchStatus'); if (statusEl && !watchRewardGiven && !watchCooldownActive) { if (isPlaying) { var cur = videoEl.currentTime || 0; var dur = watchKnownDuration || videoEl.duration || 0; if (dur > 1) { var remaining = Math.max(0, Math.ceil(dur - cur)); statusEl.innerHTML = '<span style="color:#ffd700">Watching video... <span style="color:#fff;font-weight:bold">' + remaining + 's remaining</span></span>'; } else statusEl.innerHTML = '<span style="color:#ffd700">Watching video... Keep watching!</span>'; } else if (watchPlayedSeconds > 0) statusEl.innerHTML = '<span style="color:#ff6b6b">Video paused! Press play to continue watching</span>'; } }, 500); }
-
-function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFallbackTimer); watchFallbackTimer = null; } }
+var monetagCountdownInterval=null;var monetagAdWatched=false;var monetagCountdownDone=false;
+function triggerMonetagRewardedAd(){monetagAdWatched=false;monetagCountdownDone=false;var overlay=document.getElementById('monetagAdOverlay');if(!overlay){overlay=document.createElement('div');overlay.id='monetagAdOverlay';overlay.className='ad-overlay';overlay.innerHTML='<div class="ad-box monetag-style"><div class="ad-icon">📺</div><p class="ad-title">Watch the ad to unlock your song</p><div class="ad-number purple" id="monetagCountNum">15</div><p class="ad-text">Your song starts in <span id="monetagCountSec" style="color:#ffd700;font-weight:bold">15</span> seconds</p><p class="ad-subtext">🎧 Please watch the full ad</p><div class="ad-bar"><div class="ad-fill-purple" id="monetagCountFill" style="width:0%"></div></div><div class="ad-status watching" id="monetagAdStatus">⏳ Video ad is playing...</div><button class="ad-claim" id="monetagSkipBtn" onclick="monetagAdComplete()" style="background:linear-gradient(45deg,#9b59b6,#e74c3c)">▶ Play Song Now</button></div>';document.body.appendChild(overlay);}var numEl=document.getElementById('monetagCountNum');var secEl=document.getElementById('monetagCountSec');var fillEl=document.getElementById('monetagCountFill');var statusEl=document.getElementById('monetagAdStatus');var skipBtn=document.getElementById('monetagSkipBtn');if(numEl)numEl.innerText='15';if(secEl)secEl.innerText='15';if(fillEl)fillEl.style.width='0%';if(skipBtn)skipBtn.style.display='none';if(statusEl){statusEl.className='ad-status watching';statusEl.innerText='⏳ Video ad is playing...';statusEl.style.display='block';}overlay.style.display='flex';try{if(typeof show_9816593==='function'){show_9816593().then(function(){monetagAdWatched=true;var sEl=document.getElementById('monetagAdStatus');if(sEl){sEl.className='ad-status complete';sEl.innerText='✅ Ad watched! Waiting for countdown...';}if(monetagCountdownDone)monetagStartMusic();}).catch(function(err){monetagAdWatched=true;if(monetagCountdownDone)monetagStartMusic();});}else{setTimeout(function(){if(typeof show_9816593==='function'){show_9816593().then(function(){monetagAdWatched=true;var sEl=document.getElementById('monetagAdStatus');if(sEl){sEl.className='ad-status complete';sEl.innerText='✅ Ad watched!';}if(monetagCountdownDone)monetagStartMusic();}).catch(function(){monetagAdWatched=true;if(monetagCountdownDone)monetagStartMusic();});}else{monetagAdWatched=true;if(monetagCountdownDone)monetagStartMusic();}},1000);}}catch(e){monetagAdWatched=true;if(monetagCountdownDone)monetagStartMusic();}var timeLeft=15;if(monetagCountdownInterval)clearInterval(monetagCountdownInterval);monetagCountdownInterval=setInterval(function(){timeLeft--;if(numEl)numEl.innerText=timeLeft;if(secEl)secEl.innerText=timeLeft;if(fillEl)fillEl.style.width=((15-timeLeft)/15*100)+'%';if(timeLeft<=0){clearInterval(monetagCountdownInterval);monetagCountdownInterval=null;monetagCountdownDone=true;if(monetagAdWatched){monetagStartMusic();}else{var sEl2=document.getElementById('monetagAdStatus');if(sEl2){sEl2.className='ad-status watching';sEl2.innerText='⏳ Countdown done. Waiting for ad...';}if(numEl)numEl.innerText='⏳';}}},1000);}
+function monetagStartMusic(){var overlay=document.getElementById('monetagAdOverlay');if(overlay)overlay.style.display='none';if(monetagCountdownInterval){clearInterval(monetagCountdownInterval);monetagCountdownInterval=null;}var msgEl=document.getElementById('uploadListenMsg');if(msgEl)msgEl.innerHTML='<span style="color:#51cf66">✅ Ad watched! Starting song...</span>';startUploadedSongPlayback(pendingPlayIndex);}
+function monetagAdComplete(){monetagAdWatched=true;monetagCountdownDone=true;monetagStartMusic();}
+var lastBaseReward=0;var doubleCoinsUsed=false;
+function doubleCoinsWithAd(){var doubleBtn=document.getElementById('doubleCoinsBtn');if(!doubleBtn||doubleBtn.disabled)return;doubleBtn.disabled=true;doubleBtn.innerText='⏳ Loading ad...';doubleBtn.style.background='#333';doubleBtn.style.color='#ffd700';try{if(typeof show_9816593==='function'){show_9816593().then(function(){addCoins(lastBaseReward);doubleCoinsUsed=true;doubleBtn.innerText='✅ Coins Doubled! +'+lastBaseReward+' more!';doubleBtn.style.background='#333';doubleBtn.style.color='#51cf66';doubleBtn.style.borderColor='#51cf66';var totalEl=document.getElementById('gameTotalCoins');if(totalEl)totalEl.innerHTML='🎉 Total: +'+(lastBaseReward*2)+' Coins! (DOUBLED!)';var rewardEl=document.getElementById('gameRewardDisplay');if(rewardEl)rewardEl.innerHTML='<span style="color:#51cf66;font-size:20px">+'+(lastBaseReward*2)+' Coins! 🎉 DOUBLED!</span>';showBalance();}).catch(function(err){doubleBtn.innerText='❌ Ad not completed. Try again!';doubleBtn.disabled=false;doubleBtn.style.background='linear-gradient(45deg,#9b59b6,#e74c3c)';doubleBtn.style.color='#fff';setTimeout(function(){if(doubleBtn&&!doubleCoinsUsed)doubleBtn.innerText='📺 Watch Ad to Double Coins (+'+lastBaseReward+' more!)';},2000);});}else{setTimeout(function(){if(typeof show_9816593==='function'){show_9816593().then(function(){addCoins(lastBaseReward);doubleCoinsUsed=true;doubleBtn.innerText='✅ Coins Doubled! +'+lastBaseReward+' more!';doubleBtn.style.background='#333';doubleBtn.style.color='#51cf66';showBalance();}).catch(function(){doubleBtn.innerText='❌ Ad not completed';doubleBtn.disabled=false;doubleBtn.style.background='linear-gradient(45deg,#9b59b6,#e74c3c)';doubleBtn.style.color='#fff';});}else{doubleBtn.innerText='❌ Ad not available';doubleBtn.disabled=false;doubleBtn.style.background='linear-gradient(45deg,#9b59b6,#e74c3c)';doubleBtn.style.color='#fff';}},1000);}}catch(e){doubleBtn.innerText='❌ Ad error';doubleBtn.disabled=false;doubleBtn.style.background='linear-gradient(45deg,#9b59b6,#e74c3c)';doubleBtn.style.color='#fff';}}
+function setGameAdsVisible(visible){var nativeBannerAd=document.getElementById('nativeBannerAd');var topBannerAd=document.getElementById('topBannerAd');if(nativeBannerAd)nativeBannerAd.style.display=visible?'block':'none';if(topBannerAd)topBannerAd.style.display=visible?'block':'none';if(visible)document.body.classList.remove('playing-game');else document.body.classList.add('playing-game');}
+var WATCH_DAILY_LIMIT=20;var watchVideosToday=0;var watchRewardGiven=false;var watchCooldownActive=false;var watchVideoIsPlaying=false;var watchPlayedSeconds=0;var watchFallbackTimer=null;var watchKnownDuration=0;
+(function(){try{var todayStr=new Date().toDateString();var savedDate=localStorage.getItem('watchLimitDate')||'';if(savedDate===todayStr){watchVideosToday=parseInt(localStorage.getItem('watchVideosToday')||'0');}else{watchVideosToday=0;localStorage.setItem('watchVideosToday','0');localStorage.setItem('watchLimitDate',todayStr);}}catch(e){watchVideosToday=0;}})();
+function saveWatchCount(){try{localStorage.setItem('watchVideosToday',String(watchVideosToday));}catch(e){}}
+function updateWatchLimitUI(){var countEl=document.getElementById('watchLimitCount');var barEl=document.getElementById('watchLimitFill');var msgEl=document.getElementById('watchLimitMsg');var videoEl=document.getElementById('hilltopVideoPlayer');if(countEl)countEl.innerHTML='<strong>'+watchVideosToday+'</strong> / '+WATCH_DAILY_LIMIT;if(barEl)barEl.style.width=Math.min(100,(watchVideosToday/WATCH_DAILY_LIMIT)*100)+'%';var limitReached=watchVideosToday>=WATCH_DAILY_LIMIT;if(msgEl){if(limitReached){msgEl.innerHTML='🚫 Daily limit reached! Come back tomorrow.';msgEl.style.color='#ff6b6b';}else{msgEl.innerHTML='📺 Watch '+(WATCH_DAILY_LIMIT-watchVideosToday)+' more video(s) today';msgEl.style.color='#888';}}if(videoEl&&limitReached){videoEl.style.pointerEvents='none';videoEl.style.opacity='0.3';var wrapper=document.getElementById('hilltopVideoWrapper');if(wrapper&&!document.getElementById('watchLimitOverlay')){var overlay=document.createElement('div');overlay.id='watchLimitOverlay';overlay.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:10;border-radius:12px;';overlay.innerHTML='<span style="font-size:40px">🔒</span><span style="color:#ff6b6b;font-weight:bold;margin-top:8px">Daily Limit Reached</span>';wrapper.style.position='relative';wrapper.appendChild(overlay);}}else if(videoEl&&!limitReached){videoEl.style.pointerEvents='auto';videoEl.style.opacity='1';var existingOverlay=document.getElementById('watchLimitOverlay');if(existingOverlay)existingOverlay.remove();}}
+function autoRewardWatch(){if(watchRewardGiven||watchCooldownActive||watchVideosToday>=WATCH_DAILY_LIMIT)return;watchRewardGiven=true;watchVideoIsPlaying=false;stopWatchFallback();watchVideosToday++;saveWatchCount();addCoins(10);var banner=document.getElementById('watchRewardBanner');if(banner)banner.classList.add('show');var statusEl=document.getElementById('watchStatus');if(statusEl)statusEl.innerHTML='<span style="color:#51cf66;font-weight:bold">🎉 +10 Coins added automatically!</span>';updateWatchLimitUI();watchCooldownActive=true;var timeLeft=60;var cooldownEl=document.getElementById('watchCooldown');var cooldownInterval=setInterval(function(){timeLeft--;if(cooldownEl)cooldownEl.innerText='⏳ Next video in: '+timeLeft+'s';if(timeLeft<=0){clearInterval(cooldownInterval);watchCooldownActive=false;watchRewardGiven=false;watchVideoIsPlaying=false;watchPlayedSeconds=0;watchKnownDuration=0;if(cooldownEl)cooldownEl.innerText='';if(banner)banner.classList.remove('show');if(statusEl){if(watchVideosToday>=WATCH_DAILY_LIMIT)statusEl.innerHTML='<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>';else statusEl.innerHTML='📺 Ready! Press play to watch another video.';}}},1000);}
+function startWatchFallback(){stopWatchFallback();watchPlayedSeconds=0;watchFallbackTimer=setInterval(function(){var videoEl=document.getElementById('hilltopVideoPlayer');if(!videoEl)return;var isPlaying=!videoEl.paused&&!videoEl.ended;watchVideoIsPlaying=isPlaying;if(isPlaying)watchPlayedSeconds+=0.5;if(videoEl.duration&&isFinite(videoEl.duration)&&videoEl.duration>1)watchKnownDuration=videoEl.duration;var statusEl=document.getElementById('watchStatus');if(statusEl&&!watchRewardGiven&&!watchCooldownActive){if(isPlaying){var cur=videoEl.currentTime||0;var dur=watchKnownDuration||videoEl.duration||0;if(dur>1){var remaining=Math.max(0,Math.ceil(dur-cur));statusEl.innerHTML='<span style="color:#ffd700">Watching video... <span style="color:#fff;font-weight:bold">'+remaining+'s remaining</span></span>';}else statusEl.innerHTML='<span style="color:#ffd700">Watching video... Keep watching!</span>';}else if(watchPlayedSeconds>0)statusEl.innerHTML='<span style="color:#ff6b6b">Video paused! Press play to continue watching</span>';}},500);}
+function stopWatchFallback(){if(watchFallbackTimer){clearInterval(watchFallbackTimer);watchFallbackTimer=null;}}
 </script>
 </head>
 <body>
 
-<div id="splashScreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;overflow:hidden;transition:opacity 0.5s">
+<div id="splashScreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;overflow:hidden;transition:opacity 0.8s">
   <img src="https://i.imgur.com/VGTXXkQ.jpeg" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0">
 </div>
-<script>setTimeout(function(){var s=document.getElementById('splashScreen');s.style.opacity='0';setTimeout(function(){s.style.display='none'},500)},2500);</script>
+
+<!-- NOTIFICATION MODAL -->
+<div id="notificationModal" class="notification-modal">
+  <div class="notification-box">
+    <div class="notification-title">📢 Zosintha za System!</div>
+    <div class="notification-message">
+      Zikomo kwa nonse mumakonda kusewera <strong>MADA game</strong>, tafuna kukuziwitsani za kusintha kwa system ya platform.<br><br>
+      
+      <em>🔥 Kubweretsa Ku Play to Earn!</em><br><br>
+      
+      <strong>Player vs Player (PVP) in Real Time!</strong><br>
+      Maka kwa omwe timakonda masewero a <strong>Draughts / Checker</strong> — game imeneyi iziseweredwa munthu ndi munthu, kuthekera koziwa yemwe mukupikisana naye.<br><br>
+      
+      <strong>💰 Mwachitsanzo:</strong><br>
+      • Player 1: Pay K50<br>
+      • Player 2: Pay K50<br>
+      • Opambana: <strong>80%</strong> ya ndalama zonse!<br><br>
+      
+      <strong>⏰ Zotheka:</strong><br>
+      Kwa nonse amene simunafike mulingo wa ma coins kupanga withdraw, <strong>muzaloredwabe kupanga cash out lachisanu (5 June) from 6PM to 9PM</strong>.<br><br>
+      
+      <em>📱 For more information, talk to us on WhatsApp.</em><br><br>
+      
+      <strong>Zikomo!</strong> 🙏
+    </div>
+    <button class="notification-ok-btn" onclick="dismissNotification()">👍 OK, Ndazindikira</button>
+    <div class="notification-close" onclick="dismissNotification()">Tap anywhere or press OK to close</div>
+  </div>
+</div>
+
+<script>
+function showNotification(){var modal=document.getElementById('notificationModal');if(modal){modal.style.display='flex';document.body.style.overflow='hidden';}}
+function dismissNotification(){var modal=document.getElementById('notificationModal');if(modal){modal.style.display='none';document.body.style.overflow='';try{localStorage.setItem('notificationSeen_v1','true');localStorage.setItem('notificationSeenDate',new Date().toDateString());}catch(e){}}}
+setTimeout(function(){try{var seen=localStorage.getItem('notificationSeen_v1');var seenDate=localStorage.getItem('notificationSeenDate');var today=new Date().toDateString();if(!seen||seenDate!==today){showNotification();}}catch(e){showNotification();}},3000);
+</script>
 
 <script src="https://pl29281398.effectivecpmnetwork.com/29/5a/a8/295aa8c04e3cb528d2b04a0d06b737fa.js"></script>
 
@@ -308,7 +211,8 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
   </div>
   <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:linear-gradient(45deg,#25D366,#128C7E);color:#fff;padding:14px;border-radius:12px;font-weight:bold;font-size:16px;margin:15px 0;text-decoration:none;box-shadow:0 0 15px #25D36644">💬 Join Mada WhatsApp Group</a>
   <p style="color:#999;margin-top:10px;">Malawi's #1 Play & Earn App • 18+ Only</p>
-  </div>
+</div>
+
 <div id="walletPage" class="page">
   <div style="text-align:right;margin-bottom:10px"><button onclick="logout()" style="width:auto;padding:8px 15px;background:#333;color:#00ffcc;border:1px solid #00ffcc55">🚪 Logout</button></div>
   <h1>💳 Wallet</h1>
@@ -318,7 +222,6 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
   <div class="stats-grid"><div class="stat-card"><div class="stat-label">🎮 Games Played</div><div class="stat-value" id="gamesPlayed">0</div></div><div class="stat-card"><div class="stat-label">🏆 Total Earned</div><div class="stat-value" id="totalEarned">0</div></div></div>
   <div class="card"><h3>🎁 Daily Bonus</h3><p style="color:#ccc">Claim 50 coins free every day!</p><button id="dailyBtn">Claim +50 Coins</button><p id="dailyMsg" style="margin-top:10px;"></p></div>
   
-  <!-- REFERRAL SYSTEM CARD -->
   <div class="card referral-card">
     <h3 style="color:#ffd700">🤝 Invite & Earn</h3>
     <p style="color:#ccc;margin:8px 0">Share your link! Earn <span style="color:#ffd700;font-weight:bold">500 Coins</span> for every friend who registers!</p>
@@ -338,6 +241,7 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
     <p style="color:#ccc;margin:10px 0;">Get tips, updates & support from other players!</p>
     <a href="https://chat.whatsapp.com/CmvdLsifPKS51OyRnrITFz" target="_blank" style="display:block;background:linear-gradient(45deg,#25D366,#128C7E);color:#fff;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;text-decoration:none">💬 Join WhatsApp Group</a>
   </div>
+  
   <div class="card">
     <h3>📱 Payment Method</h3>
     <div id="paymentLockedBox" class="payment-locked-box" style="display:none">
@@ -362,6 +266,7 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
     <button id="saveBtn" style="display:none">Save Details (One-Time)</button>
     <p id="saved" style="margin-top:10px;"></p>
   </div>
+  
   <div class="card"><h3>💸 Withdraw</h3><select id="withdrawCoins"><option value="5000">5,000 Coins → 100 MWK</option><option value="10000">10,000 Coins → 200 MWK</option><option value="25000">25,000 Coins → 500 MWK</option><option value="50000">50,000 Coins → 1,000 MWK</option></select><button id="withdrawBtn">Request Withdrawal</button><div id="withdrawCountdown" style="text-align:center;margin-top:8px;font-size:12px;color:#aaa"></div><p id="msg" style="margin-top:10px;"></p></div>
   <div class="card"><h3>📋 My Withdrawals</h3><div id="myWithdrawals" style="text-align:left;max-height:220px;overflow-y:auto"></div></div>
   <div class="card"><h3>📜 Withdrawal Rules</h3><p style="text-align:left;line-height:1.8;color:#ccc;">🥉 5,000 Coins = 100 MWK<br>🥈 10,000 Coins = 200 MWK<br>🥇 25,000 Coins = 500 MWK<br>💎 50,000 Coins = 1,000 MWK<br><br>⚠ Fake activity = Permanent ban<br>⏰ <strong style='color:#ffd700'>Withdrawals: Fridays 6PM-9PM ONLY</strong><br>⏱ Processing: Within 24 hours<br><br>📱 <strong style='color:#00ffcc'>Withdrawals sent to your registered phone number</strong></p></div>
@@ -430,166 +335,66 @@ function stopWatchFallback() { if (watchFallbackTimer) { clearInterval(watchFall
 </div>
 
 <script>
-var db = null;
-try {
-  if (typeof firebase!== 'undefined' && firebase.apps && firebase.apps.length === 0) {
-    firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});
-    const appCheck = firebase.appCheck();
-    appCheck.activate(new firebase.appCheck.ReCaptchaV3Provider('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q'),true);
-    db = firebase.database();
-  }
-} catch(e) { db = null; }
+var db=null;
+try{if(typeof firebase!=='undefined'&&firebase.apps&&firebase.apps.length===0){firebase.initializeApp({apiKey:"AIzaSyBRDfT-P8wzVAAZs8lveF1-ZTf8QlpRC5g",authDomain:"apple-green-ded09.firebaseapp.com",databaseURL:"https://apple-green-ded09-default-rtdb.firebaseio.com",projectId:"apple-green-ded09",storageBucket:"apple-green-ded09.firebasestorage.app",messagingSenderId:"1093712798003",appId:"1:1093712798003:web:2a945cd7fc76641dab5e46"});const appCheck=firebase.appCheck();appCheck.activate(new firebase.appCheck.ReCaptchaV3Provider('6LeoB_8sAAAAAJS4kepjICEYny7besSCK4mv3l9Q'),true);db=firebase.database();}}catch(e){db=null;}
 
-var DAILY_LIMIT = 12000; var currentGame = null; var gameState = {}; var countdownInterval = null;
-var captchaAnswer = 0;
-function generateCaptcha(){ var a = Math.floor(Math.random()*10)+1; var b = Math.floor(Math.random()*10)+1; captchaAnswer = a+b; var el = document.getElementById('captchaQ'); if(el) el.innerText = a + ' + ' + b; }
+var DAILY_LIMIT=12000;var currentGame=null;var gameState={};var countdownInterval=null;
+var captchaAnswer=0;
+function generateCaptcha(){var a=Math.floor(Math.random()*10)+1;var b=Math.floor(Math.random()*10)+1;captchaAnswer=a+b;var el=document.getElementById('captchaQ');if(el)el.innerText=a+' + '+b;}
 
-function formatMalawiPhone(input) { var digits = input.replace(/[^0-9]/g, ''); if (digits.length === 10 && /^0[89]/.test(digits)) return digits; if (digits.length === 9 && /^[89]/.test(digits)) return '0' + digits; return digits; }
-function isValidMalawiPhone(phone) { return /^0[89][0-9]{8}$/.test(phone); }
+function formatMalawiPhone(input){var digits=input.replace(/[^0-9]/g,'');if(digits.length===10&&/^0[89]/.test(digits))return digits;if(digits.length===9&&/^[89]/.test(digits))return '0'+digits;return digits;}
+function isValidMalawiPhone(phone){return /^0[89][0-9]{8}$/.test(phone);}
 
-function lockPaymentMethod(phone, network) {
-  var lockedBox = document.getElementById('paymentLockedBox'); var noPhone = document.getElementById('paymentNoPhone'); var payPhoneLabel = document.getElementById('payPhoneLabel'); var payNetworkLabel = document.getElementById('payNetworkLabel'); var payFullLabel = document.getElementById('payFullLabel'); var numEl = document.getElementById('number'); var netEl = document.getElementById('network');
-  if (numEl) { numEl.value = phone; } if (netEl) { netEl.value = network; }
-  if (phone && network) { if (lockedBox) lockedBox.style.display = 'block'; if (noPhone) noPhone.style.display = 'none'; if (payPhoneLabel) payPhoneLabel.innerText = phone; if (payNetworkLabel) payNetworkLabel.innerText = network; if (payFullLabel) payFullLabel.innerText = '🇲🇼 +265 ' + phone.substring(1); document.getElementById('saved').innerHTML = '<span style="color:#51cf66">✅ Withdrawals go to: ' + network + ' - ' + phone + '</span>'; try { localStorage.setItem('number', phone); localStorage.setItem('network', network); localStorage.setItem('userPhone', phone); } catch(e) {} } else { if (lockedBox) lockedBox.style.display = 'none'; if (noPhone) noPhone.style.display = 'block'; }
-}
+function lockPaymentMethod(phone,network){var lockedBox=document.getElementById('paymentLockedBox');var noPhone=document.getElementById('paymentNoPhone');var payPhoneLabel=document.getElementById('payPhoneLabel');var payNetworkLabel=document.getElementById('payNetworkLabel');var payFullLabel=document.getElementById('payFullLabel');var numEl=document.getElementById('number');var netEl=document.getElementById('network');if(numEl){numEl.value=phone;}if(netEl){netEl.value=network;}if(phone&&network){if(lockedBox)lockedBox.style.display='block';if(noPhone)noPhone.style.display='none';if(payPhoneLabel)payPhoneLabel.innerText=phone;if(payNetworkLabel)payNetworkLabel.innerText=network;if(payFullLabel)payFullLabel.innerText='🇲🇼 +265 '+phone.substring(1);document.getElementById('saved').innerHTML='<span style="color:#51cf66">✅ Withdrawals go to: '+network+' - '+phone+'</span>';try{localStorage.setItem('number',phone);localStorage.setItem('network',network);localStorage.setItem('userPhone',phone);}catch(e){}}else{if(lockedBox)lockedBox.style.display='none';if(noPhone)noPhone.style.display='block';}}
 
-/* ===== REFERRAL SYSTEM FUNCTIONS ===== */
-function getReferrerFromURL() {
-  try {
-    var urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('ref');
-  } catch(e) { return null; }
-}
+function getReferrerFromURL(){try{return new URLSearchParams(window.location.search).get('ref');}catch(e){return null;}}
+function addReferralCoins(username,amount){if(!db)return;db.ref('leaderboard_all/'+username).once('value',function(snap){var d=snap.val()||{};if(d.banned===true)return;var coins=(d.coins||0)+amount;db.ref('leaderboard_all/'+username).update({coins:coins,score:coins,lastPlayed:Date.now()});});}
+function processReferral(referrer,newUser){if(!db||!referrer||referrer===newUser)return;db.ref('referrals/'+referrer+'/'+newUser).once('value',function(snap){if(!snap.exists()){db.ref('referrals/'+referrer+'/'+newUser).set(true);addReferralCoins(referrer,500);}});}
+function initReferralUI(){var user=null;try{user=localStorage.getItem("user");}catch(e){}if(!user)return;var baseUrl=window.location.origin+window.location.pathname;var refLink=baseUrl+"?ref="+encodeURIComponent(user);var inputEl=document.getElementById('referralLinkInput');if(inputEl)inputEl.value=refLink;if(db){db.ref('referrals/'+user).on('value',function(snap){var count=snap.numChildren();var totalEl=document.getElementById('totalInvites');var earnEl=document.getElementById('referralEarnings');if(totalEl)totalEl.innerText=count;if(earnEl)earnEl.innerText=(count*500);});}}
+function copyReferralLink(){var copyText=document.getElementById('referralLinkInput');if(!copyText)return;copyText.select();copyText.setSelectionRange(0,99999);try{navigator.clipboard.writeText(copyText.value).then(function(){showReferralMsg("✅ Link copied!");}).catch(function(){document.execCommand("copy");showReferralMsg("✅ Link copied!");});}catch(e){document.execCommand("copy");showReferralMsg("✅ Link copied!");}}
+function showReferralMsg(msg){var el=document.getElementById('referralMsg');if(el){el.innerText=msg;setTimeout(function(){el.innerText='';},3000);}}
 
-function addReferralCoins(username, amount) {
-  if (!db) return;
-  db.ref('leaderboard_all/' + username).once('value', function(snap) {
-    var d = snap.val() || {};
-    if (d.banned === true) return;
-    var coins = (d.coins || 0) + amount;
-    db.ref('leaderboard_all/' + username).update({
-      coins: coins, 
-      score: coins, 
-      lastPlayed: Date.now()
-    });
-  });
-}
+function register(){try{var user=(document.getElementById("usernameInput").value||"").trim();var networkReg=document.getElementById("networkRegInput").value;var phoneDigits=(document.getElementById("phoneInput").value||"").trim();var email=(document.getElementById("emailInput").value||"").trim();var pass=document.getElementById("passwordInput").value||"";var agree=document.getElementById("agreeCheck").checked;var captcha=parseInt(document.getElementById("captchaA").value);var msgEl=document.getElementById("loginMsg");if(user.length<3){msgEl.innerHTML='<span class="error">Username min 3 chars</span>';return;}if(!networkReg){msgEl.innerHTML='<span class="error">📱 Select your mobile network</span>';return;}if(phoneDigits.length<9||!/^[0-9]+$/.test(phoneDigits)){msgEl.innerHTML='<span class="error">📱 Enter valid Malawi number</span>';return;}var fullPhone=formatMalawiPhone(phoneDigits);if(!isValidMalawiPhone(fullPhone)){msgEl.innerHTML='<span class="error">📱 Invalid Malawi number</span>';return;}if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msgEl.innerHTML='<span class="error">📧 Enter valid email</span>';return;}if(pass.length<6){msgEl.innerHTML='<span class="error">Password min 6 chars</span>';return;}if(!agree){msgEl.innerHTML='<span class="error">You must agree</span>';return;}if(captcha!==captchaAnswer){msgEl.innerHTML='<span class="error">Wrong captcha</span>';generateCaptcha();return;}msgEl.innerHTML='<span class="success">Creating account...</span>';var name=user.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');try{localStorage.setItem("user",name);localStorage.setItem("displayName",user);localStorage.setItem("userPhone",fullPhone);localStorage.setItem("network",networkReg);localStorage.setItem("number",fullPhone);localStorage.setItem("userEmail",email);}catch(e){}document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('wallet');setTimeout(function(){if(!db)return;var referrer=getReferrerFromURL();db.ref('users/'+name).set({phone:fullPhone,network:networkReg,email:email,created:Date.now(),country:"MW",agreed:true,password:md5(pass),referredBy:referrer||null});if(referrer&&referrer!==name){processReferral(referrer,name);}db.ref('leaderboard_all/'+name).once('value').then(function(snap){if(!snap.exists())db.ref('leaderboard_all/'+name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg});});setupPresence(name);checkInboxBadge();lockPaymentMethod(fullPhone,networkReg);},200);}catch(e){alert("Error: "+e.message);}}
 
-function processReferral(referrer, newUser) {
-  if (!db || !referrer || referrer === newUser) return;
-  db.ref('referrals/' + referrer + '/' + newUser).once('value', function(snap) {
-    if (!snap.exists()) {
-      db.ref('referrals/' + referrer + '/' + newUser).set(true);
-      addReferralCoins(referrer, 500);
-    }
-  });
-}
+function showLogin(){document.getElementById("phoneInput").style.display="none";var pg=document.getElementById('regPhoneGroup');if(pg)pg.style.display='none';document.getElementById("networkRegInput").style.display="none";document.getElementById("emailInput").style.display="none";document.getElementById("passwordInput").placeholder="Password";document.getElementById("loginBtn").innerText="Login";document.getElementById("loginBtn").onclick=login;document.querySelector('#loginPage h3').innerText='👤 Login';}
 
-function initReferralUI() {
-  var user = null;
-  try { user = localStorage.getItem("user"); } catch(e) {}
-  if (!user) return;
+function login(){try{var input=document.getElementById("usernameInput");var rawName=(input&&input.value||"").trim();var pass=document.getElementById("passwordInput").value;var msgEl=document.getElementById("loginMsg");var captcha=parseInt(document.getElementById("captchaA").value);if(captcha!==captchaAnswer){msgEl.innerHTML='<span class="error">Wrong captcha</span>';generateCaptcha();return;}if(!rawName||!pass){msgEl.innerHTML='<span class="error">Enter username and password</span>';return;}var name=rawName.replace(/\s+/g,'_').replace(/[.#$\[\]]/g,'');msgEl.innerHTML='<span class="success">Checking...</span>';if(!db){msgEl.innerHTML='<span class="error">Database error</span>';return;}db.ref('users/'+name).once('value',function(snap){var data=snap.val();if(!data){msgEl.innerHTML='<span class="error">User not found</span>';return;}if(data.password!==md5(pass)){msgEl.innerHTML='<span class="error">Wrong password</span>';return;}var phone=data.phone||'';var network=data.network||'';if(phone){try{localStorage.setItem("userPhone",phone);localStorage.setItem("number",phone);}catch(e){}}if(network){try{localStorage.setItem("network",network);}catch(e){}}if(data.email){try{localStorage.setItem("userEmail",data.email);}catch(e){}}localStorage.setItem("user",name);localStorage.setItem("displayName",rawName);document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('wallet');if(phone&&network)lockPaymentMethod(phone,network);else lockPaymentMethod('','');setupPresence(name);checkInboxBadge();});}catch(e){alert(e.message);}}
 
-  var baseUrl = window.location.origin + window.location.pathname;
-  var refLink = baseUrl + "?ref=" + encodeURIComponent(user);
-  var inputEl = document.getElementById('referralLinkInput');
-  if (inputEl) inputEl.value = refLink;
+function handleGameEnd(baseCoins,title,detailsHtml,replayFnName){addCoins(baseCoins);lastBaseReward=baseCoins;doubleCoinsUsed=false;document.getElementById('gameArea').innerHTML='<div class="score-display"><h2>'+title+'</h2>'+detailsHtml+'<p id="gameRewardDisplay" style="font-size:24px;color:#ffd700;margin:10px 0;">+'+baseCoins+' Coins!</p><button id="doubleCoinsBtn" class="double-coins-btn" onclick="doubleCoinsWithAd()">📺 Watch Ad to Double Coins (+'+baseCoins+' more!)</button><p id="gameTotalCoins" style="font-size:13px;color:#999;margin:5px 0"></p><button id="replayBtn">Play Again</button></div>';var rb=document.getElementById("replayBtn");if(rb)rb.onclick=function(){window[replayFnName]();};}
 
-  if (db) {
-    db.ref('referrals/' + user).on('value', function(snap) {
-      var count = snap.numChildren();
-      var totalEl = document.getElementById('totalInvites');
-      var earnEl = document.getElementById('referralEarnings');
-      if (totalEl) totalEl.innerText = count;
-      if (earnEl) earnEl.innerText = (count * 500);
-    });
-  }
-}
+function showPage(page){try{var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++)pages[i].classList.remove('active');var btns=document.querySelectorAll('.nav-btn');for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');var mainNav=document.getElementById('mainNav');if(mainNav)mainNav.style.display='flex';setGameAdsVisible(page!=='play');if(page==='wallet'){document.getElementById('walletPage').classList.add('active');if(btns[0])btns[0].classList.add('active');showBalance();startCountdown();initReferralUI();}else if(page==='games'){document.getElementById('gamesPage').classList.add('active');if(btns[1])btns[1].classList.add('active');if(countdownInterval)clearInterval(countdownInterval);}else if(page==='watch'){document.getElementById('watchPage').classList.add('active');if(btns[2])btns[2].classList.add('active');if(countdownInterval)clearInterval(countdownInterval);initHilltopPlayer();updateWatchLimitUI();}else if(page==='listen'){document.getElementById('listenPage').classList.add('active');if(btns[3])btns[3].classList.add('active');if(countdownInterval)clearInterval(countdownInterval);renderUploadedSongs();}else if(page==='leaderboard'){document.getElementById('leaderboardPage').classList.add('active');if(btns[4])btns[4].classList.add('active');if(countdownInterval)clearInterval(countdownInterval);if(typeof setView==='function')setView(currentLeaderboardView||'daily');}else if(page==='inbox'){document.getElementById('inboxPage').classList.add('active');if(btns[5])btns[5].classList.add('active');loadPlayerInbox();if(countdownInterval)clearInterval(countdownInterval);}}catch(e){}}
 
-function copyReferralLink() {
-  var copyText = document.getElementById('referralLinkInput');
-  if (!copyText) return;
-  copyText.select();
-  copyText.setSelectionRange(0, 99999);
-  
-  try {
-    navigator.clipboard.writeText(copyText.value).then(function() {
-      showReferralMsg("✅ Link copied! Share it on WhatsApp!");
-    }).catch(function() {
-      document.execCommand("copy");
-      showReferralMsg("✅ Link copied!");
-    });
-  } catch(e) {
-    document.execCommand("copy");
-    showReferralMsg("✅ Link copied!");
-  }
-}
+function startCountdown(){if(countdownInterval)clearInterval(countdownInterval);function update(){var now=new Date();var midnight=new Date(now);midnight.setHours(24,0,0,0);var diff=midnight-now;var h=Math.floor(diff/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);var el=document.getElementById("dailyCountdown");if(el)el.innerText=String(h).padStart(2,'0')+":"+String(m).padStart(2,'0')+":"+String(s).padStart(2,'0');}update();countdownInterval=setInterval(update,1000);}
 
-function showReferralMsg(msg) {
-  var el = document.getElementById('referralMsg');
-  if (el) { 
-    el.innerText = msg; 
-    setTimeout(function() { el.innerText = ''; }, 3000); 
-  }
-}
-/* ===== END REFERRAL SYSTEM ===== */
+var lastKnownBalance=-1;
+function startRealtimeBalance(){var user;try{user=localStorage.getItem("user");}catch(e){user=null;}if(!user||!db)return;db.ref('leaderboard_all/'+user+'/coins').on('value',function(snap){var coins=snap.val()||0;if(lastKnownBalance!==-1&&coins>lastKnownBalance){var coinsEl=document.getElementById("coins");if(coinsEl){coinsEl.innerHTML="🪙 "+coins+" Coins";coinsEl.classList.remove('coin-update');void coinsEl.offsetWidth;coinsEl.classList.add('coin-update');}var moneyEl=document.getElementById("money");if(moneyEl)moneyEl.innerHTML="💵 MWK "+Math.floor(coins*0.02);var daily=0;try{daily=parseInt(localStorage.getItem("dailyCoins")||0);}catch(e){}document.getElementById("dailyLimitText").innerText=daily+"/12000";document.getElementById("dailyLimitBar").style.width=(daily/12000*100)+"%";}lastKnownBalance=coins;});}
 
-function register() {
-  try { var user = (document.getElementById("usernameInput").value || "").trim(); var networkReg = document.getElementById("networkRegInput").value; var phoneDigits = (document.getElementById("phoneInput").value || "").trim(); var email = (document.getElementById("emailInput").value || "").trim(); var pass = document.getElementById("passwordInput").value || ""; var agree = document.getElementById("agreeCheck").checked; var captcha = parseInt(document.getElementById("captchaA").value); var msgEl = document.getElementById("loginMsg");
-  if(user.length < 3){ msgEl.innerHTML = '<span class="error">Username min 3 chars</span>'; return; } if(!networkReg){ msgEl.innerHTML = '<span class="error">📱 Select your mobile network</span>'; return; } if(phoneDigits.length < 9 || !/^[0-9]+$/.test(phoneDigits)){ msgEl.innerHTML = '<span class="error">📱 Enter valid Malawi number</span>'; return; } var fullPhone = formatMalawiPhone(phoneDigits); if(!isValidMalawiPhone(fullPhone)){ msgEl.innerHTML = '<span class="error">📱 Invalid Malawi number</span>'; return; } if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msgEl.innerHTML = '<span class="error">📧 Enter valid email</span>'; return; } if(pass.length < 6){ msgEl.innerHTML = '<span class="error">Password min 6 chars</span>'; return; } if(!agree){ msgEl.innerHTML = '<span class="error">You must agree</span>'; return; } if(captcha !== captchaAnswer){ msgEl.innerHTML = '<span class="error">Wrong captcha</span>'; generateCaptcha(); return; }
-  msgEl.innerHTML = '<span class="success">Creating account...</span>'; var name = user.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, '');
-  try { localStorage.setItem("user", name); localStorage.setItem("displayName", user); localStorage.setItem("userPhone", fullPhone); localStorage.setItem("network", networkReg); localStorage.setItem("number", fullPhone); localStorage.setItem("userEmail", email); } catch(e){}
-  document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet');
-  setTimeout(function(){ if (!db) return; 
-    var referrer = getReferrerFromURL();
-    db.ref('users/' + name).set({phone: fullPhone, network: networkReg, email: email, created: Date.now(), country: "MW", agreed: true, password: md5(pass), referredBy: referrer || null}); 
-    if (referrer && referrer !== name) { processReferral(referrer, name); }
-    db.ref('leaderboard_all/' + name).once('value').then(function(snap){ if(!snap.exists()) db.ref('leaderboard_all/' + name).set({coins:0,score:0,gamesPlayed:0,country:"MW",banned:false,lastPlayed:Date.now(),displayName:user,phone:fullPhone,network:networkReg}); }); setupPresence(name); checkInboxBadge(); lockPaymentMethod(fullPhone, networkReg); }, 200);
-  } catch(e){ alert("Error: " + e.message); }
-}
+function showBalance(){try{var user;try{user=localStorage.getItem("user");}catch(e){user="Guest";}if(!db){document.getElementById("coins").innerHTML="🪙 0 Coins";document.getElementById("money").innerHTML="💵 MWK 0";return;}db.ref('leaderboard_all/'+user).once('value',function(snap){var d=snap.val()||{};var coins=d.coins||0;var gp=d.gamesPlayed||0;try{localStorage.setItem("coins",coins);}catch(e){}lastKnownBalance=coins;document.getElementById("coins").innerHTML="🪙 "+coins+" Coins";document.getElementById("money").innerHTML="💵 MWK "+Math.floor(coins*0.02);document.getElementById("gamesPlayed").innerHTML=gp;document.getElementById("totalEarned").innerHTML=coins;var daily=0;try{daily=parseInt(localStorage.getItem("dailyCoins")||0);}catch(e){}document.getElementById("dailyLimitText").innerText=daily+"/12000";document.getElementById("dailyLimitBar").style.width=(daily/12000*100)+"%";var tiers=[5000,10000,25000,50000];var rewards=[100,200,500,1000];var nextIdx=tiers.findIndex(t=>coins<t);if(nextIdx===-1)nextIdx=tiers.length-1;var goalTarget=tiers[nextIdx];var prevTarget=nextIdx>0?tiers[nextIdx-1]:0;var progressInTier=coins-prevTarget;var tierSize=goalTarget-prevTarget;var percent=Math.min(100,(progressInTier/tierSize)*100);document.getElementById("nextGoalText").innerText=coins+" / "+goalTarget+" coins";document.getElementById("nextGoalBar").style.width=percent+"%";document.getElementById("nextGoalReward").innerText="Reach "+goalTarget+" to withdraw "+rewards[nextIdx]+" MWK";});loadMyWithdrawals();}catch(e){}}
 
-function showLogin(){ document.getElementById("phoneInput").style.display = "none"; var pg = document.getElementById('regPhoneGroup'); if(pg) pg.style.display = 'none'; document.getElementById("networkRegInput").style.display = "none"; document.getElementById("emailInput").style.display = "none"; document.getElementById("passwordInput").placeholder = "Password"; document.getElementById("loginBtn").innerText = "Login"; document.getElementById("loginBtn").onclick = login; document.querySelector('#loginPage h3').innerText = '👤 Login'; }
+function addCoins(amount){try{var user;try{user=localStorage.getItem("user");}catch(e){user="Guest";}var daily=0;try{daily=parseInt(localStorage.getItem("dailyCoins")||0);}catch(e){}var canEarn=Math.max(0,DAILY_LIMIT-daily);var give=Math.min(amount,canEarn);if(give<=0){alert("⚠ Daily limit reached (12,000 coins). Come back tomorrow!");return;}if(!db)return;db.ref('leaderboard_all/'+user).once('value',function(snap){var d=snap.val()||{};if(d.banned===true){alert("⚠ Account suspended.");return;}var coins=(d.coins||0)+give;var gp=(d.gamesPlayed||0)+1;db.ref('leaderboard_all/'+user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"});daily+=give;try{localStorage.setItem("dailyCoins",daily);}catch(e){}showBalance();});}catch(e){}}
 
-function login() {
-  try { var input = document.getElementById("usernameInput"); var rawName = (input && input.value || "").trim(); var pass = document.getElementById("passwordInput").value; var msgEl = document.getElementById("loginMsg"); var captcha = parseInt(document.getElementById("captchaA").value);
-  if(captcha !== captchaAnswer){ msgEl.innerHTML = '<span class="error">Wrong captcha</span>'; generateCaptcha(); return; } if (!rawName || !pass) { msgEl.innerHTML = '<span class="error">Enter username and password</span>'; return; } var name = rawName.replace(/\s+/g, '_').replace(/[.#$\[\]]/g, ''); msgEl.innerHTML = '<span class="success">Checking...</span>'; if(!db){ msgEl.innerHTML = '<span class="error">Database error</span>'; return; }
-  db.ref('users/' + name).once('value', function(snap){ var data = snap.val(); if(!data){ msgEl.innerHTML = '<span class="error">User not found</span>'; return; } if(data.password !== md5(pass)){ msgEl.innerHTML = '<span class="error">Wrong password</span>'; return; } var phone = data.phone || ''; var network = data.network || ''; if(phone){ try { localStorage.setItem("userPhone", phone); localStorage.setItem("number", phone); } catch(e){} } if(network){ try { localStorage.setItem("network", network); } catch(e){} } if(data.email){ try { localStorage.setItem("userEmail", data.email); } catch(e){} } localStorage.setItem("user", name); localStorage.setItem("displayName", rawName); document.getElementById("loginPage").classList.remove("active"); document.getElementById("mainNav").style.display = "flex"; showPage('wallet'); if(phone && network) lockPaymentMethod(phone, network); else lockPaymentMethod('', ''); setupPresence(name); checkInboxBadge(); });
-  } catch(e){ alert(e.message); }
-}
+function setupPresence(u){try{if(!u||!db)return;var p=db.ref('presence/'+u);db.ref('.info/connected').on('value',function(s){if(s.val()){p.onDisconnect().set({state:'offline',last:Date.now()});p.set({state:'online',last:Date.now()});db.ref('leaderboard_all/'+u+'/lastPlayed').set(Date.now());}});}catch(e){}}
 
-function handleGameEnd(baseCoins, title, detailsHtml, replayFnName) { addCoins(baseCoins); lastBaseReward = baseCoins; doubleCoinsUsed = false; document.getElementById('gameArea').innerHTML = '<div class="score-display"><h2>'+title+'</h2>'+detailsHtml+'<p id="gameRewardDisplay" style="font-size:24px;color:#ffd700;margin:10px 0;">+'+baseCoins+' Coins!</p><button id="doubleCoinsBtn" class="double-coins-btn" onclick="doubleCoinsWithAd()">📺 Watch Ad to Double Coins (+'+baseCoins+' more!)</button><p id="gameTotalCoins" style="font-size:13px;color:#999;margin:5px 0"></p><button id="replayBtn">Play Again</button></div>'; var rb = document.getElementById("replayBtn"); if (rb) rb.onclick = function() { window[replayFnName](); }; }
+function loadPlayerInbox(){try{var u;try{u=localStorage.getItem("user");}catch(e){u=null;}if(!u||!db)return;var id=['Admin_Mada',u].sort().join('_');db.ref('chats/'+id+'/messages').orderByChild('timestamp').limitToLast(50).on('value',function(s){var h='';s.forEach(function(c){var m=c.val();var mine=m.from===u;var t=new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});h+='<div style="margin:6px 0;display:flex;justify-content:'+(mine?'flex-end':'flex-start')+'"><div style="max-width:80%;background:'+(mine?'#003d33':'#1a1a1a')+';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">'+String(m.text||'').replace(/</g,'&lt;')+'</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">'+t+'</div></div></div>';if(m.to===u&&m.status!=='read')db.ref('chats/'+id+'/messages/'+c.key+'/status').set('read');});document.getElementById('adminChatBox').innerHTML=h||'<div style="color:#666;text-align:center;padding:30px">No messages</div>';document.getElementById('adminChatBox').scrollTop=document.getElementById('adminChatBox').scrollHeight;});}catch(e){}}
+function checkInboxBadge(){try{var u;try{u=localStorage.getItem("user");}catch(e){u=null;}if(!u||!db)return;var id=['Admin_Mada',u].sort().join('_');db.ref('chats/'+id+'/messages').on('value',function(s){var un=0;s.forEach(function(c){var v=c.val();if(v.to===u&&v.status!=='read')un++;});document.getElementById("inboxDot").style.display=un>0?'block':'none';});}catch(e){}}
 
-function showPage(page) { try { var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active'); var btns = document.querySelectorAll('.nav-btn'); for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active'); var mainNav = document.getElementById('mainNav'); if (mainNav) mainNav.style.display = 'flex'; setGameAdsVisible(page !== 'play'); if (page === 'wallet') { document.getElementById('walletPage').classList.add('active'); if(btns[0]) btns[0].classList.add('active'); showBalance(); startCountdown(); initReferralUI(); } else if (page === 'games') { document.getElementById('gamesPage').classList.add('active'); if(btns[1]) btns[1].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); } else if (page === 'watch') { document.getElementById('watchPage').classList.add('active'); if(btns[2]) btns[2].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); initHilltopPlayer(); updateWatchLimitUI(); } else if (page === 'listen') { document.getElementById('listenPage').classList.add('active'); if(btns[3]) btns[3].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); renderUploadedSongs(); } else if (page === 'leaderboard') { document.getElementById('leaderboardPage').classList.add('active'); if(btns[4]) btns[4].classList.add('active'); if(countdownInterval) clearInterval(countdownInterval); if(typeof setView === 'function') setView(currentLeaderboardView || 'daily'); } else if (page === 'inbox') { document.getElementById('inboxPage').classList.add('active'); if(btns[5]) btns[5].classList.add('active'); loadPlayerInbox(); if(countdownInterval) clearInterval(countdownInterval); } } catch(e) {} }
+function saveDetails(){try{var user;try{user=localStorage.getItem("user");}catch(e){user="Guest";}if(!db)return;db.ref('users/'+user+'/phone').once('value',function(s){if(s.val()){lockPaymentMethod(s.val(),localStorage.getItem("network")||"Airtel Money");return;}var num=localStorage.getItem("number")||"";var net=localStorage.getItem("network")||"Airtel Money";if(num){db.ref('users/'+user).update({phone:num,network:net});lockPaymentMethod(num,net);}});}catch(e){}}
 
-function startCountdown() { if(countdownInterval) clearInterval(countdownInterval); function update() { var now = new Date(); var midnight = new Date(now); midnight.setHours(24,0,0,0); var diff = midnight - now; var h = Math.floor(diff / 3600000); var m = Math.floor((diff % 3600000) / 60000); var s = Math.floor((diff % 60000) / 1000); var el = document.getElementById("dailyCountdown"); if(el) el.innerText = String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0'); } update(); countdownInterval = setInterval(update, 1000); }
+function claimDailyBonus(){try{var user;try{user=localStorage.getItem("user");}catch(e){user=null;}if(!user){alert("Login first");return;}if(!db){document.getElementById("dailyMsg").innerHTML='<span style="color:#ff6b6b">Database not ready</span>';return;}var today=new Date().toDateString();var msgEl=document.getElementById("dailyMsg");msgEl.innerHTML='<span style="color:#ffd700">Checking...</span>';db.ref('leaderboard_all/'+user+'/lastDaily').once('value',function(snap){if(snap.val()===today){msgEl.innerHTML='<span style="color:#ff6b6b">Already claimed today</span>';return;}db.ref('leaderboard_all/'+user).once('value',function(leaderSnap){var data=leaderSnap.val()||{};var coins=(data.coins||0)+50;db.ref('leaderboard_all/'+user).update({coins:coins,score:coins,lastPlayed:Date.now(),lastDaily:today},function(error2){if(error2){msgEl.innerHTML='<span style="color:#ff6b6b">Error</span>';return;}msgEl.innerHTML='<span style="color:#51cf66">✅ +50 coins added!</span>';showBalance();});});},function(err){msgEl.innerHTML='<span style="color:#ff6b6b">Error</span>';});}catch(e){document.getElementById("dailyMsg").innerHTML='<span style="color:#ff6b6b">Error</span>';}}
 
-var lastKnownBalance = -1;
-function startRealtimeBalance() { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user || !db) return; db.ref('leaderboard_all/' + user + '/coins').on('value', function(snap) { var coins = snap.val() || 0; if (lastKnownBalance !== -1 && coins > lastKnownBalance) { var coinsEl = document.getElementById("coins"); if (coinsEl) { coinsEl.innerHTML = "🪙 " + coins + " Coins"; coinsEl.classList.remove('coin-update'); void coinsEl.offsetWidth; coinsEl.classList.add('coin-update'); } var moneyEl = document.getElementById("money"); if (moneyEl) moneyEl.innerHTML = "💵 MWK " + Math.floor(coins * 0.02); var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {} document.getElementById("dailyLimitText").innerText = daily + "/12000"; document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%"; } lastKnownBalance = coins; }); }
+try{var todayStr=new Date().toDateString();var lastDateStr="";try{lastDateStr=localStorage.getItem("lastDate")||"";}catch(e){}if(lastDateStr!==todayStr){try{localStorage.setItem("dailyCoins","0");localStorage.setItem("lastDate",todayStr);localStorage.setItem("rewardedSongs","[]");localStorage.setItem("watchVideosToday","0");localStorage.setItem("watchLimitDate",todayStr);}catch(e){}}}catch(e){}
 
-function showBalance() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) { document.getElementById("coins").innerHTML = "🪙 0 Coins"; document.getElementById("money").innerHTML = "💵 MWK 0"; return; } db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; var coins = d.coins || 0; var gp = d.gamesPlayed || 0; try { localStorage.setItem("coins", coins); } catch(e) {} lastKnownBalance = coins; document.getElementById("coins").innerHTML = "🪙 " + coins + " Coins"; document.getElementById("money").innerHTML = "💵 MWK " + Math.floor(coins * 0.02); document.getElementById("gamesPlayed").innerHTML = gp; document.getElementById("totalEarned").innerHTML = coins; var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {} document.getElementById("dailyLimitText").innerText = daily + "/12000"; document.getElementById("dailyLimitBar").style.width = (daily / 12000 * 100) + "%"; var tiers = [5000, 10000, 25000, 50000]; var rewards = [100, 200, 500, 1000]; var nextIdx = tiers.findIndex(t => coins < t); if(nextIdx === -1) nextIdx = tiers.length - 1; var goalTarget = tiers[nextIdx]; var prevTarget = nextIdx > 0 ? tiers[nextIdx - 1] : 0; var progressInTier = coins - prevTarget; var tierSize = goalTarget - prevTarget; var percent = Math.min(100, (progressInTier / tierSize) * 100); document.getElementById("nextGoalText").innerText = coins + " / " + goalTarget + " coins"; document.getElementById("nextGoalBar").style.width = percent + "%"; document.getElementById("nextGoalReward").innerText = "Reach " + goalTarget + " to withdraw " + rewards[nextIdx] + " MWK"; }); loadMyWithdrawals(); } catch(e) {} }
+function withdraw(){try{var now=new Date();var malawiOffset=2*60;var utc=now.getTime()+(now.getTimezoneOffset()*60000);var malawiTime=new Date(utc+(malawiOffset*60000));var day=malawiTime.getDay();var hour=malawiTime.getHours();if(day!==5||hour<18||hour>=21){document.getElementById("msg").innerHTML='<span style="color:#ff6b6b">⏰ Withdrawals only Fridays 6PM-9PM (Malawi time).</span>';return;}var user;try{user=localStorage.getItem("user");}catch(e){user="Guest";}if(!db)return;db.ref('users/'+user).once('value',function(userSnap){var userData=userSnap.val()||{};var phone=userData.phone||localStorage.getItem("number")||"";var network=userData.network||localStorage.getItem("network")||"";if(!phone){document.getElementById("msg").innerHTML='<span style="color:#ff6b6b">❌ No phone number on account.</span>';return;}db.ref('leaderboard_all/'+user).once('value',function(snap){var d=snap.val()||{};if(d.banned===true){document.getElementById("msg").innerHTML='<span style="color:#ff6b6b">🚫 Account banned</span>';return;}var coins=d.coins||0;var req=parseInt(document.getElementById("withdrawCoins").value);if(req>coins){document.getElementById("msg").innerHTML='<span style="color:#ff6b6b">❌ Insufficient balance</span>';return;}var money=Math.floor(req*0.02);var wid=Date.now();db.ref('withdrawals').orderByChild('user').equalTo(user).once('value',function(ws){var pending=false;ws.forEach(function(w){if(w.val().status==='Pending')pending=true;});if(pending){document.getElementById("msg").innerHTML='<span style="color:#ff6b6b">⚠ Pending withdrawal exists</span>';return;}db.ref("withdrawals/"+wid).set({user:user,coins:req,money:money,network:network,phone:phone,status:"Pending",date:new Date().toLocaleString()});db.ref('leaderboard_all/'+user).update({coins:coins-req,score:coins-req});document.getElementById("msg").innerHTML='<span style="color:#51cf66">✅ Request sent - MWK '+money.toLocaleString()+' to '+network+' ('+phone+')</span>';showBalance();});});});}catch(e){}}
 
-function addCoins(amount) { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } var daily = 0; try { daily = parseInt(localStorage.getItem("dailyCoins") || 0); } catch(e) {} var canEarn = Math.max(0, DAILY_LIMIT - daily); var give = Math.min(amount, canEarn); if (give <= 0) { alert("⚠ Daily limit reached (12,000 coins). Come back tomorrow!"); return; } if (!db) return; db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { alert("⚠ Account suspended."); return; } var coins = (d.coins || 0) + give; var gp = (d.gamesPlayed || 0) + 1; db.ref('leaderboard_all/' + user).update({coins:coins,gamesPlayed:gp,score:coins,lastPlayed:Date.now(),country:"MW"}); daily += give; try { localStorage.setItem("dailyCoins", daily); } catch(e) {} showBalance(); }); } catch(e) {} }
+function loadMyWithdrawals(){try{var user;try{user=localStorage.getItem("user");}catch(e){user="Guest";}if(!db)return;db.ref('withdrawals').orderByChild('user').equalTo(user).on('value',function(s){var h='';s.forEach(function(c){var w=c.val();var col=w.status=='Pending'?'#ffaa00':w.status=='Paid'?'#51cf66':'#ff6b6b';h+='<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>'+w.date.split(',')[0]+' - '+(w.network||'')+' '+(w.phone||'')+' - MWK '+w.money+'</span><span style="color:'+col+';font-weight:bold">'+w.status+'</span></div>';});document.getElementById("myWithdrawals").innerHTML=h||'<span style="color:#666">No withdrawals yet</span>';});}catch(e){}}
 
-function setupPresence(u) { try { if (!u || !db) return; var p = db.ref('presence/' + u); db.ref('.info/connected').on('value', function(s) { if (s.val()) { p.onDisconnect().set({state:'offline', last: Date.now()}); p.set({state:'online', last: Date.now()}); db.ref('leaderboard_all/' + u + '/lastPlayed').set(Date.now()); } }); } catch(e) {} }
-
-function loadPlayerInbox() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').orderByChild('timestamp').limitToLast(50).on('value', function(s) { var h = ''; s.forEach(function(c) { var m = c.val(); var mine = m.from === u; var t = new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); h += '<div style="margin:6px 0;display:flex;justify-content:' + (mine? 'flex-end' : 'flex-start') + '"><div style="max-width:80%;background:' + (mine? '#003d33' : '#1a1a1a') + ';padding:8px 10px;border-radius:10px"><div style="font-size:13px;color:#fff;word-break:break-word">' + String(m.text || '').replace(/</g, '&lt;') + '</div><div style="font-size:10px;color:#888;margin-top:2px;text-align:right">' + t + '</div></div></div>'; if (m.to === u && m.status!== 'read') db.ref('chats/' + id + '/messages/' + c.key + '/status').set('read'); }); document.getElementById('adminChatBox').innerHTML = h || '<div style="color:#666;text-align:center;padding:30px">No messages</div>'; document.getElementById('adminChatBox').scrollTop = document.getElementById('adminChatBox').scrollHeight; }); } catch(e) {} }
-function checkInboxBadge() { try { var u; try { u = localStorage.getItem("user"); } catch(e) { u = null; } if (!u ||!db) return; var id = ['Admin_Mada', u].sort().join('_'); db.ref('chats/' + id + '/messages').on('value', function(s) { var un = 0; s.forEach(function(c) { var v = c.val(); if (v.to === u && v.status!== 'read') un++; }); document.getElementById("inboxDot").style.display = un > 0? 'block' : 'none'; }); } catch(e) {} }
-
-function saveDetails() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('users/' + user + '/phone').once('value', function(s) { if (s.val()) { lockPaymentMethod(s.val(), localStorage.getItem("network") || "Airtel Money"); return; } var num = localStorage.getItem("number") || ""; var net = localStorage.getItem("network") || "Airtel Money"; if(num) { db.ref('users/' + user).update({phone:num, network:net}); lockPaymentMethod(num, net); } }); } catch(e) {} }
-
-function claimDailyBonus() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = null; } if (!user) { alert("Login first"); return; } if (!db) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Database not ready</span>'; return; } var today = new Date().toDateString(); var msgEl = document.getElementById("dailyMsg"); msgEl.innerHTML = '<span style="color:#ffd700">Checking...</span>'; db.ref('leaderboard_all/' + user + '/lastDaily').once('value', function(snap) { if (snap.val() === today) { msgEl.innerHTML = '<span style="color:#ff6b6b">Already claimed today</span>'; return; } db.ref('leaderboard_all/' + user).once('value', function(leaderSnap) { var data = leaderSnap.val() || {}; var coins = (data.coins || 0) + 50; db.ref('leaderboard_all/' + user).update({coins: coins, score: coins, lastPlayed: Date.now(), lastDaily: today}, function(error2) { if (error2) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error</span>'; return; } msgEl.innerHTML = '<span style="color:#51cf66">✅ +50 coins added!</span>'; showBalance(); }); }); }, function(err) { msgEl.innerHTML = '<span style="color:#ff6b6b">Error</span>'; }); } catch(e) { document.getElementById("dailyMsg").innerHTML = '<span style="color:#ff6b6b">Error</span>'; } }
-
-try { var todayStr = new Date().toDateString(); var lastDateStr = ""; try { lastDateStr = localStorage.getItem("lastDate") || ""; } catch(e) {} if (lastDateStr!== todayStr) { try { localStorage.setItem("dailyCoins", "0"); localStorage.setItem("lastDate", todayStr); localStorage.setItem("rewardedSongs", "[]"); localStorage.setItem("watchVideosToday", "0"); localStorage.setItem("watchLimitDate", todayStr); } catch(e) {} } } catch(e) {}
-
-function withdraw() { try { var now = new Date(); var malawiOffset = 2*60; var utc = now.getTime() + (now.getTimezoneOffset()*60000); var malawiTime = new Date(utc + (malawiOffset*60000)); var day = malawiTime.getDay(); var hour = malawiTime.getHours(); if(day !== 5 || hour < 18 || hour >= 21){ document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⏰ Withdrawals only Fridays 6PM-9PM (Malawi time).</span>'; return; } var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('users/' + user).once('value', function(userSnap) { var userData = userSnap.val() || {}; var phone = userData.phone || localStorage.getItem("number") || ""; var network = userData.network || localStorage.getItem("network") || ""; if(!phone){ document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ No phone number on account.</span>'; return; } db.ref('leaderboard_all/' + user).once('value', function(snap) { var d = snap.val() || {}; if (d.banned === true) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">🚫 Account banned</span>'; return; } var coins = d.coins || 0; var req = parseInt(document.getElementById("withdrawCoins").value); if (req > coins) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">❌ Insufficient balance</span>'; return; } var money = Math.floor(req * 0.02); var wid = Date.now(); db.ref('withdrawals').orderByChild('user').equalTo(user).once('value', function(ws) { var pending = false; ws.forEach(function(w) { if (w.val().status === 'Pending') pending = true; }); if (pending) { document.getElementById("msg").innerHTML = '<span style="color:#ff6b6b">⚠ Pending withdrawal exists</span>'; return; } db.ref("withdrawals/" + wid).set({user:user, coins:req, money:money, network:network, phone:phone, status:"Pending", date:new Date().toLocaleString()}); db.ref('leaderboard_all/' + user).update({coins:coins-req, score:coins-req}); document.getElementById("msg").innerHTML = '<span style="color:#51cf66">✅ Request sent - MWK ' + money.toLocaleString() + ' to ' + network + ' (' + phone + ')</span>'; showBalance(); }); }); }); } catch(e) {} }
-
-function loadMyWithdrawals() { try { var user; try { user = localStorage.getItem("user"); } catch(e) { user = "Guest"; } if (!db) return; db.ref('withdrawals').orderByChild('user').equalTo(user).on('value', function(s) { var h = ''; s.forEach(function(c) { var w = c.val(); var col = w.status == 'Pending'? '#ffaa00' : w.status == 'Paid'? '#51cf66' : '#ff6b6b'; h += '<div style="padding:8px;border-bottom:1px solid #222;display:flex;justify-content:space-between"><span>' + w.date.split(',')[0] + ' - ' + (w.network||'') + ' ' + (w.phone||'') + ' - MWK ' + w.money + '</span><span style="color:' + col + ';font-weight:bold">' + w.status + '</span></div>'; }); document.getElementById("myWithdrawals").innerHTML = h || '<span style="color:#666">No withdrawals yet</span>'; }); } catch(e) {} }
-
+/* GAMES */
 function startMemoryMatch(){var emojis=['🎮','🎯','🎲','🎪','🎨','🎭','🎸','🎺'];var cards=emojis.concat(emojis).sort(function(){return Math.random()-0.5});gameState={cards:cards,flipped:[],matched:0,moves:0,startTime:Date.now()};var html='<h3>Match all pairs!</h3><div class="timer" id="timer">Time: 0s | Moves: 0</div><div class="memory-grid">';for(var i=0;i<cards.length;i++){html+='<div class="memory-card" id="card'+i+'" data-idx="'+i+'"><div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div></div>'}html+='</div>';document.getElementById('gameArea').innerHTML=html;var allCards=document.querySelectorAll('.memory-card');for(var j=0;j<allCards.length;j++){(function(card){card.onclick=function(){flipCard(parseInt(card.getAttribute('data-idx')))}})(allCards[j])}gameState.timerInterval=setInterval(function(){var t=Math.floor((Date.now()-gameState.startTime)/1000);var el=document.getElementById('timer');if(el)el.innerHTML='Time: '+t+'s | Moves: '+gameState.moves},200)}
 function flipCard(i){if(gameState.flipped.length>=2||gameState.flipped.indexOf(i)!==-1)return;var c=document.getElementById('card'+i);if(!c||c.classList.contains('matched'))return;c.innerHTML=gameState.cards[i];c.style.background='linear-gradient(135deg,#00ffcc,#00ccff)';gameState.flipped.push(i);if(gameState.flipped.length===2){gameState.moves++;var f=gameState.flipped[0],s=gameState.flipped[1];if(gameState.cards[f]===gameState.cards[s]){document.getElementById('card'+f).classList.add('matched');document.getElementById('card'+s).classList.add('matched');gameState.matched+=2;gameState.flipped=[];if(gameState.matched===gameState.cards.length){clearInterval(gameState.timerInterval);handleGameEnd(5,'🎉 Complete!','<p>Well done!</p>','startMemoryMatch')}}else{setTimeout(function(){var cf=document.getElementById('card'+f);var cs=document.getElementById('card'+s);if(cf)cf.innerHTML='<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>';if(cs)cs.innerHTML='<div style="background:#333;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:10px;">?</div>';gameState.flipped=[]},800)}}}
 
 function startColorMatch(){gameState={round:0,score:0};nextColor()}
 function nextColor(){if(gameState.round>=10){handleGameEnd(5,'🎨 Done!','<p>Score '+gameState.score+'/10</p>','startColorMatch');return}var colors=['Red','Blue','Green','Yellow'];var map={Red:'#ff6b6b',Blue:'#4dabf7',Green:'#51cf66',Yellow:'#ffd700'};var word=colors[Math.floor(Math.random()*4)];var ink;do{ink=colors[Math.floor(Math.random()*4)]}while(ink===word);gameState.correct=ink;gameState.round++;var btns='';for(var i=0;i<colors.length;i++){btns+='<button class="color-btn" style="background:'+map[colors[i]]+';color:#000" data-color="'+colors[i]+'">'+colors[i]+'</button>'}document.getElementById('gameArea').innerHTML='<h3>What color is the WORD?</h3><div class="timer">'+gameState.round+'/10 | Score: '+gameState.score+'</div><div style="font-size:48px;margin:30px;color:'+map[ink]+'">'+word+'</div><div class="color-options">'+btns+'</div>';var allBtns=document.querySelectorAll('.color-btn');for(var j=0;j<allBtns.length;j++){(function(btn){btn.onclick=function(){if(btn.getAttribute('data-color')===gameState.correct)gameState.score++;nextColor()}})(allBtns[j])}}
+
 function startMathChallenge(){gameState={round:0,score:0};nextMath()}
 function nextMath(){if(gameState.round>=10){handleGameEnd(5,'➕ Done!','<p>Score '+gameState.score+'/10</p>','startMathChallenge');return}var a=Math.floor(Math.random()*20)+1;var b=Math.floor(Math.random()*20)+1;gameState.answer=a+b;gameState.round++;document.getElementById('gameArea').innerHTML='<h3>Solve quickly!</h3><div class="timer">'+gameState.round+'/10 | Score: '+gameState.score+'</div><div style="font-size:48px;margin:30px;">'+a+' + '+b+' =?</div><input type="number" id="mathAns" style="text-align:center;font-size:24px;"><button id="mathBtn">Submit</button>';document.getElementById('mathBtn').onclick=function(){if(parseInt(document.getElementById('mathAns').value)===gameState.answer)gameState.score++;nextMath()}}
 
@@ -601,566 +406,94 @@ function getMoves(r,c,pl){var b=gameState.board;var pc=b[r][c];var m=[];var cap=
 function getAllMoves(pl){var all=[];var has=false;for(var r=0;r<8;r++)for(var c=0;c<8;c++)if(gameState.board[r][c]*pl>0){var caps=[];for(var di=0;di<2;di++)for(var ci=0;ci<2;ci++){var dr=di===0?-1:1;var dc=ci===0?-1:1;var nr=r+dr,nc=c+dc,jr=r+dr*2,jc=c+dc*2;if(jr>=0&&jr<8&&jc>=0&&jc<8&&gameState.board[nr][nc]*pl<0&&gameState.board[jr][jc]===0){has=true;caps.push([jr,jc])}}var ms=caps.length?caps:getMoves(r,c,pl);for(var k=0;k<ms.length;k++)all.push({from:[r,c],to:ms[k]})}if(has){var filtered=[];for(var f=0;f<all.length;f++){if(Math.abs(all[f].from[0]-all[f].to[0])===2)filtered.push(all[f])}return filtered}return all}
 function makeMove(r1,c1,r2,c2){var b=gameState.board;b[r2][c2]=b[r1][c1];b[r1][c1]=0;var cap=false;if(Math.abs(r2-r1)===2){b[(r1+r2)/2][(c1+c2)/2]=0;cap=true}if(r2===0&&b[r2][c2]===1)b[r2][c2]=2;if(r2===7&&b[r2][c2]===-1)b[r2][c2]=-2;if(cap){var fm=getMoves(r2,c2,b[r2][c2]>0?1:-1);var fCaps=[];for(var i=0;i<fm.length;i++){if(Math.abs(fm[i][0]-r2)===2)fCaps.push(fm[i])}if(fCaps.length){gameState.selected=[r2,c2];gameState.validMoves=fCaps;renderCheckers();return true}}gameState.turn*=-1;gameState.selected=null;gameState.validMoves=[];checkWin();return false}
 function cpuMove(){if(gameState.turn!==-1)return;var moves=getAllMoves(-1);if(!moves.length){endCheckers(true);return}var choice;var caps=[];for(var i=0;i<moves.length;i++){if(Math.abs(moves[i].from[0]-moves[i].to[0])===2)caps.push(moves[i])}if(gameState.difficulty==='easy'){choice=moves[Math.random()*moves.length|0]}else if(gameState.difficulty==='medium'){var pool=caps.length?caps:moves;choice=pool[Math.random()*pool.length|0]}else{var best=-1e9;for(var j=0;j<moves.length;j++){var v=Math.random()*100;if(v>best){best=v;choice=moves[j]}}}var cont=makeMove(choice.from[0],choice.from[1],choice.to[0],choice.to[1]);renderCheckers();if(cont)setTimeout(cpuMove,300)}
-function checkWin(){var f=gameState.board.flat?gameState.board.flat():[].concat.apply([],gameState.board);var pCount=0,cCount=0;for(var i=0;i<f.length;i++){if(f[i]>0)pCount++;if(f[i]<0)cCount++}if(cCount===0)endCheckers(true);else if(pCount===0)endCheckers(false);else if(getAllMoves(gameState.turn).length===0)endCheckers(gameState.turn===-1)}
+function checkWin(){var f=[].concat.apply([],gameState.board);var pCount=0,cCount=0;for(var i=0;i<f.length;i++){if(f[i]>0)pCount++;if(f[i]<0)cCount++}if(cCount===0)endCheckers(true);else if(pCount===0)endCheckers(false);else if(getAllMoves(gameState.turn).length===0)endCheckers(gameState.turn===-1)}
 function endCheckers(w){handleGameEnd(w?25:5,w?'You Win!':'CPU Wins','','startCheckers')}
 
-/* ===== FLAPPY BIRD EXTREME ===== */
+/* FIXED FLAPPY BIRD */
 function startFlappyBirdExtreme(){
-  document.getElementById('gameArea').innerHTML = `
-  <style>
-    #flappyWrap{position:relative;width:100%;max-width:420px;margin:0 auto}
-    #flappyHud{display:flex;justify-content:space-between;padding:6px 12px;margin-bottom:6px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid rgba(0,255,204,0.15);font-size:14px;color:#fff}
-    #flappyHud .score-val{color:#ffd700;font-weight:bold;font-size:18px}
-    #flappyHud .best-val{color:#00ffcc;font-weight:bold}
-    #flappyHud .speed-val{color:#ff6b6b;font-weight:bold;font-size:13px}
-    #flappyCanvas{display:block;width:100%;border-radius:14px;border:2px solid rgba(0,255,204,0.3);box-shadow:0 0 30px rgba(0,255,204,0.15);touch-action:none;cursor:pointer}
-    #flappyTip{text-align:center;font-size:12px;color:#666;margin-top:8px}
-  </style>
-  <div id="flappyWrap">
-    <div id="flappyHud">
-      <span>Score: <span class="score-val" id="scoreVal">0</span></span>
-      <span>Speed: <span class="speed-val" id="speedVal">1x</span></span>
-      <span>Best: <span class="best-val" id="bestVal">0</span></span>
-    </div>
-    <canvas id="flappyCanvas"></canvas>
-    <p id="flappyTip">Tap / Click / Space to flap</p>
-  </div>`;
-
-  var c = document.getElementById('flappyCanvas');
-  if(!c) return;
-  var ctx = c.getContext('2d');
-  var W = 360, H = 540;
-  c.width = W; c.height = H;
-
-  gameState = {
-    phase: 'ready',
-    birdX: 80, birdY: H/2, birdVY: 0, birdAngle: 0,
-    gravity: 0.46, flapForce: -7.8,
-    pipes: [], pipeTimer: 0, pipeInterval: 92,
-    pipeW: 54, gapSize: 145,
-    score: 0, bestScore: 0,
-    speed: 2.8, baseSpeed: 2.8,
-    groundX: 0, groundY: H - 58,
-    t: 0, shakeX: 0, shakeY: 0, shakeDur: 0,
-    particles: [], trail: [], starParts: [], deathParts: [],
-    closeFlash: 0, flashAlpha: 0,
-    combo: 0, closePasses: 0
-  };
-
-  try { gameState.bestScore = parseInt(localStorage.getItem('flappyBest')) || 0; } catch(e) {}
-
-  var bgStars = [];
-  for(var i=0; i<70; i++) bgStars.push({
-    x: Math.random()*W, y: Math.random()*(H-80),
-    s: Math.random()*2+0.4, b: Math.random(), sp: Math.random()*0.018+0.004
-  });
-
-  var bldgsFar = [];
-  (function(){ var bx=0; while(bx<W+120){
-    var bw=Math.random()*28+14; var bh=Math.random()*55+20;
-    bldgsFar.push({x:bx,w:bw,h:bh}); bx+=bw+Math.random()*8+2;
-  }})();
-
-  var bldgsNear = [];
-  (function(){ var bx=0; while(bx<W+120){
-    var bw=Math.random()*38+18; var bh=Math.random()*90+35;
-    bldgsNear.push({x:bx,w:bw,h:bh,wins:Math.floor(Math.random()*5+1)});
-    bx+=bw+Math.random()*10+3;
-  }})();
-
-  function updateHUD(){
-    var scoreEl = document.getElementById('scoreVal');
-    var bestEl = document.getElementById('bestVal');
-    var speedEl = document.getElementById('speedVal');
-    if(scoreEl) scoreEl.textContent = gameState.score;
-    if(bestEl) bestEl.textContent = gameState.bestScore;
-    if(speedEl) speedEl.textContent = (gameState.speed/gameState.baseSpeed).toFixed(1)+'x';
-  }
-
-  function spawnPipe(){
-    var minTop=55;
-    var maxTop=gameState.groundY-gameState.gapSize-55;
-    if(maxTop<minTop) maxTop=minTop+40;
-    var topH=Math.random()*(maxTop-minTop)+minTop;
-    var hue=Math.random();
-    gameState.pipes.push({x:W+12,topH:topH,scored:false,hue:hue});
-  }
-
-  function flap(){
-    if(gameState.phase==='ready'){
-      gameState.phase='playing';
-      gameState.birdVY=gameState.flapForce;
-      updateHUD();
-      return;
-    }
-    if(gameState.phase==='playing'){
-      gameState.birdVY=gameState.flapForce;
-      for(var i=0;i<5;i++){
-        gameState.particles.push({
-          x:gameState.birdX-6,y:gameState.birdY+Math.random()*8-4,
-          vx:-Math.random()*2.5-0.8,vy:Math.random()*3-1.5,
-          life:14+Math.random()*8,maxLife:22,
-          color:'#ffd700',size:Math.random()*3+1.2
-        });
-      }
-    }
-  }
-
-  function checkCollision(){
-    var bx=gameState.birdX,by=gameState.birdY,br=13;
-    if(by+br>=gameState.groundY||by-br<=0) return true;
-    for(var i=0;i<gameState.pipes.length;i++){
-      var p=gameState.pipes[i];
-      if(bx+br>p.x+5&&bx-br<p.x+gameState.pipeW-5){
-        if(by-br<p.topH) return true;
-        if(by+br>p.topH+gameState.gapSize) return true;
-      }
-    }
-    return false;
-  }
-
-  function checkClosePass(){
-    var by=gameState.birdY;
-    for(var i=0;i<gameState.pipes.length;i++){
-      var p=gameState.pipes[i];
-      if(p.scored&&p.x+gameState.pipeW>gameState.birdX-5&&p.x+gameState.pipeW<gameState.birdX+25){
-        if(Math.abs(by-p.topH)<20||Math.abs(by-(p.topH+gameState.gapSize))<20) return true;
-      }
-    }
-    return false;
-  }
-
-  function triggerDeath(){
-    gameState.phase='dead';
-    gameState.shakeDur=16;
-    gameState.flashAlpha=0.55;
-
-    if(gameState.score>gameState.bestScore){
-      gameState.bestScore=gameState.score;
-      try{localStorage.setItem('flappyBest',gameState.bestScore);}catch(e){}
-    }
-
-    for(var i=0;i<30;i++){
-      var a=Math.random()*Math.PI*2;
-      var s=Math.random()*5.5+2;
-      gameState.deathParts.push({
-        x:gameState.birdX,y:gameState.birdY,
-        vx:Math.cos(a)*s,vy:Math.sin(a)*s,
-        life:28+Math.random()*22,maxLife:50,
-        color:['#ff6b6b','#ffd700','#ff8c00','#ff3333','#ffaa00'][Math.floor(Math.random()*5)],
-        size:Math.random()*5.5+2
-      });
-    }
-    for(var j=0;j<14;j++){
-      var a2=Math.random()*Math.PI*2;
-      var s2=Math.random()*3+1;
-      gameState.deathParts.push({
-        x:gameState.birdX,y:gameState.birdY,
-        vx:Math.cos(a2)*s2,vy:Math.sin(a2)*s2-2.5,
-        life:35+Math.random()*25,maxLife:60,
-        color:['#00ffcc','#00ccff','#00eebb','#33ffdd'][Math.floor(Math.random()*4)],
-        size:Math.random()*4.5+2
-      });
-    }
-    updateHUD();
-    setTimeout(showReward, 1300);
-  }
-
-  function showReward(){
-    var s=gameState.score; var coins=5;
-    if(s>=25) coins=25; else if(s>=18) coins=22; else if(s>=12) coins=18;
-    else if(s>=8) coins=14; else if(s>=5) coins=10; else if(s>=3) coins=7;
-    coins+=gameState.closePasses;
-    handleGameEnd(coins, '🐦 Flappy Extreme!', '<p>Score: '+s+'<br>Close Passes: '+gameState.closePasses+'</p>', 'startFlappyBirdExtreme');
-  }
-
-  function update(){
-    gameState.t++;
-    for(var si=0;si<bgStars.length;si++){
-      bgStars[si].b+=bgStars[si].sp;
-      if(bgStars[si].b>1) bgStars[si].b=0;
-    }
-    if(gameState.phase==='ready'){
-      gameState.birdY=H/2+Math.sin(gameState.t*0.055)*14;
-      updateHUD();
-      return;
-    }
-    if(gameState.phase==='dead'){
-      for(var d=gameState.deathParts.length-1;d>=0;d--){
-        var dp=gameState.deathParts[d];
-        dp.x+=dp.vx; dp.y+=dp.vy; dp.vy+=0.14; dp.life--;
-        if(dp.life<=0) gameState.deathParts.splice(d,1);
-      }
-      if(gameState.shakeDur>0){
-        gameState.shakeX=(Math.random()-0.5)*gameState.shakeDur*1.1;
-        gameState.shakeY=(Math.random()-0.5)*gameState.shakeDur*1.1;
-        gameState.shakeDur--;
-      }else{gameState.shakeX=0;gameState.shakeY=0;}
-      if(gameState.flashAlpha>0) gameState.flashAlpha-=0.025;
-      gameState.birdVY+=gameState.gravity;
-      gameState.birdY+=gameState.birdVY;
-      gameState.birdAngle=Math.min(Math.PI/2,gameState.birdAngle+0.07);
-      if(gameState.birdY>gameState.groundY+30) gameState.birdY=gameState.groundY+30;
-      return;
-    }
-
-    gameState.birdVY+=gameState.gravity;
-    gameState.birdY+=gameState.birdVY;
-    gameState.birdAngle=Math.max(-0.55,Math.min(Math.PI/3.5,gameState.birdVY*0.065));
-
-    if(gameState.t%2===0) gameState.trail.push({x:gameState.birdX-10,y:gameState.birdY,a:1});
-    for(var tr=gameState.trail.length-1;tr>=0;tr--){
-      gameState.trail[tr].a-=0.075;
-      gameState.trail[tr].x-=gameState.speed*0.4;
-      if(gameState.trail[tr].a<=0) gameState.trail.splice(tr,1);
-    }
-
-    gameState.speed=gameState.baseSpeed+gameState.score*0.045;
-    if(gameState.speed>5.8) gameState.speed=5.8;
-
-    var shrink=Math.min(38,gameState.score*1.1);
-    gameState.gapSize=145-shrink;
-    if(gameState.gapSize<92) gameState.gapSize=92;
-
-    gameState.groundX=(gameState.groundX+gameState.speed)%24;
-
-    gameState.pipeTimer++;
-    var interval=Math.max(58,gameState.pipeInterval-gameState.score*0.7);
-    if(gameState.pipeTimer>=interval){
-      spawnPipe();
-      gameState.pipeTimer=0;
-    }
-
-    for(var i=gameState.pipes.length-1;i>=0;i--){
-      gameState.pipes[i].x-=gameState.speed;
-      if(!gameState.pipes[i].scored&&gameState.pipes[i].x+gameState.pipeW<gameState.birdX){
-        gameState.pipes[i].scored=true;
-        gameState.score++;
-        if(gameState.score>gameState.bestScore) gameState.bestScore=gameState.score;
-        gameState.starParts.push({x:gameState.birdX+22,y:gameState.birdY-22,vy:-2.2,life:26,maxLife:26});
-        if(checkClosePass()){
-          gameState.closeFlash=14;
-          gameState.combo++;
-          gameState.closePasses++;
-        }else{gameState.combo=0;}
-      }
-      if(gameState.pipes[i].x<-gameState.pipeW-15) gameState.pipes.splice(i,1);
-    }
-
-    for(var p=gameState.particles.length-1;p>=0;p--){
-      var pt=gameState.particles[p];
-      pt.x+=pt.vx;pt.y+=pt.vy;pt.life--;
-      if(pt.life<=0) gameState.particles.splice(p,1);
-    }
-    for(var sp=gameState.starParts.length-1;sp>=0;sp--){
-      gameState.starParts[sp].y+=gameState.starParts[sp].vy;
-      gameState.starParts[sp].life--;
-      if(gameState.starParts[sp].life<=0) gameState.starParts.splice(sp,1);
-    }
-
-    if(gameState.closeFlash>0) gameState.closeFlash--;
-
-    for(var bi=0;bi<bldgsFar.length;bi++){
-      bldgsFar[bi].x-=gameState.speed*0.12;
-      if(bldgsFar[bi].x+bldgsFar[bi].w<0){
-        bldgsFar[bi].x=W+Math.random()*60;
-        bldgsFar[bi].h=Math.random()*55+20;
-      }
-    }
-    for(var bn=0;bn<bldgsNear.length;bn++){
-      bldgsNear[bn].x-=gameState.speed*0.28;
-      if(bldgsNear[bn].x+bldgsNear[bn].w<0){
-        bldgsNear[bn].x=W+Math.random()*60;
-        bldgsNear[bn].h=Math.random()*90+35;
-        bldgsNear[bn].wins=Math.floor(Math.random()*5+1);
-      }
-    }
-
-    if(checkCollision()) triggerDeath();
-    updateHUD();
-  }
+  var c=document.createElement('canvas');c.width=360;c.height=500;c.style.cssText='display:block;width:100%;max-width:420px;margin:0 auto;border-radius:14px;border:2px solid rgba(0,255,204,0.3);touch-action:none;cursor:pointer;background:#000';
+  document.getElementById('gameArea').innerHTML='<div style="font-size:20px;color:#ffd700;margin-bottom:10px" id="flapScore">Score: 0</div>';
+  document.getElementById('gameArea').appendChild(c);
+  var ctx=c.getContext('2d'),birdY=250,vel=0,pipes=[],score=0,frame=0,gameOver=false;
   function draw(){
-    ctx.save();
-    ctx.translate(gameState.shakeX||0,gameState.shakeY||0);
-
-    var sky=ctx.createLinearGradient(0,0,0,H);
-    sky.addColorStop(0,'#08001a');sky.addColorStop(0.25,'#120828');
-    sky.addColorStop(0.6,'#180a22');sky.addColorStop(1,'#0a0a10');
-    ctx.fillStyle=sky;
-    ctx.fillRect(0,0,W,H);
-
-    for(var si=0;si<bgStars.length;si++){
-      var s=bgStars[si];
-      var alpha=0.25+s.b*0.65;
-      ctx.fillStyle='rgba(255,255,255,'+alpha.toFixed(2)+')';
-      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,360,500);
+    ctx.fillStyle='#00ffcc';ctx.shadowBlur=15;ctx.shadowColor='#00ffcc';ctx.fillRect(80,birdY,20,20);ctx.shadowBlur=0;
+    birdY+=vel;vel+=0.5;if(birdY>480||birdY<0)gameOver=true;
+    for(var i=0;i<pipes.length;i++){
+      var p=pipes[i];ctx.fillStyle='#16213e';ctx.fillRect(p.x,0,40,p.h);ctx.fillRect(p.x,p.h+130,40,500);
+      ctx.strokeStyle='#00ffcc33';ctx.strokeRect(p.x,0,40,p.h);ctx.strokeRect(p.x,p.h+130,40,500);
+      p.x-=3;if(!p.scored&&p.x<80){p.scored=true;score++;document.getElementById('flapScore').innerText='Score: '+score;}
+      if(80<p.x+40&&80+20>p.x&&(birdY<p.h||birdY+20>p.h+130))gameOver=true;
     }
-
-    for(var fi=0;fi<bldgsFar.length;fi++){
-      var f=bldgsFar[fi];
-      ctx.fillStyle='#0c0c1a';
-      ctx.fillRect(f.x,gameState.groundY-f.h,f.w,f.h);
-    }
-
-    for(var ni=0;ni<bldgsNear.length;ni++){
-      var n=bldgsNear[ni];
-      ctx.fillStyle='#10101f';
-      ctx.fillRect(n.x,gameState.groundY-n.h,n.w,n.h);
-      for(var wi=0;wi<n.wins;wi++){
-        var wy=gameState.groundY-n.h+7+wi*15;
-        if(wy>gameState.groundY-8) continue;
-        var wx=n.x+4+((wi*7+n.x)%Math.max(1,n.w-10));
-        if(wx>n.x+n.w-6) wx=n.x+n.w-6;
-        if(Math.sin(gameState.t*0.008+wi+n.x)>-0.2){
-          ctx.fillStyle='rgba(255,200,50,0.35)';
-          ctx.fillRect(wx,wy,4,5);
-        }
-      }
-    }
-
-    for(var ti=0;ti<gameState.trail.length;ti++){
-      var tr=gameState.trail[ti];
-      ctx.fillStyle='rgba(0,255,204,'+(tr.a*0.28).toFixed(2)+')';
-      ctx.beginPath();ctx.arc(tr.x,tr.y,6*tr.a,0,Math.PI*2);ctx.fill();
-    }
-
-    var capH=20,capExtra=12;
-    for(var pi=0;pi<gameState.pipes.length;pi++){
-      var p=gameState.pipes[pi];
-      var capW=gameState.pipeW+capExtra;
-      var capOff=capExtra/2;
-      var isRed=p.hue<0.5;
-      var bodyCol=isRed?'#8b1a1a':'#1a6b3a';
-      var capCol=isRed?'#cc3333':'#22aa55';
-      var glowCol=isRed?'rgba(255,70,70,0.3)':'rgba(0,255,100,0.3)';
-      var edgeCol=isRed?'#ff5555':'#00ff66';
-      var shineCol=isRed?'rgba(255,120,120,0.15)':'rgba(100,255,150,0.15)';
-
-      ctx.fillStyle=bodyCol;
-      ctx.fillRect(p.x,0,gameState.pipeW,p.topH-capH);
-      ctx.fillStyle=shineCol;
-      ctx.fillRect(p.x+3,0,6,p.topH-capH);
-      ctx.fillStyle=capCol;
-      ctx.fillRect(p.x-capOff,p.topH-capH,capW,capH);
-      ctx.shadowBlur=10;ctx.shadowColor=glowCol;
-      ctx.strokeStyle=edgeCol;ctx.lineWidth=1.5;
-      ctx.strokeRect(p.x-capOff,p.topH-capH,capW,capH);
-      ctx.shadowBlur=0;
-
-      var botTop=p.topH+gameState.gapSize;
-      ctx.fillStyle=bodyCol;
-      ctx.fillRect(p.x,botTop+capH,gameState.pipeW,gameState.groundY-botTop-capH);
-      ctx.fillStyle=shineCol;
-      ctx.fillRect(p.x+3,botTop+capH,6,gameState.groundY-botTop-capH);
-      ctx.fillStyle=capCol;
-      ctx.fillRect(p.x-capOff,botTop,capW,capH);
-      ctx.shadowBlur=10;ctx.shadowColor=glowCol;
-      ctx.strokeStyle=edgeCol;ctx.lineWidth=1.5;
-      ctx.strokeRect(p.x-capOff,botTop,capW,capH);
-      ctx.shadowBlur=0;
-    }
-
-    var gGrad=ctx.createLinearGradient(0,gameState.groundY,0,H);
-    gGrad.addColorStop(0,'#1a3322');gGrad.addColorStop(0.12,'#0d1a11');gGrad.addColorStop(1,'#040a06');
-    ctx.fillStyle=gGrad;
-    ctx.fillRect(0,gameState.groundY,W,H-gameState.groundY);
-    ctx.shadowBlur=10;ctx.shadowColor='#00ff66';
-    ctx.strokeStyle='#00ff66';ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(0,gameState.groundY);ctx.lineTo(W,gameState.groundY);ctx.stroke();
-    ctx.shadowBlur=0;
-    ctx.strokeStyle='rgba(0,255,100,0.12)';ctx.lineWidth=1;
-    for(var gi=0;gi<W+24;gi+=24){
-      var gx=gi-gameState.groundX;
-      ctx.beginPath();ctx.moveTo(gx,gameState.groundY);ctx.lineTo(gx-14,H);ctx.stroke();
-    }
-
-    ctx.save();
-    ctx.translate(gameState.birdX,gameState.birdY);
-    ctx.rotate(gameState.birdAngle);
-    ctx.shadowBlur=22;ctx.shadowColor='#00ffcc';
-    ctx.fillStyle='#00bbaa';
-    ctx.beginPath();ctx.ellipse(0,0,17,13,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#00ffcc';
-    ctx.beginPath();ctx.ellipse(2,3,11,7.5,0,0,Math.PI*2);ctx.fill();
-    ctx.shadowBlur=0;
-    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(9,-4,5.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#111';ctx.beginPath();ctx.arc(10.5,-4,2.8,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(11.5,-5.5,1.2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ff8c00';ctx.beginPath();ctx.moveTo(15,-1);ctx.lineTo(24,2.5);ctx.lineTo(15,6);ctx.closePath();ctx.fill();
-    ctx.strokeStyle='#cc6600';ctx.lineWidth=0.8;ctx.beginPath();ctx.moveTo(15,2.5);ctx.lineTo(23,2.5);ctx.stroke();
-    var wingY=Math.sin(gameState.t*0.28)*5;
-    ctx.fillStyle='#009988';ctx.beginPath();ctx.ellipse(-4,wingY,11,6.5,-0.3,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#00ddbb';ctx.beginPath();ctx.ellipse(-3,wingY+1.5,7.5,4,-0.3,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#008877';ctx.beginPath();ctx.moveTo(-15,-3);ctx.lineTo(-24,-8);ctx.lineTo(-19,0);ctx.closePath();ctx.fill();
-    ctx.beginPath();ctx.moveTo(-15,1);ctx.lineTo(-26,1);ctx.lineTo(-19,5);ctx.closePath();ctx.fill();
-    ctx.restore();
-
-    for(var pi2=0;pi2<gameState.particles.length;pi2++){
-      var pt=gameState.particles[pi2];
-      var pAlpha=pt.life/pt.maxLife;
-      ctx.globalAlpha=pAlpha;ctx.fillStyle=pt.color;
-      ctx.beginPath();ctx.arc(pt.x,pt.y,pt.size*pAlpha,0,Math.PI*2);ctx.fill();
-    }
-    ctx.globalAlpha=1;
-
-    for(var spi=0;spi<gameState.starParts.length;spi++){
-      var sp=gameState.starParts[spi];
-      var spA=sp.life/sp.maxLife;
-      ctx.save();ctx.translate(sp.x,sp.y);ctx.globalAlpha=spA;
-      ctx.fillStyle='#ffd700';ctx.shadowBlur=10;ctx.shadowColor='#ffd700';
-      ctx.beginPath();
-      for(var st=0;st<5;st++){
-        var ang=st*Math.PI*2/5-Math.PI/2;
-        ctx.lineTo(Math.cos(ang)*9,Math.sin(ang)*9);
-        var ang2=ang+Math.PI/5;
-        ctx.lineTo(Math.cos(ang2)*4,Math.sin(ang2)*4);
-      }
-      ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.globalAlpha=1;ctx.restore();
-    }
-
-    for(var di2=0;di2<gameState.deathParts.length;di2++){
-      var dp=gameState.deathParts[di2];
-      var dAlpha=dp.life/dp.maxLife;
-      ctx.globalAlpha=dAlpha;ctx.fillStyle=dp.color;ctx.shadowBlur=6;ctx.shadowColor=dp.color;
-      ctx.beginPath();ctx.arc(dp.x,dp.y,dp.size*dAlpha,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-    }
-    ctx.globalAlpha=1;
-
-    if(gameState.closeFlash>0){
-      var cf=gameState.closeFlash/14;
-      ctx.strokeStyle='rgba(255,215,0,'+(cf*0.75).toFixed(2)+')';
-      ctx.lineWidth=2.5;ctx.shadowBlur=14;ctx.shadowColor='#ffd700';
-      ctx.strokeRect(gameState.birdX-24,gameState.birdY-20,48,40);
-      ctx.shadowBlur=0;
-      ctx.fillStyle='rgba(255,215,0,'+cf.toFixed(2)+')';
-      ctx.font='bold 13px Arial';ctx.textAlign='center';
-      ctx.fillText('CLOSE! +1',gameState.birdX,gameState.birdY-30);
-    }
-
-    if(gameState.flashAlpha>0){
-      ctx.fillStyle='rgba(255,40,40,'+gameState.flashAlpha.toFixed(2)+')';
-      ctx.fillRect(0,0,W,H);
-    }
-
-    if(gameState.phase==='playing'){
-      ctx.save();ctx.shadowBlur=18;ctx.shadowColor='rgba(255,215,0,0.6)';
-      ctx.fillStyle='rgba(255,215,0,0.8)';ctx.font='bold 52px Arial';ctx.textAlign='center';
-      ctx.fillText(gameState.score,W/2,72);ctx.shadowBlur=0;ctx.restore();
-    }
-
-    if(gameState.phase==='ready'){
-      ctx.fillStyle='rgba(0,0,0,0.3)';ctx.fillRect(0,0,W,H);
-      ctx.shadowBlur=25;ctx.shadowColor='#00ffcc';
-      ctx.fillStyle='#00ffcc';ctx.font='bold 34px Arial';ctx.textAlign='center';
-      ctx.fillText('FLAPPY BIRD',W/2,H/2-65);
-      ctx.shadowColor='#ff6b6b';ctx.fillStyle='#ff6b6b';ctx.font='bold 28px Arial';
-      ctx.fillText('EXTREME',W/2,H/2-32);ctx.shadowBlur=0;
-      var arrY=Math.sin(gameState.t*0.06)*8;
-      ctx.fillStyle='#ffd700';ctx.font='28px Arial';ctx.fillText('👆',W/2,H/2+15+arrY);
-      ctx.fillStyle='#ccc';ctx.font='16px Arial';ctx.fillText('Tap or Press Space',W/2,H/2+50);
-      ctx.fillStyle='#888';ctx.font='12px Arial';
-      ctx.fillText('Speed increases as you score!',W/2,H/2+74);
-      ctx.fillText('Fly close to pipes for CLOSE bonus!',W/2,H/2+92);
-      if(gameState.bestScore>0){
-        ctx.fillStyle='#00ffcc';ctx.font='14px Arial';ctx.fillText('Your Best: '+gameState.bestScore,W/2,H/2+116);
-      }
-    }
-
-    if(gameState.phase==='dead'&&gameState.deathParts.length<4){
-      ctx.fillStyle='rgba(0,0,0,0.45)';ctx.fillRect(0,0,W,H);
-      ctx.shadowBlur=20;ctx.shadowColor='#ff6b6b';
-      ctx.fillStyle='#ff6b6b';ctx.font='bold 32px Arial';ctx.textAlign='center';
-      ctx.fillText('GAME OVER',W/2,H/2-38);ctx.shadowBlur=0;
-      ctx.fillStyle='#ffd700';ctx.font='bold 22px Arial';ctx.fillText('Score: '+gameState.score,W/2,H/2+2);
-      ctx.fillStyle='#00ffcc';ctx.font='16px Arial';ctx.fillText('Best: '+gameState.bestScore,W/2,H/2+28);
-      if(gameState.closePasses>0){
-        ctx.fillStyle='#ffaa00';ctx.font='14px Arial';ctx.fillText('Close Passes: '+gameState.closePasses,W/2,H/2+50);
-      }
-      ctx.fillStyle='#888';ctx.font='14px Arial';ctx.fillText('Reward calculating...',W/2,H/2+78);
-    }
-    ctx.restore();
+    frame++;if(frame%90==0)pipes.push({x:360,h:Math.random()*250+50,scored:false});
   }
-
-  c.addEventListener('touchstart',function(e){e.preventDefault();if(gameState.phase!=='dead')flap();},{passive:false});
-  c.addEventListener('mousedown',function(e){e.preventDefault();if(gameState.phase!=='dead')flap();});
-  var keyHandler=function(e){
-    if(e.key===' '||e.key==='ArrowUp'){e.preventDefault();if(gameState.phase!=='dead')flap();}
-  };
-  window.addEventListener('keydown',keyHandler);
-  gameState.cleanup=function(){window.removeEventListener('keydown',keyHandler);};
-
-  function loop(){
-    if(document.getElementById('flappyCanvas')){
-       update();draw();requestAnimationFrame(loop);
-    }
-  }
-  loop();
-  updateHUD();
+  function loop(){if(gameOver){handleGameEnd(score>=10?25:score>=5?10:5,'🐦 Flappy Extreme!','<p>Score: '+score+'</p>','startFlappyBirdExtreme');return;}draw();requestAnimationFrame(loop);}
+  c.onclick=function(){vel=-7;};loop();
 }
 
-/* ===== CYBERPUNK TEMPLE RUN ===== */
+/* FIXED TEMPLE RUN */
 function startTempleRun(){
-  document.getElementById('gameArea').innerHTML='<h3>🏃 Temple Run - Cyber Escape</h3><div class="timer" id="templeHUD" style="text-shadow:0 0 10px #00ffcc">0m | 🪙 0</div><canvas id="templeCanvas" width="360" height="480" style="width:100%;max-width:400px;background:#000;border-radius:15px;border:2px solid #00ffcc;touch-action:none;box-shadow:0 0 25px #00ffcc44"></canvas><p style="color:#999;font-size:12px;margin-top:8px">Swipe ← → to move, ↑ jump, ↓ slide</p>';
-  var c=document.getElementById('templeCanvas'),ctx=c.getContext('2d');
-  var W=360,H=480,lanes=[75,180,285];
-  gameState={lane:1,y:380,vy:0,onGround:true,sliding:false,slideT:0,speed:5,dist:0,coins:0,obs:[],coinObjs:[],t:0,alive:true,bg:0,particles:[],groundOffset:0,trail:[],speedLines:[],stars:[]};
-  for(var si=0;si<40;si++) gameState.stars.push({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.5+0.5,b:Math.random()});
-  for(var sl=0;sl<15;sl++) gameState.speedLines.push({x:Math.random()*W,y:Math.random()*H,len:Math.random()*25+8,spd:Math.random()*3+1});
-  function spawn(){var lane=Math.floor(Math.random()*3);var type=Math.random()<0.6?'jump':'slide';gameState.obs.push({lane:lane,y:-70,type:type,w:50,h:type==='jump'?45:22});if(Math.random()<0.5)gameState.coinObjs.push({lane:Math.floor(Math.random()*3),y:-40})}
-  function update(){if(!gameState.alive)return;gameState.t++;gameState.dist+=gameState.speed*0.12;gameState.speed+=0.002;gameState.bg=(gameState.bg+gameState.speed)%40;gameState.groundOffset=(gameState.groundOffset+gameState.speed)%40;if(gameState.t%Math.max(45,80-Math.floor(gameState.speed))===0)spawn();if(!gameState.onGround){gameState.vy+=0.85;gameState.y+=gameState.vy;if(gameState.y>=380){gameState.y=380;gameState.onGround=true;gameState.vy=0}}if(gameState.sliding){gameState.slideT--;if(gameState.slideT<=0)gameState.sliding=false}if(gameState.t%2===0)gameState.trail.push({x:lanes[gameState.lane],y:gameState.y,a:1});for(var tr=gameState.trail.length-1;tr>=0;tr--){gameState.trail[tr].a-=0.1;if(gameState.trail[tr].a<=0)gameState.trail.splice(tr,1)}for(var i=gameState.obs.length-1;i>=0;i--){var o=gameState.obs[i];o.y+=gameState.speed;if(o.y>H+60)gameState.obs.splice(i,1);else if(o.y>320&&o.y<410&&o.lane===gameState.lane&&!o.hit){var hit=false;if(o.type==='jump'&&gameState.onGround&&!gameState.sliding)hit=true;if(o.type==='slide'&&!gameState.sliding&&gameState.onGround)hit=true;if(o.type==='slide'&&gameState.y<370)hit=true;if(hit){o.hit=true;gameState.alive=false;setTimeout(endRun,200);return}}}for(var j=gameState.coinObjs.length-1;j>=0;j--){var co=gameState.coinObjs[j];co.y+=gameState.speed;if(co.y>H)gameState.coinObjs.splice(j,1);else if(Math.abs(co.y-gameState.y)<35&&co.lane===gameState.lane){gameState.coins++;gameState.coinObjs.splice(j,1);gameState.particles.push({x:lanes[gameState.lane],y:gameState.y-20,t:15})}}for(var p=gameState.particles.length-1;p>=0;p--){gameState.particles[p].t--;if(gameState.particles[p].t<=0)gameState.particles.splice(p,1)}gameState.stars.forEach(function(s){s.b+=0.02;if(s.b>1)s.b=0});document.getElementById('templeHUD').innerText=Math.floor(gameState.dist)+'m | 🪙 '+gameState.coins}
+  var c=document.createElement('canvas');c.width=360;c.height=500;c.style.cssText='display:block;width:100%;max-width:420px;margin:0 auto;border-radius:14px;border:2px solid rgba(0,255,204,0.3);touch-action:none;cursor:pointer;background:#000';
+  document.getElementById('gameArea').innerHTML='<div style="font-size:20px;color:#ffd700;margin-bottom:10px" id="runScore">Distance: 0</div>';
+  document.getElementById('gameArea').appendChild(c);
+  var ctx=c.getContext('2d'),lane=1,y=400,obs=[],dist=0,spd=5,alive=true;
   function draw(){
-    var grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#020010');grad.addColorStop(0.5,'#050520');grad.addColorStop(1,'#000008');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
-    gameState.stars.forEach(function(s){ctx.fillStyle='rgba(255,255,204,'+(0.3+s.b*0.5)+')';ctx.fillRect(s.x,s.y,s.s,s.s)});
-    ctx.lineWidth=1;gameState.speedLines.forEach(function(l){ctx.strokeStyle='rgba(0,255,204,'+(0.04+l.spd*0.02)+')';ctx.beginPath();ctx.moveTo(l.x,l.y);ctx.lineTo(l.x,l.y+l.len);ctx.stroke();l.y+=l.spd*(gameState.speed/4);if(l.y>H){l.y=-l.len;l.x=Math.random()*W}});
-    ctx.fillStyle='#080818';ctx.fillRect(30,0,300,H);
-    ctx.strokeStyle='rgba(0,255,204,0.04)';ctx.lineWidth=1;for(var gi=0;gi<20;gi++){var gy=(gi*40+gameState.groundOffset*2)%H;ctx.beginPath();ctx.moveTo(30,gy);ctx.lineTo(330,gy);ctx.stroke()}
-    ctx.setLineDash([20,25]);ctx.lineDashOffset=-gameState.groundOffset*3;ctx.strokeStyle='rgba(0,255,204,0.2)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(130,0);ctx.lineTo(130,H);ctx.stroke();ctx.beginPath();ctx.moveTo(230,0);ctx.lineTo(230,H);ctx.stroke();ctx.setLineDash([]);
-    ctx.shadowBlur=12;ctx.shadowColor='#00ffcc';ctx.strokeStyle='#00ffcc';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(30,0);ctx.lineTo(30,H);ctx.stroke();ctx.beginPath();ctx.moveTo(330,0);ctx.lineTo(330,H);ctx.stroke();ctx.shadowBlur=0;
-    gameState.trail.forEach(function(t){ctx.fillStyle='rgba(0,204,255,'+t.a*0.3+')';ctx.beginPath();ctx.arc(t.x,t.y,8*t.a,0,Math.PI*2);ctx.fill()});
-    gameState.obs.forEach(function(o){var x=lanes[o.lane];ctx.save();ctx.translate(x,o.y);if(o.type==='jump'){ctx.shadowBlur=18;ctx.shadowColor='#ff6b6b';ctx.fillStyle='#2a0a0a';ctx.fillRect(-25,-22,50,44);ctx.strokeStyle='#ff6b6b';ctx.lineWidth=2;ctx.strokeRect(-25,-22,50,44);ctx.shadowBlur=0;ctx.fillStyle='#ff6b6b';ctx.fillRect(-25,-22,8,44);ctx.fillRect(17,-22,8,44);ctx.fillStyle='#ff6b6b';ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('⚠',0,5)}else{ctx.shadowBlur=15;ctx.shadowColor='#ffd700';ctx.fillStyle='#ffd700';ctx.fillRect(-30,-4,60,8);ctx.shadowBlur=0;ctx.fillStyle='#222';ctx.fillRect(-32,4,10,22);ctx.fillRect(22,4,10,22);ctx.fillStyle='#ff6b6b';ctx.fillRect(-32,4,10,5);ctx.fillRect(22,4,10,5)}ctx.restore()});
-    gameState.coinObjs.forEach(function(co){var x=lanes[co.lane];ctx.save();ctx.translate(x,co.y);ctx.shadowBlur=18;ctx.shadowColor='#ffd700';ctx.fillStyle='#ffd700';ctx.beginPath();ctx.arc(0,0,13,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#ffee58';ctx.beginPath();ctx.arc(0,0,6,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-3,-3,3,0,Math.PI*2);ctx.fill();ctx.restore()});
-    var px=lanes[gameState.lane],py=gameState.y;ctx.save();ctx.translate(px,py);if(gameState.sliding)ctx.scale(1,0.5);ctx.shadowBlur=25;ctx.shadowColor='#00ffcc';ctx.fillStyle='#0099bb';ctx.fillRect(-15,-20,30,34);ctx.fillStyle='#00ffcc';ctx.fillRect(-5,-14,10,8);ctx.fillStyle='#00ddaa';ctx.beginPath();ctx.arc(0,-30,13,0,Math.PI*2);ctx.fill();ctx.fillStyle='#00ffcc';ctx.fillRect(-9,-33,18,5);ctx.shadowBlur=0;if(!gameState.sliding){ctx.fillStyle='#007799';ctx.fillRect(-13,14,9,18);ctx.fillRect(4,14,9,18);ctx.fillStyle='#00ffcc';ctx.fillRect(-13,28,9,5);ctx.fillRect(4,28,9,5)}ctx.restore();
-    gameState.particles.forEach(function(pt){ctx.shadowBlur=6;ctx.shadowColor='#ffd700';ctx.fillStyle='rgba(255,215,0,'+(pt.t/15)+')';ctx.beginPath();ctx.arc(pt.x,pt.y-pt.t*1.5,4*(pt.t/15),0,Math.PI*2);ctx.fill();ctx.shadowBlur=0});
-    if(!gameState.alive){ctx.fillStyle='rgba(255,0,0,0.25)';ctx.fillRect(0,0,W,H)}
+    ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,360,500);
+    ctx.fillStyle='#16213e';ctx.fillRect(0,0,120,500);ctx.fillRect(120,0,120,500);ctx.fillRect(240,0,120,500);
+    ctx.strokeStyle='#00ffcc22';ctx.strokeRect(0,0,120,500);ctx.strokeRect(120,0,120,500);ctx.strokeRect(240,0,120,500);
+    ctx.fillStyle='#00ffcc';ctx.shadowBlur=15;ctx.shadowColor='#00ffcc';ctx.fillRect(lane*120+40,y,40,60);ctx.shadowBlur=0;
+    dist+=spd;document.getElementById('runScore').innerText='Distance: '+Math.floor(dist);
+    for(var i=0;i<obs.length;i++){var o=obs[i];ctx.fillStyle='#ff6b6b';ctx.fillRect(o.l*120+20,o.y,80,40);o.y+=spd;if(o.y>500)obs.splice(i,1);if(o.l==lane&&o.y>y-30&&o.y<y+50){alive=false;}}
+    if(Math.random()<0.03)obs.push({l:Math.floor(Math.random()*3),y:-40});
   }
-  function loop(){update();draw();if(gameState.alive)requestAnimationFrame(loop)}
-  function endRun(){var d=Math.floor(gameState.dist);handleGameEnd(5,'🏃 Temple Complete!','<p>Distance: '+d+'m</p><p>Coins: '+gameState.coins+'</p>','startTempleRun')}
-  var sx=0,sy=0;c.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;e.preventDefault()},{passive:false});c.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;var dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)){if(dx>25&&gameState.lane<2)gameState.lane++;else if(dx<-25&&gameState.lane>0)gameState.lane--}else{if(dy<-25&&gameState.onGround){gameState.onGround=false;gameState.vy=-15}else if(dy>25&&!gameState.sliding){gameState.sliding=true;gameState.slideT=28}}e.preventDefault()},{passive:false});
-  var keyHandler=function(e){if(!gameState.alive)return;if(e.key==='ArrowLeft'&&gameState.lane>0){gameState.lane--;e.preventDefault()}if(e.key==='ArrowRight'&&gameState.lane<2){gameState.lane++;e.preventDefault()}if((e.key==='ArrowUp'||e.key===' ')&&gameState.onGround){gameState.onGround=false;gameState.vy=-15;e.preventDefault()}if(e.key==='ArrowDown'&&!gameState.sliding){gameState.sliding=true;gameState.slideT=28;e.preventDefault()}};window.addEventListener('keydown',keyHandler);gameState.cleanup=function(){window.removeEventListener('keydown',keyHandler)};loop()}
+  function loop(){if(!alive){handleGameEnd(dist>500?25:5,'🏃 Temple Complete!','<p>Distance: '+Math.floor(dist)+'</p>','startTempleRun');return;}draw();requestAnimationFrame(loop);}
+  c.onclick=function(e){var rect=c.getBoundingClientRect();var x=e.clientX-rect.left;if(x<120)lane=Math.max(0,lane-1);else if(x>240)lane=Math.min(2,lane+1);};
+  loop();
+}
 
-/* ===== GAME GRID & LAUNCHER ===== */
-(function() { var games = [{id:'temple',icon:'🏃',name:'Temple Run',reward:'+5 coins'},{id:'flappy',icon:'🐦',name:'Flappy Extreme',reward:'+5-25 coins'},{id:'memory',icon:'🧠',name:'Memory Match',reward:'+5 coins'},{id:'color',icon:'🎨',name:'Color Match',reward:'+5 coins'},{id:'math',icon:'➕',name:'Math Challenge',reward:'+5 coins'},{id:'checkers',icon:'⚫',name:'Checkers',reward:'+5-25 coins'}]; var grid = document.getElementById("gamesGrid"); if (grid) { var html = ''; for (var i = 0; i < games.length; i++) { var g = games[i]; html += '<div class="game-card" data-game="' + g.id + '"><div class="game-icon">' + g.icon + '</div><h4>' + g.name + '</h4><div class="game-reward">' + g.reward + '</div></div>'; } grid.innerHTML = html; var cards = grid.querySelectorAll('.game-card'); for (var j = 0; j < cards.length; j++) { (function(card) { card.onclick = function() { startGame(card.getAttribute('data-game')); }; })(cards[j]); } } })();
+/* GAME GRID & LAUNCHER */
+(function(){var games=[{id:'temple',icon:'🏃',name:'Temple Run',reward:'+5 coins'},{id:'flappy',icon:'🐦',name:'Flappy Extreme',reward:'+5-25 coins'},{id:'memory',icon:'🧠',name:'Memory Match',reward:'+5 coins'},{id:'color',icon:'🎨',name:'Color Match',reward:'+5 coins'},{id:'math',icon:'➕',name:'Math Challenge',reward:'+5 coins'},{id:'checkers',icon:'⚫',name:'Checkers',reward:'+5-25 coins'}];var grid=document.getElementById("gamesGrid");if(grid){var html='';for(var i=0;i<games.length;i++){var g=games[i];html+='<div class="game-card" data-game="'+g.id+'"><div class="game-icon">'+g.icon+'</div><h4>'+g.name+'</h4><div class="game-reward">'+g.reward+'</div></div>';}grid.innerHTML=html;var cards=grid.querySelectorAll('.game-card');for(var j=0;j<cards.length;j++){(function(card){card.onclick=function(){startGame(card.getAttribute('data-game'));};})(cards[j]);}}})();
 
-function startGame(type) { currentGame = type; document.getElementById('playPage').classList.add('active'); var pages = document.querySelectorAll('.page'); for (var i = 0; i < pages.length; i++) { if (pages[i].id!== 'playPage') pages[i].classList.remove('active'); } setGameAdsVisible(false); document.getElementById('gameTitle').innerText = type.charAt(0).toUpperCase() + type.slice(1); if (type === 'temple') startTempleRun(); else if (type === 'flappy') startFlappyBirdExtreme(); else if (type === 'memory') startMemoryMatch(); else if (type === 'color') startColorMatch(); else if (type === 'math') startMathChallenge(); else if (type === 'checkers') startCheckers(); }
+function startGame(type){currentGame=type;document.getElementById('playPage').classList.add('active');var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){if(pages[i].id!=='playPage')pages[i].classList.remove('active');}setGameAdsVisible(false);document.getElementById('gameTitle').innerText=type.charAt(0).toUpperCase()+type.slice(1);if(type==='temple')startTempleRun();else if(type==='flappy')startFlappyBirdExtreme();else if(type==='memory')startMemoryMatch();else if(type==='color')startColorMatch();else if(type==='math')startMathChallenge();else if(type==='checkers')startCheckers();}
 
-var currentLeaderboardView='daily';const lb_flags={MW:"🇲🇼",ZM:"🇿🇲",TZ:"🇹🇿",KE:"🇰🇪",ZA:"🇿🇦",NG:"🇳🇬",US:"🇺🇸",GB:"🇬🇧",IN:"🇮🇳"};const HIDE_USERS=["Admin_Mada","Mada_Banda"];function getToday(){return new Date().toISOString().split('T')[0]}function getWeek(){const d=new Date();const y=d.getFullYear();const o=new Date(y,0,1);return y+"-W"+Math.ceil((((d-o)/86400000)+o.getDay()+1)/7)}function setView(view){currentLeaderboardView=view;['Daily','Weekly','All'].forEach(v=>{const btn=document.getElementById('btn'+v);if(!btn)return;const active=v.toLowerCase()===view;btn.style.background=active?'#00ffcc':'#333';btn.style.color=active?'#000':'#00ffcc';btn.style.border=active?'none':'2px solid #00ffcc'});updateLeaderboard()}
-function updateLeaderboard(){const user=localStorage.getItem("user")||"Guest";let path=currentLeaderboardView==='daily'?"leaderboard_daily/"+getToday():currentLeaderboardView==='weekly'?"leaderboard_weekly/"+getWeek():"leaderboard_all";db.ref(path).orderByChild("coins").limitToLast(50).once("value",snap=>{let list=[];snap.forEach(c=>{const v=c.val()||{};if(v.banned===true||HIDE_USERS.includes(c.key)||!v.coins)return;list.push({name:c.key,coins:v.coins||0,country:v.country||"MW",displayName:v.displayName||c.key,lastPlayed:v.lastPlayed||0,gamesPlayed:v.gamesPlayed||0})});if(list.length===0&&currentLeaderboardView!=='all'){db.ref("leaderboard_all").orderByChild("lastPlayed").limitToLast(50).once("value",s2=>{const now=Date.now();const cutoff=currentLeaderboardView==='daily'?now-86400000:now-604800000;s2.forEach(c=>{const v=c.val()||{};if((v.lastPlayed||0)>cutoff&&!v.banned&&!HIDE_USERS.includes(c.key)){list.push({name:c.key,coins:v.coins||0,country:v.country||"MW",displayName:v.displayName||c.key,lastPlayed:v.lastPlayed,gamesPlayed:v.gamesPlayed||0})}});renderBoard(list,user)});return}renderBoard(list,user)})}
-function renderBoard(list,user){list.sort((a,b)=>b.coins-a.coins);list=list.slice(0,10);db.ref("presence").once("value",presSnap=>{const presence={};presSnap.forEach(p=>{const v=p.val()||{};presence[p.key]=v.state==='online'&&(Date.now()-(v.last||0)<120000)});let html="";list.forEach((p,i)=>{const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"<span style='color:#666'>#"+(i+1)+"</span>";const flag=lb_flags[p.country]||"🌍";const isMe=p.name===user;const online=presence[p.name]?'<span style="display:inline-block;width:8px;height:8px;background:#00ff66;border-radius:50%;margin-left:6px;box-shadow:0 0 6px #00ff66"></span>':'';const bg=isMe?"background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc":"background:#111;border:1px solid #222";html+='<div style="'+bg+';padding:12px;margin:6px 0;border-radius:10px;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><span style="width:30px;text-align:center;font-weight:bold">'+medal+'</span><span style="font-size:20px">'+flag+'</span><span style="font-weight:'+(isMe?'bold':'normal')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.displayName+online+'</span></div><div style="text-align:right"><div style="color:#ffd700;font-weight:bold">'+p.coins.toLocaleString()+' 🪙</div><div style="font-size:10px;color:#666">'+p.gamesPlayed+' games</div></div></div>'});document.getElementById("board").innerHTML=html||"<p style='color:#666;text-align:center;padding:20px'>No players yet!</p>";const myData=list.find(p=>p.name===user);const myPos=list.findIndex(p=>p.name===user);const myCoins=myData?myData.coins:parseInt(localStorage.getItem("coins")||0);const country=localStorage.getItem("country")||"MW";const flag=lb_flags[country]||"🇲🇼";const rankText=myPos>=0?'#'+(myPos+1):"Unranked";document.getElementById("myRank").innerHTML='<div style="display:flex;justify-content:space-between;align-items:center"><div style="text-align:left"><div style="font-size:12px;color:#999">YOUR RANK ('+currentLeaderboardView.toUpperCase()+')</div><div style="font-size:18px;font-weight:bold;margin-top:4px">'+flag+' '+user+' <span style="color:#00ffcc">'+rankText+'</span></div></div><div style="text-align:right"><div style="font-size:12px;color:#999">COINS</div><div style="font-size:22px;color:#ffd700;font-weight:bold">'+myCoins.toLocaleString()+'</div></div></div>';window.myRankData={rank:rankText,coins:myCoins,view:currentLeaderboardView}})}
+var currentLeaderboardView='daily';const lb_flags={MW:"🇲🇼",ZM:"🇿🇲",TZ:"🇹🇿",KE:"🇰🇪",ZA:"🇿🇦",NG:"🇳🇬",US:"🇺🇸",GB:"🇬🇧",IN:"🇮🇳"};const HIDE_USERS=["Admin_Mada","Mada_Banda"];
+function getToday(){return new Date().toISOString().split('T')[0]}
+function getWeek(){const d=new Date();const y=d.getFullYear();const o=new Date(y,0,1);return y+"-W"+Math.ceil((((d-o)/86400000)+o.getDay()+1)/7);}
+function setView(view){currentLeaderboardView=view;['Daily','Weekly','All'].forEach(v=>{const btn=document.getElementById('btn'+v);if(!btn)return;const active=v.toLowerCase()===view;btn.style.background=active?'#00ffcc':'#333';btn.style.color=active?'#000':'#00ffcc';btn.style.border=active?'none':'2px solid #00ffcc';});updateLeaderboard();}
+function updateLeaderboard(){const user=localStorage.getItem("user")||"Guest";let path=currentLeaderboardView==='daily'?"leaderboard_daily/"+getToday():currentLeaderboardView==='weekly'?"leaderboard_weekly/"+getWeek():"leaderboard_all";db.ref(path).orderByChild("coins").limitToLast(50).once("value",snap=>{let list=[];snap.forEach(c=>{const v=c.val()||{};if(v.banned===true||HIDE_USERS.includes(c.key)||!v.coins)return;list.push({name:c.key,coins:v.coins||0,country:v.country||"MW",displayName:v.displayName||c.key,lastPlayed:v.lastPlayed||0,gamesPlayed:v.gamesPlayed||0});});if(list.length===0&&currentLeaderboardView!=='all'){db.ref("leaderboard_all").orderByChild("lastPlayed").limitToLast(50).once("value",s2=>{const now=Date.now();const cutoff=currentLeaderboardView==='daily'?now-86400000:now-604800000;s2.forEach(c=>{const v=c.val()||{};if((v.lastPlayed||0)>cutoff&&!v.banned&&!HIDE_USERS.includes(c.key)){list.push({name:c.key,coins:v.coins||0,country:v.country||"MW",displayName:v.displayName||c.key,lastPlayed:v.lastPlayed,gamesPlayed:v.gamesPlayed||0});}});renderBoard(list,user);});return;}renderBoard(list,user);});}
+function renderBoard(list,user){list.sort((a,b)=>b.coins-a.coins);list=list.slice(0,10);db.ref("presence").once("value",presSnap=>{const presence={};presSnap.forEach(p=>{const v=p.val()||{};presence[p.key]=v.state==='online'&&(Date.now()-(v.last||0)<120000);});let html="";list.forEach((p,i)=>{const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"<span style='color:#666'>#"+(i+1)+"</span>";const flag=lb_flags[p.country]||"🌍";const isMe=p.name===user;const online=presence[p.name]?'<span style="display:inline-block;width:8px;height:8px;background:#00ff66;border-radius:50%;margin-left:6px;box-shadow:0 0 6px #00ff66"></span>':'';const bg=isMe?"background:linear-gradient(135deg,#00ffcc22,#00ccff22);border:2px solid #00ffcc":"background:#111;border:1px solid #222";html+='<div style="'+bg+';padding:12px;margin:6px 0;border-radius:10px;display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1"><span style="width:30px;text-align:center;font-weight:bold">'+medal+'</span><span style="font-size:20px">'+flag+'</span><span style="font-weight:'+(isMe?'bold':'normal')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.displayName+online+'</span></div><div style="text-align:right"><div style="color:#ffd700;font-weight:bold">'+p.coins.toLocaleString()+' 🪙</div><div style="font-size:10px;color:#666">'+p.gamesPlayed+' games</div></div></div>';});document.getElementById("board").innerHTML=html||"<p style='color:#666;text-align:center;padding:20px'>No players yet!</p>";const myData=list.find(p=>p.name===user);const myPos=list.findIndex(p=>p.name===user);const myCoins=myData?myData.coins:parseInt(localStorage.getItem("coins")||0);const country=localStorage.getItem("country")||"MW";const flag=lb_flags[country]||"🇲🇼";const rankText=myPos>=0?'#'+(myPos+1):"Unranked";document.getElementById("myRank").innerHTML='<div style="display:flex;justify-content:space-between;align-items:center"><div style="text-align:left"><div style="font-size:12px;color:#999">YOUR RANK ('+currentLeaderboardView.toUpperCase()+')</div><div style="font-size:18px;font-weight:bold;margin-top:4px">'+flag+' '+user+' <span style="color:#00ffcc">'+rankText+'</span></div></div><div style="text-align:right"><div style="font-size:12px;color:#999">COINS</div><div style="font-size:22px;color:#ffd700;font-weight:bold">'+myCoins.toLocaleString()+'</div></div></div>';window.myRankData={rank:rankText,coins:myCoins,view:currentLeaderboardView};});}
 function shareRank(){const user=localStorage.getItem("user")||"Player";const data=window.myRankData||{rank:"#?",coins:0,view:"daily"};const text="🎮 I'm ranked "+data.rank+" on Mada Game Earn ("+data.view+") with "+data.coins.toLocaleString()+" coins! 🇲🇼\n\nPlay & earn real MWK!";if(navigator.share){navigator.share({title:"Mada Game Earn",text:text}).catch(()=>{})}else{navigator.clipboard.writeText(text).then(()=>alert("Rank copied! Share on WhatsApp"))}}
 setInterval(function(){if(document.getElementById('leaderboardPage').classList.contains('active'))updateLeaderboard()},10000);
 
 var uploadedSongs=[];var rewardedSongs=[];var uploadListenInterval=null;var currentUploadSongIndex=-1;var pendingPlayIndex=-1;
-try{var savedRewarded=localStorage.getItem('rewardedSongs');if(savedRewarded)rewardedSongs=JSON.parse(savedRewarded)}catch(e){rewardedSongs=[]}
-function handleMusicUpload(){var input=document.getElementById('musicFileInput');if(!input||!input.files||input.files.length===0)return;var addedCount=0;for(var i=0;i<input.files.length;i++){var file=input.files[i];if(!file.type.startsWith('audio/'))continue;var isDuplicate=false;for(var d=0;d<uploadedSongs.length;d++){if(uploadedSongs[d].name===file.name){isDuplicate=true;break}}if(isDuplicate)continue;var url=URL.createObjectURL(file);uploadedSongs.push({name:file.name,url:url,size:file.size});addedCount++}if(addedCount>0){var msgEl=document.getElementById('uploadListenMsg');if(msgEl)msgEl.innerHTML='<span style="color:#51cf66">✅ '+addedCount+' song(s) added!</span>';setTimeout(function(){if(msgEl)msgEl.innerHTML=''},3000)}renderUploadedSongs();input.value=''}
-function renderUploadedSongs(){var list=document.getElementById('uploadedMusicList');if(!list)return;if(uploadedSongs.length===0){list.innerHTML='<p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p>';updateUploadCountBadge();return}var html='';for(var i=0;i<uploadedSongs.length;i++){var song=uploadedSongs[i];var isRewarded=rewardedSongs.indexOf(song.name)!==-1;var isPlaying=(currentUploadSongIndex===i);html+='<div class="upload-song-item">';html+='<span class="upload-song-name">🎵 '+song.name.replace(/</g,'&lt;')+'</span>';if(isRewarded){html+='<span class="upload-song-earned">✅ Earned</span>'}else{html+='<button class="upload-song-btn" onclick="playUploadedSong('+i+')" style="background:'+(isPlaying?'linear-gradient(45deg,#e74c3c,#c0392b)':'linear-gradient(45deg,#9b59b6,#8e44ad)')+';color:#fff">'+(isPlaying?'⏹ Stop':'▶ Play')+'</button>'}html+='</div>'}list.innerHTML=html;updateUploadCountBadge()}
-function updateUploadCountBadge(){var badge=document.getElementById('uploadCountBadge');if(badge){var todayEarned=rewardedSongs.length;badge.innerText='🎵 '+todayEarned+' song'+(todayEarned!==1?'s':'')+' earned today'}}
+try{var savedRewarded=localStorage.getItem('rewardedSongs');if(savedRewarded)rewardedSongs=JSON.parse(savedRewarded);}catch(e){rewardedSongs=[];}
+function handleMusicUpload(){var input=document.getElementById('musicFileInput');if(!input||!input.files||input.files.length===0)return;var addedCount=0;for(var i=0;i<input.files.length;i++){var file=input.files[i];if(!file.type.startsWith('audio/'))continue;var isDuplicate=false;for(var d=0;d<uploadedSongs.length;d++){if(uploadedSongs[d].name===file.name){isDuplicate=true;break;}}if(isDuplicate)continue;var url=URL.createObjectURL(file);uploadedSongs.push({name:file.name,url:url,size:file.size});addedCount++;}if(addedCount>0){var msgEl=document.getElementById('uploadListenMsg');if(msgEl)msgEl.innerHTML='<span style="color:#51cf66">✅ '+addedCount+' song(s) added!</span>';setTimeout(function(){if(msgEl)msgEl.innerHTML=''},3000);}renderUploadedSongs();input.value='';}
+function renderUploadedSongs(){var list=document.getElementById('uploadedMusicList');if(!list)return;if(uploadedSongs.length===0){list.innerHTML='<p style="color:#555;text-align:center;padding:15px;font-size:14px">No songs uploaded yet</p>';updateUploadCountBadge();return;}var html='';for(var i=0;i<uploadedSongs.length;i++){var song=uploadedSongs[i];var isRewarded=rewardedSongs.indexOf(song.name)!==-1;var isPlaying=(currentUploadSongIndex===i);html+='<div class="upload-song-item">';html+='<span class="upload-song-name">🎵 '+song.name.replace(/</g,'&lt;')+'</span>';if(isRewarded){html+='<span class="upload-song-earned">✅ Earned</span>';}else{html+='<button class="upload-song-btn" onclick="playUploadedSong('+i+')" style="background:'+(isPlaying?'linear-gradient(45deg,#e74c3c,#c0392b)':'linear-gradient(45deg,#9b59b6,#8e44ad)')+';color:#fff">'+(isPlaying?'⏹ Stop':'▶ Play')+'</button>';}html+='</div>';}list.innerHTML=html;updateUploadCountBadge();}
+function updateUploadCountBadge(){var badge=document.getElementById('uploadCountBadge');if(badge){var todayEarned=rewardedSongs.length;badge.innerText='🎵 '+todayEarned+' song'+(todayEarned!==1?'s':'')+' earned today';}}
 
-function playUploadedSong(index){if(index<0||index>=uploadedSongs.length)return;var song=uploadedSongs[index];var audio=document.getElementById('uploadedAudio');var player=document.getElementById('customAudioPlayer');var nameEl=document.getElementById('uploadedSongName');var timerEl=document.getElementById('uploadListenTimer');var msgEl=document.getElementById('uploadListenMsg');var barEl=document.getElementById('uploadListenBar');if(currentUploadSongIndex===index&&!audio.paused){audio.pause();audio.currentTime=0;if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}currentUploadSongIndex=-1;if(timerEl)timerEl.innerText='';if(msgEl)msgEl.innerHTML='';if(barEl)barEl.style.width='0%';renderUploadedSongs();return}if(rewardedSongs.indexOf(song.name)!==-1){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⚠ Already earned coins for this song today!</span>';player.style.display='block';nameEl.innerText='🎵 '+song.name;audio.src=song.url;audio.play();currentUploadSongIndex=index;if(timerEl)timerEl.innerText='Listening (no reward - already earned)';if(barEl)barEl.style.width='100%';renderUploadedSongs();return}if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}pendingPlayIndex=index;player.style.display='block';nameEl.innerText='🎵 '+song.name;if(timerEl)timerEl.innerText='';if(barEl)barEl.style.width='0%';if(msgEl)msgEl.innerHTML='<span style="color:#ffd700">⏳ Loading video ad... Please wait</span>';renderUploadedSongs();triggerMonetagRewardedAd()}
+function playUploadedSong(index){if(index<0||index>=uploadedSongs.length)return;var song=uploadedSongs[index];var audio=document.getElementById('uploadedAudio');var player=document.getElementById('customAudioPlayer');var nameEl=document.getElementById('uploadedSongName');var timerEl=document.getElementById('uploadListenTimer');var msgEl=document.getElementById('uploadListenMsg');var barEl=document.getElementById('uploadListenBar');if(currentUploadSongIndex===index&&!audio.paused){audio.pause();audio.currentTime=0;if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null;}currentUploadSongIndex=-1;if(timerEl)timerEl.innerText='';if(msgEl)msgEl.innerHTML='';if(barEl)barEl.style.width='0%';renderUploadedSongs();return;}if(rewardedSongs.indexOf(song.name)!==-1){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⚠ Already earned coins for this song today!</span>';player.style.display='block';nameEl.innerText='🎵 '+song.name;audio.src=song.url;audio.play();currentUploadSongIndex=index;if(timerEl)timerEl.innerText='Listening (no reward - already earned)';if(barEl)barEl.style.width='100%';renderUploadedSongs();return;}if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null;}pendingPlayIndex=index;player.style.display='block';nameEl.innerText='🎵 '+song.name;if(timerEl)timerEl.innerText='';if(barEl)barEl.style.width='0%';if(msgEl)msgEl.innerHTML='<span style="color:#ffd700">⏳ Loading video ad... Please wait</span>';renderUploadedSongs();triggerMonetagRewardedAd();}
 
-function startUploadedSongPlayback(index){if(index<0||index>=uploadedSongs.length)return;var song=uploadedSongs[index];var audio=document.getElementById('uploadedAudio');var player=document.getElementById('customAudioPlayer');var nameEl=document.getElementById('uploadedSongName');var timerEl=document.getElementById('uploadListenTimer');var msgEl=document.getElementById('uploadListenMsg');var barEl=document.getElementById('uploadListenBar');audio.src=song.url;audio.play();currentUploadSongIndex=index;var listenedSeconds=0;var requiredSeconds=60;if(timerEl)timerEl.innerText='0s / '+requiredSeconds+'s';if(msgEl)msgEl.innerHTML='<span style="color:#ffd700">🎧 Listening... Keep playing to earn +50 coins!</span>';if(barEl){barEl.style.width='0%';barEl.style.background='linear-gradient(90deg,#9b59b6,#e74c3c)'}renderUploadedSongs();if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}uploadListenInterval=setInterval(function(){if(audio.paused){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⏸ Song paused! Press play to continue earning...</span>';return}listenedSeconds++;var percent=Math.min(100,(listenedSeconds/requiredSeconds)*100);if(timerEl)timerEl.innerText=listenedSeconds+'s / '+requiredSeconds+'s';if(barEl)barEl.style.width=percent+'%';if(listenedSeconds>=requiredSeconds){clearInterval(uploadListenInterval);uploadListenInterval=null;addCoins(50);rewardedSongs.push(song.name);try{localStorage.setItem('rewardedSongs',JSON.stringify(rewardedSongs))}catch(e){}if(msgEl)msgEl.innerHTML='<span style="color:#51cf66">✅ +50 coins earned for "'+song.name.replace(/</g,'&lt;')+'"!</span>';if(timerEl)timerEl.innerText='✅ Complete!';if(barEl){barEl.style.width='100%';barEl.style.background='linear-gradient(90deg,#51cf66,#00ffcc)'}currentUploadSongIndex=-1;renderUploadedSongs();setTimeout(function(){if(barEl)barEl.style.background='linear-gradient(90deg,#9b59b6,#e74c3c)'},3000)}},1000);audio.onended=function(){if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}if(listenedSeconds<requiredSeconds&&rewardedSongs.indexOf(song.name)===-1){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⏹ Song ended early ('+listenedSeconds+'s/'+requiredSeconds+'s). Press Play again!</span>';currentUploadSongIndex=-1;renderUploadedSongs()}};audio.onerror=function(){if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null}if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">❌ Error playing this file.</span>';currentUploadSongIndex=-1;renderUploadedSongs()}}
+function startUploadedSongPlayback(index){if(index<0||index>=uploadedSongs.length)return;var song=uploadedSongs[index];var audio=document.getElementById('uploadedAudio');var player=document.getElementById('customAudioPlayer');var nameEl=document.getElementById('uploadedSongName');var timerEl=document.getElementById('uploadListenTimer');var msgEl=document.getElementById('uploadListenMsg');var barEl=document.getElementById('uploadListenBar');audio.src=song.url;audio.play();currentUploadSongIndex=index;var listenedSeconds=0;var requiredSeconds=60;if(timerEl)timerEl.innerText='0s / '+requiredSeconds+'s';if(msgEl)msgEl.innerHTML='<span style="color:#ffd700">🎧 Listening... Keep playing to earn +50 coins!</span>';if(barEl){barEl.style.width='0%';barEl.style.background='linear-gradient(90deg,#9b59b6,#e74c3c)';}renderUploadedSongs();if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null;}uploadListenInterval=setInterval(function(){if(audio.paused){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⏸ Song paused! Press play to continue earning...</span>';return;}listenedSeconds++;var percent=Math.min(100,(listenedSeconds/requiredSeconds)*100);if(timerEl)timerEl.innerText=listenedSeconds+'s / '+requiredSeconds+'s';if(barEl)barEl.style.width=percent+'%';if(listenedSeconds>=requiredSeconds){clearInterval(uploadListenInterval);uploadListenInterval=null;addCoins(50);rewardedSongs.push(song.name);try{localStorage.setItem('rewardedSongs',JSON.stringify(rewardedSongs));}catch(e){}if(msgEl)msgEl.innerHTML='<span style="color:#51cf66">✅ +50 coins earned for "'+song.name.replace(/</g,'&lt;')+'"!</span>';if(timerEl)timerEl.innerText='✅ Complete!';if(barEl){barEl.style.width='100%';barEl.style.background='linear-gradient(90deg,#51cf66,#00ffcc)';}currentUploadSongIndex=-1;renderUploadedSongs();setTimeout(function(){if(barEl)barEl.style.background='linear-gradient(90deg,#9b59b6,#e74c3c)';},3000);}},1000);audio.onended=function(){if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null;}if(listenedSeconds<requiredSeconds&&rewardedSongs.indexOf(song.name)===-1){if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">⏹ Song ended early ('+listenedSeconds+'s/'+requiredSeconds+'s). Press Play again!</span>';currentUploadSongIndex=-1;renderUploadedSongs();}};audio.onerror=function(){if(uploadListenInterval){clearInterval(uploadListenInterval);uploadListenInterval=null;}if(msgEl)msgEl.innerHTML='<span style="color:#ff6b6b">❌ Error playing this file.</span>';currentUploadSongIndex=-1;renderUploadedSongs();};}
 
 var hilltopPlayerInstance=null;var watchAdIsPlaying=false;
-function initHilltopPlayer(){if(hilltopPlayerInstance||document.getElementById('hilltopVideoPlayer').dataset.init==='true')return;if(watchVideosToday>=WATCH_DAILY_LIMIT)return;var vastTagUrl="https://mellow-habit.com/dmmHFnzEd.GtNmvbZuGxUy/IezmW9_ulZKUPlrkqPnTbcHwFNMz/cBzuMBD/Uxt-Nvz/AC3ON/zTMcwMONQx";hilltopPlayerInstance=fluidPlayer('hilltopVideoPlayer',{vastOptions:{adList:[{roll:'preRoll',vastTag:vastTagUrl}],adClickable:true,adCTAText:'Visit Sponsor',skipButtonCaption:'Skip in [seconds]',skipButtonClickCaption:'Skip Ad',skip:10}});document.getElementById('hilltopVideoPlayer').dataset.init='true';hilltopPlayerInstance.on('adStarted',function(){watchAdIsPlaying=true;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700;font-weight:bold">📺 Ad is playing... Do not close!</span>'});hilltopPlayerInstance.on('adEnded',function(){watchAdIsPlaying=false;if(watchVideosToday>=WATCH_DAILY_LIMIT){document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>';return}document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700;font-weight:bold">📺 Ad finished! Keep watching to earn coins.</span>';startWatchFallback()});hilltopPlayerInstance.on('adSkipped',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b;font-weight:bold">⚠ Ad skipped! Keep watching.</span>';startWatchFallback()});hilltopPlayerInstance.on('noAdLoaded',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">📺 No ad available. Watch the full video to earn!</span>';startWatchFallback()});hilltopPlayerInstance.on('adError',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">📺 Ad error. Watch the full video to earn!</span>';startWatchFallback()});var videoEl=document.getElementById('hilltopVideoPlayer');videoEl.addEventListener('play',function(){if(watchCooldownActive||watchRewardGiven||watchVideosToday>=WATCH_DAILY_LIMIT)return;if(watchAdIsPlaying)return;watchVideoIsPlaying=true;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">Video playing... Watch to the end to earn +10 coins!</span>';startWatchFallback()});videoEl.addEventListener('pause',function(){watchVideoIsPlaying=false;if(!watchRewardGiven&&!watchCooldownActive&&watchVideosToday<WATCH_DAILY_LIMIT&&!watchAdIsPlaying){document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b">Video paused! Press play to continue watching</span>'}});videoEl.addEventListener('ended',function(){watchVideoIsPlaying=false;if(watchAdIsPlaying)return;var cur=videoEl.currentTime||0;var dur=videoEl.duration||0;if(dur>1&&cur>=dur-3){autoRewardWatch()}});videoEl.addEventListener('loadedmetadata',function(){if(videoEl.duration&&isFinite(videoEl.duration)&&videoEl.duration>1){watchKnownDuration=videoEl.duration}})}
+function initHilltopPlayer(){if(hilltopPlayerInstance||document.getElementById('hilltopVideoPlayer').dataset.init==='true')return;if(watchVideosToday>=WATCH_DAILY_LIMIT)return;var vastTagUrl="https://mellow-habit.com/dmmHFnzEd.GtNmvbZuGxUy/IezmW9_ulZKUPlrkqPnTbcHwFNMz/cBzuMBD/Uxt-Nvz/AC3ON/zTMcwMONQx";hilltopPlayerInstance=fluidPlayer('hilltopVideoPlayer',{vastOptions:{adList:[{roll:'preRoll',vastTag:vastTagUrl}],adClickable:true,adCTAText:'Visit Sponsor',skipButtonCaption:'Skip in [seconds]',skipButtonClickCaption:'Skip Ad',skip:10}});document.getElementById('hilltopVideoPlayer').dataset.init='true';hilltopPlayerInstance.on('adStarted',function(){watchAdIsPlaying=true;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700;font-weight:bold">📺 Ad is playing... Do not close!</span>';});hilltopPlayerInstance.on('adEnded',function(){watchAdIsPlaying=false;if(watchVideosToday>=WATCH_DAILY_LIMIT){document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b;font-weight:bold">🚫 Daily limit reached!</span>';return;}document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700;font-weight:bold">📺 Ad finished! Keep watching to earn coins.</span>';startWatchFallback();});hilltopPlayerInstance.on('adSkipped',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b;font-weight:bold">⚠ Ad skipped! Keep watching.</span>';startWatchFallback();});hilltopPlayerInstance.on('noAdLoaded',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">📺 No ad available. Watch the full video to earn!</span>';startWatchFallback();});hilltopPlayerInstance.on('adError',function(){watchAdIsPlaying=false;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">📺 Ad error. Watch the full video to earn!</span>';startWatchFallback();});var videoEl=document.getElementById('hilltopVideoPlayer');videoEl.addEventListener('play',function(){if(watchCooldownActive||watchRewardGiven||watchVideosToday>=WATCH_DAILY_LIMIT)return;if(watchAdIsPlaying)return;watchVideoIsPlaying=true;document.getElementById('watchStatus').innerHTML='<span style="color:#ffd700">Video playing... Watch to the end to earn +10 coins!</span>';startWatchFallback();});videoEl.addEventListener('pause',function(){watchVideoIsPlaying=false;if(!watchRewardGiven&&!watchCooldownActive&&watchVideosToday<WATCH_DAILY_LIMIT&&!watchAdIsPlaying){document.getElementById('watchStatus').innerHTML='<span style="color:#ff6b6b">Video paused! Press play to continue watching</span>';}});videoEl.addEventListener('ended',function(){watchVideoIsPlaying=false;if(watchAdIsPlaying)return;var cur=videoEl.currentTime||0;var dur=videoEl.duration||0;if(dur>1&&cur>=dur-3){autoRewardWatch();}});videoEl.addEventListener('loadedmetadata',function(){if(videoEl.duration&&isFinite(videoEl.duration)&&videoEl.duration>1){watchKnownDuration=videoEl.duration;}});}
 
-document.addEventListener('DOMContentLoaded', function() {
-setTimeout(function(){var savedNum=localStorage.getItem('number');var savedNet=localStorage.getItem('network');if(savedNum&&savedNet){lockPaymentMethod(savedNum,savedNet)}else if(savedNum||savedNet){lockPaymentMethod(savedNum||'',savedNet||'')}},300);
-  var loginBtn=document.getElementById("loginBtn");if(loginBtn){loginBtn.addEventListener('click',function(e){e.preventDefault();register()})}
-  var usernameInput=document.getElementById("usernameInput");if(usernameInput){usernameInput.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register()}});setTimeout(function(){usernameInput.focus();generateCaptcha()},300)}
-  var phoneInput=document.getElementById("phoneInput");if(phoneInput){phoneInput.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'')});phoneInput.addEventListener('keypress',function(e){if(!/[0-9]/.test(e.key))e.preventDefault()})}
-  var el;el=document.getElementById("backBtn");if(el)el.onclick=function(){if(gameState&&gameState.cleanup)gameState.cleanup();currentGame=null;gameState={};showPage('games')};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navGames");if(el)el.onclick=function(){showPage('games')};el=document.getElementById("navWatch");if(el)el.onclick=function(){showPage('watch')};el=document.getElementById("navListen");if(el)el.onclick=function(){showPage('listen')};el=document.getElementById("navBoard");if(el)el.onclick=function(){showPage('leaderboard')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')};el=document.getElementById("saveBtn");if(el)el.onclick=saveDetails;el=document.getElementById("dailyBtn");if(el)el.onclick=claimDailyBonus;el=document.getElementById("withdrawBtn");if(el)el.onclick=withdraw;el=document.getElementById("replyBtn");if(el)el.onclick=function(){var u;try{u=localStorage.getItem("user")}catch(e){u=null}var txt=document.getElementById('playerReply').value.trim();if(!txt||!u||!db)return;var id=['Admin_Mada',u].sort().join('_');db.ref('chats/'+id+'/messages').push({from:u,to:'Admin_Mada',text:txt,timestamp:Date.now(),status:'sent'}).then(function(){document.getElementById('playerReply').value='';document.getElementById('replyStatus').innerHTML='<span style="color:#51cf66">✓ Sent</span>';setTimeout(function(){document.getElementById('replyStatus').innerHTML=''},1500)})};var musicInput=document.getElementById('musicFileInput');if(musicInput){musicInput.addEventListener('change',handleMusicUpload)}
-  try{var u;try{u=localStorage.getItem("user")}catch(e){u=null}if(u&&db){db.ref('users/'+u).once('value',function(snap){var data=snap.val()||{};if(data.phone&&data.network){lockPaymentMethod(data.phone,data.network)}else{lockPaymentMethod(data.phone||localStorage.getItem("number")||'',data.network||localStorage.getItem("network")||'')}if(data.email){try{localStorage.setItem("userEmail",data.email)}catch(e){}}})}}catch(e){}
-  try{var u;try{u=localStorage.getItem("user")}catch(e){u=null}if(u){document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('wallet');if(db){setupPresence(u);checkInboxBadge();startRealtimeBalance()}}}catch(e){}
+document.addEventListener('DOMContentLoaded',function(){
+// DISMISS SPLASH SCREEN FIX
+setTimeout(function(){var splash=document.getElementById('splashScreen');if(splash){splash.style.opacity='0';setTimeout(function(){splash.style.display='none';},800);}},2000);
+
+setTimeout(function(){var savedNum=localStorage.getItem('number');var savedNet=localStorage.getItem('network');if(savedNum&&savedNet){lockPaymentMethod(savedNum,savedNet);}else if(savedNum||savedNet){lockPaymentMethod(savedNum||'',savedNet||'');}},300);
+var loginBtn=document.getElementById("loginBtn");if(loginBtn){loginBtn.addEventListener('click',function(e){e.preventDefault();register();});}
+var usernameInput=document.getElementById("usernameInput");if(usernameInput){usernameInput.addEventListener('keypress',function(e){if(e.key==='Enter'){e.preventDefault();register();}});setTimeout(function(){usernameInput.focus();generateCaptcha();},300);}
+var phoneInput=document.getElementById("phoneInput");if(phoneInput){phoneInput.addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');});phoneInput.addEventListener('keypress',function(e){if(!/[0-9]/.test(e.key))e.preventDefault();});}
+var el;el=document.getElementById("backBtn");if(el)el.onclick=function(){currentGame=null;gameState={};showPage('games');};el=document.getElementById("navWallet");if(el)el.onclick=function(){showPage('wallet')};el=document.getElementById("navGames");if(el)el.onclick=function(){showPage('games')};el=document.getElementById("navWatch");if(el)el.onclick=function(){showPage('watch')};el=document.getElementById("navListen");if(el)el.onclick=function(){showPage('listen')};el=document.getElementById("navBoard");if(el)el.onclick=function(){showPage('leaderboard')};el=document.getElementById("navInbox");if(el)el.onclick=function(){showPage('inbox')};el=document.getElementById("saveBtn");if(el)el.onclick=saveDetails;el=document.getElementById("dailyBtn");if(el)el.onclick=claimDailyBonus;el=document.getElementById("withdrawBtn");if(el)el.onclick=withdraw;el=document.getElementById("replyBtn");if(el)el.onclick=function(){var u;try{u=localStorage.getItem("user");}catch(e){u=null;}var txt=document.getElementById('playerReply').value.trim();if(!txt||!u||!db)return;var id=['Admin_Mada',u].sort().join('_');db.ref('chats/'+id+'/messages').push({from:u,to:'Admin_Mada',text:txt,timestamp:Date.now(),status:'sent'}).then(function(){document.getElementById('playerReply').value='';document.getElementById('replyStatus').innerHTML='<span style="color:#51cf66">✓ Sent</span>';setTimeout(function(){document.getElementById('replyStatus').innerHTML='';},1500);});};var musicInput=document.getElementById('musicFileInput');if(musicInput){musicInput.addEventListener('change',handleMusicUpload);}
+try{var u;try{u=localStorage.getItem("user");}catch(e){u=null;}if(u&&db){db.ref('users/'+u).once('value',function(snap){var data=snap.val()||{};if(data.phone&&data.network){lockPaymentMethod(data.phone,data.network);}else{lockPaymentMethod(data.phone||localStorage.getItem("number")||'',data.network||localStorage.getItem("network")||'');}if(data.email){try{localStorage.setItem("userEmail",data.email);}catch(e){}}});}}catch(e){}
+try{var u;try{u=localStorage.getItem("user");}catch(e){u=null;}if(u){document.getElementById("loginPage").classList.remove("active");document.getElementById("mainNav").style.display="flex";showPage('wallet');if(db){setupPresence(u);checkInboxBadge();startRealtimeBalance();}}}catch(e){}
 });
+
+// Footer & Withdraw Countdown
+function updateWithdrawCountdown(){var el=document.getElementById('withdrawCountdown');if(!el)return;var now=new Date();var malawiOffset=2*60;var utc=now.getTime()+(now.getTimezoneOffset()*60000);var malawiTime=new Date(utc+(malawiOffset*60000));var day=malawiTime.getDay();var hour=malawiTime.getHours();if(day===5&&hour>=18&&hour<21){var end=new Date(malawiTime);end.setHours(21,0,0,0);var diff=end-malawiTime;var h=Math.floor(diff/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);el.innerHTML='<span style="color:#51cf66">🟢 OPEN! Closes in '+h+'h '+m+'m '+s+'s</span>';return;}var next=new Date(malawiTime);var daysUntilFri=(5-day+7)%7;if(daysUntilFri===0)daysUntilFri=7;if(day===5&&hour<18)daysUntilFri=0;next.setDate(malawiTime.getDate()+daysUntilFri);next.setHours(18,0,0,0);var diff=next-malawiTime;var days=Math.floor(diff/86400000);var h=Math.floor((diff%86400000)/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);var text='';if(days>0)text+=days+'d ';text+=h+'h '+m+'m '+s+'s';el.innerHTML='⏰ Next: Friday 6PM<br><span style="color:#ffd700">'+text+'</span>';}
+setInterval(updateWithdrawCountdown,1000);setTimeout(updateWithdrawCountdown,500);
 </script>
 
 <div style="margin-top:40px;padding:20px;background:#f5f5f5;border-radius:10px;text-align:center;font-size:12px;color:#666">
@@ -1171,16 +504,5 @@ setTimeout(function(){var savedNum=localStorage.getItem('number');var savedNet=l
   <a href="#" onclick="alert('Contact: WhatsApp +265 0882 96 83 84');return false" style="margin:0 10px">Contact</a>
   <p style="margin-top:10px">© 2024-2026 Mada Game Earn - Lilongwe, Malawi</p>
 </div>
-
-<script>
-function updateWithdrawCountdown(){
-  var el=document.getElementById('withdrawCountdown');if(!el)return;
-  var now=new Date();var malawiOffset=2*60;var utc=now.getTime()+(now.getTimezoneOffset()*60000);var malawiTime=new Date(utc+(malawiOffset*60000));var day=malawiTime.getDay();var hour=malawiTime.getHours();
-  if(day===5&&hour>=18&&hour<21){var end=new Date(malawiTime);end.setHours(21,0,0,0);var diff=end-malawiTime;var h=Math.floor(diff/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);el.innerHTML='<span style="color:#51cf66">🟢 OPEN! Closes in '+h+'h '+m+'m '+s+'s</span>';return}
-  var next=new Date(malawiTime);var daysUntilFri=(5-day+7)%7;if(daysUntilFri===0)daysUntilFri=7;if(day===5&&hour<18)daysUntilFri=0;next.setDate(malawiTime.getDate()+daysUntilFri);next.setHours(18,0,0,0);var diff=next-malawiTime;var days=Math.floor(diff/86400000);var h=Math.floor((diff%86400000)/3600000);var m=Math.floor((diff%3600000)/60000);var s=Math.floor((diff%60000)/1000);var text='';if(days>0)text+=days+'d ';text+=h+'h '+m+'m '+s+'s';el.innerHTML='⏰ Next: Friday 6PM<br><span style="color:#ffd700">'+text+'</span>';
-}
-setInterval(updateWithdrawCountdown,1000);setTimeout(updateWithdrawCountdown,500);
-</script>
 </body>
-</html>
-  
+  </html>
